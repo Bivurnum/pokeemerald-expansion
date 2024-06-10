@@ -288,13 +288,15 @@ static const u8 sTrainerPicOffset[2][GENDER_COUNT][2] =
 {
     // Kanto
     {
-        [MALE]   = {13, 4},
-        [FEMALE] = {13, 4}
+        [KYLE]   = {13, 4},
+        [BREN] = {13, 4},
+        [SPENCER] = {13, 4}
     },
     // Hoenn
     {
-        [MALE]   = {1, 0},
-        [FEMALE] = {1, 0}
+        [KYLE]   = {1, 0},
+        [BREN] = {1, 0},
+        [SPENCER] = {1, 0}
     },
 };
 
@@ -302,18 +304,21 @@ static const u8 sTrainerPicFacilityClass[][GENDER_COUNT] =
 {
     [CARD_TYPE_FRLG] =
     {
-        [MALE]   = FACILITY_CLASS_RED,
-        [FEMALE] = FACILITY_CLASS_LEAF
+        [KYLE]   = FACILITY_CLASS_FRIEND_KYLE,
+        [BREN] = FACILITY_CLASS_FRIEND_BREN,
+        [SPENCER] = FACILITY_CLASS_FRIEND_SPENCER
     },
     [CARD_TYPE_RS] =
     {
-        [MALE]   = FACILITY_CLASS_RS_BRENDAN,
-        [FEMALE] = FACILITY_CLASS_RS_MAY
+        [KYLE]   = FACILITY_CLASS_FRIEND_KYLE,
+        [BREN] = FACILITY_CLASS_FRIEND_BREN,
+        [SPENCER] = FACILITY_CLASS_FRIEND_SPENCER
     },
     [CARD_TYPE_EMERALD] =
     {
-        [MALE]   = FACILITY_CLASS_BRENDAN,
-        [FEMALE] = FACILITY_CLASS_MAY
+        [KYLE]   = FACILITY_CLASS_FRIEND_KYLE,
+        [BREN] = FACILITY_CLASS_FRIEND_BREN,
+        [SPENCER] = FACILITY_CLASS_FRIEND_SPENCER
     }
 };
 
