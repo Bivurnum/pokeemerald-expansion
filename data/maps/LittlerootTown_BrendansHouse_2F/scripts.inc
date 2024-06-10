@@ -19,7 +19,7 @@ LittlerootTown_BrendansHouse_2F_EventScript_CheckShouldUpdateBrendanPos::
 	goto LittlerootTown_BrendansHouse_2F_EventScript_TryUpdateBrendanPos
 
 LittlerootTown_BrendansHouse_2F_EventScript_TryUpdateBrendanPos::
-	checkplayergender
+	
 	goto_if_eq VAR_RESULT, MALE, LittlerootTown_BrendansHouse_2F_EventScript_Ret
 	@ Odd that the MaysHouse equivalent was used below instead
 	goto_if_ge VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 2, LittlerootTown_MaysHouse_2F_EventScript_Ret
@@ -31,7 +31,7 @@ LittlerootTown_BrendansHouse_2F_EventScript_Ret::
 	return
 
 LittlerootTown_BrendansHouse_2F_EventScript_CheckSetReadyToMeetBrendan::
-	checkplayergender
+	
 	goto_if_eq VAR_RESULT, FEMALE, LittlerootTown_BrendansHouse_2F_EventScript_SetReadyToMeetBrendan
 	return
 
@@ -44,7 +44,7 @@ LittlerootTown_BrendansHouse_2F_OnWarp:
 	.2byte 0
 
 LittlerootTown_BrendansHouse_2F_EventScript_CheckInitDecor::
-	checkplayergender
+	
 	goto_if_eq VAR_RESULT, MALE, SecretBase_EventScript_InitDecorations
 	end
 
@@ -237,7 +237,7 @@ LittlerootTown_BrendansHouse_2F_Movement_PlayerWatchBrendanEast:
 
 LittlerootTown_BrendansHouse_2F_EventScript_PC::
 	lockall
-	checkplayergender
+	
 	goto_if_eq VAR_RESULT, MALE, LittlerootTown_BrendansHouse_2F_EventScript_CheckPlayersPC
 	goto_if_eq VAR_RESULT, FEMALE, LittlerootTown_BrendansHouse_2F_EventScript_CheckRivalsPC
 	end

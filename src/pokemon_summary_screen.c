@@ -3271,7 +3271,7 @@ static bool8 DoesMonOTMatchOwner(void)
     else
     {
         trainerId = GetPlayerIDAsU32() & 0xFFFF;
-        gender = gSaveBlock2Ptr->playerGender;
+        gender = gSaveBlock2Ptr->friendChoice;
         StringCopy(gStringVar1, gSaveBlock2Ptr->playerName);
     }
 

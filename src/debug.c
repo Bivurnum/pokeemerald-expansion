@@ -2301,15 +2301,15 @@ static void DebugAction_Util_WatchCredits(u8 taskId)
 
 static void DebugAction_Util_Player_Name(u8 taskId)
 {
-    DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_ReturnToFieldContinueScript);
+    DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->friendChoice, 0, 0, CB2_ReturnToFieldContinueScript);
 }
 
 static void DebugAction_Util_Player_Gender(u8 taskId)
 {
-    if (gSaveBlock2Ptr->playerGender == MALE)
-        gSaveBlock2Ptr->playerGender = FEMALE;
+    if (gSaveBlock2Ptr->friendChoice == MALE)
+        gSaveBlock2Ptr->friendChoice = FEMALE;
     else
-        gSaveBlock2Ptr->playerGender = MALE;
+        gSaveBlock2Ptr->friendChoice = MALE;
     Debug_DestroyMenu_Full(taskId);
     ScriptContext_Enable();
 }
@@ -3998,7 +3998,7 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
 
     // give player the mon
     SetMonData(&mon, MON_DATA_OT_NAME, gSaveBlock2Ptr->playerName);
-    SetMonData(&mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
+    SetMonData(&mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->friendChoice);
     for (i = 0; i < PARTY_SIZE; i++)
     {
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) == SPECIES_NONE)

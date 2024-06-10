@@ -18,7 +18,7 @@ BattleFrontier_BattleFactoryBattleRoom_MapScripts::
 
 BattleFrontier_BattleFactoryBattleRoom_OnTransition:
 	frontier_settrainers
-	checkplayergender
+	checkfriendchoice
 	call_if_eq VAR_RESULT, MALE, BattleFrontier_BattleFactoryBattleRoom_EventScript_SetPlayerGfxMale
 	call_if_eq VAR_RESULT, FEMALE, BattleFrontier_BattleFactoryBattleRoom_EventScript_SetPlayerGfxFemale
 	frontier_getbrainstatus

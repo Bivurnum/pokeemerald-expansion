@@ -20,7 +20,7 @@ BattleFrontier_BattlePalaceBattleRoom_OnTransition:
 	end
 
 BattleFrontier_BattlePalaceBattleRoom_EventScript_SetPlayerGfx::
-	checkplayergender
+	checkfriendchoice
 	goto_if_eq VAR_RESULT, MALE, BattleFrontier_BattlePalaceBattleRoom_EventScript_SetPlayerGfxMale
 	goto_if_eq VAR_RESULT, FEMALE, BattleFrontier_BattlePalaceBattleRoom_EventScript_SetPlayerGfxFemale
 	return

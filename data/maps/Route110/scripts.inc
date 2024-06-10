@@ -375,7 +375,7 @@ Route110_EventScript_RivalTrigger3::
 
 Route110_EventScript_RivalScene::
 	lockall
-	checkplayergender
+	
 	call_if_eq VAR_RESULT, MALE, Route110_EventScript_PlayMayMusic
 	call_if_eq VAR_RESULT, FEMALE, Route110_EventScript_PlayBrendanMusic
 	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
@@ -388,7 +388,7 @@ Route110_EventScript_RivalScene::
 	call_if_eq VAR_0x8008, 1, Route110_EventScript_RivalApproachPlayer1
 	call_if_eq VAR_0x8008, 2, Route110_EventScript_RivalApproachPlayer2
 	call_if_eq VAR_0x8008, 3, Route110_EventScript_RivalApproachPlayer3
-	checkplayergender
+	
 	goto_if_eq VAR_RESULT, MALE, Route110_EventScript_MayBattle
 	goto_if_eq VAR_RESULT, FEMALE, Route110_EventScript_BrendanBattle
 	releaseall

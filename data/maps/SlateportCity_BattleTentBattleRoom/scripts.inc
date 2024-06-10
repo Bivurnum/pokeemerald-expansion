@@ -15,7 +15,7 @@ SlateportCity_BattleTentBattleRoom_OnTransition:
 	end
 
 SlateportCity_BattleTentBattleRoom_EventScript_SetPlayerGfx::
-	checkplayergender
+	
 	goto_if_eq VAR_RESULT, MALE, SlateportCity_BattleTentBattleRoom_EventScript_SetPlayerGfxMale
 	goto_if_eq VAR_RESULT, FEMALE, SlateportCity_BattleTentBattleRoom_EventScript_SetPlayerGfxFemale
 	return

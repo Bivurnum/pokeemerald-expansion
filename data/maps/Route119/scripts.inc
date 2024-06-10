@@ -43,7 +43,7 @@ Route119_EventScript_RivalTrigger2::
 Route119_EventScript_RivalEncounter::
 	lockall
 	addobject LOCALID_RIVAL_ON_BIKE
-	checkplayergender
+	
 	call_if_eq VAR_RESULT, MALE, Route119_EventScript_PlayMayMusic
 	call_if_eq VAR_RESULT, FEMALE, Route119_EventScript_PlayBrendanMusic
 	delay 65
@@ -57,7 +57,7 @@ Route119_EventScript_RivalEncounter::
 	removeobject LOCALID_RIVAL_ON_BIKE
 	addobject LOCALID_RIVAL
 	delay 30
-	checkplayergender
+	
 	goto_if_eq VAR_RESULT, MALE, Route119_EventScript_BattleMay
 	goto_if_eq VAR_RESULT, FEMALE, Route119_EventScript_BattleBrendan
 	releaseall

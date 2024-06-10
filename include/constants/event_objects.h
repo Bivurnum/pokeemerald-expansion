@@ -240,6 +240,33 @@
 #define OBJ_EVENT_GFX_LINK_RS_MAY                236
 #define OBJ_EVENT_GFX_LUGIA                      237
 #define OBJ_EVENT_GFX_HOOH                       238
+#define OBJ_EVENT_GFX_KYLE_NORMAL                239
+#define OBJ_EVENT_GFX_KYLE_MACH_BIKE             240
+#define OBJ_EVENT_GFX_KYLE_SURFING               241
+#define OBJ_EVENT_GFX_KYLE_FIELD_MOVE            242
+#define OBJ_EVENT_GFX_KYLE_ACRO_BIKE             243
+#define OBJ_EVENT_GFX_KYLE_UNDERWATER            244
+#define OBJ_EVENT_GFX_KYLE_FISHING               245
+#define OBJ_EVENT_GFX_KYLE_WATERING              246
+#define OBJ_EVENT_GFX_KYLE_DECORATING            247
+#define OBJ_EVENT_GFX_BREN_NORMAL                248
+#define OBJ_EVENT_GFX_BREN_MACH_BIKE             249
+#define OBJ_EVENT_GFX_BREN_SURFING               250
+#define OBJ_EVENT_GFX_BREN_FIELD_MOVE            251
+#define OBJ_EVENT_GFX_BREN_ACRO_BIKE             252
+#define OBJ_EVENT_GFX_BREN_UNDERWATER            253
+#define OBJ_EVENT_GFX_BREN_FISHING               254
+#define OBJ_EVENT_GFX_BREN_WATERING              255
+#define OBJ_EVENT_GFX_BREN_DECORATING            256
+#define OBJ_EVENT_GFX_SPENCER_NORMAL             257
+#define OBJ_EVENT_GFX_SPENCER_MACH_BIKE          258
+#define OBJ_EVENT_GFX_SPENCER_SURFING            259
+#define OBJ_EVENT_GFX_SPENCER_FIELD_MOVE         260
+#define OBJ_EVENT_GFX_SPENCER_ACRO_BIKE          261
+#define OBJ_EVENT_GFX_SPENCER_UNDERWATER         262
+#define OBJ_EVENT_GFX_SPENCER_FISHING            263
+#define OBJ_EVENT_GFX_SPENCER_WATERING           264
+#define OBJ_EVENT_GFX_SPENCER_DECORATING         265
 
 // NOTE: By default, the max value for NUM_OBJ_EVENT_GFX is 239.
 //
@@ -250,7 +277,7 @@
 // object graphics that can be removed. If more graphics are needed, anything that
 // stores graphics ids will need to be increased in size. See wiki entry below:
 // https://github.com/pret/pokeemerald/wiki/Feature-Branches#overworld-expansion
-#define NUM_OBJ_EVENT_GFX                        239
+#define NUM_OBJ_EVENT_GFX                        266
 
 
 // These are dynamic object gfx ids.

@@ -1322,7 +1322,7 @@
 	.endm
 
 	@ Checks the player's gender. Stores the result (MALE (0) or FEMALE (1)) in VAR_RESULT.
-	.macro checkplayergender
+	.macro checkfriendchoice
 	.byte 0xa0
 	.endm
 

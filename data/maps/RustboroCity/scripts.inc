@@ -685,7 +685,7 @@ RustboroCity_EventScript_Rival::
 	goto RustboroCity_EventScript_RivalEncounter
 
 RustboroCity_EventScript_PlayRivalMusic::
-	checkplayergender
+	
 	goto_if_eq VAR_RESULT, MALE, RustboroCity_EventScript_PlayMayMusic
 	goto_if_eq VAR_RESULT, FEMALE, RustboroCity_EventScript_PlayBrendanMusic
 	return
@@ -827,7 +827,7 @@ RustboroCity_EventScript_RivalTrigger7::
 	goto RustboroCity_EventScript_RivalEncounter
 
 RustboroCity_EventScript_RivalEncounter::
-	checkplayergender
+	
 	goto_if_eq VAR_RESULT, MALE, RustboroCity_EventScript_MayEncounter
 	goto_if_eq VAR_RESULT, FEMALE, RustboroCity_EventScript_BrendanEncounter
 	end
