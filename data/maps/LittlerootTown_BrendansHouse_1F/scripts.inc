@@ -113,9 +113,9 @@ LittlerootTown_BrendansHouse_1F_OnFrame:
 # 57 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 6, LittlerootTown_BrendansHouse_1F_EventScript_PetalburgGymReport
 # 58 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_MAY, 1, LittlerootTown_BrendansHouse_1F_EventScript_YoureNewNeighbor
+	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_BREN, 1, LittlerootTown_BrendansHouse_1F_EventScript_YoureNewNeighbor
 # 59 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_MAY, 3, PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
+	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_BREN, 3, PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
 # 60 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	.2byte 0
 # 61 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
@@ -207,7 +207,7 @@ LittlerootTown_BrendansHouse_1F_EventScript_YoureNewNeighbor::
 # 104 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	setflag FLAG_MET_RIVAL_MOM
 # 105 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	setvar VAR_LITTLEROOT_HOUSES_STATE_MAY, 2
+	setvar VAR_LITTLEROOT_HOUSES_STATE_BREN, 2
 # 106 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	releaseall
 # 107 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"

@@ -53,9 +53,9 @@ LittlerootTown_MapScripts::
 # 27 "data/maps/LittlerootTown/scripts.pory"
 
 # 28 "data/maps/LittlerootTown/scripts.pory"
-	@ State descriptions for VAR_LITTLEROOT_HOUSES_STATE_MAY
+	@ State descriptions for VAR_LITTLEROOT_HOUSES_STATE_BREN
 # 29 "data/maps/LittlerootTown/scripts.pory"
-	@                    and VAR_LITTLEROOT_HOUSES_STATE_BRENDAN
+	@                    and VAR_LITTLEROOT_HOUSES_STATE_SPENCER
 # 30 "data/maps/LittlerootTown/scripts.pory"
 	@ 1: On Truck (and is corresponding gender)
 # 31 "data/maps/LittlerootTown/scripts.pory"
@@ -95,9 +95,9 @@ LittlerootTown_OnTransition:
 # 48 "data/maps/LittlerootTown/scripts.pory"
 	call_if_eq VAR_LITTLEROOT_TOWN_STATE, 3, LittlerootTown_EventScript_SetMomStandingInFrontOfDoorPos
 # 49 "data/maps/LittlerootTown/scripts.pory"
-	call_if_eq VAR_LITTLEROOT_HOUSES_STATE_MAY, 4, LittlerootTown_EventScript_SetExitedHouseAfterLatiSSTicketEvent
+	call_if_eq VAR_LITTLEROOT_HOUSES_STATE_BREN, 4, LittlerootTown_EventScript_SetExitedHouseAfterLatiSSTicketEvent
 # 50 "data/maps/LittlerootTown/scripts.pory"
-	call_if_eq VAR_LITTLEROOT_HOUSES_STATE_BRENDAN, 4, LittlerootTown_EventScript_SetExitedHouseAfterLatiSSTicketEvent
+	call_if_eq VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 4, LittlerootTown_EventScript_SetExitedHouseAfterLatiSSTicketEvent
 # 51 "data/maps/LittlerootTown/scripts.pory"
 	call_if_eq VAR_OLDALE_RIVAL_STATE, 1, LittlerootTown_EventScript_MoveRivalFromOldale
 # 52 "data/maps/LittlerootTown/scripts.pory"
@@ -147,9 +147,9 @@ LittlerootTown_EventScript_MoveRivalFromOldale::
 # 74 "data/maps/LittlerootTown/scripts.pory"
 LittlerootTown_EventScript_SetExitedHouseAfterLatiSSTicketEvent::
 # 75 "data/maps/LittlerootTown/scripts.pory"
-	setvar VAR_LITTLEROOT_HOUSES_STATE_MAY, 5
+	setvar VAR_LITTLEROOT_HOUSES_STATE_BREN, 5
 # 76 "data/maps/LittlerootTown/scripts.pory"
-	setvar VAR_LITTLEROOT_HOUSES_STATE_BRENDAN, 5
+	setvar VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 5
 # 77 "data/maps/LittlerootTown/scripts.pory"
 	return
 # 78 "data/maps/LittlerootTown/scripts.pory"

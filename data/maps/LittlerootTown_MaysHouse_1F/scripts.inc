@@ -111,9 +111,9 @@ LittlerootTown_MaysHouse_1F_OnFrame:
 # 56 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
 	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 6, LittlerootTown_MaysHouse_1F_EventScript_PetalburgGymReport
 # 57 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
-	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_BRENDAN, 1, LittlerootTown_MaysHouse_1F_EventScript_YoureNewNeighbor
+	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 1, LittlerootTown_MaysHouse_1F_EventScript_YoureNewNeighbor
 # 58 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
-	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_MAY, 3, PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
+	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_BREN, 3, PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
 # 59 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
 	.2byte 0
 # 60 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
@@ -205,7 +205,7 @@ LittlerootTown_MaysHouse_1F_EventScript_YoureNewNeighbor::
 # 103 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
 	setflag FLAG_MET_RIVAL_MOM
 # 104 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
-	setvar VAR_LITTLEROOT_HOUSES_STATE_BRENDAN, 2
+	setvar VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2
 # 105 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
 	releaseall
 # 106 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"

@@ -65,7 +65,7 @@ InsideOfTruck_EventScript_SetIntroFlagsMale::
 # 33 "data/maps/InsideOfTruck/scripts.pory"
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F_POKE_BALL
 # 34 "data/maps/InsideOfTruck/scripts.pory"
-	setvar VAR_LITTLEROOT_HOUSES_STATE_BRENDAN, 1
+	setvar VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 1
 # 35 "data/maps/InsideOfTruck/scripts.pory"
 	setdynamicwarp MAP_LITTLEROOT_TOWN, 3, 10
 # 36 "data/maps/InsideOfTruck/scripts.pory"
@@ -91,7 +91,7 @@ InsideOfTruck_EventScript_SetIntroFlagsFemale::
 # 46 "data/maps/InsideOfTruck/scripts.pory"
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_2F_POKE_BALL
 # 47 "data/maps/InsideOfTruck/scripts.pory"
-	setvar VAR_LITTLEROOT_HOUSES_STATE_MAY, 1
+	setvar VAR_LITTLEROOT_HOUSES_STATE_BREN, 1
 # 48 "data/maps/InsideOfTruck/scripts.pory"
 	setdynamicwarp MAP_LITTLEROOT_TOWN, 12, 10
 # 49 "data/maps/InsideOfTruck/scripts.pory"
