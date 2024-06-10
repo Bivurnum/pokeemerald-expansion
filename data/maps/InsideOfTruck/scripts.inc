@@ -55,11 +55,11 @@ InsideOfTruck_EventScript_SetIntroFlagsMale::
 # 28 "data/maps/InsideOfTruck/scripts.pory"
 	setvar VAR_LITTLEROOT_INTRO_STATE, 1
 # 29 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_MOM
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_MOM
 # 30 "data/maps/InsideOfTruck/scripts.pory"
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_TRUCK
 # 31 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_RIVAL_MOM
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_RIVAL_MOM
 # 32 "data/maps/InsideOfTruck/scripts.pory"
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_RIVAL_SIBLING
 # 33 "data/maps/InsideOfTruck/scripts.pory"
@@ -81,11 +81,11 @@ InsideOfTruck_EventScript_SetIntroFlagsFemale::
 # 41 "data/maps/InsideOfTruck/scripts.pory"
 	setvar VAR_LITTLEROOT_INTRO_STATE, 2
 # 42 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_MOM
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_MOM
 # 43 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_TRUCK
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK
 # 44 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_RIVAL_MOM
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_RIVAL_MOM
 # 45 "data/maps/InsideOfTruck/scripts.pory"
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_RIVAL_SIBLING
 # 46 "data/maps/InsideOfTruck/scripts.pory"

@@ -21,7 +21,7 @@ LittlerootTown_MaysHouse_2F_OnTransition:
 # 11 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	call_if_ge VAR_LITTLEROOT_RIVAL_STATE, 3, LittlerootTown_MaysHouse_2F_EventScript_CheckShouldUpdateMayPos
 # 12 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	call_if_eq VAR_LITTLEROOT_INTRO_STATE, 4, PlayersHouse_2F_EventScript_BlockStairsUntilClockIsSet
+	call_if_eq VAR_LITTLEROOT_INTRO_STATE, 5, PlayersHouse_2F_EventScript_BlockStairsUntilClockIsSet
 # 13 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	call SecretBase_EventScript_SetDecorationFlags
 # 14 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"

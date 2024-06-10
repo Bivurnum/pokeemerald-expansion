@@ -802,10 +802,10 @@
 #define FLAG_HIDE_LITTLEROOT_TOWN_PLAYERS_HOUSE_VIGOROTH_2          0x2F3
 #define FLAG_HIDE_MOSSDEEP_CITY_SPACE_CENTER_1F_TEAM_MAGMA          0x2F4
 #define FLAG_HIDE_LITTLEROOT_TOWN_PLAYERS_BEDROOM_MOM               0x2F5
-#define FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_MOM                0x2F6
-#define FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_MOM                    0x2F7
+#define FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_MOM                0x2F6
+#define FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_MOM                    0x2F7
 #define FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_RIVAL_BEDROOM      0x2F8
-#define FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_TRUCK              0x2F9
+#define FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK              0x2F9
 #define FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_TRUCK                  0x2FA
 #define FLAG_HIDE_DEOXYS                                            0x2FB
 #define FLAG_HIDE_BIRTH_ISLAND_DEOXYS_TRIANGLE                      0x2FC
@@ -828,8 +828,8 @@
 #define FLAG_HIDE_PETALBURG_GYM_GREETER                             0x30D
 #define FLAG_HIDE_MARINE_CAVE_KYOGRE                                0x30E
 #define FLAG_HIDE_TERRA_CAVE_GROUDON                                0x30F
-#define FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_RIVAL_MOM          0x310
-#define FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_RIVAL_MOM              0x311
+#define FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_RIVAL_MOM          0x310
+#define FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_RIVAL_MOM             0x311
 #define FLAG_HIDE_ROUTE_119_SCOTT                                   0x312
 #define FLAG_HIDE_LILYCOVE_MOTEL_SCOTT                              0x313
 #define FLAG_HIDE_MOSSDEEP_CITY_SCOTT                               0x314
@@ -1218,7 +1218,7 @@
 #define FLAG_ITEM_SAFARI_ZONE_NORTH_EAST_NUGGET                     0x491
 #define FLAG_ITEM_SAFARI_ZONE_SOUTH_EAST_BIG_PEARL                  0x492
 
-#define FLAG_UNUSED_0x493                                           0x493 // Unused Flag
+#define FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_RIVAL_MOM             0x493
 #define FLAG_UNUSED_0x494                                           0x494 // Unused Flag
 #define FLAG_UNUSED_0x495                                           0x495 // Unused Flag
 #define FLAG_UNUSED_0x496                                           0x496 // Unused Flag

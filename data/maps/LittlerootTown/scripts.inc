@@ -239,7 +239,7 @@ LittlerootTown_EventScript_StepOffTruckMale::
 # 120 "data/maps/LittlerootTown/scripts.pory"
 	call LittlerootTown_EventScript_GoInsideWithMom
 # 121 "data/maps/LittlerootTown/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_TRUCK
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK
 # 122 "data/maps/LittlerootTown/scripts.pory"
 	warpsilent MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F, 8, 8
 # 123 "data/maps/LittlerootTown/scripts.pory"

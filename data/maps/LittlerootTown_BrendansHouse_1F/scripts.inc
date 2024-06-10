@@ -23,7 +23,7 @@ LittlerootTown_BrendansHouse_1F_MapScripts::
 # 12 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 LittlerootTown_BrendansHouse_1F_OnLoad:
 # 13 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	call_if_lt VAR_LITTLEROOT_INTRO_STATE, 6, LittlerootTown_BrendansHouse_1F_EventScript_SetMovingBoxes
+	call_if_lt VAR_LITTLEROOT_INTRO_STATE, 7, LittlerootTown_BrendansHouse_1F_EventScript_SetMovingBoxes
 # 14 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	call_if_set FLAG_RECEIVED_RUNNING_SHOES, LittlerootTown_BrendansHouse_1F_EventScript_CheckShowShoesManual
 # 15 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
@@ -61,11 +61,11 @@ LittlerootTown_BrendansHouse_1F_EventScript_ShowRunningShoesManual::
 # 31 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 LittlerootTown_BrendansHouse_1F_OnTransition:
 # 32 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	call_if_eq VAR_LITTLEROOT_INTRO_STATE, 3, LittlerootTown_BrendansHouse_1F_EventScript_MoveMomToDoor
+	call_if_eq VAR_LITTLEROOT_INTRO_STATE, 4, LittlerootTown_BrendansHouse_1F_EventScript_MoveMomToDoor
 # 33 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	call_if_eq VAR_LITTLEROOT_INTRO_STATE, 5, LittlerootTown_BrendansHouse_1F_EventScript_MoveMomToStairs
+	call_if_eq VAR_LITTLEROOT_INTRO_STATE, 6, LittlerootTown_BrendansHouse_1F_EventScript_MoveMomToStairs
 # 34 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	call_if_eq VAR_LITTLEROOT_INTRO_STATE, 6, LittlerootTown_BrendansHouse_1F_EventScript_MoveMomToTV
+	call_if_eq VAR_LITTLEROOT_INTRO_STATE, 7, LittlerootTown_BrendansHouse_1F_EventScript_MoveMomToTV
 # 35 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	end
 # 36 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
@@ -107,11 +107,11 @@ LittlerootTown_BrendansHouse_1F_EventScript_MoveMomToDoor::
 # 54 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 LittlerootTown_BrendansHouse_1F_OnFrame:
 # 55 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 3, LittlerootTown_BrendansHouse_1F_EventScript_EnterHouseMovingIn
+	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 4, LittlerootTown_BrendansHouse_1F_EventScript_EnterHouseMovingIn
 # 56 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 5, LittlerootTown_BrendansHouse_1F_EventScript_GoUpstairsToSetClock
+	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 6, LittlerootTown_BrendansHouse_1F_EventScript_GoUpstairsToSetClock
 # 57 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 6, LittlerootTown_BrendansHouse_1F_EventScript_PetalburgGymReport
+	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 7, LittlerootTown_BrendansHouse_1F_EventScript_PetalburgGymReport
 # 58 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_BREN, 1, LittlerootTown_BrendansHouse_1F_EventScript_YoureNewNeighbor
 # 59 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
