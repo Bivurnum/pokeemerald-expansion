@@ -26,6 +26,7 @@
 #include "expansion_intro.h"
 #include "constants/rgb.h"
 #include "constants/battle_anim.h"
+#include "field_weather.h"
 
 /*
     The intro is grouped into the following scenes
@@ -1065,6 +1066,7 @@ static void SerialCB_CopyrightScreen(void)
 
 static u8 SetUpCopyrightScreen(void)
 {
+    InitPaletteColorMapTypes();
     switch (gMain.state)
     {
     case 0:
