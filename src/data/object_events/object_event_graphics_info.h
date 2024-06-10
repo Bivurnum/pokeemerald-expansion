@@ -4881,18 +4881,287 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenAcroBike = {
     .affineAnims = gDummySpriteAffineAnimTable
 };
 
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenSurfing = {TAG_NONE, OBJ_EVENT_PAL_TAG_BREN, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 0, SHADOW_SIZE_M, FALSE, TRUE, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Surfing, sPicTable_BrenSurfing, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenFieldMove = {TAG_NONE, OBJ_EVENT_PAL_TAG_BREN, OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 512, 32, 32, 0, SHADOW_SIZE_M, FALSE, FALSE, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_FieldMove, sPicTable_BrenFieldMove, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenUnderwater = {TAG_NONE, OBJ_EVENT_PAL_TAG_PLAYER_UNDERWATER, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 0, SHADOW_SIZE_M, FALSE, TRUE, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Standard, sPicTable_BrenUnderwater, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenFishing = {TAG_NONE, OBJ_EVENT_PAL_TAG_BREN, OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 512, 32, 32, 0, SHADOW_SIZE_M, FALSE, FALSE, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Fishing, sPicTable_BrenFishing, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenWatering = {TAG_NONE, OBJ_EVENT_PAL_TAG_BREN, OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 512, 32, 32, 0, SHADOW_SIZE_M, FALSE, FALSE, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Standard, sPicTable_BrenWatering, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenDecorating = {TAG_NONE, OBJ_EVENT_PAL_TAG_BREN, OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 256, 16, 32, 10, SHADOW_SIZE_M, TRUE, FALSE, TRACKS_FOOT, &gObjectEventBaseOam_16x32, sOamTables_16x32, sAnimTable_Inanimate, sPicTable_BrenDecorating, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerNormal = {TAG_NONE, OBJ_EVENT_PAL_TAG_SPENCER, OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 512, 16, 32, 0, SHADOW_SIZE_M, FALSE, FALSE, TRACKS_FOOT, &gObjectEventBaseOam_16x32, sOamTables_16x32, sAnimTable_BrendanMayNormal, sPicTable_SpencerNormal, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerMachBike = {TAG_NONE, OBJ_EVENT_PAL_TAG_SPENCER, OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 512, 32, 32, 0, SHADOW_SIZE_M, FALSE, FALSE, TRACKS_BIKE_TIRE, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Standard, sPicTable_SpencerMachBike, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerAcroBike = {TAG_NONE, OBJ_EVENT_PAL_TAG_SPENCER, OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 512, 32, 32, 0, SHADOW_SIZE_M, FALSE, FALSE, TRACKS_BIKE_TIRE, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_AcroBike, sPicTable_SpencerAcroBike, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerSurfing = {TAG_NONE, OBJ_EVENT_PAL_TAG_SPENCER, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 0, SHADOW_SIZE_M, FALSE, TRUE, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Surfing, sPicTable_SpencerSurfing, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerFieldMove = {TAG_NONE, OBJ_EVENT_PAL_TAG_SPENCER, OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 512, 32, 32, 0, SHADOW_SIZE_M, FALSE, FALSE, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_FieldMove, sPicTable_SpencerFieldMove, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerUnderwater = {TAG_NONE, OBJ_EVENT_PAL_TAG_PLAYER_UNDERWATER, OBJ_EVENT_PAL_TAG_NONE, 512, 32, 32, 0, SHADOW_SIZE_M, FALSE, TRUE, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Standard, sPicTable_SpencerUnderwater, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerFishing = {TAG_NONE, OBJ_EVENT_PAL_TAG_SPENCER, OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 512, 32, 32, 0, SHADOW_SIZE_M, FALSE, FALSE, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Fishing, sPicTable_SpencerFishing, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerWatering = {TAG_NONE, OBJ_EVENT_PAL_TAG_SPENCER, OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 512, 32, 32, 0, SHADOW_SIZE_M, FALSE, FALSE, TRACKS_FOOT, &gObjectEventBaseOam_32x32, sOamTables_32x32, sAnimTable_Standard, sPicTable_SpencerWatering, gDummySpriteAffineAnimTable};
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerDecorating = {TAG_NONE, OBJ_EVENT_PAL_TAG_SPENCER, OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 256, 16, 32, 10, SHADOW_SIZE_M, TRUE, FALSE, TRACKS_FOOT, &gObjectEventBaseOam_16x32, sOamTables_16x32, sAnimTable_Inanimate, sPicTable_SpencerDecorating, gDummySpriteAffineAnimTable};
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenSurfing = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_BREN, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE, 
+    .size = 512, 
+    .width = 32, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = TRUE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_32x32, 
+    .subspriteTables = sOamTables_32x32, 
+    .anims = sAnimTable_Surfing, 
+    .images = sPicTable_BrenSurfing, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenFieldMove = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_BREN, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 
+    .size = 512, 
+    .width = 32, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = FALSE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_32x32, 
+    .subspriteTables = sOamTables_32x32, 
+    .anims = sAnimTable_FieldMove, 
+    .images = sPicTable_BrenFieldMove, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenUnderwater = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_UNDERWATER, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE, 
+    .size = 512, 
+    .width = 32, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = TRUE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_32x32, 
+    .subspriteTables = sOamTables_32x32, 
+    .anims = sAnimTable_Standard, 
+    .images = sPicTable_BrenUnderwater, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenFishing = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_BREN, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 
+    .size = 512, 
+    .width = 32, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = FALSE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_32x32, 
+    .subspriteTables = sOamTables_32x32, 
+    .anims = sAnimTable_Fishing, 
+    .images = sPicTable_BrenFishing, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenWatering = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_BREN, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 
+    .size = 512, 
+    .width = 32, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = FALSE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_32x32, 
+    .subspriteTables = sOamTables_32x32, 
+    .anims = sAnimTable_Standard, 
+    .images = sPicTable_BrenWatering, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrenDecorating = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_BREN, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 
+    .size = 256, 
+    .width = 16, 
+    .height = 32, 
+    .paletteSlot = 10, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = TRUE, 
+    .disableReflectionPaletteLoad = FALSE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_16x32, 
+    .subspriteTables = sOamTables_16x32, 
+    .anims = sAnimTable_Inanimate, 
+    .images = sPicTable_BrenDecorating, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerNormal = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_SPENCER, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 
+    .size = 512, 
+    .width = 16, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = FALSE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_16x32, 
+    .subspriteTables = sOamTables_16x32, 
+    .anims = sAnimTable_BrendanMayNormal, 
+    .images = sPicTable_SpencerNormal, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerMachBike = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_SPENCER, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 
+    .size = 512, 
+    .width = 32, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = FALSE, 
+    .tracks = TRACKS_BIKE_TIRE, 
+    .oam = &gObjectEventBaseOam_32x32, 
+    .subspriteTables = sOamTables_32x32, 
+    .anims = sAnimTable_Standard, 
+    .images = sPicTable_SpencerMachBike, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerAcroBike = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_SPENCER, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 
+    .size = 512, 
+    .width = 32, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = FALSE, 
+    .tracks = TRACKS_BIKE_TIRE, 
+    .oam = &gObjectEventBaseOam_32x32, 
+    .subspriteTables = sOamTables_32x32, 
+    .anims = sAnimTable_AcroBike, 
+    .images = sPicTable_SpencerAcroBike, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerSurfing = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_SPENCER, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE, 
+    .size = 512, 
+    .width = 32, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = TRUE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_32x32, 
+    .subspriteTables = sOamTables_32x32, 
+    .anims = sAnimTable_Surfing, 
+    .images = sPicTable_SpencerSurfing, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerFieldMove = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_SPENCER, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 
+    .size = 512, 
+    .width = 32, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = FALSE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_32x32, 
+    .subspriteTables = sOamTables_32x32, 
+    .anims = sAnimTable_FieldMove, 
+    .images = sPicTable_SpencerFieldMove, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerUnderwater = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_UNDERWATER, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE, 
+    .size = 512, 
+    .width = 32, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = TRUE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_32x32, 
+    .subspriteTables = sOamTables_32x32, 
+    .anims = sAnimTable_Standard, 
+    .images = sPicTable_SpencerUnderwater, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerFishing = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_SPENCER, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 
+    .size = 512, 
+    .width = 32, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = FALSE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_32x32, 
+    .subspriteTables = sOamTables_32x32, 
+    .anims = sAnimTable_Fishing, 
+    .images = sPicTable_SpencerFishing, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerWatering = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_SPENCER, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 
+    .size = 512, 
+    .width = 32, 
+    .height = 32, 
+    .paletteSlot = 0, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = FALSE, 
+    .disableReflectionPaletteLoad = FALSE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_32x32, 
+    .subspriteTables = sOamTables_32x32, 
+    .anims = sAnimTable_Standard, 
+    .images = sPicTable_SpencerWatering, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SpencerDecorating = {
+    .tileTag = TAG_NONE, 
+    .paletteTag = OBJ_EVENT_PAL_TAG_SPENCER, 
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, 
+    .size = 256, 
+    .width = 16, 
+    .height = 32, 
+    .paletteSlot = 10, 
+    .shadowSize = SHADOW_SIZE_M, 
+    .inanimate = TRUE, 
+    .disableReflectionPaletteLoad = FALSE, 
+    .tracks = TRACKS_FOOT, 
+    .oam = &gObjectEventBaseOam_16x32, 
+    .subspriteTables = sOamTables_16x32, 
+    .anims = sAnimTable_Inanimate, 
+    .images = sPicTable_SpencerDecorating, 
+    .affineAnims = gDummySpriteAffineAnimTable
+};
