@@ -17,13 +17,14 @@ LittlerootTown_MapScripts::
 	@ 4: Received Running Shoes
 
 	@ State descriptions for VAR_LITTLEROOT_INTRO_STATE
-	@ 1: In truck male
-	@ 2: In truck female
-	@ 3: Entered house
-	@ 4: Told to go set clock
-	@ 5: Entered 2F to set clock
-	@ 6: Set clock
-	@ 7: Told to go meet rival
+	@ 1: In truck Spencer
+	@ 2: In truck Bren
+	@ 3: In truck Kyle
+	@ 4: Entered house
+	@ 5: Told to go set clock
+	@ 6: Entered 2F to set clock
+	@ 7: Set clock
+	@ 8: Told to go meet rival
 
 	@ State descriptions for VAR_LITTLEROOT_HOUSES_STATE_MAY
 	@                    and VAR_LITTLEROOT_HOUSES_STATE_BRENDAN
@@ -161,7 +162,7 @@ LittlerootTown_EventScript_GoInsideWithMom::
 	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_PlayerEnterHouse
 	waitmovement 0
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_MOM_OUTSIDE
-	setvar VAR_LITTLEROOT_INTRO_STATE, 3
+	setvar VAR_LITTLEROOT_INTRO_STATE, 4
 	hideobjectat OBJ_EVENT_ID_PLAYER, 0
 	closedoor VAR_0x8004, VAR_0x8005
 	waitdooranim
