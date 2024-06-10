@@ -1,68 +1,77 @@
-raw `
-InsideOfTruck_MapScripts::
-	map_script MAP_SCRIPT_ON_LOAD, InsideOfTruck_OnLoad
-	map_script MAP_SCRIPT_ON_RESUME, InsideOfTruck_OnResume
-	.byte 0
+mapscripts InsideOfTruck_MapScripts {
+    MAP_SCRIPT_ON_LOAD: InsideOfTruck_OnLoad
+    MAP_SCRIPT_ON_RESUME: InsideOfTruck_OnResume
+}
 
-InsideOfTruck_OnLoad:
-	setmetatile 4, 1, METATILE_InsideOfTruck_ExitLight_Top, FALSE
-	setmetatile 4, 2, METATILE_InsideOfTruck_ExitLight_Mid, FALSE
-	setmetatile 4, 3, METATILE_InsideOfTruck_ExitLight_Bottom, FALSE
+script InsideOfTruck_OnLoad {
+    setmetatile (4, 1, METATILE_InsideOfTruck_ExitLight_Top, FALSE)
+	setmetatile (4, 2, METATILE_InsideOfTruck_ExitLight_Mid, FALSE)
+	setmetatile (4, 3, METATILE_InsideOfTruck_ExitLight_Bottom, FALSE)
+    end
+}
+
+script InsideOfTruck_OnResume {
+    setstepcallback (STEP_CB_TRUCK)
 	end
+}
 
-InsideOfTruck_OnResume:
-	setstepcallback STEP_CB_TRUCK
-	end
-
-InsideOfTruck_EventScript_SetIntroFlags::
-	lockall
-	setflag FLAG_HIDE_MAP_NAME_POPUP
+script InsideOfTruck_EventScript_SetIntroFlags {
+    lockall
+	setflag (FLAG_HIDE_MAP_NAME_POPUP)
+    checkfriendchoice
 	
-	goto_if_eq VAR_RESULT, SPENCER, InsideOfTruck_EventScript_SetIntroFlagsSpencer
-	goto_if_eq VAR_RESULT, BREN, InsideOfTruck_EventScript_SetIntroFlagsBren
-	goto_if_eq VAR_RESULT, KYLE, InsideOfTruck_EventScript_SetIntroFlagsKyle
+    switch (var(VAR_RESULT)) {
+        case SPENCER:
+            goto (InsideOfTruck_EventScript_SetIntroFlagsSpencer)
+        case BREN:
+            goto (InsideOfTruck_EventScript_SetIntroFlagsBren)
+        case KYLE:
+            goto (InsideOfTruck_EventScript_SetIntroFlagsKyle)
+    }
 	end
+}
 
-InsideOfTruck_EventScript_SetIntroFlagsSpencer::
-	setrespawn HEAL_LOCATION_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F
-	setvar VAR_LITTLEROOT_INTRO_STATE, 1
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_MOM
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_RIVAL_MOM
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_MOM
-	setvar VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 1
-	setdynamicwarp MAP_LITTLEROOT_TOWN, 3, 10
+script InsideOfTruck_EventScript_SetIntroFlagsSpencer {
+    setrespawn (HEAL_LOCATION_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F)
+	setvar (VAR_LITTLEROOT_INTRO_STATE, 1)
+	setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_MOM)
+	setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_RIVAL_MOM)
+	setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_MOM)
+	setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 1)
+	setdynamicwarp (MAP_LITTLEROOT_TOWN, 3, 10)
 	releaseall
 	end
+}
 
-InsideOfTruck_EventScript_SetIntroFlagsBren::
-	setrespawn HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE_2F
-	setvar VAR_LITTLEROOT_INTRO_STATE, 2
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_MOM
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_RIVAL_MOM
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_MOM
-	setvar VAR_LITTLEROOT_HOUSES_STATE_BREN, 1
-	setdynamicwarp MAP_LITTLEROOT_TOWN, 12, 10
+script InsideOfTruck_EventScript_SetIntroFlagsBren {
+    setrespawn (HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE_2F)
+	setvar (VAR_LITTLEROOT_INTRO_STATE, 2)
+	setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_MOM)
+	setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_RIVAL_MOM)
+	setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_MOM)
+	setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 1)
+	setdynamicwarp (MAP_LITTLEROOT_TOWN, 12, 10)
 	releaseall
 	end
+}
 
-InsideOfTruck_EventScript_SetIntroFlagsKyle::
-	setrespawn HEAL_LOCATION_LITTLEROOT_TOWN_KYLES_HOUSE_2F
-	setvar VAR_LITTLEROOT_INTRO_STATE, 3
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_MOM
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_MOM
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_RIVAL_MOM
-	setvar VAR_LITTLEROOT_HOUSES_STATE_KYLE, 1
-	setdynamicwarp MAP_LITTLEROOT_TOWN, 15, 17
+script InsideOfTruck_EventScript_SetIntroFlagsKyle {
+    setrespawn (HEAL_LOCATION_LITTLEROOT_TOWN_KYLES_HOUSE_2F)
+	setvar (VAR_LITTLEROOT_INTRO_STATE, 3)
+	setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_MOM)
+	setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_MOM)
+	setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_RIVAL_MOM)
+	setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 1)
+	setdynamicwarp (MAP_LITTLEROOT_TOWN, 15, 17)
 	releaseall
 	end
+}
 
-InsideOfTruck_EventScript_MovingBox::
-	msgbox InsideOfTruck_Text_BoxPrintedWithMonLogo, MSGBOX_SIGN
+script InsideOfTruck_EventScript_MovingBox {
+    msgbox (InsideOfTruck_Text_BoxPrintedWithMonLogo, MSGBOX_SIGN)
 	end
+}
 
-InsideOfTruck_Text_BoxPrintedWithMonLogo:
-	.string "The box is printed with a POKéMON logo.\p"
-	.string "It's a POKéMON brand moving and\n"
-	.string "delivery service.$"
-
-`
+text InsideOfTruck_Text_BoxPrintedWithMonLogo {
+    format("The box is printed with a POKéMON logo.\pIt's a POKéMON brand moving and\ndelivery service.")
+}

@@ -1,136 +1,157 @@
-raw `
-.set LOCALID_TWIN, 1
-.set LOCALID_MOM, 4
-.set LOCALID_RIVAL, 7
-.set LOCALID_BIRCH, 8
+const LOCALID_TWIN = 1
+const LOCALID_MOM = 4
+const LOCALID_RIVAL = 7
+const LOCALID_BIRCH = 8
 
-LittlerootTown_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, LittlerootTown_OnTransition
-	map_script MAP_SCRIPT_ON_FRAME_TABLE, LittlerootTown_OnFrame
-	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, LittlerootTown_OnWarp
-	.byte 0
+	// State descriptions for VAR_LITTLEROOT_TOWN_STATE
+	// 1: Met Rival
+	// 2: Saving Birch
+	// 3: Received Pokedex
+	// 4: Received Running Shoes
 
-	@ State descriptions for VAR_LITTLEROOT_TOWN_STATE
-	@ 1: Met Rival
-	@ 2: Saving Birch
-	@ 3: Received Pokedex
-	@ 4: Received Running Shoes
+	// State descriptions for VAR_LITTLEROOT_INTRO_STATE
+	// 1: In truck Spencer
+	// 2: In truck Bren
+	// 3: In truck Kyle
+	// 4: Entered house
+	// 5: Told to go set clock
+	// 6: Entered 2F to set clock
+	// 7: Set clock
+	// 8: Told to go meet rival
 
-	@ State descriptions for VAR_LITTLEROOT_INTRO_STATE
-	@ 1: In truck Spencer
-	@ 2: In truck Bren
-	@ 3: In truck Kyle
-	@ 4: Entered house
-	@ 5: Told to go set clock
-	@ 6: Entered 2F to set clock
-	@ 7: Set clock
-	@ 8: Told to go meet rival
+	// State descriptions for VAR_LITTLEROOT_HOUSES_STATE_BREN
+	//                    and VAR_LITTLEROOT_HOUSES_STATE_SPENCER
+	//                    and VAR_LITTLEROOT_HOUSES_STATE_KYLE
+	// 1: On Truck (and is corresponding friend)
+	// 2: Met Rival's Mom (and is corresponding friend)
+	// 3: Entered Hall of Fame
+	// 4: Completed Lati TV / SS Ticket event
+	// 5: Exited house after above event
 
-	@ State descriptions for VAR_LITTLEROOT_HOUSES_STATE_BREN
-	@                    and VAR_LITTLEROOT_HOUSES_STATE_SPENCER
-	@ 1: On Truck (and is corresponding gender)
-	@ 2: Met Rival's Mom (and is corresponding gender)
-	@ 3: Entered Hall of Fame
-	@ 4: Completed Lati TV / SS Ticket event
-	@ 5: Exited house after above event
+	// State descriptions for VAR_LITTLEROOT_RIVAL_STATE
+	// 1: Never occurs
+	// 2: Entered Rival's bedroom
+	// 3: Met Rival
+	// 4: Received Pokedex
 
-	@ State descriptions for VAR_LITTLEROOT_RIVAL_STATE
-	@ 1: Never occurs
-	@ 2: Entered Rival's bedroom
-	@ 3: Met Rival
-	@ 4: Received Pokedex
+mapscripts LittlerootTown_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION {
+		setflag (FLAG_VISITED_LITTLEROOT_TOWN)
+		call (Common_EventScript_SetupRivalGfxId)
+		if (var(VAR_LITTLEROOT_INTRO_STATE) == 2) {
+			setobjectxyperm (LOCALID_MOM, 14, 8)
+		}
+		call_if_unset (FLAG_RESCUED_BIRCH, LittlerootTown_EventScript_SetTwinPos)
+		if (var(VAR_LITTLEROOT_TOWN_STATE) == 3) {
+			clearflag (FLAG_HIDE_LITTLEROOT_TOWN_MOM_OUTSIDE)
+			setobjectmovementtype (LOCALID_MOM, MOVEMENT_TYPE_FACE_DOWN)
+			checkfriendchoice
+			switch (var(VAR_RESULT)) {
+				case SPENCER:
+					setobjectxyperm (LOCALID_MOM, 5, 9)
+				case BREN:
+					setobjectxyperm (LOCALID_MOM, 14, 9)
+				case KYLE:
+					setobjectxyperm (LOCALID_MOM, 17, 16)
+			}
+		}
+		if (var(VAR_LITTLEROOT_HOUSES_STATE_SPENCER) == 4) {
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 5)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 5)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 5)
+		}
+		if (var(VAR_LITTLEROOT_HOUSES_STATE_BREN) == 4) {
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 5)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 5)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 5)
+		}
+		if (var(VAR_LITTLEROOT_HOUSES_STATE_KYLE) == 4) {
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 5)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 5)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 5)
+		}
+		if (var(VAR_OLDALE_RIVAL_STATE) == 1) {
+			setvar (VAR_OLDALE_RIVAL_STATE, 2)
+			setflag (FLAG_HIDE_OLDALE_TOWN_RIVAL)
+		}
+		if (var(VAR_LITTLEROOT_RIVAL_STATE) == 3) {
+			setflag (FLAG_RIVAL_LEFT_FOR_ROUTE103)
+		}
+		if (var(VAR_DEX_UPGRADE_JOHTO_STARTER_STATE) == 1) {
+			setflag (FLAG_HIDE_MAP_NAME_POPUP)
+		}
+		if (var(VAR_DEX_UPGRADE_JOHTO_STARTER_STATE) == 2) {
+			setvar (VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 3)
+		}
+	}
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_LITTLEROOT_INTRO_STATE, 1: LittlerootTown_EventScript_StepOffTruckSpencer
+		VAR_LITTLEROOT_INTRO_STATE, 2: LittlerootTown_EventScript_StepOffTruckBren
+		VAR_LITTLEROOT_INTRO_STATE, 3: LittlerootTown_EventScript_StepOffTruckKyle
+		VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 1: LittlerootTown_EventScript_BeginDexUpgradeScene
+	]
+	MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
+		VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 1: LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade
+	]
+}
 
-
-LittlerootTown_OnTransition:
-	setflag FLAG_VISITED_LITTLEROOT_TOWN
-	call Common_EventScript_SetupRivalGfxId
-	call_if_eq VAR_LITTLEROOT_INTRO_STATE, 2, LittlerootTown_EventScript_MoveMomToMaysDoor
-	call_if_unset FLAG_RESCUED_BIRCH, LittlerootTown_EventScript_SetTwinPos
-	call_if_eq VAR_LITTLEROOT_TOWN_STATE, 3, LittlerootTown_EventScript_SetMomStandingInFrontOfDoorPos
-	call_if_eq VAR_LITTLEROOT_HOUSES_STATE_BREN, 4, LittlerootTown_EventScript_SetExitedHouseAfterLatiSSTicketEvent
-	call_if_eq VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 4, LittlerootTown_EventScript_SetExitedHouseAfterLatiSSTicketEvent
-	call_if_eq VAR_OLDALE_RIVAL_STATE, 1, LittlerootTown_EventScript_MoveRivalFromOldale
-	call_if_eq VAR_LITTLEROOT_RIVAL_STATE, 3, LittlerootTown_EventScript_SetRivalLeftForRoute103
-	call_if_eq VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 1, LittlerootTown_EventScript_HideMapNamePopup
-	call_if_eq VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 2, LittlerootTown_EventScript_LeftLabAfterDexUpgrade
-	end
-
-LittlerootTown_EventScript_LeftLabAfterDexUpgrade::
-	setvar VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 3
+script LittlerootTown_EventScript_SetTwinPos {
+	goto_if_eq (VAR_LITTLEROOT_TOWN_STATE, 0, LittlerootTown_EventScript_SetTwinGuardingRoutePos)
+	setobjectxyperm (LOCALID_TWIN, 10, 1)
+	setobjectmovementtype (LOCALID_TWIN, MOVEMENT_TYPE_FACE_UP)
 	return
+}
 
-LittlerootTown_EventScript_HideMapNamePopup::
-	setflag FLAG_HIDE_MAP_NAME_POPUP
+script LittlerootTown_EventScript_SetTwinGuardingRoutePos {
+	setobjectxyperm (LOCALID_TWIN, 7, 2)
+	setobjectmovementtype (LOCALID_TWIN, MOVEMENT_TYPE_FACE_DOWN)
 	return
+}
 
-LittlerootTown_EventScript_SetRivalLeftForRoute103::
-	setflag FLAG_RIVAL_LEFT_FOR_ROUTE103
-	return
-
-LittlerootTown_EventScript_MoveRivalFromOldale::
-	setvar VAR_OLDALE_RIVAL_STATE, 2
-	setflag FLAG_HIDE_OLDALE_TOWN_RIVAL
-	return
-
-LittlerootTown_EventScript_SetExitedHouseAfterLatiSSTicketEvent::
-	setvar VAR_LITTLEROOT_HOUSES_STATE_BREN, 5
-	setvar VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 5
-	return
-
-LittlerootTown_EventScript_MoveMomToMaysDoor::
-	setobjectxyperm LOCALID_MOM, 14, 8
-	return
-
-LittlerootTown_EventScript_SetTwinPos::
-	goto_if_eq VAR_LITTLEROOT_TOWN_STATE, 0, LittlerootTown_EventScript_SetTwinGuardingRoutePos
-	setobjectxyperm LOCALID_TWIN, 10, 1
-	setobjectmovementtype LOCALID_TWIN, MOVEMENT_TYPE_FACE_UP
-	return
-
-LittlerootTown_EventScript_SetTwinGuardingRoutePos::
-	setobjectxyperm LOCALID_TWIN, 7, 2
-	setobjectmovementtype LOCALID_TWIN, MOVEMENT_TYPE_FACE_DOWN
-	return
-
-LittlerootTown_EventScript_SetMomStandingInFrontOfDoorPos::
-	clearflag FLAG_HIDE_LITTLEROOT_TOWN_MOM_OUTSIDE
-	setobjectmovementtype LOCALID_MOM, MOVEMENT_TYPE_FACE_DOWN
-	
-	call_if_eq VAR_RESULT, MALE, LittlerootTown_EventScript_SetMomInFrontOfDoorMale
-	call_if_eq VAR_RESULT, FEMALE, LittlerootTown_EventScript_SetMomInFrontOfDoorFemale
-	return
-
-LittlerootTown_EventScript_SetMomInFrontOfDoorMale::
-	setobjectxyperm LOCALID_MOM, 5, 9
-	return
-
-LittlerootTown_EventScript_SetMomInFrontOfDoorFemale::
-	setobjectxyperm LOCALID_MOM, 14, 9
-	return
-
-LittlerootTown_OnFrame:
-	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 1, LittlerootTown_EventScript_StepOffTruckMale
-	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 2, LittlerootTown_EventScript_StepOffTruckFemale
-	map_script_2 VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 1, LittlerootTown_EventScript_BeginDexUpgradeScene
-	.2byte 0
-
-LittlerootTown_EventScript_StepOffTruckMale::
+script LittlerootTown_EventScript_StepOffTruckSpencer {
 	lockall
-	setvar VAR_0x8004, 5
-	setvar VAR_0x8005, 8
-	call LittlerootTown_EventScript_GoInsideWithMom
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK
-	warpsilent MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F, 8, 8
+	setvar (VAR_0x8004, 5)
+	setvar (VAR_0x8005, 8)
+	call (LittlerootTown_EventScript_GoInsideWithMom)
+	setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK)
+	warpsilent (MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F, 8, 8)
 	waitstate
 	releaseall
 	end
+}
 
-LittlerootTown_EventScript_StepOffTruckFemale::
+script LittlerootTown_EventScript_StepOffTruckBren {
+	lockall
+	setvar (VAR_0x8004, 14)
+	setvar (VAR_0x8005, 8)
+	call (LittlerootTown_EventScript_GoInsideWithMom)
+	setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
+	warpsilent (MAP_LITTLEROOT_TOWN_MAYS_HOUSE_1F, 2, 8)
+	waitstate
+	releaseall
+	end
+}
+
+script LittlerootTown_EventScript_StepOffTruckKyle {
+	lockall
+	setvar (VAR_0x8004, 14)
+	setvar (VAR_0x8005, 8)
+	call (LittlerootTown_EventScript_GoInsideWithMom)
+	setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
+	warpsilent (MAP_LITTLEROOT_TOWN_KYLES_HOUSE_1F, 2, 8)
+	waitstate
+	releaseall
+	end
+}
+
+raw `
+
+LittlerootTown_EventScript_StepOffTruckBren::
 	lockall
 	setvar VAR_0x8004, 14
 	setvar VAR_0x8005, 8
 	call LittlerootTown_EventScript_GoInsideWithMom
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_TRUCK
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK
 	warpsilent MAP_LITTLEROOT_TOWN_MAYS_HOUSE_1F, 2, 8
 	waitstate
 	releaseall
@@ -225,10 +246,6 @@ LittlerootTown_EventScript_BeginDexUpgradeScene::
 	waitstate
 	releaseall
 	end
-
-LittlerootTown_OnWarp:
-	map_script_2 VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 1, LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade
-	.2byte 0
 
 LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade::
 	addobject LOCALID_BIRCH
