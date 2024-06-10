@@ -220,6 +220,15 @@ const u32 gTrainerPalette_Brendan[] = INCBIN_U32("graphics/trainers/palettes/bre
 const u32 gTrainerFrontPic_May[] = INCBIN_U32("graphics/trainers/front_pics/may.4bpp.lz");
 const u32 gTrainerPalette_May[] = INCBIN_U32("graphics/trainers/palettes/may.gbapal.lz");
 
+const u32 gTrainerFrontPic_Kyle[] = INCBIN_U32("graphics/trainers/front_pics/friend_kyle.4bpp.lz");
+const u32 gTrainerPalette_Kyle[] = INCBIN_U32("graphics/trainers/palettes/friend_kyle.gbapal.lz");
+
+const u32 gTrainerFrontPic_Bren[] = INCBIN_U32("graphics/trainers/front_pics/friend_bren.4bpp.lz");
+const u32 gTrainerPalette_Bren[] = INCBIN_U32("graphics/trainers/palettes/friend_bren.gbapal.lz");
+
+const u32 gTrainerFrontPic_Spencer[] = INCBIN_U32("graphics/trainers/front_pics/friend_spencer.4bpp.lz");
+const u32 gTrainerPalette_Spencer[] = INCBIN_U32("graphics/trainers/palettes/friend_spencer.gbapal.lz");
+
 const u32 gTrainerFrontPic_BugCatcher[] = INCBIN_U32("graphics/trainers/front_pics/bug_catcher.4bpp.lz");
 const u32 gTrainerPalette_BugCatcher[] = INCBIN_U32("graphics/trainers/front_pics/bug_catcher.gbapal.lz");
 
@@ -401,6 +410,9 @@ const struct TrainerSprite gTrainerSprites[] =
     TRAINER_SPRITE(LEAF, Leaf),
     TRAINER_SPRITE(RS_BRENDAN, RubySapphireBrendan),
     TRAINER_SPRITE(RS_MAY, RubySapphireMay),
+    TRAINER_SPRITE(FRIEND_KYLE, Kyle),
+    TRAINER_SPRITE(FRIEND_BREN, Bren),
+    TRAINER_SPRITE(FRIEND_SPENCER, Spencer),
 };
 
 static const union AnimCmd sAnimCmd_Hoenn[] =

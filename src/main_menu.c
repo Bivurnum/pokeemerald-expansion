@@ -1897,17 +1897,17 @@ static void AddBirchSpeechObjects(u8 taskId)
     gSprites[lotadSpriteId].oam.priority = 0;
     gSprites[lotadSpriteId].invisible = TRUE;
     gTasks[taskId].tLotadSpriteId = lotadSpriteId;
-    kyleSpriteId = CreateTrainerSprite(FacilityClassToPicIndex(FACILITY_CLASS_BRENDAN), 120, 60, 0, &gDecompressionBuffer[0]);
+    kyleSpriteId = CreateTrainerSprite(FacilityClassToPicIndex(FACILITY_CLASS_FRIEND_KYLE), 120, 60, 0, &gDecompressionBuffer[0]);
     gSprites[kyleSpriteId].callback = SpriteCB_Null;
     gSprites[kyleSpriteId].invisible = TRUE;
     gSprites[kyleSpriteId].oam.priority = 0;
     gTasks[taskId].tKyleSpriteId = kyleSpriteId;
-    brenSpriteId = CreateTrainerSprite(FacilityClassToPicIndex(FACILITY_CLASS_MAY), 120, 60, 0, &gDecompressionBuffer[TRAINER_PIC_SIZE]);
+    brenSpriteId = CreateTrainerSprite(FacilityClassToPicIndex(FACILITY_CLASS_FRIEND_BREN), 120, 60, 0, &gDecompressionBuffer[TRAINER_PIC_SIZE]);
     gSprites[brenSpriteId].callback = SpriteCB_Null;
     gSprites[brenSpriteId].invisible = TRUE;
     gSprites[brenSpriteId].oam.priority = 0;
     gTasks[taskId].tBrenSpriteId = brenSpriteId;
-    spencerSpriteId = CreateTrainerSprite(FacilityClassToPicIndex(FACILITY_CLASS_WALLY), 120, 60, 0, &gDecompressionBuffer[TRAINER_PIC_SIZE]);
+    spencerSpriteId = CreateTrainerSprite(FacilityClassToPicIndex(FACILITY_CLASS_FRIEND_SPENCER), 120, 60, 0, &gDecompressionBuffer[TRAINER_PIC_SIZE]);
     gSprites[spencerSpriteId].callback = SpriteCB_Null;
     gSprites[spencerSpriteId].invisible = TRUE;
     gSprites[spencerSpriteId].oam.priority = 0;
@@ -2115,10 +2115,13 @@ void NewGameBirchSpeech_SetDefaultPlayerName(u8 nameId)
     const u8 *name;
     u8 i;
 
-    if (gSaveBlock2Ptr->playerGender == MALE)
-        name = sMalePresetNames[nameId];
+    if (gSaveBlock2Ptr->playerGender == KYLE)
+        name = sKylePresetName[nameId];
+    else if (gSaveBlock2Ptr->playerGender == BREN)
+        name = sBrenPresetName[nameId];
     else
-        name = sFemalePresetNames[nameId];
+        name = sSpencerPresetName[nameId];
+        
     for (i = 0; i < PLAYER_NAME_LENGTH; i++)
         gSaveBlock2Ptr->playerName[i] = name[i];
     gSaveBlock2Ptr->playerName[PLAYER_NAME_LENGTH] = EOS;
