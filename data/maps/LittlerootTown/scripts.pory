@@ -29,8 +29,8 @@ const LOCALID_BIRCH = 8
 	// 5: Exited house after above event
 
 	// State descriptions for VAR_LITTLEROOT_RIVAL_STATE
-	// 1: Never occurs
-	// 2: Entered Rival's bedroom
+	// 1: Chose to enter friend's truck
+	// 2: Entered friend's truck
 	// 3: Met Rival
 	// 4: Received Pokedex
 
@@ -184,6 +184,48 @@ script LittlerootTown_EventScript_GoInsideWithMom {
 	return
 }
 
+script LittlerootTown_EventScript_EnterTruck {
+	lockall
+	getplayerxy (VAR_0x8004, VAR_0x8005)
+	if (var(VAR_0x8004) == 4 || var(VAR_0x8004) == 13 || var(VAR_0x8004) == 16) {
+		msgbox ("Would you like to enter the truck?", MSGBOX_YESNO)
+		switch (var(VAR_RESULT)) {
+			case YES:
+				delay (15)
+				playse (SE_LEDGE)
+				applymovement (OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_PlayerEnterTruck)
+				waitmovement (0)
+				fadescreen (FADE_TO_BLACK)
+				setvar (VAR_LITTLEROOT_RIVAL_STATE, 1)
+				switch (var(VAR_0x8004)) {
+					case 4:
+						setvar (VAR_0x8009, 4)
+						clearflag (FLAG_HIDE_SPENCER_IN_TRUCK)
+						setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
+						setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
+					case 13:
+						setvar (VAR_0x8009, 5)
+						clearflag (FLAG_HIDE_BREN_IN_TRUCK)
+						setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK)
+						setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
+					case 16:
+						setvar (VAR_0x8009, 6)
+						clearflag (FLAG_HIDE_KYLE_IN_TRUCK)
+						setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK)
+						setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
+				}
+				warp (MAP_INSIDE_OF_TRUCK, 4, 2)
+				waitstate
+				end
+		}
+	}
+	else {
+		msgbox ("This truck has a cool logo!")
+	}
+	releaseall
+	end
+}
+
 movement LittlerootTown_Movement_MomExitHouse {
 	walk_down
 }
@@ -218,6 +260,10 @@ movement LittlerootTown_Movement_PlayerEnterHouse {
 movement LittlerootTown_Movement_PlayerStepOffTruck {
 	jump_right
 	delay_16 * 3
+}
+
+movement LittlerootTown_Movement_PlayerEnterTruck {
+	jump_special_left
 }
 
 script LittlerootTown_EventScript_BeginDexUpgradeScene {

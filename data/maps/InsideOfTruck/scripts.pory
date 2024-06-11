@@ -1,3 +1,7 @@
+const LOCALID_SPENCER = 4
+const LOCALID_BREN = 5
+const LOCALID_KYLE = 6
+
 mapscripts InsideOfTruck_MapScripts {
     MAP_SCRIPT_ON_LOAD: InsideOfTruck_OnLoad
     MAP_SCRIPT_ON_RESUME: InsideOfTruck_OnResume
@@ -71,6 +75,138 @@ script InsideOfTruck_EventScript_MovingBox {
 	end
 }
 
+script InsideOfTruck_EventScript_WakeFriend {
+	lock
+	delay (15)
+	playse (SE_PIN)
+	applymovement (VAR_0x8009, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	waitse
+	faceplayer
+	msgbox (InsideOfTruck_Text_FriendAwake, MSGBOX_DEFAULT)
+	closemessage
+	delay (15)
+	getplayerxy (VAR_0x8006, VAR_0x8007)
+	playse (SE_LEDGE)
+	switch (var(VAR_0x8006)) {
+		case 1:
+			applymovement (VAR_0x8009, InsideOfTruck_Movement_JumpDown)
+		case 2:
+			applymovement (VAR_0x8009, InsideOfTruck_Movement_JumpRight)
+	}
+	waitmovement (0)
+	waitse
+	checkfriendchoice
+	switch (var(VAR_RESULT)) {
+		case SPENCER:
+			if (var(VAR_0x8009) == 5) {
+				clearflag (FLAG_HIDE_INTRO_2F_KYLE)
+				msgbox (InsideOfTruck_Text_BetKyleHasPokemonAlready, MSGBOX_DEFAULT)
+			}
+			if (var(VAR_0x8009) == 6) {
+				clearflag (FLAG_HIDE_INTRO_2F_BREN)
+				msgbox (InsideOfTruck_Text_BetBrenHasPokemonAlready, MSGBOX_DEFAULT)
+			}
+		case BREN:
+			if (var(VAR_0x8009) == 4) {
+				clearflag (FLAG_HIDE_INTRO_2F_KYLE)
+				msgbox (InsideOfTruck_Text_BetKyleHasPokemonAlready, MSGBOX_DEFAULT)
+			}
+			if (var(VAR_0x8009) == 6) {
+				clearflag (FLAG_HIDE_INTRO_2F_SPENCER)
+				msgbox (InsideOfTruck_Text_BetSpencerHasPokemonAlready, MSGBOX_DEFAULT)
+			}
+		case KYLE:
+			if (var(VAR_0x8009) == 4) {
+				clearflag (FLAG_HIDE_INTRO_2F_BREN)
+				msgbox (InsideOfTruck_Text_BetBrenHasPokemonAlready, MSGBOX_DEFAULT)
+			}
+			if (var(VAR_0x8009) == 5) {
+				clearflag (FLAG_HIDE_INTRO_2F_SPENCER)
+				msgbox (InsideOfTruck_Text_BetSpencerHasPokemonAlready, MSGBOX_DEFAULT)
+			}
+	}
+	closemessage
+	switch (var(VAR_0x8006)) {
+		case 1:
+			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight)
+			applymovement (VAR_0x8009, InsideOfTruck_Movement_LeaveTruck1)
+		case 2:
+			applymovement (OBJ_EVENT_ID_PLAYER, InsideOfTruck_Movement_PlayerFaceFreindLeaving)
+			applymovement (VAR_0x8009, InsideOfTruck_Movement_LeaveTruck2)
+	}
+	waitmovement (0)
+	playse (SE_EXIT)
+	waitse
+	setflag (FLAG_HIDE_SPENCER_IN_TRUCK)
+	setflag (FLAG_HIDE_BREN_IN_TRUCK)
+	setflag (FLAG_HIDE_KYLE_IN_TRUCK)
+	setvar (VAR_LITTLEROOT_RIVAL_STATE, 2)
+	release
+	end
+}
+
+movement InsideOfTruck_Movement_JumpDown {
+	jump_in_place_down
+}
+
+movement InsideOfTruck_Movement_JumpRight {
+	jump_in_place_right
+}
+
+movement InsideOfTruck_Movement_LeaveTruck1 {
+	walk_fast_right * 3
+	set_invisible
+}
+
+movement InsideOfTruck_Movement_LeaveTruck2 {
+	walk_fast_down
+	walk_fast_right * 3
+	set_invisible
+}
+
+movement InsideOfTruck_Movement_PlayerFaceFreindLeaving {
+	delay_8
+	face_right
+}
+
 text InsideOfTruck_Text_BoxPrintedWithMonLogo {
     format("The box is printed with a POKéMON logo.\pIt's a POKéMON brand moving and\ndelivery service.")
+}
+
+text InsideOfTruck_Text_FriendAwake {
+	"HUH?\p WAZZAT?!\n"
+	"...Oh, it's just you, {PLAYER}.\l"
+	"I must have fallen asleep\l"
+	"along the way."
+}
+
+text InsideOfTruck_Text_BetSpencerHasPokemonAlready {
+	"Crud! That's right!\p"
+	"We were all supposed to get our first\l"
+	"POKéMON from PROF. BIRCH today!\n"
+	"I'll bet Spencer has gotten his already..\n"
+	"We'd better get going before it's\l"
+	"too late!\n"
+	"C'mon! I'll race you!"
+}
+
+text InsideOfTruck_Text_BetBrenHasPokemonAlready {
+	"Crud! That's right!\p"
+	"We were all supposed to get our first\l"
+	"POKéMON from PROF. BIRCH today!\n"
+	"I'll bet Bren has gotten his already..\n"
+	"We'd better get going before it's\l"
+	"too late!\n"
+	"C'mon! I'll race you!"
+}
+
+text InsideOfTruck_Text_BetKyleHasPokemonAlready {
+	"Crud! That's right!\p"
+	"We were all supposed to get our first\l"
+	"POKéMON from PROF. BIRCH today!\n"
+	"I'll bet Kyle has gotten his already..\n"
+	"We'd better get going before it's\l"
+	"too late!\n"
+	"C'mon! I'll race you!"
 }

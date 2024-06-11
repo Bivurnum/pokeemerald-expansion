@@ -1,4 +1,32 @@
-raw `
-LittlerootTown_KylesHouse_2F_MapScripts::
-	.byte 0
-`
+mapscripts LittlerootTown_KylesHouse_2F_MapScripts {
+
+}
+
+
+script LittlerootTown_KylesHouse_2F_EventScript_PC {
+	lockall
+	checkfriendchoice
+	if (var(VAR_RESULT) == BREN) {
+		goto (LittlerootTown_KylesHouse_2F_EventScript_CheckRivalsPC)
+	}
+	else {
+		goto (LittlerootTown_KylesHouse_2F_EventScript_CheckPlayersPC)
+	}
+}
+
+script LittlerootTown_KylesHouse_2F_EventScript_CheckRivalsPC {
+	msgbox (gText_PokemonTrainerSchoolEmail, MSGBOX_DEFAULT)
+	releaseall
+	end
+}
+
+script LittlerootTown_KylesHouse_2F_EventScript_CheckPlayersPC {
+	setvar (VAR_0x8004, PC_LOCATION_MAYS_HOUSE)
+	special (DoPCTurnOnEffect)
+	playse (SE_PC_ON)
+	msgbox (gText_PlayerHouseBootPC, MSGBOX_DEFAULT)
+	special (BedroomPC)
+	waitstate
+	releaseall
+	end
+}
