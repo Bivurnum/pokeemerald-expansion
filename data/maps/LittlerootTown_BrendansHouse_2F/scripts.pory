@@ -4,7 +4,7 @@ mapscripts LittlerootTown_BrendansHouse_2F_MapScripts {
 	MAP_SCRIPT_ON_TRANSITION {
 		if (var(VAR_LITTLEROOT_RIVAL_STATE) < 2) {
 			checkfriendchoice
-			if (var(VAR_RESULT) == BREN) {
+			if (var(VAR_RESULT) != SPENCER) {
 				setvar (VAR_LITTLEROOT_RIVAL_STATE, 2)
 			}
 		}
