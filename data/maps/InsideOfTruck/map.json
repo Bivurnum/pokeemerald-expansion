@@ -64,7 +64,33 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "InsideOfTruck_EventScript_WakeFriend",
-      "flag": "0"
+      "flag": "FLAG_HIDE_SPENCER_IN_TRUCK"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_BREN_NORMAL",
+      "x": 1,
+      "y": 1,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "InsideOfTruck_EventScript_WakeFriend",
+      "flag": "FLAG_HIDE_BREN_IN_TRUCK"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_KYLE_NORMAL",
+      "x": 1,
+      "y": 1,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "InsideOfTruck_EventScript_WakeFriend",
+      "flag": "FLAG_HIDE_KYLE_IN_TRUCK"
     }
   ],
   "warp_events": [
