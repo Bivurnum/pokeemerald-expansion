@@ -913,10 +913,7 @@ u8 GetPlayerTrainerIdOnesDigit(void)
 
 void GetPlayerBigGuyGirlString(void)
 {
-    if (gSaveBlock2Ptr->friendChoice == MALE)
         StringCopy(gStringVar1, gText_BigGuy);
-    else
-        StringCopy(gStringVar1, gText_BigGirl);
 }
 
 void GetRivalSonDaughterString(void)

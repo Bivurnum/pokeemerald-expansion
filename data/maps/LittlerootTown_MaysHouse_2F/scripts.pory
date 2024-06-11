@@ -20,7 +20,7 @@ LittlerootTown_MaysHouse_2F_EventScript_CheckShouldUpdateMayPos::
 	goto LittlerootTown_MaysHouse_2F_EventScript_TryUpdateMayPos
 
 LittlerootTown_MaysHouse_2F_EventScript_TryUpdateMayPos::
-	
+	checkfriendchoice
 	goto_if_eq VAR_RESULT, FEMALE, LittlerootTown_MaysHouse_2F_EventScript_Ret
 	goto_if_ge VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 2, LittlerootTown_MaysHouse_2F_EventScript_Ret
 	setobjectxyperm LOCALID_RIVAL, 8, 2
@@ -31,7 +31,7 @@ LittlerootTown_MaysHouse_2F_EventScript_Ret::
 	return
 
 LittlerootTown_MaysHouse_2F_EventScript_CheckSetReadyToMeetMay::
-	
+	checkfriendchoice
 	goto_if_eq VAR_RESULT, MALE, LittlerootTown_MaysHouse_2F_EventScript_SetReadyToMeetMay
 	return
 
@@ -44,7 +44,7 @@ LittlerootTown_MaysHouse_2F_OnWarp:
 	.2byte 0
 
 LittlerootTown_MaysHouse_2F_EventScript_CheckInitDecor::
-	
+	checkfriendchoice
 	goto_if_eq VAR_RESULT, FEMALE, SecretBase_EventScript_InitDecorations
 	end
 
@@ -239,7 +239,7 @@ LittlerootTown_MaysHouse_2F_Movement_PlayerWatchMayEast:
 RivalsHouse_2F_EventScript_Rival::
 	lockall
 	goto_if_set FLAG_MET_RIVAL_LILYCOVE, RivalsHouse_2F_EventScript_RivalPostLilycove
-	
+	checkfriendchoice
 	goto_if_eq VAR_RESULT, MALE, RivalsHouse_2F_EventScript_May
 	goto_if_eq VAR_RESULT, FEMALE, RivalsHouse_2F_EventScript_Brendan
 	end
@@ -257,7 +257,7 @@ RivalsHouse_2F_EventScript_Brendan::
 RivalsHouse_2F_EventScript_RivalPostLilycove::
 	applymovement VAR_LAST_TALKED, Common_Movement_FacePlayer
 	waitmovement 0
-	
+	checkfriendchoice
 	call_if_eq VAR_RESULT, MALE, RivalsHouse_2F_EventScript_MayPostLilycove
 	call_if_eq VAR_RESULT, FEMALE, RivalsHouse_2F_EventScript_BrendanPostLilycove
 	setflag FLAG_MET_RIVAL_IN_HOUSE_AFTER_LILYCOVE
@@ -284,7 +284,7 @@ RivalsHouse_2F_EventScript_BrendanWhereShouldIGoNext::
 
 LittlerootTown_MaysHouse_2F_EventScript_PC::
 	lockall
-	
+	checkfriendchoice
 	goto_if_eq VAR_RESULT, MALE, LittlerootTown_MaysHouse_2F_EventScript_CheckRivalsPC
 	goto_if_eq VAR_RESULT, FEMALE, LittlerootTown_MaysHouse_2F_EventScript_CheckPlayersPC
 	end
