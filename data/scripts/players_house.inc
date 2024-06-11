@@ -1,7 +1,7 @@
 @ Local IDs are the same for both players houses
 .set LOCALID_MOM, 1
 .set LOCALID_DAD, 5
-.set LOCALID_MOM_2F, 14
+.set LOCALID_MOM_2F, 13
 
 PlayersHouse_2F_EventScript_BlockStairsUntilClockIsSet::
 	setvar VAR_LITTLEROOT_INTRO_STATE, 6
