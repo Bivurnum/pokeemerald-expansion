@@ -43,7 +43,7 @@ LittlerootTown_BrendansHouse_1F_EventScript_SetMovingBoxes::
 # 22 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 LittlerootTown_BrendansHouse_1F_EventScript_CheckShowShoesManual::
 # 23 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	
+	checkfriendchoice
 # 24 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, LittlerootTown_BrendansHouse_1F_EventScript_ShowRunningShoesManual
 # 25 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"

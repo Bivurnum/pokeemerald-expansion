@@ -43,7 +43,7 @@ LittlerootTown_BrendansHouse_2F_EventScript_CheckShouldUpdateBrendanPos::
 # 22 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 LittlerootTown_BrendansHouse_2F_EventScript_TryUpdateBrendanPos::
 # 23 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
-	
+	checkfriendchoice
 # 24 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, LittlerootTown_BrendansHouse_2F_EventScript_Ret
 # 25 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
@@ -67,7 +67,7 @@ LittlerootTown_BrendansHouse_2F_EventScript_Ret::
 # 34 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 LittlerootTown_BrendansHouse_2F_EventScript_CheckSetReadyToMeetBrendan::
 # 35 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
-	
+	checkfriendchoice
 # 36 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, FEMALE, LittlerootTown_BrendansHouse_2F_EventScript_SetReadyToMeetBrendan
 # 37 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
@@ -93,7 +93,7 @@ LittlerootTown_BrendansHouse_2F_OnWarp:
 # 47 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 LittlerootTown_BrendansHouse_2F_EventScript_CheckInitDecor::
 # 48 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
-	
+	checkfriendchoice
 # 49 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, SecretBase_EventScript_InitDecorations
 # 50 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
@@ -479,7 +479,7 @@ LittlerootTown_BrendansHouse_2F_EventScript_PC::
 # 240 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 	lockall
 # 241 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
-	
+	checkfriendchoice
 # 242 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, LittlerootTown_BrendansHouse_2F_EventScript_CheckPlayersPC
 # 243 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"

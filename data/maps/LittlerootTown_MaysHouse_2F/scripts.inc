@@ -43,7 +43,7 @@ LittlerootTown_MaysHouse_2F_EventScript_CheckShouldUpdateMayPos::
 # 22 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 LittlerootTown_MaysHouse_2F_EventScript_TryUpdateMayPos::
 # 23 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	
+	checkfriendchoice
 # 24 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, FEMALE, LittlerootTown_MaysHouse_2F_EventScript_Ret
 # 25 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
@@ -65,7 +65,7 @@ LittlerootTown_MaysHouse_2F_EventScript_Ret::
 # 33 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 LittlerootTown_MaysHouse_2F_EventScript_CheckSetReadyToMeetMay::
 # 34 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	
+	checkfriendchoice
 # 35 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, LittlerootTown_MaysHouse_2F_EventScript_SetReadyToMeetMay
 # 36 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
@@ -91,7 +91,7 @@ LittlerootTown_MaysHouse_2F_OnWarp:
 # 46 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 LittlerootTown_MaysHouse_2F_EventScript_CheckInitDecor::
 # 47 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	
+	checkfriendchoice
 # 48 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, FEMALE, SecretBase_EventScript_InitDecorations
 # 49 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
@@ -481,7 +481,7 @@ RivalsHouse_2F_EventScript_Rival::
 # 241 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	goto_if_set FLAG_MET_RIVAL_LILYCOVE, RivalsHouse_2F_EventScript_RivalPostLilycove
 # 242 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	
+	checkfriendchoice
 # 243 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, RivalsHouse_2F_EventScript_May
 # 244 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
@@ -517,7 +517,7 @@ RivalsHouse_2F_EventScript_RivalPostLilycove::
 # 259 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	waitmovement 0
 # 260 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	
+	checkfriendchoice
 # 261 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, RivalsHouse_2F_EventScript_MayPostLilycove
 # 262 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
@@ -571,7 +571,7 @@ LittlerootTown_MaysHouse_2F_EventScript_PC::
 # 286 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	lockall
 # 287 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	
+	checkfriendchoice
 # 288 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, LittlerootTown_MaysHouse_2F_EventScript_CheckRivalsPC
 # 289 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
