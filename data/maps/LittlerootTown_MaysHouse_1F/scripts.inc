@@ -157,7 +157,7 @@ LittlerootTown_MaysHouse_1F_EventScript_EnterHouseMovingIn::
 # 79 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
 	setvar VAR_0x8004, LOCALID_MOM
 # 80 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
-	setvar VAR_0x8005, FEMALE
+	setvar VAR_0x8005, BREN
 # 81 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
 	goto PlayersHouse_1F_EventScript_EnterHouseMovingIn
 # 82 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
