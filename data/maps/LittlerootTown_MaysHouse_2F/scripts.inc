@@ -130,12 +130,12 @@ LittlerootTown_MaysHouse_2F_EventScript_PC::
 	compare VAR_RESULT, BREN
 	goto_if_eq LittlerootTown_MaysHouse_2F_EventScript_PC_1
 # 79 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	goto LittlerootTown_MaysHouse_2F_EventScript_CheckPlayersPC
+	goto LittlerootTown_MaysHouse_2F_EventScript_CheckRivalsPC
 	return
 
 LittlerootTown_MaysHouse_2F_EventScript_PC_1:
 # 76 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	goto LittlerootTown_MaysHouse_2F_EventScript_CheckRivalsPC
+	goto LittlerootTown_MaysHouse_2F_EventScript_CheckPlayersPC
 	return
 
 

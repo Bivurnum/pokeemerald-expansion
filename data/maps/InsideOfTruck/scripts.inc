@@ -164,35 +164,37 @@ InsideOfTruck_EventScript_WakeFriend_1:
 	switch VAR_RESULT
 # 101 "data/maps/InsideOfTruck/scripts.pory"
 	case SPENCER, InsideOfTruck_EventScript_WakeFriend_7
-# 110 "data/maps/InsideOfTruck/scripts.pory"
+# 112 "data/maps/InsideOfTruck/scripts.pory"
 	case BREN, InsideOfTruck_EventScript_WakeFriend_8
-# 119 "data/maps/InsideOfTruck/scripts.pory"
+# 123 "data/maps/InsideOfTruck/scripts.pory"
 	case KYLE, InsideOfTruck_EventScript_WakeFriend_9
 InsideOfTruck_EventScript_WakeFriend_5:
-# 129 "data/maps/InsideOfTruck/scripts.pory"
+# 135 "data/maps/InsideOfTruck/scripts.pory"
 	closemessage
-# 130 "data/maps/InsideOfTruck/scripts.pory"
+# 136 "data/maps/InsideOfTruck/scripts.pory"
 	switch VAR_0x8006
-# 131 "data/maps/InsideOfTruck/scripts.pory"
+# 137 "data/maps/InsideOfTruck/scripts.pory"
 	case 1, InsideOfTruck_EventScript_WakeFriend_12
-# 134 "data/maps/InsideOfTruck/scripts.pory"
+# 140 "data/maps/InsideOfTruck/scripts.pory"
 	case 2, InsideOfTruck_EventScript_WakeFriend_13
 InsideOfTruck_EventScript_WakeFriend_10:
-# 138 "data/maps/InsideOfTruck/scripts.pory"
-	waitmovement 0
-# 139 "data/maps/InsideOfTruck/scripts.pory"
-	playse SE_EXIT
-# 140 "data/maps/InsideOfTruck/scripts.pory"
-	waitse
-# 141 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_SPENCER_IN_TRUCK
-# 142 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_BREN_IN_TRUCK
-# 143 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_KYLE_IN_TRUCK
 # 144 "data/maps/InsideOfTruck/scripts.pory"
-	setvar VAR_LITTLEROOT_RIVAL_STATE, 2
+	waitmovement 0
 # 145 "data/maps/InsideOfTruck/scripts.pory"
+	playse SE_EXIT
+# 146 "data/maps/InsideOfTruck/scripts.pory"
+	waitse
+# 147 "data/maps/InsideOfTruck/scripts.pory"
+	removeobject VAR_0x8009
+# 148 "data/maps/InsideOfTruck/scripts.pory"
+	setflag FLAG_HIDE_SPENCER_IN_TRUCK
+# 149 "data/maps/InsideOfTruck/scripts.pory"
+	setflag FLAG_HIDE_BREN_IN_TRUCK
+# 150 "data/maps/InsideOfTruck/scripts.pory"
+	setflag FLAG_HIDE_KYLE_IN_TRUCK
+# 151 "data/maps/InsideOfTruck/scripts.pory"
+	setvar VAR_LITTLEROOT_RIVAL_STATE, 2
+# 152 "data/maps/InsideOfTruck/scripts.pory"
 	release
 	end
 
@@ -211,42 +213,42 @@ InsideOfTruck_EventScript_WakeFriend_7:
 	compare VAR_0x8009, 5
 	goto_if_eq InsideOfTruck_EventScript_WakeFriend_15
 InsideOfTruck_EventScript_WakeFriend_14:
-# 106 "data/maps/InsideOfTruck/scripts.pory"
+# 107 "data/maps/InsideOfTruck/scripts.pory"
 	compare VAR_0x8009, 6
 	goto_if_eq InsideOfTruck_EventScript_WakeFriend_23
 	goto InsideOfTruck_EventScript_WakeFriend_5
 
 InsideOfTruck_EventScript_WakeFriend_8:
-# 111 "data/maps/InsideOfTruck/scripts.pory"
+# 113 "data/maps/InsideOfTruck/scripts.pory"
 	compare VAR_0x8009, 4
 	goto_if_eq InsideOfTruck_EventScript_WakeFriend_18
 InsideOfTruck_EventScript_WakeFriend_17:
-# 115 "data/maps/InsideOfTruck/scripts.pory"
+# 118 "data/maps/InsideOfTruck/scripts.pory"
 	compare VAR_0x8009, 6
 	goto_if_eq InsideOfTruck_EventScript_WakeFriend_25
 	goto InsideOfTruck_EventScript_WakeFriend_5
 
 InsideOfTruck_EventScript_WakeFriend_9:
-# 120 "data/maps/InsideOfTruck/scripts.pory"
+# 124 "data/maps/InsideOfTruck/scripts.pory"
 	compare VAR_0x8009, 4
 	goto_if_eq InsideOfTruck_EventScript_WakeFriend_21
 InsideOfTruck_EventScript_WakeFriend_20:
-# 124 "data/maps/InsideOfTruck/scripts.pory"
+# 129 "data/maps/InsideOfTruck/scripts.pory"
 	compare VAR_0x8009, 5
 	goto_if_eq InsideOfTruck_EventScript_WakeFriend_27
 	goto InsideOfTruck_EventScript_WakeFriend_5
 
 InsideOfTruck_EventScript_WakeFriend_12:
-# 132 "data/maps/InsideOfTruck/scripts.pory"
+# 138 "data/maps/InsideOfTruck/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight
-# 133 "data/maps/InsideOfTruck/scripts.pory"
+# 139 "data/maps/InsideOfTruck/scripts.pory"
 	applymovement VAR_0x8009, InsideOfTruck_Movement_LeaveTruck1
 	goto InsideOfTruck_EventScript_WakeFriend_10
 
 InsideOfTruck_EventScript_WakeFriend_13:
-# 135 "data/maps/InsideOfTruck/scripts.pory"
+# 141 "data/maps/InsideOfTruck/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, InsideOfTruck_Movement_PlayerFaceFreindLeaving
-# 136 "data/maps/InsideOfTruck/scripts.pory"
+# 142 "data/maps/InsideOfTruck/scripts.pory"
 	applymovement VAR_0x8009, InsideOfTruck_Movement_LeaveTruck2
 	goto InsideOfTruck_EventScript_WakeFriend_10
 
@@ -254,130 +256,142 @@ InsideOfTruck_EventScript_WakeFriend_15:
 # 103 "data/maps/InsideOfTruck/scripts.pory"
 	clearflag FLAG_HIDE_INTRO_2F_KYLE
 # 104 "data/maps/InsideOfTruck/scripts.pory"
+	setdynamicwarp MAP_LITTLEROOT_TOWN, 15, 17
+# 105 "data/maps/InsideOfTruck/scripts.pory"
 	msgbox InsideOfTruck_Text_BetKyleHasPokemonAlready, MSGBOX_DEFAULT
 	goto InsideOfTruck_EventScript_WakeFriend_14
 
 InsideOfTruck_EventScript_WakeFriend_18:
-# 112 "data/maps/InsideOfTruck/scripts.pory"
+# 114 "data/maps/InsideOfTruck/scripts.pory"
 	clearflag FLAG_HIDE_INTRO_2F_KYLE
-# 113 "data/maps/InsideOfTruck/scripts.pory"
+# 115 "data/maps/InsideOfTruck/scripts.pory"
+	setdynamicwarp MAP_LITTLEROOT_TOWN, 15, 17
+# 116 "data/maps/InsideOfTruck/scripts.pory"
 	msgbox InsideOfTruck_Text_BetKyleHasPokemonAlready, MSGBOX_DEFAULT
 	goto InsideOfTruck_EventScript_WakeFriend_17
 
 InsideOfTruck_EventScript_WakeFriend_21:
-# 121 "data/maps/InsideOfTruck/scripts.pory"
+# 125 "data/maps/InsideOfTruck/scripts.pory"
 	clearflag FLAG_HIDE_INTRO_2F_BREN
-# 122 "data/maps/InsideOfTruck/scripts.pory"
+# 126 "data/maps/InsideOfTruck/scripts.pory"
+	setdynamicwarp MAP_LITTLEROOT_TOWN, 12, 10
+# 127 "data/maps/InsideOfTruck/scripts.pory"
 	msgbox InsideOfTruck_Text_BetBrenHasPokemonAlready, MSGBOX_DEFAULT
 	goto InsideOfTruck_EventScript_WakeFriend_20
 
 InsideOfTruck_EventScript_WakeFriend_23:
-# 107 "data/maps/InsideOfTruck/scripts.pory"
-	clearflag FLAG_HIDE_INTRO_2F_BREN
 # 108 "data/maps/InsideOfTruck/scripts.pory"
+	clearflag FLAG_HIDE_INTRO_2F_BREN
+# 109 "data/maps/InsideOfTruck/scripts.pory"
+	setdynamicwarp MAP_LITTLEROOT_TOWN, 12, 10
+# 110 "data/maps/InsideOfTruck/scripts.pory"
 	msgbox InsideOfTruck_Text_BetBrenHasPokemonAlready, MSGBOX_DEFAULT
 	goto InsideOfTruck_EventScript_WakeFriend_5
 
 InsideOfTruck_EventScript_WakeFriend_25:
-# 116 "data/maps/InsideOfTruck/scripts.pory"
+# 119 "data/maps/InsideOfTruck/scripts.pory"
 	clearflag FLAG_HIDE_INTRO_2F_SPENCER
-# 117 "data/maps/InsideOfTruck/scripts.pory"
+# 120 "data/maps/InsideOfTruck/scripts.pory"
+	setdynamicwarp MAP_LITTLEROOT_TOWN, 3, 10
+# 121 "data/maps/InsideOfTruck/scripts.pory"
 	msgbox InsideOfTruck_Text_BetSpencerHasPokemonAlready, MSGBOX_DEFAULT
 	goto InsideOfTruck_EventScript_WakeFriend_5
 
 InsideOfTruck_EventScript_WakeFriend_27:
-# 125 "data/maps/InsideOfTruck/scripts.pory"
+# 130 "data/maps/InsideOfTruck/scripts.pory"
 	clearflag FLAG_HIDE_INTRO_2F_SPENCER
-# 126 "data/maps/InsideOfTruck/scripts.pory"
+# 131 "data/maps/InsideOfTruck/scripts.pory"
+	setdynamicwarp MAP_LITTLEROOT_TOWN, 3, 10
+# 132 "data/maps/InsideOfTruck/scripts.pory"
 	msgbox InsideOfTruck_Text_BetSpencerHasPokemonAlready, MSGBOX_DEFAULT
 	goto InsideOfTruck_EventScript_WakeFriend_5
 
 
-# 149 "data/maps/InsideOfTruck/scripts.pory"
+# 156 "data/maps/InsideOfTruck/scripts.pory"
 InsideOfTruck_Movement_JumpDown:
-# 150 "data/maps/InsideOfTruck/scripts.pory"
+# 157 "data/maps/InsideOfTruck/scripts.pory"
 	jump_in_place_down
 	step_end
 
-# 153 "data/maps/InsideOfTruck/scripts.pory"
+# 160 "data/maps/InsideOfTruck/scripts.pory"
 InsideOfTruck_Movement_JumpRight:
-# 154 "data/maps/InsideOfTruck/scripts.pory"
+# 161 "data/maps/InsideOfTruck/scripts.pory"
 	jump_in_place_right
 	step_end
 
-# 157 "data/maps/InsideOfTruck/scripts.pory"
+# 164 "data/maps/InsideOfTruck/scripts.pory"
 InsideOfTruck_Movement_LeaveTruck1:
-# 158 "data/maps/InsideOfTruck/scripts.pory"
-	walk_fast_right
-# 158 "data/maps/InsideOfTruck/scripts.pory"
-	walk_fast_right
-# 158 "data/maps/InsideOfTruck/scripts.pory"
-	walk_fast_right
-# 159 "data/maps/InsideOfTruck/scripts.pory"
-	set_invisible
-	step_end
-
-# 162 "data/maps/InsideOfTruck/scripts.pory"
-InsideOfTruck_Movement_LeaveTruck2:
-# 163 "data/maps/InsideOfTruck/scripts.pory"
-	walk_fast_down
-# 164 "data/maps/InsideOfTruck/scripts.pory"
-	walk_fast_right
-# 164 "data/maps/InsideOfTruck/scripts.pory"
-	walk_fast_right
-# 164 "data/maps/InsideOfTruck/scripts.pory"
+# 165 "data/maps/InsideOfTruck/scripts.pory"
 	walk_fast_right
 # 165 "data/maps/InsideOfTruck/scripts.pory"
+	walk_fast_right
+# 165 "data/maps/InsideOfTruck/scripts.pory"
+	walk_fast_right
+# 166 "data/maps/InsideOfTruck/scripts.pory"
 	set_invisible
 	step_end
 
-# 168 "data/maps/InsideOfTruck/scripts.pory"
-InsideOfTruck_Movement_PlayerFaceFreindLeaving:
 # 169 "data/maps/InsideOfTruck/scripts.pory"
-	delay_8
+InsideOfTruck_Movement_LeaveTruck2:
 # 170 "data/maps/InsideOfTruck/scripts.pory"
+	walk_fast_down
+# 171 "data/maps/InsideOfTruck/scripts.pory"
+	walk_fast_right
+# 171 "data/maps/InsideOfTruck/scripts.pory"
+	walk_fast_right
+# 171 "data/maps/InsideOfTruck/scripts.pory"
+	walk_fast_right
+# 172 "data/maps/InsideOfTruck/scripts.pory"
+	set_invisible
+	step_end
+
+# 175 "data/maps/InsideOfTruck/scripts.pory"
+InsideOfTruck_Movement_PlayerFaceFreindLeaving:
+# 176 "data/maps/InsideOfTruck/scripts.pory"
+	delay_8
+# 177 "data/maps/InsideOfTruck/scripts.pory"
 	face_right
 	step_end
 
 InsideOfTruck_Text_BoxPrintedWithMonLogo::
-# 173 "data/maps/InsideOfTruck/scripts.pory"
+# 180 "data/maps/InsideOfTruck/scripts.pory"
 	.string "The box is printed with a POKéMON logo.\p"
 	.string "It's a POKéMON brand moving and\n"
 	.string "delivery service.$"
 
 InsideOfTruck_Text_FriendAwake::
-# 177 "data/maps/InsideOfTruck/scripts.pory"
+# 184 "data/maps/InsideOfTruck/scripts.pory"
 	.string "HUH?\p WAZZAT?!\n"
 	.string "...Oh, it's just you, {PLAYER}.\l"
 	.string "I must have fallen asleep\l"
 	.string "along the way.$"
 
 InsideOfTruck_Text_BetSpencerHasPokemonAlready::
-# 184 "data/maps/InsideOfTruck/scripts.pory"
+# 191 "data/maps/InsideOfTruck/scripts.pory"
 	.string "Crud! That's right!\p"
-	.string "We were all supposed to get our first\l"
-	.string "POKéMON from PROF. BIRCH today!\n"
+	.string "We were all supposed to get our first\n"
+	.string "POKéMON from PROF. BIRCH today!\l"
 	.string "I'll bet Spencer has gotten his already..\n"
-	.string "We'd better get going before it's\l"
+	.string "We'd better get going before it's\n"
 	.string "too late!\n"
 	.string "C'mon! I'll race you!$"
 
 InsideOfTruck_Text_BetBrenHasPokemonAlready::
-# 194 "data/maps/InsideOfTruck/scripts.pory"
+# 201 "data/maps/InsideOfTruck/scripts.pory"
 	.string "Crud! That's right!\p"
-	.string "We were all supposed to get our first\l"
-	.string "POKéMON from PROF. BIRCH today!\n"
+	.string "We were all supposed to get our first\n"
+	.string "POKéMON from PROF. BIRCH today!\l"
 	.string "I'll bet Bren has gotten his already..\n"
-	.string "We'd better get going before it's\l"
+	.string "We'd better get going before it's\n"
 	.string "too late!\n"
 	.string "C'mon! I'll race you!$"
 
 InsideOfTruck_Text_BetKyleHasPokemonAlready::
-# 204 "data/maps/InsideOfTruck/scripts.pory"
+# 211 "data/maps/InsideOfTruck/scripts.pory"
 	.string "Crud! That's right!\p"
-	.string "We were all supposed to get our first\l"
-	.string "POKéMON from PROF. BIRCH today!\n"
+	.string "We were all supposed to get our first\n"
+	.string "POKéMON from PROF. BIRCH today!\l"
 	.string "I'll bet Kyle has gotten his already..\n"
-	.string "We'd better get going before it's\l"
+	.string "We'd better get going before it's\n"
 	.string "too late!\n"
 	.string "C'mon! I'll race you!$"

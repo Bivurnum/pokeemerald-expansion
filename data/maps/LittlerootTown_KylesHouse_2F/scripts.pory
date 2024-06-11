@@ -1,16 +1,50 @@
 mapscripts LittlerootTown_KylesHouse_2F_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION {
+		if (var(VAR_LITTLEROOT_RIVAL_STATE) < 2) {
+			checkfriendchoice
+			if (var(VAR_RESULT) != KYLE) {
+				setvar (VAR_LITTLEROOT_RIVAL_STATE, 2)
+			}
+		}
+		if (var(VAR_LITTLEROOT_RIVAL_STATE) >= 3) {
+			goto_if_set (FLAG_MET_RIVAL_LILYCOVE, LittlerootTown_KylesHouse_2F_EventScript_TryUpdateMayPos)
+			goto_if_ge (VAR_BIRCH_LAB_STATE, 2, LittlerootTown_KylesHouse_2F_EventScript_Ret)
+			goto (LittlerootTown_KylesHouse_2F_EventScript_TryUpdateMayPos)
+		}
+		call_if_eq (VAR_LITTLEROOT_INTRO_STATE, 5, PlayersHouse_2F_EventScript_BlockStairsUntilClockIsSet)
+		call (SecretBase_EventScript_SetDecorationFlags)
+		setvar (VAR_SECRET_BASE_INITIALIZED, 0)
+	}
+	MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
+		VAR_SECRET_BASE_INITIALIZED, 0 {
+			checkfriendchoice
+			goto_if_eq (VAR_RESULT, KYLE, SecretBase_EventScript_InitDecorations)
+		}
+	]
+}
 
+script LittlerootTown_KylesHouse_2F_EventScript_TryUpdateMayPos {
+	checkfriendchoice
+	goto_if_eq (VAR_RESULT, FEMALE, LittlerootTown_KylesHouse_2F_EventScript_Ret)
+	goto_if_ge (VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 2, LittlerootTown_KylesHouse_2F_EventScript_Ret)
+	setobjectxyperm (LOCALID_RIVAL, 8, 2)
+	setobjectmovementtype (LOCALID_RIVAL, MOVEMENT_TYPE_FACE_UP)
+	return
+}
+
+script LittlerootTown_KylesHouse_2F_EventScript_Ret {
+	return
 }
 
 
 script LittlerootTown_KylesHouse_2F_EventScript_PC {
 	lockall
 	checkfriendchoice
-	if (var(VAR_RESULT) == BREN) {
-		goto (LittlerootTown_KylesHouse_2F_EventScript_CheckRivalsPC)
+	if (var(VAR_RESULT) == KYLE) {
+		goto (LittlerootTown_KylesHouse_2F_EventScript_CheckPlayersPC)
 	}
 	else {
-		goto (LittlerootTown_KylesHouse_2F_EventScript_CheckPlayersPC)
+		goto (LittlerootTown_KylesHouse_2F_EventScript_CheckRivalsPC)
 	}
 }
 

@@ -73,10 +73,10 @@ script LittlerootTown_MaysHouse_2F_EventScript_PC {
 	lockall
 	checkfriendchoice
 	if (var(VAR_RESULT) == BREN) {
-		goto (LittlerootTown_MaysHouse_2F_EventScript_CheckRivalsPC)
+		goto (LittlerootTown_MaysHouse_2F_EventScript_CheckPlayersPC)
 	}
 	else {
-		goto (LittlerootTown_MaysHouse_2F_EventScript_CheckPlayersPC)
+		goto (LittlerootTown_MaysHouse_2F_EventScript_CheckRivalsPC)
 	}
 }
 

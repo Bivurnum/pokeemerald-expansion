@@ -101,28 +101,34 @@ script InsideOfTruck_EventScript_WakeFriend {
 		case SPENCER:
 			if (var(VAR_0x8009) == 5) {
 				clearflag (FLAG_HIDE_INTRO_2F_KYLE)
+				setdynamicwarp (MAP_LITTLEROOT_TOWN, 15, 17)
 				msgbox (InsideOfTruck_Text_BetKyleHasPokemonAlready, MSGBOX_DEFAULT)
 			}
 			if (var(VAR_0x8009) == 6) {
 				clearflag (FLAG_HIDE_INTRO_2F_BREN)
+				setdynamicwarp (MAP_LITTLEROOT_TOWN, 12, 10)
 				msgbox (InsideOfTruck_Text_BetBrenHasPokemonAlready, MSGBOX_DEFAULT)
 			}
 		case BREN:
 			if (var(VAR_0x8009) == 4) {
 				clearflag (FLAG_HIDE_INTRO_2F_KYLE)
+				setdynamicwarp (MAP_LITTLEROOT_TOWN, 15, 17)
 				msgbox (InsideOfTruck_Text_BetKyleHasPokemonAlready, MSGBOX_DEFAULT)
 			}
 			if (var(VAR_0x8009) == 6) {
 				clearflag (FLAG_HIDE_INTRO_2F_SPENCER)
+				setdynamicwarp (MAP_LITTLEROOT_TOWN, 3, 10)
 				msgbox (InsideOfTruck_Text_BetSpencerHasPokemonAlready, MSGBOX_DEFAULT)
 			}
 		case KYLE:
 			if (var(VAR_0x8009) == 4) {
 				clearflag (FLAG_HIDE_INTRO_2F_BREN)
+				setdynamicwarp (MAP_LITTLEROOT_TOWN, 12, 10)
 				msgbox (InsideOfTruck_Text_BetBrenHasPokemonAlready, MSGBOX_DEFAULT)
 			}
 			if (var(VAR_0x8009) == 5) {
 				clearflag (FLAG_HIDE_INTRO_2F_SPENCER)
+				setdynamicwarp (MAP_LITTLEROOT_TOWN, 3, 10)
 				msgbox (InsideOfTruck_Text_BetSpencerHasPokemonAlready, MSGBOX_DEFAULT)
 			}
 	}
@@ -138,6 +144,7 @@ script InsideOfTruck_EventScript_WakeFriend {
 	waitmovement (0)
 	playse (SE_EXIT)
 	waitse
+	removeobject (VAR_0x8009)
 	setflag (FLAG_HIDE_SPENCER_IN_TRUCK)
 	setflag (FLAG_HIDE_BREN_IN_TRUCK)
 	setflag (FLAG_HIDE_KYLE_IN_TRUCK)
@@ -183,30 +190,30 @@ text InsideOfTruck_Text_FriendAwake {
 
 text InsideOfTruck_Text_BetSpencerHasPokemonAlready {
 	"Crud! That's right!\p"
-	"We were all supposed to get our first\l"
-	"POKéMON from PROF. BIRCH today!\n"
+	"We were all supposed to get our first\n"
+	"POKéMON from PROF. BIRCH today!\l"
 	"I'll bet Spencer has gotten his already..\n"
-	"We'd better get going before it's\l"
+	"We'd better get going before it's\n"
 	"too late!\n"
 	"C'mon! I'll race you!"
 }
 
 text InsideOfTruck_Text_BetBrenHasPokemonAlready {
 	"Crud! That's right!\p"
-	"We were all supposed to get our first\l"
-	"POKéMON from PROF. BIRCH today!\n"
+	"We were all supposed to get our first\n"
+	"POKéMON from PROF. BIRCH today!\l"
 	"I'll bet Bren has gotten his already..\n"
-	"We'd better get going before it's\l"
+	"We'd better get going before it's\n"
 	"too late!\n"
 	"C'mon! I'll race you!"
 }
 
 text InsideOfTruck_Text_BetKyleHasPokemonAlready {
 	"Crud! That's right!\p"
-	"We were all supposed to get our first\l"
-	"POKéMON from PROF. BIRCH today!\n"
+	"We were all supposed to get our first\n"
+	"POKéMON from PROF. BIRCH today!\l"
 	"I'll bet Kyle has gotten his already..\n"
-	"We'd better get going before it's\l"
+	"We'd better get going before it's\n"
 	"too late!\n"
 	"C'mon! I'll race you!"
 }

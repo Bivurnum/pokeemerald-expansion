@@ -275,5 +275,8 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_SPENCER_IN_TRUCK
 	setflag FLAG_HIDE_BREN_IN_TRUCK
 	setflag FLAG_HIDE_KYLE_IN_TRUCK
+	setflag FLAG_HIDE_INTRO_2F_SPENCER
+	setflag FLAG_HIDE_INTRO_2F_BREN
+	setflag FLAG_HIDE_INTRO_2F_KYLE
 	call EventScript_ResetAllBerries
 	end
