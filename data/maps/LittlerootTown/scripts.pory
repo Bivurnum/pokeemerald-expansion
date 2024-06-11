@@ -41,6 +41,9 @@ mapscripts LittlerootTown_MapScripts {
 		if (var(VAR_LITTLEROOT_INTRO_STATE) == 2) {
 			setobjectxyperm (LOCALID_MOM, 14, 8)
 		}
+		if (var(VAR_LITTLEROOT_INTRO_STATE) == 3) {
+			setobjectxyperm (LOCALID_MOM, 17, 15)
+		}
 		call_if_unset (FLAG_RESCUED_BIRCH, LittlerootTown_EventScript_SetTwinPos)
 		if (var(VAR_LITTLEROOT_TOWN_STATE) == 3) {
 			checkfriendchoice
