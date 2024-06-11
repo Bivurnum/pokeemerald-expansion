@@ -77,7 +77,7 @@ LittlerootTown_MaysHouse_1F_Movement_PushTowardStairs:
 LittlerootTown_MaysHouse_1F_EventScript_EnterHouseMovingIn::
 	lockall
 	setvar VAR_0x8004, LOCALID_MOM
-	setvar VAR_0x8005, FEMALE
+	setvar VAR_0x8005, BREN
 	goto PlayersHouse_1F_EventScript_EnterHouseMovingIn
 	end
 
