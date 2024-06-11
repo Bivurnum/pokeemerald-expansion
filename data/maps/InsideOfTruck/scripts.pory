@@ -19,7 +19,6 @@ script InsideOfTruck_EventScript_SetIntroFlags {
     lockall
 	setflag (FLAG_HIDE_MAP_NAME_POPUP)
     checkfriendchoice
-	
     switch (var(VAR_RESULT)) {
         case SPENCER:
             goto (InsideOfTruck_EventScript_SetIntroFlagsSpencer)

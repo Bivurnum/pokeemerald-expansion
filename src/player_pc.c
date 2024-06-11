@@ -493,7 +493,7 @@ static void PlayerPC_TurnOff(u8 taskId)
 {
     if (sTopMenuNumOptions == NUM_BEDROOM_PC_OPTIONS) // Flimsy way to determine if Bedroom PC is in use
     {
-        if (gSaveBlock2Ptr->friendChoice == MALE)
+        if (gSaveBlock2Ptr->friendChoice == SPENCER)
             ScriptContext_SetupScript(LittlerootTown_BrendansHouse_2F_EventScript_TurnOffPlayerPC);
         else
             ScriptContext_SetupScript(LittlerootTown_MaysHouse_2F_EventScript_TurnOffPlayerPC);

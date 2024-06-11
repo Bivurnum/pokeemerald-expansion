@@ -21,6 +21,7 @@ mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {
 			case 7:
 				setobjectxyperm (LOCALID_MOM, 4, 5)
 				setobjectmovementtype (LOCALID_MOM, MOVEMENT_TYPE_FACE_UP)
+				special (TurnOnTVScreen)
 		}
 	}
 	MAP_SCRIPT_ON_FRAME_TABLE [
