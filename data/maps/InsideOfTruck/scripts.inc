@@ -28,87 +28,87 @@ InsideOfTruck_EventScript_SetIntroFlags::
 # 24 "data/maps/InsideOfTruck/scripts.pory"
 	setflag FLAG_HIDE_MAP_NAME_POPUP
 # 25 "data/maps/InsideOfTruck/scripts.pory"
-	checkfriendchoice
+	setvar VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 1
 # 26 "data/maps/InsideOfTruck/scripts.pory"
-	switch VAR_RESULT
+	setvar VAR_LITTLEROOT_HOUSES_STATE_BREN, 1
 # 27 "data/maps/InsideOfTruck/scripts.pory"
-	case SPENCER, InsideOfTruck_EventScript_SetIntroFlags_3
+	setvar VAR_LITTLEROOT_HOUSES_STATE_KYLE, 1
+# 28 "data/maps/InsideOfTruck/scripts.pory"
+	checkfriendchoice
 # 29 "data/maps/InsideOfTruck/scripts.pory"
+	switch VAR_RESULT
+# 30 "data/maps/InsideOfTruck/scripts.pory"
+	case SPENCER, InsideOfTruck_EventScript_SetIntroFlags_3
+# 32 "data/maps/InsideOfTruck/scripts.pory"
 	case BREN, InsideOfTruck_EventScript_SetIntroFlags_4
-# 31 "data/maps/InsideOfTruck/scripts.pory"
+# 34 "data/maps/InsideOfTruck/scripts.pory"
 	case KYLE, InsideOfTruck_EventScript_SetIntroFlags_5
 InsideOfTruck_EventScript_SetIntroFlags_1:
 	end
 
 InsideOfTruck_EventScript_SetIntroFlags_3:
-# 28 "data/maps/InsideOfTruck/scripts.pory"
+# 31 "data/maps/InsideOfTruck/scripts.pory"
 	goto InsideOfTruck_EventScript_SetIntroFlagsSpencer
 	goto InsideOfTruck_EventScript_SetIntroFlags_1
 
 InsideOfTruck_EventScript_SetIntroFlags_4:
-# 30 "data/maps/InsideOfTruck/scripts.pory"
+# 33 "data/maps/InsideOfTruck/scripts.pory"
 	goto InsideOfTruck_EventScript_SetIntroFlagsBren
 	goto InsideOfTruck_EventScript_SetIntroFlags_1
 
 InsideOfTruck_EventScript_SetIntroFlags_5:
-# 32 "data/maps/InsideOfTruck/scripts.pory"
+# 35 "data/maps/InsideOfTruck/scripts.pory"
 	goto InsideOfTruck_EventScript_SetIntroFlagsKyle
 	goto InsideOfTruck_EventScript_SetIntroFlags_1
 
 
 InsideOfTruck_EventScript_SetIntroFlagsSpencer::
-# 38 "data/maps/InsideOfTruck/scripts.pory"
-	setrespawn HEAL_LOCATION_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F
-# 39 "data/maps/InsideOfTruck/scripts.pory"
-	setvar VAR_LITTLEROOT_INTRO_STATE, 1
-# 40 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_MOM
 # 41 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_RIVAL_MOM
+	setrespawn HEAL_LOCATION_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F
 # 42 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_MOM
+	setvar VAR_LITTLEROOT_INTRO_STATE, 1
 # 43 "data/maps/InsideOfTruck/scripts.pory"
-	setvar VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 1
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_MOM
 # 44 "data/maps/InsideOfTruck/scripts.pory"
-	setdynamicwarp MAP_LITTLEROOT_TOWN, 3, 10
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_RIVAL_MOM
 # 45 "data/maps/InsideOfTruck/scripts.pory"
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_MOM
+# 46 "data/maps/InsideOfTruck/scripts.pory"
+	setdynamicwarp MAP_LITTLEROOT_TOWN, 3, 10
+# 47 "data/maps/InsideOfTruck/scripts.pory"
 	releaseall
 	end
 
 
 InsideOfTruck_EventScript_SetIntroFlagsBren::
-# 50 "data/maps/InsideOfTruck/scripts.pory"
-	setrespawn HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE_2F
-# 51 "data/maps/InsideOfTruck/scripts.pory"
-	setvar VAR_LITTLEROOT_INTRO_STATE, 2
 # 52 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_MOM
+	setrespawn HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE_2F
 # 53 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_RIVAL_MOM
+	setvar VAR_LITTLEROOT_INTRO_STATE, 2
 # 54 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_MOM
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_MOM
 # 55 "data/maps/InsideOfTruck/scripts.pory"
-	setvar VAR_LITTLEROOT_HOUSES_STATE_BREN, 1
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_RIVAL_MOM
 # 56 "data/maps/InsideOfTruck/scripts.pory"
-	setdynamicwarp MAP_LITTLEROOT_TOWN, 12, 10
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_MOM
 # 57 "data/maps/InsideOfTruck/scripts.pory"
+	setdynamicwarp MAP_LITTLEROOT_TOWN, 12, 10
+# 58 "data/maps/InsideOfTruck/scripts.pory"
 	releaseall
 	end
 
 
 InsideOfTruck_EventScript_SetIntroFlagsKyle::
-# 62 "data/maps/InsideOfTruck/scripts.pory"
-	setrespawn HEAL_LOCATION_LITTLEROOT_TOWN_KYLES_HOUSE_2F
 # 63 "data/maps/InsideOfTruck/scripts.pory"
-	setvar VAR_LITTLEROOT_INTRO_STATE, 3
+	setrespawn HEAL_LOCATION_LITTLEROOT_TOWN_KYLES_HOUSE_2F
 # 64 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_MOM
+	setvar VAR_LITTLEROOT_INTRO_STATE, 3
 # 65 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_MOM
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_MOM
 # 66 "data/maps/InsideOfTruck/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_RIVAL_MOM
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_MOM
 # 67 "data/maps/InsideOfTruck/scripts.pory"
-	setvar VAR_LITTLEROOT_HOUSES_STATE_KYLE, 1
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_RIVAL_MOM
 # 68 "data/maps/InsideOfTruck/scripts.pory"
 	setdynamicwarp MAP_LITTLEROOT_TOWN, 15, 17
 # 69 "data/maps/InsideOfTruck/scripts.pory"

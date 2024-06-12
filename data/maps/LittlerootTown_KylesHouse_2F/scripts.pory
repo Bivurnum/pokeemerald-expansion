@@ -1,11 +1,5 @@
 mapscripts LittlerootTown_KylesHouse_2F_MapScripts {
 	MAP_SCRIPT_ON_TRANSITION {
-		if (var(VAR_LITTLEROOT_RIVAL_STATE) < 2) {
-			checkfriendchoice
-			if (var(VAR_RESULT) != KYLE) {
-				setvar (VAR_LITTLEROOT_RIVAL_STATE, 2)
-			}
-		}
 		if (var(VAR_LITTLEROOT_RIVAL_STATE) >= 19) {
 			goto_if_set (FLAG_MET_RIVAL_LILYCOVE, LittlerootTown_KylesHouse_2F_EventScript_TryUpdateMayPos)
 			goto_if_ge (VAR_BIRCH_LAB_STATE, 2, LittlerootTown_KylesHouse_2F_EventScript_Ret)

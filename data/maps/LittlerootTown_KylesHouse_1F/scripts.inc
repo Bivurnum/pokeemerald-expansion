@@ -65,8 +65,6 @@ LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
 # 51 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_KYLE, 1, LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3
 # 76 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	map_script_2 VAR_LITTLEROOT_RIVAL_STATE, 2, LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4
-# 80 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_KYLE, 18, PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
 	.2byte 0
 
@@ -169,62 +167,55 @@ LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3_4:
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK
 	goto LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3_1
 
-LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4:
-# 77 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	setvar VAR_LITTLEROOT_RIVAL_STATE, 19
-# 78 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	setvar VAR_LITTLEROOT_TOWN_STATE, 1
-	return
-
 
 LittlerootTown_KylesHouse_1F_EventScript_CheckShowShoesManual::
-# 87 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 83 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	checkfriendchoice
-# 88 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 84 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	compare VAR_RESULT, BREN
 	goto_if_eq LittlerootTown_KylesHouse_1F_EventScript_CheckShowShoesManual_1
 	return
 
 LittlerootTown_KylesHouse_1F_EventScript_CheckShowShoesManual_1:
-# 89 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 85 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	setmetatile 6, 7, METATILE_BrendansMaysHouse_BookOnTable, TRUE
 	return
 
 
 LittlerootTown_KylesHouse_1F_EventScript_GoSeeRoom::
-# 94 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 90 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	lockall
-# 95 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 91 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	setvar VAR_0x8004, 1
-# 96 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 92 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	setvar VAR_0x8005, FEMALE
-# 97 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 93 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	applymovement VAR_0x8004, Common_Movement_WalkInPlaceFasterRight
-# 98 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 94 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	waitmovement 0
-# 99 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 95 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	goto PlayersHouse_1F_EventScript_MomGoSeeRoom
 	end
 
 
-# 103 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 99 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 LittlerootTown_KylesHouse_1F_Movement_PushTowardStairs:
-# 104 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 100 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_up
 	step_end
 
-# 107 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 103 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 LittlerootTown_KylesHouse_1F_Movement_RivalMomApproach:
-# 108 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 104 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_down
-# 109 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 105 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_left
-# 109 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 105 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_left
-# 109 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 105 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_left
-# 109 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 105 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_left
-# 109 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 105 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_left
 	step_end

@@ -72,9 +72,11 @@ mapscripts LittlerootTown_MaysHouse_1F_MapScripts {
 			}
 			releaseall
 		}
-		VAR_LITTLEROOT_RIVAL_STATE, 2{
-			setvar (VAR_LITTLEROOT_RIVAL_STATE, 19)
-			setvar (VAR_LITTLEROOT_TOWN_STATE, 1)
+		VAR_LITTLEROOT_RIVAL_STATE, 4 {
+			setvar (VAR_LITTLEROOT_RIVAL_STATE, 5)
+			setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK)
+			setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
+			setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
 		}
 		VAR_LITTLEROOT_HOUSES_STATE_BREN, 18: PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
 	]
@@ -100,7 +102,15 @@ script RivalsHouse_1F_EventScript_RivalMom {
 		end
 	}
 	special (GetRivalSonDaughterString)
-	msgbox (RivalsHouse_1F_Text_LikeChildLikeFather, MSGBOX_DEFAULT)
+	random (3)
+	switch (var(VAR_RESULT)) {
+		case 0:
+			msgbox (RivalsHouse_1F_Text_HopeEnoughToEat, MSGBOX_DEFAULT)
+		case 1:
+			msgbox (RivalsHouse_1F_Text_BoysBehaving, MSGBOX_DEFAULT)
+		case 2:
+			msgbox (RivalsHouse_1F_Text_MomSettlingIn, MSGBOX_DEFAULT)
+	}
 	release
 	end
 }
@@ -163,9 +173,17 @@ text RivalsHouse_1F_Text_OhYoureTheNewNeighborKyle {
 	"for me, please?"
 }
 
-text RivalsHouse_1F_Text_LikeChildLikeFather {
+text RivalsHouse_1F_Text_HopeEnoughToEat {
 	"I sure hope my son is\n"
 	"getting enough to eat."
+}
+
+text RivalsHouse_1F_Text_BoysBehaving {
+	"Are you boys behaving?"
+}
+
+text RivalsHouse_1F_Text_MomSettlingIn {
+	"How is your mom settling in?"
 }
 
 text RivalsHouse_1F_Text_TooBusyToNoticeVisit {
