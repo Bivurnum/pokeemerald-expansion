@@ -25,6 +25,7 @@ const LOCALID_BIRCH = 8
 	// 1: On Truck (and is corresponding friend)
 	// 2: Met Rival's Mom (and is corresponding friend)
 	// 3: Set second friend in bedroom
+	// 4: Other friend got a Pokemon
 	// 18: Entered Hall of Fame
 	// 19: Completed Lati TV / SS Ticket event
 	// 20: Exited house after above event

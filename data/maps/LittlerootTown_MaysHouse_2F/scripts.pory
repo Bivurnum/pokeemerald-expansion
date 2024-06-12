@@ -33,9 +33,12 @@ script LittlerootTown_MaysHouse_2F_EventScript_Ret {
 	return
 }
 
-script LittlerootTown_MaysHouse_2F_EventScript_FriendRival {
+script LittlerootTown_MaysHouse_2F_EventScript_FriendSpencer {
 	lockall
 	faceplayer
+	if (var(VAR_LITTLEROOT_HOUSES_STATE_SPENCER) == 4) {
+		goto (LittlerootTown_MaysHouse_2F_EventScript_Friend2GotPokemon)
+	}
 	if (var(VAR_LITTLEROOT_RIVAL_STATE) == 5) {
 		msgbox (RivalsHouse_2F_Text_GoFindBirch, MSGBOX_DEFAULT)
 		closemessage
@@ -50,6 +53,96 @@ script LittlerootTown_MaysHouse_2F_EventScript_FriendRival {
 		waitmovement (0)
 	}
 	setvar (VAR_LITTLEROOT_TOWN_STATE, 1)
+	checkfriendchoice
+	switch (var(VAR_RESULT)) {
+		case BREN:
+			clearflag (FLAG_HIDE_INTRO_2F_KYLE)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 4)
+		case KYLE:
+			clearflag (FLAG_HIDE_INTRO_2F_BREN)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 4)
+	}
+	releaseall
+	end
+}
+
+script LittlerootTown_MaysHouse_2F_EventScript_FriendBren {
+	lockall
+	faceplayer
+	if (var(VAR_LITTLEROOT_HOUSES_STATE_BREN) == 4) {
+		goto (LittlerootTown_MaysHouse_2F_EventScript_Friend2GotPokemon)
+	}
+	if (var(VAR_LITTLEROOT_RIVAL_STATE) == 5) {
+		msgbox (RivalsHouse_2F_Text_GoFindBirch, MSGBOX_DEFAULT)
+		closemessage
+		applymovement (LOCALID_FRIEND, Common_Movement_FaceUp)
+		waitmovement (0)
+		setvar (VAR_LITTLEROOT_RIVAL_STATE, 6)
+	}
+	elif (var(VAR_LITTLEROOT_RIVAL_STATE) == 6) {
+		msgbox (RivalsHouse_2F_Text_HesOnRoute101, MSGBOX_DEFAULT)
+		closemessage
+		applymovement (LOCALID_FRIEND, Common_Movement_FaceUp)
+		waitmovement (0)
+	}
+	setvar (VAR_LITTLEROOT_TOWN_STATE, 1)
+	checkfriendchoice
+	switch (var(VAR_RESULT)) {
+		case SPENCER:
+			clearflag (FLAG_HIDE_INTRO_2F_KYLE)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 4)
+		case KYLE:
+			clearflag (FLAG_HIDE_INTRO_2F_SPENCER)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 4)
+	}
+	releaseall
+	end
+}
+
+script LittlerootTown_MaysHouse_2F_EventScript_FriendKyle {
+	lockall
+	faceplayer
+	if (var(VAR_LITTLEROOT_HOUSES_STATE_KYLE) == 4) {
+		goto (LittlerootTown_MaysHouse_2F_EventScript_Friend2GotPokemon)
+	}
+	if (var(VAR_LITTLEROOT_RIVAL_STATE) == 5) {
+		msgbox (RivalsHouse_2F_Text_GoFindBirch, MSGBOX_DEFAULT)
+		closemessage
+		applymovement (LOCALID_FRIEND, Common_Movement_FaceUp)
+		waitmovement (0)
+		setvar (VAR_LITTLEROOT_RIVAL_STATE, 6)
+	}
+	elif (var(VAR_LITTLEROOT_RIVAL_STATE) == 6) {
+		msgbox (RivalsHouse_2F_Text_HesOnRoute101, MSGBOX_DEFAULT)
+		closemessage
+		applymovement (LOCALID_FRIEND, Common_Movement_FaceUp)
+		waitmovement (0)
+	}
+	setvar (VAR_LITTLEROOT_TOWN_STATE, 1)
+	checkfriendchoice
+	switch (var(VAR_RESULT)) {
+		case SPENCER:
+			clearflag (FLAG_HIDE_INTRO_2F_BREN)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 4)
+		case BREN:
+			clearflag (FLAG_HIDE_INTRO_2F_SPENCER)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 4)
+	}
+	releaseall
+	end
+}
+
+script LittlerootTown_MaysHouse_2F_EventScript_Friend2GotPokemon {
+	if (var(VAR_TEMP_1) == 2) {
+		msgbox (RivalsHouse_2F_Text_GettingSupplies, MSGBOX_DEFAULT)
+	}
+	else {
+		msgbox (RivalsHouse_2F_Text_WhereHaveYouBeen, MSGBOX_DEFAULT)
+		setvar (VAR_TEMP_1, 2)
+	}
+	closemessage
+	applymovement (LOCALID_FRIEND, Common_Movement_FaceUp)
+	waitmovement (0)
 	releaseall
 	end
 }
@@ -177,4 +270,18 @@ text RivalsHouse_2F_Text_GoFindBirch {
 text RivalsHouse_2F_Text_HesOnRoute101 {
 	"Last I heard, PROF. BIRCH was\n"
 	"doing field work on ROUTE 101."
+}
+
+text RivalsHouse_2F_Text_WhereHaveYouBeen {
+	"Where have you been?\p"
+	"PROF. BIRCH is kind of a strange dude,\n"
+	"but the POKéMON he gave me is super cool!\l"
+	"You should hurry up and get yours!\p"
+	"Once I'm finished getting supplies together,\n"
+	"I'll be ready for our adventure."
+}
+
+text RivalsHouse_2F_Text_GettingSupplies {
+	"Once I'm finished getting supplies together,\n"
+	"I'll be ready for our adventure."
 }
