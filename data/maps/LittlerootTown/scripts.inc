@@ -260,7 +260,7 @@ LittlerootTown_EventScript_JumpOffFriendTruck::
 # 160 "data/maps/LittlerootTown/scripts.pory"
 	playse SE_LEDGE
 # 161 "data/maps/LittlerootTown/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_PlayerStepOffTruck
+	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_JumpOffFriendTruck
 # 162 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 163 "data/maps/LittlerootTown/scripts.pory"
@@ -589,1007 +589,997 @@ LittlerootTown_Movement_PlayerEnterTruck:
 	jump_left
 	step_end
 
-LittlerootTown_EventScript_BeginDexUpgradeScene::
+# 322 "data/maps/LittlerootTown/scripts.pory"
+LittlerootTown_Movement_JumpOffFriendTruck:
 # 323 "data/maps/LittlerootTown/scripts.pory"
-	lockall
-# 324 "data/maps/LittlerootTown/scripts.pory"
-	playse SE_PIN
-# 325 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 8, Common_Movement_ExclamationMark
-# 326 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
+	jump_right
+	step_end
+
+LittlerootTown_EventScript_BeginDexUpgradeScene::
 # 327 "data/maps/LittlerootTown/scripts.pory"
-	delay 80
+	lockall
 # 328 "data/maps/LittlerootTown/scripts.pory"
-	msgbox LittlerootTown_Text_BirchSomethingToShowYouAtLab, MSGBOX_DEFAULT
+	playse SE_PIN
 # 329 "data/maps/LittlerootTown/scripts.pory"
-	closemessage
+	applymovement 8, Common_Movement_ExclamationMark
 # 330 "data/maps/LittlerootTown/scripts.pory"
-	clearflag FLAG_HIDE_LITTLEROOT_TOWN_RIVAL
+	waitmovement 0
 # 331 "data/maps/LittlerootTown/scripts.pory"
-	clearflag FLAG_HIDE_LITTLEROOT_TOWN_BIRCH
+	delay 80
 # 332 "data/maps/LittlerootTown/scripts.pory"
-	delay 20
+	msgbox LittlerootTown_Text_BirchSomethingToShowYouAtLab, MSGBOX_DEFAULT
 # 333 "data/maps/LittlerootTown/scripts.pory"
-	clearflag FLAG_HIDE_MAP_NAME_POPUP
+	closemessage
 # 334 "data/maps/LittlerootTown/scripts.pory"
-	warp MAP_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB, 6, 5
+	clearflag FLAG_HIDE_LITTLEROOT_TOWN_RIVAL
 # 335 "data/maps/LittlerootTown/scripts.pory"
-	waitstate
+	clearflag FLAG_HIDE_LITTLEROOT_TOWN_BIRCH
 # 336 "data/maps/LittlerootTown/scripts.pory"
+	delay 20
+# 337 "data/maps/LittlerootTown/scripts.pory"
+	clearflag FLAG_HIDE_MAP_NAME_POPUP
+# 338 "data/maps/LittlerootTown/scripts.pory"
+	warp MAP_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB, 6, 5
+# 339 "data/maps/LittlerootTown/scripts.pory"
+	waitstate
+# 340 "data/maps/LittlerootTown/scripts.pory"
 	releaseall
 	end
 
 
 LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade::
-# 341 "data/maps/LittlerootTown/scripts.pory"
-	addobject 8
-# 342 "data/maps/LittlerootTown/scripts.pory"
-	addobject 7
-# 343 "data/maps/LittlerootTown/scripts.pory"
-	checkfriendchoice
-# 344 "data/maps/LittlerootTown/scripts.pory"
-	switch VAR_RESULT
 # 345 "data/maps/LittlerootTown/scripts.pory"
-	case SPENCER, LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade_3
+	addobject 8
+# 346 "data/maps/LittlerootTown/scripts.pory"
+	addobject 7
+# 347 "data/maps/LittlerootTown/scripts.pory"
+	checkfriendchoice
 # 348 "data/maps/LittlerootTown/scripts.pory"
+	switch VAR_RESULT
+# 349 "data/maps/LittlerootTown/scripts.pory"
+	case SPENCER, LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade_3
+# 352 "data/maps/LittlerootTown/scripts.pory"
 	case BREN, LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade_4
-# 351 "data/maps/LittlerootTown/scripts.pory"
+# 355 "data/maps/LittlerootTown/scripts.pory"
 	case KYLE, LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade_5
 LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade_1:
 	end
 
 LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade_3:
-# 346 "data/maps/LittlerootTown/scripts.pory"
+# 350 "data/maps/LittlerootTown/scripts.pory"
 	setobjectxy 7, 6, 10
-# 347 "data/maps/LittlerootTown/scripts.pory"
+# 351 "data/maps/LittlerootTown/scripts.pory"
 	setobjectxy 8, 5, 10
 	goto LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade_1
 
 LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade_4:
-# 349 "data/maps/LittlerootTown/scripts.pory"
+# 353 "data/maps/LittlerootTown/scripts.pory"
 	setobjectxy 7, 13, 10
-# 350 "data/maps/LittlerootTown/scripts.pory"
+# 354 "data/maps/LittlerootTown/scripts.pory"
 	setobjectxy 8, 14, 10
 	goto LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade_1
 
 LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade_5:
-# 352 "data/maps/LittlerootTown/scripts.pory"
+# 356 "data/maps/LittlerootTown/scripts.pory"
 	setobjectxy 7, 17, 17
-# 353 "data/maps/LittlerootTown/scripts.pory"
+# 357 "data/maps/LittlerootTown/scripts.pory"
 	setobjectxy 8, 18, 17
 	goto LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade_1
 
 
 LittlerootTown_EventScript_FatMan::
-# 359 "data/maps/LittlerootTown/scripts.pory"
+# 363 "data/maps/LittlerootTown/scripts.pory"
 	lock
-# 360 "data/maps/LittlerootTown/scripts.pory"
+# 364 "data/maps/LittlerootTown/scripts.pory"
 	faceplayer
-# 361 "data/maps/LittlerootTown/scripts.pory"
+# 365 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_Text_CanUsePCToStoreItems, MSGBOX_NPC
-# 362 "data/maps/LittlerootTown/scripts.pory"
+# 366 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 
 LittlerootTown_EventScript_Boy::
-# 367 "data/maps/LittlerootTown/scripts.pory"
+# 371 "data/maps/LittlerootTown/scripts.pory"
 	lock
-# 368 "data/maps/LittlerootTown/scripts.pory"
+# 372 "data/maps/LittlerootTown/scripts.pory"
 	faceplayer
-# 369 "data/maps/LittlerootTown/scripts.pory"
+# 373 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_Text_BirchSpendsDaysInLab, MSGBOX_NPC
-# 370 "data/maps/LittlerootTown/scripts.pory"
+# 374 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 
 LittlerootTown_EventScript_Twin::
-# 375 "data/maps/LittlerootTown/scripts.pory"
-	lock
-# 376 "data/maps/LittlerootTown/scripts.pory"
-	faceplayer
-# 377 "data/maps/LittlerootTown/scripts.pory"
-	goto_if_set FLAG_ADVENTURE_STARTED, LittlerootTown_EventScript_GoodLuck
-# 378 "data/maps/LittlerootTown/scripts.pory"
-	goto_if_set FLAG_RESCUED_BIRCH, LittlerootTown_EventScript_YouSavedBirch
 # 379 "data/maps/LittlerootTown/scripts.pory"
+	lock
+# 380 "data/maps/LittlerootTown/scripts.pory"
+	faceplayer
+# 381 "data/maps/LittlerootTown/scripts.pory"
+	goto_if_set FLAG_ADVENTURE_STARTED, LittlerootTown_EventScript_GoodLuck
+# 382 "data/maps/LittlerootTown/scripts.pory"
+	goto_if_set FLAG_RESCUED_BIRCH, LittlerootTown_EventScript_YouSavedBirch
+# 383 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_LITTLEROOT_TOWN_STATE, 0
 	goto_if_eq LittlerootTown_EventScript_Twin_2
-# 389 "data/maps/LittlerootTown/scripts.pory"
+# 393 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_Text_IfYouGoInGrassPokemonWillJumpOut, MSGBOX_DEFAULT
-# 390 "data/maps/LittlerootTown/scripts.pory"
+# 394 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 LittlerootTown_EventScript_Twin_2:
-# 380 "data/maps/LittlerootTown/scripts.pory"
-	special GetPlayerBigGuyGirlString
-# 381 "data/maps/LittlerootTown/scripts.pory"
-	msgbox LittlerootTown_Text_CanYouGoSeeWhatsHappening, MSGBOX_DEFAULT
-# 382 "data/maps/LittlerootTown/scripts.pory"
-	closemessage
-# 383 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 1, Common_Movement_FaceOriginalDirection
 # 384 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
+	special GetPlayerBigGuyGirlString
 # 385 "data/maps/LittlerootTown/scripts.pory"
-	setvar VAR_LITTLEROOT_TOWN_STATE, 2
+	msgbox LittlerootTown_Text_CanYouGoSeeWhatsHappening, MSGBOX_DEFAULT
 # 386 "data/maps/LittlerootTown/scripts.pory"
+	closemessage
+# 387 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 1, Common_Movement_FaceOriginalDirection
+# 388 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 389 "data/maps/LittlerootTown/scripts.pory"
+	setvar VAR_LITTLEROOT_TOWN_STATE, 2
+# 390 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 
 LittlerootTown_EventScript_YouSavedBirch::
-# 395 "data/maps/LittlerootTown/scripts.pory"
+# 399 "data/maps/LittlerootTown/scripts.pory"
 	special GetPlayerBigGuyGirlString
-# 396 "data/maps/LittlerootTown/scripts.pory"
+# 400 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_Text_YouSavedBirch, MSGBOX_DEFAULT
-# 397 "data/maps/LittlerootTown/scripts.pory"
+# 401 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 
 LittlerootTown_EventScript_GoodLuck::
-# 402 "data/maps/LittlerootTown/scripts.pory"
+# 406 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_Text_GoodLuckCatchingPokemon, MSGBOX_DEFAULT
-# 403 "data/maps/LittlerootTown/scripts.pory"
+# 407 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 
 LittlerootTown_EventScript_NeedPokemonTriggerLeft::
-# 408 "data/maps/LittlerootTown/scripts.pory"
-	lockall
-# 409 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 1, LittlerootTown_Movement_TwinApproachPlayerLeft
-# 410 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 411 "data/maps/LittlerootTown/scripts.pory"
-	call LittlerootTown_EventScript_DangerousWithoutPokemon
 # 412 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 1, LittlerootTown_Movement_TwinReturnLeft
+	lockall
 # 413 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
+	applymovement 1, LittlerootTown_Movement_TwinApproachPlayerLeft
 # 414 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 415 "data/maps/LittlerootTown/scripts.pory"
+	call LittlerootTown_EventScript_DangerousWithoutPokemon
+# 416 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 1, LittlerootTown_Movement_TwinReturnLeft
+# 417 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 418 "data/maps/LittlerootTown/scripts.pory"
 	releaseall
 	end
 
 
 LittlerootTown_EventScript_NeedPokemonTriggerRight::
-# 419 "data/maps/LittlerootTown/scripts.pory"
-	lockall
-# 420 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 1, LittlerootTown_Movement_TwinApproachPlayerRight
-# 421 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 422 "data/maps/LittlerootTown/scripts.pory"
-	call LittlerootTown_EventScript_DangerousWithoutPokemon
 # 423 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 1, LittlerootTown_Movement_TwinReturnRight
+	lockall
 # 424 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
+	applymovement 1, LittlerootTown_Movement_TwinApproachPlayerRight
 # 425 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 426 "data/maps/LittlerootTown/scripts.pory"
+	call LittlerootTown_EventScript_DangerousWithoutPokemon
+# 427 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 1, LittlerootTown_Movement_TwinReturnRight
+# 428 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 429 "data/maps/LittlerootTown/scripts.pory"
 	releaseall
 	end
 
 
 LittlerootTown_EventScript_DangerousWithoutPokemon::
-# 430 "data/maps/LittlerootTown/scripts.pory"
-	msgbox LittlerootTown_Text_IfYouGoInGrassPokemonWillJumpOut, MSGBOX_DEFAULT
-# 431 "data/maps/LittlerootTown/scripts.pory"
-	closemessage
-# 432 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 1, LittlerootTown_Movement_TwinPushPlayerFromRoute
-# 433 "data/maps/LittlerootTown/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_PushPlayerBackFromRoute
 # 434 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
+	msgbox LittlerootTown_Text_IfYouGoInGrassPokemonWillJumpOut, MSGBOX_DEFAULT
 # 435 "data/maps/LittlerootTown/scripts.pory"
-	msgbox LittlerootTown_Text_DangerousIfYouDontHavePokemon, MSGBOX_DEFAULT
+	closemessage
 # 436 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 1, LittlerootTown_Movement_TwinPushPlayerFromRoute
+# 437 "data/maps/LittlerootTown/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_PushPlayerBackFromRoute
+# 438 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 439 "data/maps/LittlerootTown/scripts.pory"
+	msgbox LittlerootTown_Text_DangerousIfYouDontHavePokemon, MSGBOX_DEFAULT
+# 440 "data/maps/LittlerootTown/scripts.pory"
 	closemessage
 	return
 
 
-# 439 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_TwinApproachPlayerLeft:
-# 440 "data/maps/LittlerootTown/scripts.pory"
-	face_right
-# 441 "data/maps/LittlerootTown/scripts.pory"
-	delay_8
-# 442 "data/maps/LittlerootTown/scripts.pory"
-	disable_jump_landing_ground_effect
 # 443 "data/maps/LittlerootTown/scripts.pory"
-	jump_in_place_right
+LittlerootTown_Movement_TwinApproachPlayerLeft:
 # 444 "data/maps/LittlerootTown/scripts.pory"
+	face_right
+# 445 "data/maps/LittlerootTown/scripts.pory"
 	delay_8
-# 445 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_right
-# 445 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_right
-# 445 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_right
-# 445 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_right
 # 446 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_up
-# 446 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_up
+	disable_jump_landing_ground_effect
 # 447 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_left
+	jump_in_place_right
 # 448 "data/maps/LittlerootTown/scripts.pory"
-	face_down
-	step_end
-
+	delay_8
+# 449 "data/maps/LittlerootTown/scripts.pory"
+	walk_fast_right
+# 449 "data/maps/LittlerootTown/scripts.pory"
+	walk_fast_right
+# 449 "data/maps/LittlerootTown/scripts.pory"
+	walk_fast_right
+# 449 "data/maps/LittlerootTown/scripts.pory"
+	walk_fast_right
+# 450 "data/maps/LittlerootTown/scripts.pory"
+	walk_fast_up
+# 450 "data/maps/LittlerootTown/scripts.pory"
+	walk_fast_up
 # 451 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_TwinPushPlayerFromRoute:
+	walk_fast_left
 # 452 "data/maps/LittlerootTown/scripts.pory"
-	walk_down
+	face_down
 	step_end
 
 # 455 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_TwinReturnLeft:
+LittlerootTown_Movement_TwinPushPlayerFromRoute:
 # 456 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 457 "data/maps/LittlerootTown/scripts.pory"
 	walk_down
-# 457 "data/maps/LittlerootTown/scripts.pory"
-	walk_down
-# 458 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 458 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 458 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 458 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
+	step_end
+
 # 459 "data/maps/LittlerootTown/scripts.pory"
-	walk_up
+LittlerootTown_Movement_TwinReturnLeft:
 # 460 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 461 "data/maps/LittlerootTown/scripts.pory"
+	walk_down
+# 461 "data/maps/LittlerootTown/scripts.pory"
+	walk_down
+# 462 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 462 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 462 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 462 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 463 "data/maps/LittlerootTown/scripts.pory"
+	walk_up
+# 464 "data/maps/LittlerootTown/scripts.pory"
 	walk_in_place_faster_down
 	step_end
 
-# 463 "data/maps/LittlerootTown/scripts.pory"
+# 467 "data/maps/LittlerootTown/scripts.pory"
 LittlerootTown_Movement_PushPlayerBackFromRoute:
-# 464 "data/maps/LittlerootTown/scripts.pory"
+# 468 "data/maps/LittlerootTown/scripts.pory"
 	lock_facing_direction
-# 465 "data/maps/LittlerootTown/scripts.pory"
+# 469 "data/maps/LittlerootTown/scripts.pory"
 	walk_down
-# 466 "data/maps/LittlerootTown/scripts.pory"
+# 470 "data/maps/LittlerootTown/scripts.pory"
 	unlock_facing_direction
 	step_end
 
-# 469 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_TwinApproachPlayerRight:
-# 470 "data/maps/LittlerootTown/scripts.pory"
-	face_right
-# 471 "data/maps/LittlerootTown/scripts.pory"
-	delay_8
-# 472 "data/maps/LittlerootTown/scripts.pory"
-	disable_jump_landing_ground_effect
 # 473 "data/maps/LittlerootTown/scripts.pory"
-	jump_in_place_right
+LittlerootTown_Movement_TwinApproachPlayerRight:
 # 474 "data/maps/LittlerootTown/scripts.pory"
+	face_right
+# 475 "data/maps/LittlerootTown/scripts.pory"
 	delay_8
-# 475 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_right
-# 475 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_right
-# 475 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_right
 # 476 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_up
-# 476 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_up
+	disable_jump_landing_ground_effect
 # 477 "data/maps/LittlerootTown/scripts.pory"
-	walk_fast_right
+	jump_in_place_right
 # 478 "data/maps/LittlerootTown/scripts.pory"
+	delay_8
+# 479 "data/maps/LittlerootTown/scripts.pory"
+	walk_fast_right
+# 479 "data/maps/LittlerootTown/scripts.pory"
+	walk_fast_right
+# 479 "data/maps/LittlerootTown/scripts.pory"
+	walk_fast_right
+# 480 "data/maps/LittlerootTown/scripts.pory"
+	walk_fast_up
+# 480 "data/maps/LittlerootTown/scripts.pory"
+	walk_fast_up
+# 481 "data/maps/LittlerootTown/scripts.pory"
+	walk_fast_right
+# 482 "data/maps/LittlerootTown/scripts.pory"
 	face_down
 	step_end
 
-# 481 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_TwinReturnRight:
-# 482 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 483 "data/maps/LittlerootTown/scripts.pory"
-	walk_down
-# 484 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 484 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 484 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
 # 485 "data/maps/LittlerootTown/scripts.pory"
+LittlerootTown_Movement_TwinReturnRight:
+# 486 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 487 "data/maps/LittlerootTown/scripts.pory"
+	walk_down
+# 488 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 488 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 488 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 489 "data/maps/LittlerootTown/scripts.pory"
 	walk_in_place_faster_down
 	step_end
 
 LittlerootTown_EventScript_GoSaveBirchTrigger::
-# 489 "data/maps/LittlerootTown/scripts.pory"
-	lockall
-# 490 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 1, Common_Movement_WalkInPlaceFasterRight
-# 491 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 492 "data/maps/LittlerootTown/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterLeft
 # 493 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
+	lockall
 # 494 "data/maps/LittlerootTown/scripts.pory"
-	special GetPlayerBigGuyGirlString
+	applymovement 1, Common_Movement_WalkInPlaceFasterRight
 # 495 "data/maps/LittlerootTown/scripts.pory"
-	msgbox LittlerootTown_Text_CanYouGoSeeWhatsHappening, MSGBOX_DEFAULT
-# 496 "data/maps/LittlerootTown/scripts.pory"
-	closemessage
-# 497 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 1, Common_Movement_FaceOriginalDirection
-# 498 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
+# 496 "data/maps/LittlerootTown/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterLeft
+# 497 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 498 "data/maps/LittlerootTown/scripts.pory"
+	special GetPlayerBigGuyGirlString
 # 499 "data/maps/LittlerootTown/scripts.pory"
-	setvar VAR_LITTLEROOT_TOWN_STATE, 2
+	msgbox LittlerootTown_Text_CanYouGoSeeWhatsHappening, MSGBOX_DEFAULT
 # 500 "data/maps/LittlerootTown/scripts.pory"
+	closemessage
+# 501 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 1, Common_Movement_FaceOriginalDirection
+# 502 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 503 "data/maps/LittlerootTown/scripts.pory"
+	setvar VAR_LITTLEROOT_TOWN_STATE, 2
+# 504 "data/maps/LittlerootTown/scripts.pory"
 	releaseall
 	end
 
 
 LittlerootTown_EventScript_TownSign::
-# 505 "data/maps/LittlerootTown/scripts.pory"
+# 509 "data/maps/LittlerootTown/scripts.pory"
 	lock
-# 506 "data/maps/LittlerootTown/scripts.pory"
+# 510 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_Text_TownSign, MSGBOX_SIGN
-# 507 "data/maps/LittlerootTown/scripts.pory"
+# 511 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 
 LittlerootTown_EventScript_BirchsLabSign::
-# 512 "data/maps/LittlerootTown/scripts.pory"
+# 516 "data/maps/LittlerootTown/scripts.pory"
 	lock
-# 513 "data/maps/LittlerootTown/scripts.pory"
+# 517 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_Text_ProfBirchsLab, MSGBOX_SIGN
-# 514 "data/maps/LittlerootTown/scripts.pory"
+# 518 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 
 LittlerootTown_EventScript_SpencersHouseSign::
-# 519 "data/maps/LittlerootTown/scripts.pory"
+# 523 "data/maps/LittlerootTown/scripts.pory"
 	lock
-# 520 "data/maps/LittlerootTown/scripts.pory"
+# 524 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_Text_SpencersHouse, MSGBOX_SIGN
-# 521 "data/maps/LittlerootTown/scripts.pory"
+# 525 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 
 LittlerootTown_EventScript_BrensHouseSign::
-# 526 "data/maps/LittlerootTown/scripts.pory"
+# 530 "data/maps/LittlerootTown/scripts.pory"
 	lock
-# 527 "data/maps/LittlerootTown/scripts.pory"
+# 531 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_Text_BrensHouse, MSGBOX_SIGN
-# 528 "data/maps/LittlerootTown/scripts.pory"
+# 532 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 
 LittlerootTown_EventScript_KylesHouseSign::
-# 533 "data/maps/LittlerootTown/scripts.pory"
+# 537 "data/maps/LittlerootTown/scripts.pory"
 	lock
-# 534 "data/maps/LittlerootTown/scripts.pory"
+# 538 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_Text_KylesHouse, MSGBOX_SIGN
-# 535 "data/maps/LittlerootTown/scripts.pory"
+# 539 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger0::
-# 552 "data/maps/LittlerootTown/scripts.pory"
+# 556 "data/maps/LittlerootTown/scripts.pory"
 	lockall
-# 553 "data/maps/LittlerootTown/scripts.pory"
+# 557 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8008, 0
-# 554 "data/maps/LittlerootTown/scripts.pory"
+# 558 "data/maps/LittlerootTown/scripts.pory"
 	setobjectxy 4, 10, 9
-# 555 "data/maps/LittlerootTown/scripts.pory"
+# 559 "data/maps/LittlerootTown/scripts.pory"
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger
 	end
 
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger1::
-# 560 "data/maps/LittlerootTown/scripts.pory"
+# 564 "data/maps/LittlerootTown/scripts.pory"
 	lockall
-# 561 "data/maps/LittlerootTown/scripts.pory"
+# 565 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8008, 1
-# 562 "data/maps/LittlerootTown/scripts.pory"
+# 566 "data/maps/LittlerootTown/scripts.pory"
 	setobjectxy 4, 11, 9
-# 563 "data/maps/LittlerootTown/scripts.pory"
+# 567 "data/maps/LittlerootTown/scripts.pory"
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger
 	end
 
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger2::
-# 568 "data/maps/LittlerootTown/scripts.pory"
+# 572 "data/maps/LittlerootTown/scripts.pory"
 	lockall
-# 569 "data/maps/LittlerootTown/scripts.pory"
+# 573 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8008, 2
-# 570 "data/maps/LittlerootTown/scripts.pory"
+# 574 "data/maps/LittlerootTown/scripts.pory"
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger
 	end
 
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger3::
-# 575 "data/maps/LittlerootTown/scripts.pory"
+# 579 "data/maps/LittlerootTown/scripts.pory"
 	lockall
-# 576 "data/maps/LittlerootTown/scripts.pory"
+# 580 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8008, 3
-# 577 "data/maps/LittlerootTown/scripts.pory"
+# 581 "data/maps/LittlerootTown/scripts.pory"
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger
 	end
 
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger4::
-# 582 "data/maps/LittlerootTown/scripts.pory"
+# 586 "data/maps/LittlerootTown/scripts.pory"
 	lockall
-# 583 "data/maps/LittlerootTown/scripts.pory"
+# 587 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8008, 4
-# 584 "data/maps/LittlerootTown/scripts.pory"
+# 588 "data/maps/LittlerootTown/scripts.pory"
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger
 	end
 
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger5::
-# 589 "data/maps/LittlerootTown/scripts.pory"
+# 593 "data/maps/LittlerootTown/scripts.pory"
 	lockall
-# 590 "data/maps/LittlerootTown/scripts.pory"
+# 594 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8008, 5
-# 591 "data/maps/LittlerootTown/scripts.pory"
+# 595 "data/maps/LittlerootTown/scripts.pory"
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger
 	end
 
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger::
-# 596 "data/maps/LittlerootTown/scripts.pory"
+# 600 "data/maps/LittlerootTown/scripts.pory"
 	checkfriendchoice
-# 597 "data/maps/LittlerootTown/scripts.pory"
+# 601 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, SPENCER
 	goto_if_eq LittlerootTown_EventScript_GiveRunningShoesTrigger_2
-# 602 "data/maps/LittlerootTown/scripts.pory"
+# 606 "data/maps/LittlerootTown/scripts.pory"
 	applymovement 4, Common_Movement_WalkInPlaceFasterLeft
-# 603 "data/maps/LittlerootTown/scripts.pory"
+# 607 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 LittlerootTown_EventScript_GiveRunningShoesTrigger_1:
-# 605 "data/maps/LittlerootTown/scripts.pory"
+# 609 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, SPENCER
 	goto_if_eq LittlerootTown_EventScript_GiveRunningShoesTrigger_6
 LittlerootTown_EventScript_GiveRunningShoesTrigger_5:
-# 609 "data/maps/LittlerootTown/scripts.pory"
+# 613 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, BREN
 	goto_if_eq LittlerootTown_EventScript_GiveRunningShoesTrigger_9
 LittlerootTown_EventScript_GiveRunningShoesTrigger_8:
-# 613 "data/maps/LittlerootTown/scripts.pory"
+# 617 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, KYLE
 	goto_if_eq LittlerootTown_EventScript_GiveRunningShoesTrigger_12
 LittlerootTown_EventScript_GiveRunningShoesTrigger_11:
-# 617 "data/maps/LittlerootTown/scripts.pory"
+# 621 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_Text_WaitPlayer, MSGBOX_DEFAULT
-# 618 "data/maps/LittlerootTown/scripts.pory"
+# 622 "data/maps/LittlerootTown/scripts.pory"
 	closemessage
-# 619 "data/maps/LittlerootTown/scripts.pory"
+# 623 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_0x8008, 1
 	goto_if_le LittlerootTown_EventScript_GiveRunningShoesTrigger_15
-# 631 "data/maps/LittlerootTown/scripts.pory"
+# 635 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, SPENCER
 	goto_if_eq LittlerootTown_EventScript_GiveRunningShoesTrigger_16
-# 651 "data/maps/LittlerootTown/scripts.pory"
+# 655 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, BREN
 	goto_if_eq LittlerootTown_EventScript_GiveRunningShoesTrigger_17
 LittlerootTown_EventScript_GiveRunningShoesTrigger_14:
-# 671 "data/maps/LittlerootTown/scripts.pory"
+# 675 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
-# 672 "data/maps/LittlerootTown/scripts.pory"
+# 676 "data/maps/LittlerootTown/scripts.pory"
 	call LittlerootTown_EventScript_GiveRunningShoes
-# 673 "data/maps/LittlerootTown/scripts.pory"
+# 677 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_0x8008, 1
 	goto_if_le LittlerootTown_EventScript_GiveRunningShoesTrigger_22
-# 683 "data/maps/LittlerootTown/scripts.pory"
+# 687 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, SPENCER
 	goto_if_eq LittlerootTown_EventScript_GiveRunningShoesTrigger_23
-# 727 "data/maps/LittlerootTown/scripts.pory"
+# 731 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, BREN
 	goto_if_eq LittlerootTown_EventScript_GiveRunningShoesTrigger_24
 LittlerootTown_EventScript_GiveRunningShoesTrigger_21:
-# 771 "data/maps/LittlerootTown/scripts.pory"
+# 775 "data/maps/LittlerootTown/scripts.pory"
 	removeobject 4
-# 772 "data/maps/LittlerootTown/scripts.pory"
+# 776 "data/maps/LittlerootTown/scripts.pory"
 	setflag FLAG_SYS_B_DASH
-# 773 "data/maps/LittlerootTown/scripts.pory"
+# 777 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_LITTLEROOT_TOWN_STATE, 4
-# 774 "data/maps/LittlerootTown/scripts.pory"
+# 778 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_2:
-# 598 "data/maps/LittlerootTown/scripts.pory"
+# 602 "data/maps/LittlerootTown/scripts.pory"
 	applymovement 4, Common_Movement_WalkInPlaceFasterRight
-# 599 "data/maps/LittlerootTown/scripts.pory"
+# 603 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_1
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_6:
-# 606 "data/maps/LittlerootTown/scripts.pory"
+# 610 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8009, 5
-# 607 "data/maps/LittlerootTown/scripts.pory"
+# 611 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x800A, 8
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_5
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_9:
-# 610 "data/maps/LittlerootTown/scripts.pory"
+# 614 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8009, 14
-# 611 "data/maps/LittlerootTown/scripts.pory"
+# 615 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x800A, 8
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_8
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_12:
-# 614 "data/maps/LittlerootTown/scripts.pory"
+# 618 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8009, 17
-# 615 "data/maps/LittlerootTown/scripts.pory"
+# 619 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x800A, 15
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_11
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_15:
-# 620 "data/maps/LittlerootTown/scripts.pory"
+# 624 "data/maps/LittlerootTown/scripts.pory"
 	switch VAR_0x8008
-# 621 "data/maps/LittlerootTown/scripts.pory"
-	case 0, LittlerootTown_EventScript_GiveRunningShoesTrigger_29
 # 625 "data/maps/LittlerootTown/scripts.pory"
+	case 0, LittlerootTown_EventScript_GiveRunningShoesTrigger_29
+# 629 "data/maps/LittlerootTown/scripts.pory"
 	case 1, LittlerootTown_EventScript_GiveRunningShoesTrigger_30
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_16:
-# 632 "data/maps/LittlerootTown/scripts.pory"
+# 636 "data/maps/LittlerootTown/scripts.pory"
 	switch VAR_0x8008
-# 633 "data/maps/LittlerootTown/scripts.pory"
-	case 2, LittlerootTown_EventScript_GiveRunningShoesTrigger_32
 # 637 "data/maps/LittlerootTown/scripts.pory"
-	case 3, LittlerootTown_EventScript_GiveRunningShoesTrigger_33
+	case 2, LittlerootTown_EventScript_GiveRunningShoesTrigger_32
 # 641 "data/maps/LittlerootTown/scripts.pory"
-	case 4, LittlerootTown_EventScript_GiveRunningShoesTrigger_34
+	case 3, LittlerootTown_EventScript_GiveRunningShoesTrigger_33
 # 645 "data/maps/LittlerootTown/scripts.pory"
+	case 4, LittlerootTown_EventScript_GiveRunningShoesTrigger_34
+# 649 "data/maps/LittlerootTown/scripts.pory"
 	case 5, LittlerootTown_EventScript_GiveRunningShoesTrigger_35
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_17:
-# 652 "data/maps/LittlerootTown/scripts.pory"
+# 656 "data/maps/LittlerootTown/scripts.pory"
 	switch VAR_0x8008
-# 653 "data/maps/LittlerootTown/scripts.pory"
-	case 2, LittlerootTown_EventScript_GiveRunningShoesTrigger_37
 # 657 "data/maps/LittlerootTown/scripts.pory"
-	case 3, LittlerootTown_EventScript_GiveRunningShoesTrigger_38
+	case 2, LittlerootTown_EventScript_GiveRunningShoesTrigger_37
 # 661 "data/maps/LittlerootTown/scripts.pory"
-	case 4, LittlerootTown_EventScript_GiveRunningShoesTrigger_39
+	case 3, LittlerootTown_EventScript_GiveRunningShoesTrigger_38
 # 665 "data/maps/LittlerootTown/scripts.pory"
+	case 4, LittlerootTown_EventScript_GiveRunningShoesTrigger_39
+# 669 "data/maps/LittlerootTown/scripts.pory"
 	case 5, LittlerootTown_EventScript_GiveRunningShoesTrigger_40
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_22:
-# 674 "data/maps/LittlerootTown/scripts.pory"
-	switch VAR_0x8008
-# 675 "data/maps/LittlerootTown/scripts.pory"
-	case 0, LittlerootTown_EventScript_GiveRunningShoesTrigger_42
 # 678 "data/maps/LittlerootTown/scripts.pory"
+	switch VAR_0x8008
+# 679 "data/maps/LittlerootTown/scripts.pory"
+	case 0, LittlerootTown_EventScript_GiveRunningShoesTrigger_42
+# 682 "data/maps/LittlerootTown/scripts.pory"
 	case 1, LittlerootTown_EventScript_GiveRunningShoesTrigger_43
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_23:
-# 684 "data/maps/LittlerootTown/scripts.pory"
+# 688 "data/maps/LittlerootTown/scripts.pory"
 	switch VAR_0x8008
-# 685 "data/maps/LittlerootTown/scripts.pory"
+# 689 "data/maps/LittlerootTown/scripts.pory"
 	case 2, LittlerootTown_EventScript_GiveRunningShoesTrigger_45
-# 695 "data/maps/LittlerootTown/scripts.pory"
+# 699 "data/maps/LittlerootTown/scripts.pory"
 	case 3, LittlerootTown_EventScript_GiveRunningShoesTrigger_46
-# 705 "data/maps/LittlerootTown/scripts.pory"
+# 709 "data/maps/LittlerootTown/scripts.pory"
 	case 4, LittlerootTown_EventScript_GiveRunningShoesTrigger_47
-# 715 "data/maps/LittlerootTown/scripts.pory"
+# 719 "data/maps/LittlerootTown/scripts.pory"
 	case 5, LittlerootTown_EventScript_GiveRunningShoesTrigger_48
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_24:
-# 728 "data/maps/LittlerootTown/scripts.pory"
+# 732 "data/maps/LittlerootTown/scripts.pory"
 	switch VAR_0x8008
-# 729 "data/maps/LittlerootTown/scripts.pory"
+# 733 "data/maps/LittlerootTown/scripts.pory"
 	case 2, LittlerootTown_EventScript_GiveRunningShoesTrigger_50
-# 739 "data/maps/LittlerootTown/scripts.pory"
+# 743 "data/maps/LittlerootTown/scripts.pory"
 	case 3, LittlerootTown_EventScript_GiveRunningShoesTrigger_51
-# 749 "data/maps/LittlerootTown/scripts.pory"
+# 753 "data/maps/LittlerootTown/scripts.pory"
 	case 4, LittlerootTown_EventScript_GiveRunningShoesTrigger_52
-# 759 "data/maps/LittlerootTown/scripts.pory"
+# 763 "data/maps/LittlerootTown/scripts.pory"
 	case 5, LittlerootTown_EventScript_GiveRunningShoesTrigger_53
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_29:
-# 622 "data/maps/LittlerootTown/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown
-# 623 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 624 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomApproachPlayer0
-	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
-
-LittlerootTown_EventScript_GiveRunningShoesTrigger_30:
 # 626 "data/maps/LittlerootTown/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown
 # 627 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 628 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 4, LittlerootTown_Movement_MomApproachPlayer0
+	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
+
+LittlerootTown_EventScript_GiveRunningShoesTrigger_30:
+# 630 "data/maps/LittlerootTown/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown
+# 631 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 632 "data/maps/LittlerootTown/scripts.pory"
 	applymovement 4, LittlerootTown_Movement_MomApproachPlayer1
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_32:
-# 634 "data/maps/LittlerootTown/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterLeft
-# 635 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 636 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomApproachPlayerMale2
-	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
-
-LittlerootTown_EventScript_GiveRunningShoesTrigger_33:
 # 638 "data/maps/LittlerootTown/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterLeft
 # 639 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 640 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomApproachPlayerMale3
+	applymovement 4, LittlerootTown_Movement_MomApproachPlayerMale2
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
 
-LittlerootTown_EventScript_GiveRunningShoesTrigger_34:
+LittlerootTown_EventScript_GiveRunningShoesTrigger_33:
 # 642 "data/maps/LittlerootTown/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterLeft
 # 643 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 644 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomApproachPlayerMale4
+	applymovement 4, LittlerootTown_Movement_MomApproachPlayerMale3
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
 
-LittlerootTown_EventScript_GiveRunningShoesTrigger_35:
+LittlerootTown_EventScript_GiveRunningShoesTrigger_34:
 # 646 "data/maps/LittlerootTown/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterLeft
 # 647 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 648 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 4, LittlerootTown_Movement_MomApproachPlayerMale4
+	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
+
+LittlerootTown_EventScript_GiveRunningShoesTrigger_35:
+# 650 "data/maps/LittlerootTown/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterLeft
+# 651 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 652 "data/maps/LittlerootTown/scripts.pory"
 	applymovement 4, LittlerootTown_Movement_MomApproachPlayerMale5
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_37:
-# 654 "data/maps/LittlerootTown/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
-# 655 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 656 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomApproachPlayerFemale2
-	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
-
-LittlerootTown_EventScript_GiveRunningShoesTrigger_38:
 # 658 "data/maps/LittlerootTown/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
 # 659 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 660 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomApproachPlayerFemale3
+	applymovement 4, LittlerootTown_Movement_MomApproachPlayerFemale2
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
 
-LittlerootTown_EventScript_GiveRunningShoesTrigger_39:
+LittlerootTown_EventScript_GiveRunningShoesTrigger_38:
 # 662 "data/maps/LittlerootTown/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
 # 663 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 664 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomApproachPlayerFemale4
+	applymovement 4, LittlerootTown_Movement_MomApproachPlayerFemale3
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
 
-LittlerootTown_EventScript_GiveRunningShoesTrigger_40:
+LittlerootTown_EventScript_GiveRunningShoesTrigger_39:
 # 666 "data/maps/LittlerootTown/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
 # 667 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 668 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 4, LittlerootTown_Movement_MomApproachPlayerFemale4
+	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
+
+LittlerootTown_EventScript_GiveRunningShoesTrigger_40:
+# 670 "data/maps/LittlerootTown/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
+# 671 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 672 "data/maps/LittlerootTown/scripts.pory"
 	applymovement 4, LittlerootTown_Movement_MomApproachPlayerFemale5
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_14
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_42:
-# 676 "data/maps/LittlerootTown/scripts.pory"
+# 680 "data/maps/LittlerootTown/scripts.pory"
 	applymovement 4, LittlerootTown_Movement_MomReturnHome0
-# 677 "data/maps/LittlerootTown/scripts.pory"
+# 681 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_43:
-# 679 "data/maps/LittlerootTown/scripts.pory"
+# 683 "data/maps/LittlerootTown/scripts.pory"
 	applymovement 4, LittlerootTown_Movement_MomReturnHome1
-# 680 "data/maps/LittlerootTown/scripts.pory"
+# 684 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_45:
-# 686 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomReturnHomeMale2
-# 687 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 688 "data/maps/LittlerootTown/scripts.pory"
-	opendoor VAR_0x8009, VAR_0x800A
-# 689 "data/maps/LittlerootTown/scripts.pory"
-	waitdooranim
 # 690 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+	applymovement 4, LittlerootTown_Movement_MomReturnHomeMale2
 # 691 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 692 "data/maps/LittlerootTown/scripts.pory"
-	hideobjectat 4, MAP_LITTLEROOT_TOWN
+	opendoor VAR_0x8009, VAR_0x800A
 # 693 "data/maps/LittlerootTown/scripts.pory"
-	closedoor VAR_0x8009, VAR_0x800A
+	waitdooranim
 # 694 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+# 695 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 696 "data/maps/LittlerootTown/scripts.pory"
+	hideobjectat 4, MAP_LITTLEROOT_TOWN
+# 697 "data/maps/LittlerootTown/scripts.pory"
+	closedoor VAR_0x8009, VAR_0x800A
+# 698 "data/maps/LittlerootTown/scripts.pory"
 	waitdooranim
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_46:
-# 696 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomReturnHomeMale3
-# 697 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 698 "data/maps/LittlerootTown/scripts.pory"
-	opendoor VAR_0x8009, VAR_0x800A
-# 699 "data/maps/LittlerootTown/scripts.pory"
-	waitdooranim
 # 700 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+	applymovement 4, LittlerootTown_Movement_MomReturnHomeMale3
 # 701 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 702 "data/maps/LittlerootTown/scripts.pory"
-	hideobjectat 4, MAP_LITTLEROOT_TOWN
+	opendoor VAR_0x8009, VAR_0x800A
 # 703 "data/maps/LittlerootTown/scripts.pory"
-	closedoor VAR_0x8009, VAR_0x800A
+	waitdooranim
 # 704 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+# 705 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 706 "data/maps/LittlerootTown/scripts.pory"
+	hideobjectat 4, MAP_LITTLEROOT_TOWN
+# 707 "data/maps/LittlerootTown/scripts.pory"
+	closedoor VAR_0x8009, VAR_0x800A
+# 708 "data/maps/LittlerootTown/scripts.pory"
 	waitdooranim
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_47:
-# 706 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomReturnHomeMale4
-# 707 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 708 "data/maps/LittlerootTown/scripts.pory"
-	opendoor VAR_0x8009, VAR_0x800A
-# 709 "data/maps/LittlerootTown/scripts.pory"
-	waitdooranim
 # 710 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+	applymovement 4, LittlerootTown_Movement_MomReturnHomeMale4
 # 711 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 712 "data/maps/LittlerootTown/scripts.pory"
-	hideobjectat 4, MAP_LITTLEROOT_TOWN
+	opendoor VAR_0x8009, VAR_0x800A
 # 713 "data/maps/LittlerootTown/scripts.pory"
-	closedoor VAR_0x8009, VAR_0x800A
+	waitdooranim
 # 714 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+# 715 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 716 "data/maps/LittlerootTown/scripts.pory"
+	hideobjectat 4, MAP_LITTLEROOT_TOWN
+# 717 "data/maps/LittlerootTown/scripts.pory"
+	closedoor VAR_0x8009, VAR_0x800A
+# 718 "data/maps/LittlerootTown/scripts.pory"
 	waitdooranim
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_48:
-# 716 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomReturnHomeMale5
-# 717 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 718 "data/maps/LittlerootTown/scripts.pory"
-	opendoor VAR_0x8009, VAR_0x800A
-# 719 "data/maps/LittlerootTown/scripts.pory"
-	waitdooranim
 # 720 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+	applymovement 4, LittlerootTown_Movement_MomReturnHomeMale5
 # 721 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 722 "data/maps/LittlerootTown/scripts.pory"
-	hideobjectat 4, MAP_LITTLEROOT_TOWN
+	opendoor VAR_0x8009, VAR_0x800A
 # 723 "data/maps/LittlerootTown/scripts.pory"
-	closedoor VAR_0x8009, VAR_0x800A
+	waitdooranim
 # 724 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+# 725 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 726 "data/maps/LittlerootTown/scripts.pory"
+	hideobjectat 4, MAP_LITTLEROOT_TOWN
+# 727 "data/maps/LittlerootTown/scripts.pory"
+	closedoor VAR_0x8009, VAR_0x800A
+# 728 "data/maps/LittlerootTown/scripts.pory"
 	waitdooranim
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_50:
-# 730 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomReturnHomeFemale2
-# 731 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 732 "data/maps/LittlerootTown/scripts.pory"
-	opendoor VAR_0x8009, VAR_0x800A
-# 733 "data/maps/LittlerootTown/scripts.pory"
-	waitdooranim
 # 734 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+	applymovement 4, LittlerootTown_Movement_MomReturnHomeFemale2
 # 735 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 736 "data/maps/LittlerootTown/scripts.pory"
-	hideobjectat 4, MAP_LITTLEROOT_TOWN
+	opendoor VAR_0x8009, VAR_0x800A
 # 737 "data/maps/LittlerootTown/scripts.pory"
-	closedoor VAR_0x8009, VAR_0x800A
+	waitdooranim
 # 738 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+# 739 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 740 "data/maps/LittlerootTown/scripts.pory"
+	hideobjectat 4, MAP_LITTLEROOT_TOWN
+# 741 "data/maps/LittlerootTown/scripts.pory"
+	closedoor VAR_0x8009, VAR_0x800A
+# 742 "data/maps/LittlerootTown/scripts.pory"
 	waitdooranim
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_51:
-# 740 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomReturnHomeFemale3
-# 741 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 742 "data/maps/LittlerootTown/scripts.pory"
-	opendoor VAR_0x8009, VAR_0x800A
-# 743 "data/maps/LittlerootTown/scripts.pory"
-	waitdooranim
 # 744 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+	applymovement 4, LittlerootTown_Movement_MomReturnHomeFemale3
 # 745 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 746 "data/maps/LittlerootTown/scripts.pory"
-	hideobjectat 4, MAP_LITTLEROOT_TOWN
+	opendoor VAR_0x8009, VAR_0x800A
 # 747 "data/maps/LittlerootTown/scripts.pory"
-	closedoor VAR_0x8009, VAR_0x800A
+	waitdooranim
 # 748 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+# 749 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 750 "data/maps/LittlerootTown/scripts.pory"
+	hideobjectat 4, MAP_LITTLEROOT_TOWN
+# 751 "data/maps/LittlerootTown/scripts.pory"
+	closedoor VAR_0x8009, VAR_0x800A
+# 752 "data/maps/LittlerootTown/scripts.pory"
 	waitdooranim
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_52:
-# 750 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomReturnHomeFemale4
-# 751 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 752 "data/maps/LittlerootTown/scripts.pory"
-	opendoor VAR_0x8009, VAR_0x800A
-# 753 "data/maps/LittlerootTown/scripts.pory"
-	waitdooranim
 # 754 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+	applymovement 4, LittlerootTown_Movement_MomReturnHomeFemale4
 # 755 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 756 "data/maps/LittlerootTown/scripts.pory"
-	hideobjectat 4, MAP_LITTLEROOT_TOWN
+	opendoor VAR_0x8009, VAR_0x800A
 # 757 "data/maps/LittlerootTown/scripts.pory"
-	closedoor VAR_0x8009, VAR_0x800A
+	waitdooranim
 # 758 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+# 759 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 760 "data/maps/LittlerootTown/scripts.pory"
+	hideobjectat 4, MAP_LITTLEROOT_TOWN
+# 761 "data/maps/LittlerootTown/scripts.pory"
+	closedoor VAR_0x8009, VAR_0x800A
+# 762 "data/maps/LittlerootTown/scripts.pory"
 	waitdooranim
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger_53:
-# 760 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomReturnHomeFemale5
-# 761 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 762 "data/maps/LittlerootTown/scripts.pory"
-	opendoor VAR_0x8009, VAR_0x800A
-# 763 "data/maps/LittlerootTown/scripts.pory"
-	waitdooranim
 # 764 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+	applymovement 4, LittlerootTown_Movement_MomReturnHomeFemale5
 # 765 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 766 "data/maps/LittlerootTown/scripts.pory"
-	hideobjectat 4, MAP_LITTLEROOT_TOWN
+	opendoor VAR_0x8009, VAR_0x800A
 # 767 "data/maps/LittlerootTown/scripts.pory"
-	closedoor VAR_0x8009, VAR_0x800A
+	waitdooranim
 # 768 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+# 769 "data/maps/LittlerootTown/scripts.pory"
+	waitmovement 0
+# 770 "data/maps/LittlerootTown/scripts.pory"
+	hideobjectat 4, MAP_LITTLEROOT_TOWN
+# 771 "data/maps/LittlerootTown/scripts.pory"
+	closedoor VAR_0x8009, VAR_0x800A
+# 772 "data/maps/LittlerootTown/scripts.pory"
 	waitdooranim
 	goto LittlerootTown_EventScript_GiveRunningShoesTrigger_21
 
 
 LittlerootTown_EventScript_Mom::
-# 779 "data/maps/LittlerootTown/scripts.pory"
+# 783 "data/maps/LittlerootTown/scripts.pory"
 	lock
-# 780 "data/maps/LittlerootTown/scripts.pory"
+# 784 "data/maps/LittlerootTown/scripts.pory"
 	faceplayer
-# 781 "data/maps/LittlerootTown/scripts.pory"
+# 785 "data/maps/LittlerootTown/scripts.pory"
 	checkfriendchoice
-# 782 "data/maps/LittlerootTown/scripts.pory"
+# 786 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, SPENCER
 	goto_if_eq LittlerootTown_EventScript_Mom_2
 LittlerootTown_EventScript_Mom_1:
-# 786 "data/maps/LittlerootTown/scripts.pory"
+# 790 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, BREN
 	goto_if_eq LittlerootTown_EventScript_Mom_5
 LittlerootTown_EventScript_Mom_4:
-# 790 "data/maps/LittlerootTown/scripts.pory"
+# 794 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, KYLE
 	goto_if_eq LittlerootTown_EventScript_Mom_8
 LittlerootTown_EventScript_Mom_7:
-# 794 "data/maps/LittlerootTown/scripts.pory"
-	call LittlerootTown_EventScript_GiveRunningShoes
-# 795 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, Common_Movement_WalkInPlaceFasterUp
-# 796 "data/maps/LittlerootTown/scripts.pory"
-	waitmovement 0
-# 797 "data/maps/LittlerootTown/scripts.pory"
-	opendoor VAR_0x8009, VAR_0x800A
 # 798 "data/maps/LittlerootTown/scripts.pory"
-	waitdooranim
+	call LittlerootTown_EventScript_GiveRunningShoes
 # 799 "data/maps/LittlerootTown/scripts.pory"
-	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
+	applymovement 4, Common_Movement_WalkInPlaceFasterUp
 # 800 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
 # 801 "data/maps/LittlerootTown/scripts.pory"
-	hideobjectat 4, MAP_LITTLEROOT_TOWN
+	opendoor VAR_0x8009, VAR_0x800A
 # 802 "data/maps/LittlerootTown/scripts.pory"
-	closedoor VAR_0x8009, VAR_0x800A
-# 803 "data/maps/LittlerootTown/scripts.pory"
 	waitdooranim
+# 803 "data/maps/LittlerootTown/scripts.pory"
+	applymovement 4, LittlerootTown_Movement_MomExitThroughDoor
 # 804 "data/maps/LittlerootTown/scripts.pory"
-	removeobject 4
+	waitmovement 0
 # 805 "data/maps/LittlerootTown/scripts.pory"
-	setflag FLAG_SYS_B_DASH
+	hideobjectat 4, MAP_LITTLEROOT_TOWN
 # 806 "data/maps/LittlerootTown/scripts.pory"
-	setvar VAR_LITTLEROOT_TOWN_STATE, 4
+	closedoor VAR_0x8009, VAR_0x800A
 # 807 "data/maps/LittlerootTown/scripts.pory"
+	waitdooranim
+# 808 "data/maps/LittlerootTown/scripts.pory"
+	removeobject 4
+# 809 "data/maps/LittlerootTown/scripts.pory"
+	setflag FLAG_SYS_B_DASH
+# 810 "data/maps/LittlerootTown/scripts.pory"
+	setvar VAR_LITTLEROOT_TOWN_STATE, 4
+# 811 "data/maps/LittlerootTown/scripts.pory"
 	release
 	end
 
 LittlerootTown_EventScript_Mom_2:
-# 783 "data/maps/LittlerootTown/scripts.pory"
+# 787 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8009, 5
-# 784 "data/maps/LittlerootTown/scripts.pory"
+# 788 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x800A, 8
 	goto LittlerootTown_EventScript_Mom_1
 
 LittlerootTown_EventScript_Mom_5:
-# 787 "data/maps/LittlerootTown/scripts.pory"
+# 791 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8009, 14
-# 788 "data/maps/LittlerootTown/scripts.pory"
+# 792 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x800A, 8
 	goto LittlerootTown_EventScript_Mom_4
 
 LittlerootTown_EventScript_Mom_8:
-# 791 "data/maps/LittlerootTown/scripts.pory"
+# 795 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x8009, 17
-# 792 "data/maps/LittlerootTown/scripts.pory"
+# 796 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_0x800A, 15
 	goto LittlerootTown_EventScript_Mom_7
 
 
 LittlerootTown_EventScript_GiveRunningShoes::
-# 812 "data/maps/LittlerootTown/scripts.pory"
-	msgbox LittlerootTown_Text_WearTheseRunningShoes, MSGBOX_DEFAULT
-# 813 "data/maps/LittlerootTown/scripts.pory"
-	playfanfare MUS_OBTAIN_ITEM
-# 814 "data/maps/LittlerootTown/scripts.pory"
-	message LittlerootTown_Text_SwitchShoesWithRunningShoes
-# 815 "data/maps/LittlerootTown/scripts.pory"
-	waitfanfare
 # 816 "data/maps/LittlerootTown/scripts.pory"
-	setflag FLAG_RECEIVED_RUNNING_SHOES
+	msgbox LittlerootTown_Text_WearTheseRunningShoes, MSGBOX_DEFAULT
 # 817 "data/maps/LittlerootTown/scripts.pory"
-	msgbox LittlerootTown_Text_ExplainRunningShoes, MSGBOX_DEFAULT
+	playfanfare MUS_OBTAIN_ITEM
 # 818 "data/maps/LittlerootTown/scripts.pory"
-	msgbox LittlerootTown_Text_ComeHomeIfAnythingHappens, MSGBOX_DEFAULT
+	message LittlerootTown_Text_SwitchShoesWithRunningShoes
 # 819 "data/maps/LittlerootTown/scripts.pory"
-	closemessage
+	waitfanfare
 # 820 "data/maps/LittlerootTown/scripts.pory"
+	setflag FLAG_RECEIVED_RUNNING_SHOES
+# 821 "data/maps/LittlerootTown/scripts.pory"
+	msgbox LittlerootTown_Text_ExplainRunningShoes, MSGBOX_DEFAULT
+# 822 "data/maps/LittlerootTown/scripts.pory"
+	msgbox LittlerootTown_Text_ComeHomeIfAnythingHappens, MSGBOX_DEFAULT
+# 823 "data/maps/LittlerootTown/scripts.pory"
+	closemessage
+# 824 "data/maps/LittlerootTown/scripts.pory"
 	delay 30
 	return
 
 
-# 824 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomApproachPlayer0:
-# 825 "data/maps/LittlerootTown/scripts.pory"
-	walk_up
-# 825 "data/maps/LittlerootTown/scripts.pory"
-	walk_up
-# 825 "data/maps/LittlerootTown/scripts.pory"
-	walk_up
-# 825 "data/maps/LittlerootTown/scripts.pory"
-	walk_up
-# 825 "data/maps/LittlerootTown/scripts.pory"
-	walk_up
-# 825 "data/maps/LittlerootTown/scripts.pory"
-	walk_up
-	step_end
-
 # 828 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomApproachPlayer1:
+LittlerootTown_Movement_MomApproachPlayer0:
 # 829 "data/maps/LittlerootTown/scripts.pory"
 	walk_up
 # 829 "data/maps/LittlerootTown/scripts.pory"
@@ -1605,21 +1595,23 @@ LittlerootTown_Movement_MomApproachPlayer1:
 	step_end
 
 # 832 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomApproachPlayerMale2:
+LittlerootTown_Movement_MomApproachPlayer1:
 # 833 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
+	walk_up
 # 833 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
+	walk_up
 # 833 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
+	walk_up
 # 833 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
+	walk_up
+# 833 "data/maps/LittlerootTown/scripts.pory"
+	walk_up
+# 833 "data/maps/LittlerootTown/scripts.pory"
+	walk_up
 	step_end
 
 # 836 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomApproachPlayerMale3:
-# 837 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
+LittlerootTown_Movement_MomApproachPlayerMale2:
 # 837 "data/maps/LittlerootTown/scripts.pory"
 	walk_right
 # 837 "data/maps/LittlerootTown/scripts.pory"
@@ -1631,7 +1623,13 @@ LittlerootTown_Movement_MomApproachPlayerMale3:
 	step_end
 
 # 840 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomApproachPlayerMale4:
+LittlerootTown_Movement_MomApproachPlayerMale3:
+# 841 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 841 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 841 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
 # 841 "data/maps/LittlerootTown/scripts.pory"
 	walk_right
 # 841 "data/maps/LittlerootTown/scripts.pory"
@@ -1639,9 +1637,7 @@ LittlerootTown_Movement_MomApproachPlayerMale4:
 	step_end
 
 # 844 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomApproachPlayerMale5:
-# 845 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
+LittlerootTown_Movement_MomApproachPlayerMale4:
 # 845 "data/maps/LittlerootTown/scripts.pory"
 	walk_right
 # 845 "data/maps/LittlerootTown/scripts.pory"
@@ -1649,17 +1645,19 @@ LittlerootTown_Movement_MomApproachPlayerMale5:
 	step_end
 
 # 848 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomApproachPlayerFemale2:
+LittlerootTown_Movement_MomApproachPlayerMale5:
 # 849 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
+	walk_right
 # 849 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
+	walk_right
 # 849 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
+	walk_right
 	step_end
 
 # 852 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomApproachPlayerFemale3:
+LittlerootTown_Movement_MomApproachPlayerFemale2:
+# 853 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
 # 853 "data/maps/LittlerootTown/scripts.pory"
 	walk_left
 # 853 "data/maps/LittlerootTown/scripts.pory"
@@ -1667,13 +1665,7 @@ LittlerootTown_Movement_MomApproachPlayerFemale3:
 	step_end
 
 # 856 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomApproachPlayerFemale4:
-# 857 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 857 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 857 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
+LittlerootTown_Movement_MomApproachPlayerFemale3:
 # 857 "data/maps/LittlerootTown/scripts.pory"
 	walk_left
 # 857 "data/maps/LittlerootTown/scripts.pory"
@@ -1681,7 +1673,9 @@ LittlerootTown_Movement_MomApproachPlayerFemale4:
 	step_end
 
 # 860 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomApproachPlayerFemale5:
+LittlerootTown_Movement_MomApproachPlayerFemale4:
+# 861 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
 # 861 "data/maps/LittlerootTown/scripts.pory"
 	walk_left
 # 861 "data/maps/LittlerootTown/scripts.pory"
@@ -1693,21 +1687,19 @@ LittlerootTown_Movement_MomApproachPlayerFemale5:
 	step_end
 
 # 864 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomReturnHome0:
+LittlerootTown_Movement_MomApproachPlayerFemale5:
 # 865 "data/maps/LittlerootTown/scripts.pory"
-	walk_down
+	walk_left
 # 865 "data/maps/LittlerootTown/scripts.pory"
-	walk_down
+	walk_left
 # 865 "data/maps/LittlerootTown/scripts.pory"
-	walk_down
+	walk_left
 # 865 "data/maps/LittlerootTown/scripts.pory"
-	walk_down
-# 865 "data/maps/LittlerootTown/scripts.pory"
-	walk_down
+	walk_left
 	step_end
 
 # 868 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomReturnHome1:
+LittlerootTown_Movement_MomReturnHome0:
 # 869 "data/maps/LittlerootTown/scripts.pory"
 	walk_down
 # 869 "data/maps/LittlerootTown/scripts.pory"
@@ -1721,112 +1713,126 @@ LittlerootTown_Movement_MomReturnHome1:
 	step_end
 
 # 872 "data/maps/LittlerootTown/scripts.pory"
+LittlerootTown_Movement_MomReturnHome1:
+# 873 "data/maps/LittlerootTown/scripts.pory"
+	walk_down
+# 873 "data/maps/LittlerootTown/scripts.pory"
+	walk_down
+# 873 "data/maps/LittlerootTown/scripts.pory"
+	walk_down
+# 873 "data/maps/LittlerootTown/scripts.pory"
+	walk_down
+# 873 "data/maps/LittlerootTown/scripts.pory"
+	walk_down
+	step_end
+
+# 876 "data/maps/LittlerootTown/scripts.pory"
 LittlerootTown_Movement_MomReturnHomeMale2:
-# 873 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 873 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 873 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 873 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 874 "data/maps/LittlerootTown/scripts.pory"
-	walk_in_place_faster_up
-	step_end
-
 # 877 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 877 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 877 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 877 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 878 "data/maps/LittlerootTown/scripts.pory"
+	walk_in_place_faster_up
+	step_end
+
+# 881 "data/maps/LittlerootTown/scripts.pory"
 LittlerootTown_Movement_MomReturnHomeMale3:
-# 878 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 878 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 878 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 878 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 878 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 879 "data/maps/LittlerootTown/scripts.pory"
-	walk_in_place_faster_up
-	step_end
-
 # 882 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 882 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 882 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 882 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 882 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 883 "data/maps/LittlerootTown/scripts.pory"
+	walk_in_place_faster_up
+	step_end
+
+# 886 "data/maps/LittlerootTown/scripts.pory"
 LittlerootTown_Movement_MomReturnHomeMale4:
-# 883 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 883 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 884 "data/maps/LittlerootTown/scripts.pory"
-	walk_in_place_faster_up
-	step_end
-
 # 887 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 887 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 888 "data/maps/LittlerootTown/scripts.pory"
+	walk_in_place_faster_up
+	step_end
+
+# 891 "data/maps/LittlerootTown/scripts.pory"
 LittlerootTown_Movement_MomReturnHomeMale5:
-# 888 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 888 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 888 "data/maps/LittlerootTown/scripts.pory"
-	walk_left
-# 889 "data/maps/LittlerootTown/scripts.pory"
-	walk_in_place_faster_up
-	step_end
-
 # 892 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 892 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 892 "data/maps/LittlerootTown/scripts.pory"
+	walk_left
+# 893 "data/maps/LittlerootTown/scripts.pory"
+	walk_in_place_faster_up
+	step_end
+
+# 896 "data/maps/LittlerootTown/scripts.pory"
 LittlerootTown_Movement_MomReturnHomeFemale2:
-# 893 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 893 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 893 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 894 "data/maps/LittlerootTown/scripts.pory"
-	walk_in_place_faster_up
-	step_end
-
 # 897 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 897 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 897 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 898 "data/maps/LittlerootTown/scripts.pory"
+	walk_in_place_faster_up
+	step_end
+
+# 901 "data/maps/LittlerootTown/scripts.pory"
 LittlerootTown_Movement_MomReturnHomeFemale3:
-# 898 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 898 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 899 "data/maps/LittlerootTown/scripts.pory"
-	walk_in_place_faster_up
-	step_end
-
 # 902 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 902 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 903 "data/maps/LittlerootTown/scripts.pory"
+	walk_in_place_faster_up
+	step_end
+
+# 906 "data/maps/LittlerootTown/scripts.pory"
 LittlerootTown_Movement_MomReturnHomeFemale4:
-# 903 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 903 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 903 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 903 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 903 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 904 "data/maps/LittlerootTown/scripts.pory"
-	walk_in_place_faster_up
-	step_end
-
 # 907 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomReturnHomeFemale5:
-# 908 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 907 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 907 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 907 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 907 "data/maps/LittlerootTown/scripts.pory"
 	walk_right
 # 908 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 908 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 908 "data/maps/LittlerootTown/scripts.pory"
-	walk_right
-# 909 "data/maps/LittlerootTown/scripts.pory"
 	walk_in_place_faster_up
 	step_end
 
+# 911 "data/maps/LittlerootTown/scripts.pory"
+LittlerootTown_Movement_MomReturnHomeFemale5:
 # 912 "data/maps/LittlerootTown/scripts.pory"
-LittlerootTown_Movement_MomExitThroughDoor:
+	walk_right
+# 912 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 912 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
+# 912 "data/maps/LittlerootTown/scripts.pory"
+	walk_right
 # 913 "data/maps/LittlerootTown/scripts.pory"
+	walk_in_place_faster_up
+	step_end
+
+# 916 "data/maps/LittlerootTown/scripts.pory"
+LittlerootTown_Movement_MomExitThroughDoor:
+# 917 "data/maps/LittlerootTown/scripts.pory"
 	walk_up
 	step_end
 
@@ -1843,19 +1849,19 @@ LittlerootTown_EventScript_EnterTruck_Text_2:
 	.string "This truck has a cool logo!$"
 
 LittlerootTown_Text_SpencersHouse::
-# 539 "data/maps/LittlerootTown/scripts.pory"
+# 543 "data/maps/LittlerootTown/scripts.pory"
 	.string "SPENCER'S HOUSE$"
 
 LittlerootTown_Text_BrensHouse::
-# 543 "data/maps/LittlerootTown/scripts.pory"
+# 547 "data/maps/LittlerootTown/scripts.pory"
 	.string "BREN'S HOUSE$"
 
 LittlerootTown_Text_KylesHouse::
-# 547 "data/maps/LittlerootTown/scripts.pory"
+# 551 "data/maps/LittlerootTown/scripts.pory"
 	.string "KYLE'S HOUSE$"
 
 LittlerootTown_Text_OurNewHomeLetsGoInside::
-# 916 "data/maps/LittlerootTown/scripts.pory"
+# 920 "data/maps/LittlerootTown/scripts.pory"
 	.string "MOM: {PLAYER}, we're here, honey!\p"
 	.string "It must be tiring riding with our things\n"
 	.string "in the moving truck.\p"
@@ -1868,11 +1874,11 @@ LittlerootTown_Text_OurNewHomeLetsGoInside::
 	.string "Let's go inside.$"
 
 LittlerootTown_Text_WaitPlayer::
-# 929 "data/maps/LittlerootTown/scripts.pory"
+# 933 "data/maps/LittlerootTown/scripts.pory"
 	.string "MOM: Wait, {PLAYER}!$"
 
 LittlerootTown_Text_WearTheseRunningShoes::
-# 933 "data/maps/LittlerootTown/scripts.pory"
+# 937 "data/maps/LittlerootTown/scripts.pory"
 	.string "MOM: {PLAYER}! {PLAYER}! Did you\n"
 	.string "introduce yourself to PROF. BIRCH?\p"
 	.string "Oh! What an adorable POKéMON!\n"
@@ -1884,12 +1890,12 @@ LittlerootTown_Text_WearTheseRunningShoes::
 	.string "They'll put a zip in your step!$"
 
 LittlerootTown_Text_SwitchShoesWithRunningShoes::
-# 945 "data/maps/LittlerootTown/scripts.pory"
+# 949 "data/maps/LittlerootTown/scripts.pory"
 	.string "{PLAYER} switched shoes with the\n"
 	.string "RUNNING SHOES.$"
 
 LittlerootTown_Text_ExplainRunningShoes::
-# 950 "data/maps/LittlerootTown/scripts.pory"
+# 954 "data/maps/LittlerootTown/scripts.pory"
 	.string "MOM: {PLAYER}, those shoes came with\n"
 	.string "instructions.\p"
 	.string "“Press the B Button while wearing these\n"
@@ -1898,7 +1904,7 @@ LittlerootTown_Text_ExplainRunningShoes::
 	.string "in the great outdoors!”$"
 
 LittlerootTown_Text_ComeHomeIfAnythingHappens::
-# 959 "data/maps/LittlerootTown/scripts.pory"
+# 963 "data/maps/LittlerootTown/scripts.pory"
 	.string "… … … … … … … …\n"
 	.string "… … … … … … … …\p"
 	.string "To think that you have your very own\n"
@@ -1909,13 +1915,13 @@ LittlerootTown_Text_ComeHomeIfAnythingHappens::
 	.string "Go on, go get them, honey!$"
 
 LittlerootTown_Text_CanUsePCToStoreItems::
-# 970 "data/maps/LittlerootTown/scripts.pory"
+# 974 "data/maps/LittlerootTown/scripts.pory"
 	.string "If you use a PC, you can store items\n"
 	.string "and POKéMON.\p"
 	.string "The power of science is staggering!$"
 
 LittlerootTown_Text_BirchSpendsDaysInLab::
-# 976 "data/maps/LittlerootTown/scripts.pory"
+# 980 "data/maps/LittlerootTown/scripts.pory"
 	.string "PROF. BIRCH spends days in his LAB\n"
 	.string "studying, then he'll suddenly go out in\l"
 	.string "the wild to do more research…\p"
@@ -1923,18 +1929,18 @@ LittlerootTown_Text_BirchSpendsDaysInLab::
 	.string "at home?$"
 
 LittlerootTown_Text_IfYouGoInGrassPokemonWillJumpOut::
-# 984 "data/maps/LittlerootTown/scripts.pory"
+# 988 "data/maps/LittlerootTown/scripts.pory"
 	.string "Um, um, um!\p"
 	.string "If you go outside and go in the grass,\n"
 	.string "wild POKéMON will jump out!$"
 
 LittlerootTown_Text_DangerousIfYouDontHavePokemon::
-# 990 "data/maps/LittlerootTown/scripts.pory"
+# 994 "data/maps/LittlerootTown/scripts.pory"
 	.string "It's dangerous if you don't have\n"
 	.string "your own POKéMON.$"
 
 LittlerootTown_Text_CanYouGoSeeWhatsHappening::
-# 995 "data/maps/LittlerootTown/scripts.pory"
+# 999 "data/maps/LittlerootTown/scripts.pory"
 	.string "Um, hi!\p"
 	.string "There are scary POKéMON outside!\n"
 	.string "I can hear their cries!\p"
@@ -1944,26 +1950,26 @@ LittlerootTown_Text_CanYouGoSeeWhatsHappening::
 	.string "for me?$"
 
 LittlerootTown_Text_YouSavedBirch::
-# 1005 "data/maps/LittlerootTown/scripts.pory"
+# 1009 "data/maps/LittlerootTown/scripts.pory"
 	.string "You saved PROF. BIRCH!\n"
 	.string "I'm so glad!$"
 
 LittlerootTown_Text_GoodLuckCatchingPokemon::
-# 1010 "data/maps/LittlerootTown/scripts.pory"
+# 1014 "data/maps/LittlerootTown/scripts.pory"
 	.string "Are you going to catch POKéMON?\n"
 	.string "Good luck!$"
 
 LittlerootTown_Text_TownSign::
-# 1015 "data/maps/LittlerootTown/scripts.pory"
+# 1019 "data/maps/LittlerootTown/scripts.pory"
 	.string "LITTLEROOT TOWN\n"
 	.string "“A town that can't be shaded any hue.”$"
 
 LittlerootTown_Text_ProfBirchsLab::
-# 1020 "data/maps/LittlerootTown/scripts.pory"
+# 1024 "data/maps/LittlerootTown/scripts.pory"
 	.string "PROF. BIRCH'S POKéMON LAB$"
 
 LittlerootTown_Text_BirchSomethingToShowYouAtLab::
-# 1024 "data/maps/LittlerootTown/scripts.pory"
+# 1028 "data/maps/LittlerootTown/scripts.pory"
 	.string "PROF. BIRCH: Well, well, {PLAYER}{KUN}!\n"
 	.string "That was good work out there!\p"
 	.string "I knew there was something special\n"
