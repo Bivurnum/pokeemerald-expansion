@@ -85,7 +85,7 @@ mapscripts LittlerootTown_MaysHouse_1F_MapScripts {
 			setvar (VAR_LITTLEROOT_RIVAL_STATE, 3)
 			setvar (VAR_LITTLEROOT_TOWN_STATE, 1)
 		}
-		VAR_LITTLEROOT_HOUSES_STATE_BREN, 3: PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
+		VAR_LITTLEROOT_HOUSES_STATE_BREN, 18: PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
 	]
 }
 

@@ -41,8 +41,9 @@ EverGrandeCity_HallOfFame_EventScript_ShowStevensHouseBeldum::
 	return
 
 EverGrandeCity_HallOfFame_EventScript_ReadyReceiveSSTicketEvent::
-	setvar VAR_LITTLEROOT_HOUSES_STATE_BREN, 3
-	setvar VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 3
+	setvar VAR_LITTLEROOT_HOUSES_STATE_BREN, 18
+	setvar VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 18
+	setvar VAR_LITTLEROOT_HOUSES_STATE_kyle, 18
 	clearflag FLAG_HIDE_PLAYERS_HOUSE_DAD
 	return
 

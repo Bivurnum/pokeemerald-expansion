@@ -146,6 +146,9 @@ script InsideOfTruck_EventScript_WakeFriend {
 	playse (SE_EXIT)
 	waitse
 	removeobject (VAR_0x8009)
+	setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
+	setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 2)
+	setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
 	setflag (FLAG_HIDE_SPENCER_IN_TRUCK)
 	setflag (FLAG_HIDE_BREN_IN_TRUCK)
 	setflag (FLAG_HIDE_KYLE_IN_TRUCK)
@@ -183,7 +186,7 @@ text InsideOfTruck_Text_BoxPrintedWithMonLogo {
 }
 
 text InsideOfTruck_Text_FriendAwake {
-	"HUH?\n WAZZAT?!\p"
+	"HUH?\nWAZZAT?!\p"
 	"...Oh, it's just you, {PLAYER}.\n"
 	"I must have fallen asleep\l"
 	"along the way."
