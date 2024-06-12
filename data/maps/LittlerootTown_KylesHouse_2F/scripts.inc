@@ -62,7 +62,7 @@ LittlerootTown_KylesHouse_2F_EventScript_PC::
 # 35 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"
 	lockall
 # 36 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"
-	checkplayergender
+	checkfriendchoice
 # 37 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"
 	compare VAR_RESULT, KYLE
 	goto_if_eq LittlerootTown_KylesHouse_2F_EventScript_PC_1

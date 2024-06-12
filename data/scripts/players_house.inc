@@ -67,7 +67,7 @@ PlayersHouse_2F_EventScript_WallClock::
 	setflag FLAG_SET_WALL_CLOCK
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_PLAYERS_HOUSE_VIGOROTH_1
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_PLAYERS_HOUSE_VIGOROTH_2
-	checkplayergender
+	checkfriendchoice
 	call_if_eq VAR_RESULT, SPENCER, PlayersHouse_2F_EventScript_MomComesUpstairsMale
 	call_if_le VAR_RESULT, BREN, PlayersHouse_2F_EventScript_MomComesUpstairsFemale
 	playse SE_EXIT

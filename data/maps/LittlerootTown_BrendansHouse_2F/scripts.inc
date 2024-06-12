@@ -62,7 +62,7 @@ LittlerootTown_BrendansHouse_2F_EventScript_PC::
 # 37 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 	lockall
 # 38 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
-	checkplayergender
+	checkfriendchoice
 # 39 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 	compare VAR_RESULT, SPENCER
 	goto_if_eq LittlerootTown_BrendansHouse_2F_EventScript_PC_1
