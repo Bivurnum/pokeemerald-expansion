@@ -69,7 +69,7 @@ LittlerootTown_BrendansHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
 # 85 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	map_script_2 VAR_LITTLEROOT_RIVAL_STATE, 2, LittlerootTown_BrendansHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_5
 # 89 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 3, PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
+	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 18, PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
 	.2byte 0
 
 LittlerootTown_BrendansHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_0:
@@ -139,7 +139,7 @@ LittlerootTown_BrendansHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3:
 # 61 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	special GetRivalSonDaughterString
 # 62 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	msgbox RivalsHouse_1F_Text_OhYoureTheNewNeighbor, MSGBOX_DEFAULT
+	msgbox RivalsHouse_1F_Text_OhYoureTheNewNeighborSpencer, MSGBOX_DEFAULT
 # 63 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	setflag FLAG_MET_RIVAL_MOM
 # 64 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
@@ -172,7 +172,7 @@ LittlerootTown_BrendansHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4:
 # 78 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	special GetRivalSonDaughterString
 # 79 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	msgbox RivalsHouse_1F_Text_OhYoureTheNewNeighbor, MSGBOX_DEFAULT
+	msgbox RivalsHouse_1F_Text_OhYoureTheNewNeighborSpencer, MSGBOX_DEFAULT
 # 80 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	setflag FLAG_MET_RIVAL_MOM
 # 81 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
@@ -185,7 +185,7 @@ LittlerootTown_BrendansHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4:
 
 LittlerootTown_BrendansHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_5:
 # 86 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	setvar VAR_LITTLEROOT_RIVAL_STATE, 3
+	setvar VAR_LITTLEROOT_RIVAL_STATE, 19
 # 87 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	setvar VAR_LITTLEROOT_TOWN_STATE, 1
 	return

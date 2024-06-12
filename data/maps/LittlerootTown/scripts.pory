@@ -24,15 +24,18 @@ const LOCALID_BIRCH = 8
 	//                    and VAR_LITTLEROOT_HOUSES_STATE_KYLE
 	// 1: On Truck (and is corresponding friend)
 	// 2: Met Rival's Mom (and is corresponding friend)
+	// 3: Set second friend in bedroom
 	// 18: Entered Hall of Fame
 	// 19: Completed Lati TV / SS Ticket event
 	// 20: Exited house after above event
 
 	// State descriptions for VAR_LITTLEROOT_RIVAL_STATE
 	// 1: Chose to enter friend's truck
-	// 2: Entered friend's truck
-	// 3: Met Rival
-	// 4: Received Pokedex
+	// 2: Jumped into friend's truck
+	// 3: Woke friend
+	// 4: Exited friend's truck
+	// 19: Met Rival
+	// 20: Received Pokedex
 
 mapscripts LittlerootTown_MapScripts {
 	MAP_SCRIPT_ON_TRANSITION {
@@ -79,7 +82,7 @@ mapscripts LittlerootTown_MapScripts {
 			setvar (VAR_OLDALE_RIVAL_STATE, 2)
 			setflag (FLAG_HIDE_OLDALE_TOWN_RIVAL)
 		}
-		if (var(VAR_LITTLEROOT_RIVAL_STATE) == 3) {
+		if (var(VAR_LITTLEROOT_RIVAL_STATE) == 19) {
 			setflag (FLAG_RIVAL_LEFT_FOR_ROUTE103)
 		}
 		if (var(VAR_DEX_UPGRADE_JOHTO_STARTER_STATE) == 1) {
@@ -93,6 +96,8 @@ mapscripts LittlerootTown_MapScripts {
 		VAR_LITTLEROOT_INTRO_STATE, 1: LittlerootTown_EventScript_StepOffTruckSpencer
 		VAR_LITTLEROOT_INTRO_STATE, 2: LittlerootTown_EventScript_StepOffTruckBren
 		VAR_LITTLEROOT_INTRO_STATE, 3: LittlerootTown_EventScript_StepOffTruckKyle
+		VAR_LITTLEROOT_RIVAL_STATE, 2: LittlerootTown_EventScript_JumpOffFriendTruck
+		VAR_LITTLEROOT_RIVAL_STATE, 3: LittlerootTown_EventScript_JumpOffFriendTruck
 		VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 1: LittlerootTown_EventScript_BeginDexUpgradeScene
 	]
 	MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
@@ -149,6 +154,22 @@ script LittlerootTown_EventScript_StepOffTruckKyle {
 	end
 }
 
+script LittlerootTown_EventScript_JumpOffFriendTruck {
+	lockall
+	delay (15)
+	playse (SE_LEDGE)
+	applymovement (OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_PlayerStepOffTruck)
+	waitmovement (0)
+	if (var(VAR_LITTLEROOT_RIVAL_STATE) == 2) {
+		setvar (VAR_LITTLEROOT_RIVAL_STATE, 1)
+	}
+	else {
+		setvar (VAR_LITTLEROOT_RIVAL_STATE, 4)
+	}
+	releaseall
+	end
+}
+
 script LittlerootTown_EventScript_GoInsideWithMom {
 	delay (15)
 	playse (SE_LEDGE)
@@ -187,11 +208,8 @@ script LittlerootTown_EventScript_GoInsideWithMom {
 script LittlerootTown_EventScript_EnterTruck {
 	lockall
 	getplayerxy (VAR_0x8004, VAR_0x8005)
-	if (var(VAR_LITTLEROOT_HOUSES_STATE_SPENCER) >= 2 || var(VAR_LITTLEROOT_HOUSES_STATE_BREN) >= 2 || var(VAR_LITTLEROOT_HOUSES_STATE_KYLE) >= 2) {
-		msgbox ("They must've locked the truck.")
-	}
 	if (var(VAR_0x8004) == 4 || var(VAR_0x8004) == 13 || var(VAR_0x8004) == 16) {
-		if (var(VAR_LITTLEROOT_HOUSES_STATE_SPENCER) >= 2 || var(VAR_LITTLEROOT_HOUSES_STATE_BREN) >= 2 || var(VAR_LITTLEROOT_HOUSES_STATE_KYLE) >= 2) {
+		if (var(VAR_LITTLEROOT_RIVAL_STATE) >= 3 || var(VAR_LITTLEROOT_RIVAL_STATE) >= 3 || var(VAR_LITTLEROOT_RIVAL_STATE) >= 3) {
 			msgbox ("They must've locked the truck.")
 		}
 		else {
@@ -204,23 +222,47 @@ script LittlerootTown_EventScript_EnterTruck {
 					waitmovement (0)
 					//fadescreen (FADE_TO_BLACK)
 					setvar (VAR_LITTLEROOT_RIVAL_STATE, 1)
+					checkfriendchoice
 					switch (var(VAR_0x8004)) {
 						case 4:
+							switch (var(VAR_RESULT)) {
+								case BREN:
+									setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
+								case KYLE:
+									setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 2)
+							}
 							setvar (VAR_0x8009, 4)
 							clearflag (FLAG_HIDE_SPENCER_IN_TRUCK)
+							setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
 							setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
 							setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
+							setdynamicwarp (MAP_LITTLEROOT_TOWN, 3, 10)
 						case 13:
+							switch (var(VAR_RESULT)) {
+								case SPENCER:
+									setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
+								case KYLE:
+									setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
+							}
 							setvar (VAR_0x8009, 5)
 							clearflag (FLAG_HIDE_BREN_IN_TRUCK)
 							setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK)
 							setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
+							setdynamicwarp (MAP_LITTLEROOT_TOWN, 12, 10)
 						case 16:
+							switch (var(VAR_RESULT)) {
+								case BREN:
+									setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
+								case SPENCER:
+									setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 2)
+							}
 							setvar (VAR_0x8009, 6)
 							clearflag (FLAG_HIDE_KYLE_IN_TRUCK)
 							setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK)
 							setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
+							setdynamicwarp (MAP_LITTLEROOT_TOWN, 15, 17)
 					}
+					setvar (VAR_LITTLEROOT_RIVAL_STATE, 2)
 					warp (MAP_INSIDE_OF_TRUCK, 4, 2)
 					waitstate
 					end

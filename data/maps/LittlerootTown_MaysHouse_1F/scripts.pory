@@ -58,7 +58,7 @@ mapscripts LittlerootTown_MaysHouse_1F_MapScripts {
 			applymovement (LOCALID_RIVAL_MOM, LittlerootTown_MaysHouse_1F_Movement_RivalMomApproach)
 			waitmovement (0)
 			special (GetRivalSonDaughterString)
-			msgbox (RivalsHouse_1F_Text_OhYoureTheNewNeighbor, MSGBOX_DEFAULT)
+			msgbox (RivalsHouse_1F_Text_OhYoureTheNewNeighborBren, MSGBOX_DEFAULT)
 			setflag (FLAG_MET_RIVAL_MOM)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
@@ -75,14 +75,14 @@ mapscripts LittlerootTown_MaysHouse_1F_MapScripts {
 			applymovement (LOCALID_RIVAL_MOM, LittlerootTown_MaysHouse_1F_Movement_RivalMomApproach)
 			waitmovement (0)
 			special (GetRivalSonDaughterString)
-			msgbox (RivalsHouse_1F_Text_OhYoureTheNewNeighbor, MSGBOX_DEFAULT)
+			msgbox (RivalsHouse_1F_Text_OhYoureTheNewNeighborBren, MSGBOX_DEFAULT)
 			setflag (FLAG_MET_RIVAL_MOM)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
 			releaseall
 		}
 		VAR_LITTLEROOT_RIVAL_STATE, 2{
-			setvar (VAR_LITTLEROOT_RIVAL_STATE, 3)
+			setvar (VAR_LITTLEROOT_RIVAL_STATE, 19)
 			setvar (VAR_LITTLEROOT_TOWN_STATE, 1)
 		}
 		VAR_LITTLEROOT_HOUSES_STATE_BREN, 18: PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
@@ -103,7 +103,7 @@ script RivalsHouse_1F_EventScript_RivalMom {
 	faceplayer
 	goto_if_set (FLAG_DEFEATED_RIVAL_ROUTE103, RivalsHouse_1F_EventScript_GoHomeEverySoOften)
 	goto_if_set (FLAG_SYS_POKEMON_GET, RivalsHouse_1F_EventScript_RivalIsOnRoute103)
-	if (var(VAR_LITTLEROOT_RIVAL_STATE) == 3) {
+	if (var(VAR_LITTLEROOT_RIVAL_STATE) == 19) {
 		msgbox (RivalsHouse_1F_Text_TooBusyToNoticeVisit, MSGBOX_DEFAULT)
 		release
 		end
@@ -145,25 +145,36 @@ movement LittlerootTown_MaysHouse_1F_Movement_RivalMomApproach {
 	walk_left * 5
 }
 
-text RivalsHouse_1F_Text_OhYoureTheNewNeighbor {
-	"Oh, hello. And you are?\p"
-	"… … … … … … … … …\n"
-	"… … … … … … … … …\p"
-	"Oh, you're {PLAYER}{KUN}, our new next-door\n"
-	"neighbor! Hi!\p"
-	"We have a {STR_VAR_1} about the same\n"
-	"age as you.\p"
-	"Our {STR_VAR_1} was excited about making\n"
-	"a new friend.\p"
-	"Our {STR_VAR_1} is upstairs, I think."
+text RivalsHouse_1F_Text_OhYoureTheNewNeighborSpencer {
+	"Oh, hello, {PLAYER}!\p"
+	"If you're looking for SPENCER,\n"
+	"I think he may still be in\l"
+	"the moving truck.\p"
+	"Would you go and check on him\n"
+	"for me, please?"
+}
+
+text RivalsHouse_1F_Text_OhYoureTheNewNeighborBren {
+	"Oh, hello, {PLAYER}!\p"
+	"If you're looking for BREN,\n"
+	"I think he may still be in\l"
+	"the moving truck.\p"
+	"Would you go and check on him\n"
+	"for me, please?"
+}
+
+text RivalsHouse_1F_Text_OhYoureTheNewNeighborKyle {
+	"Oh, hello, {PLAYER}!\p"
+	"If you're looking for KYLE,\n"
+	"I think he may still be in\l"
+	"the moving truck.\p"
+	"Would you go and check on him\n"
+	"for me, please?"
 }
 
 text RivalsHouse_1F_Text_LikeChildLikeFather {
-	"Like child, like father.\p"
-	"My husband is as wild about POKéMON\n"
-	"as our child.\p"
-	"If he's not at his LAB, he's likely\n"
-	"scrabbling about in grassy places."
+	"I sure hope my son is\n"
+	"getting enough to eat."
 }
 
 text RivalsHouse_1F_Text_TooBusyToNoticeVisit {

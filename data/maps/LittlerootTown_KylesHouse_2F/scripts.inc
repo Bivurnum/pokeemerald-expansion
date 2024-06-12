@@ -11,7 +11,7 @@ LittlerootTown_KylesHouse_2F_MapScripts_MAP_SCRIPT_ON_TRANSITION:
 	goto_if_lt LittlerootTown_KylesHouse_2F_MapScripts_MAP_SCRIPT_ON_TRANSITION_2
 LittlerootTown_KylesHouse_2F_MapScripts_MAP_SCRIPT_ON_TRANSITION_1:
 # 9 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"
-	compare VAR_LITTLEROOT_RIVAL_STATE, 3
+	compare VAR_LITTLEROOT_RIVAL_STATE, 19
 	goto_if_ge LittlerootTown_KylesHouse_2F_MapScripts_MAP_SCRIPT_ON_TRANSITION_5
 LittlerootTown_KylesHouse_2F_MapScripts_MAP_SCRIPT_ON_TRANSITION_4:
 # 14 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"

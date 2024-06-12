@@ -76,7 +76,7 @@ script InsideOfTruck_EventScript_MovingBox {
 }
 
 script InsideOfTruck_EventScript_WakeFriend {
-	lock
+	lockall
 	delay (15)
 	playse (SE_PIN)
 	applymovement (VAR_0x8009, Common_Movement_ExclamationMark)
@@ -101,34 +101,28 @@ script InsideOfTruck_EventScript_WakeFriend {
 		case SPENCER:
 			if (var(VAR_0x8009) == 5) {
 				clearflag (FLAG_HIDE_INTRO_2F_KYLE)
-				setdynamicwarp (MAP_LITTLEROOT_TOWN, 12, 10)
 				msgbox (InsideOfTruck_Text_BetKyleHasPokemonAlready, MSGBOX_DEFAULT)
 			}
 			if (var(VAR_0x8009) == 6) {
 				clearflag (FLAG_HIDE_INTRO_2F_BREN)
-				setdynamicwarp (MAP_LITTLEROOT_TOWN, 15, 17)
 				msgbox (InsideOfTruck_Text_BetBrenHasPokemonAlready, MSGBOX_DEFAULT)
 			}
 		case BREN:
 			if (var(VAR_0x8009) == 4) {
 				clearflag (FLAG_HIDE_INTRO_2F_KYLE)
-				setdynamicwarp (MAP_LITTLEROOT_TOWN, 3, 10)
 				msgbox (InsideOfTruck_Text_BetKyleHasPokemonAlready, MSGBOX_DEFAULT)
 			}
 			if (var(VAR_0x8009) == 6) {
 				clearflag (FLAG_HIDE_INTRO_2F_SPENCER)
-				setdynamicwarp (MAP_LITTLEROOT_TOWN, 15, 17)
 				msgbox (InsideOfTruck_Text_BetSpencerHasPokemonAlready, MSGBOX_DEFAULT)
 			}
 		case KYLE:
 			if (var(VAR_0x8009) == 4) {
 				clearflag (FLAG_HIDE_INTRO_2F_BREN)
-				setdynamicwarp (MAP_LITTLEROOT_TOWN, 3, 10)
 				msgbox (InsideOfTruck_Text_BetBrenHasPokemonAlready, MSGBOX_DEFAULT)
 			}
 			if (var(VAR_0x8009) == 5) {
 				clearflag (FLAG_HIDE_INTRO_2F_SPENCER)
-				setdynamicwarp (MAP_LITTLEROOT_TOWN, 12, 10)
 				msgbox (InsideOfTruck_Text_BetSpencerHasPokemonAlready, MSGBOX_DEFAULT)
 			}
 	}
@@ -152,8 +146,16 @@ script InsideOfTruck_EventScript_WakeFriend {
 	setflag (FLAG_HIDE_SPENCER_IN_TRUCK)
 	setflag (FLAG_HIDE_BREN_IN_TRUCK)
 	setflag (FLAG_HIDE_KYLE_IN_TRUCK)
-	setvar (VAR_LITTLEROOT_RIVAL_STATE, 2)
-	release
+	setvar (VAR_LITTLEROOT_RIVAL_STATE, 3)
+	switch (var(VAR_0x8009)) {
+		case 4:
+			setdynamicwarp (MAP_LITTLEROOT_TOWN, 3, 10)
+		case 5:
+			setdynamicwarp (MAP_LITTLEROOT_TOWN, 12, 10)
+		case 6:
+			setdynamicwarp (MAP_LITTLEROOT_TOWN, 15, 17)
+	}
+	releaseall
 	end
 }
 

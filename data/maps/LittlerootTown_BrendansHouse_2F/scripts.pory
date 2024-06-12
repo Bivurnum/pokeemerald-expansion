@@ -8,7 +8,7 @@ mapscripts LittlerootTown_BrendansHouse_2F_MapScripts {
 				setvar (VAR_LITTLEROOT_RIVAL_STATE, 2)
 			}
 		}
-		if (var(VAR_LITTLEROOT_RIVAL_STATE) >= 3) {
+		if (var(VAR_LITTLEROOT_RIVAL_STATE) >= 19) {
 			goto_if_set (FLAG_MET_RIVAL_LILYCOVE, LittlerootTown_BrendansHouse_2F_EventScript_TryUpdateBrendanPos)
 			goto_if_ge (VAR_BIRCH_LAB_STATE, 2, LittlerootTown_BrendansHouse_2F_EventScript_Ret)
 			goto (LittlerootTown_BrendansHouse_2F_EventScript_TryUpdateBrendanPos)
