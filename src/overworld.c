@@ -2199,14 +2199,13 @@ static void InitObjectEventsLocal(void)
 {
     u16 x, y;
     struct InitialPlayerAvatarState *player;
-    u8 friend = VarGet(VAR_FRIEND_CHOICE);
-
+    
     gTotalCameraPixelOffsetX = 0;
     gTotalCameraPixelOffsetY = 0;
     ResetObjectEvents();
     GetCameraFocusCoords(&x, &y);
     player = GetInitialPlayerAvatarState();
-    InitPlayerAvatar(x, y, player->direction, friend);
+    InitPlayerAvatar(x, y, player->direction, gSaveBlock2Ptr->friendChoice);
     SetPlayerAvatarTransitionFlags(player->transitionFlags);
     ResetInitialPlayerAvatarState();
     TrySpawnObjectEvents(0, 0);

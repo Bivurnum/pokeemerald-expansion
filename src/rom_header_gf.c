@@ -64,6 +64,7 @@ struct GFRomHeader
     u32 trainerIdOffset;
     u32 playerNameOffset;
     u32 playerGenderOffset;
+    u32 friendChoiceOffset;
     u32 frontierStatusOffset;
     u32 frontierStatusOffset2;
     u32 externalEventFlagsOffset;
@@ -147,6 +148,7 @@ static const struct GFRomHeader sGFRomHeader = {
     .trainerIdOffset = offsetof(struct SaveBlock2, playerTrainerId),
     .playerNameOffset = offsetof(struct SaveBlock2, playerName),
     .playerGenderOffset = offsetof(struct SaveBlock2, playerGender),
+    .friendChoiceOffset = offsetof(struct SaveBlock2, friendChoice),
     .frontierStatusOffset = offsetof(struct SaveBlock2, frontier.challengeStatus),
     .frontierStatusOffset2 = offsetof(struct SaveBlock2, frontier.challengeStatus),
     .externalEventFlagsOffset = offsetof(struct SaveBlock1, externalEventFlags),

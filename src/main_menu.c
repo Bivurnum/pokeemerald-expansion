@@ -1471,12 +1471,12 @@ static void Task_NewGameBirchSpeech_ChooseGender(u8 taskId)
     int gender = NewGameBirchSpeech_ProcessGenderMenuInput();
     int gender2;
 
+    gSaveBlock2Ptr->playerGender = MALE;
     switch (gender)
     {
         case KYLE:
             PlaySE(SE_SELECT);
-            gSaveBlock2Ptr->playerGender = MALE;
-            VarSet(VAR_FRIEND_CHOICE, KYLE);
+            gSaveBlock2Ptr->friendChoice = KYLE;
             NewGameBirchSpeech_ClearGenderWindow(1, 1);
             FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);
             NewGameBirchSpeech_SetDefaultPlayerName(0);
@@ -1487,8 +1487,7 @@ static void Task_NewGameBirchSpeech_ChooseGender(u8 taskId)
             break;
         case BREN:
             PlaySE(SE_SELECT);
-            gSaveBlock2Ptr->playerGender = MALE;
-            VarSet(VAR_FRIEND_CHOICE, BREN);
+            gSaveBlock2Ptr->friendChoice = BREN;
             NewGameBirchSpeech_ClearGenderWindow(1, 1);
             FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);
             NewGameBirchSpeech_SetDefaultPlayerName(0);
@@ -1499,8 +1498,7 @@ static void Task_NewGameBirchSpeech_ChooseGender(u8 taskId)
             break;
         case SPENCER:
             PlaySE(SE_SELECT);
-            gSaveBlock2Ptr->playerGender = MALE;
-            VarSet(VAR_FRIEND_CHOICE, SPENCER);
+            gSaveBlock2Ptr->friendChoice = SPENCER;
             NewGameBirchSpeech_ClearGenderWindow(1, 1);
             FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);
             NewGameBirchSpeech_SetDefaultPlayerName(0);
