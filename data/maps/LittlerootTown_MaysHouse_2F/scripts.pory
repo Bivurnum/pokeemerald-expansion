@@ -40,12 +40,14 @@ script LittlerootTown_MaysHouse_2F_EventScript_FriendRival {
 		msgbox (RivalsHouse_2F_Text_GoFindBirch, MSGBOX_DEFAULT)
 		closemessage
 		applymovement (LOCALID_FRIEND, Common_Movement_FaceUp)
+		waitmovement (0)
 		setvar (VAR_LITTLEROOT_RIVAL_STATE, 6)
 	}
 	elif (var(VAR_LITTLEROOT_RIVAL_STATE) == 6) {
 		msgbox (RivalsHouse_2F_Text_HesOnRoute101, MSGBOX_DEFAULT)
 		closemessage
 		applymovement (LOCALID_FRIEND, Common_Movement_FaceUp)
+		waitmovement (0)
 	}
 	setvar (VAR_LITTLEROOT_TOWN_STATE, 1)
 	releaseall

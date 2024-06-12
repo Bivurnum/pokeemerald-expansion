@@ -711,7 +711,7 @@ LittlerootTown_EventScript_Twin::
 # 391 "data/maps/LittlerootTown/scripts.pory"
 	goto_if_set FLAG_RESCUED_BIRCH, LittlerootTown_EventScript_YouSavedBirch
 # 392 "data/maps/LittlerootTown/scripts.pory"
-	compare VAR_LITTLEROOT_TOWN_STATE, 0
+	compare VAR_LITTLEROOT_TOWN_STATE, 1
 	goto_if_eq LittlerootTown_EventScript_Twin_2
 # 402 "data/maps/LittlerootTown/scripts.pory"
 	msgbox LittlerootTown_Text_IfYouGoInGrassPokemonWillJumpOut, MSGBOX_DEFAULT
