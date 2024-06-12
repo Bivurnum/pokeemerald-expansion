@@ -51,12 +51,11 @@ mapscripts LittlerootTown_MapScripts {
 			setobjectxyperm (LOCALID_MOM, 17, 15)
 		}
 		if (var(VAR_LITTLEROOT_TOWN_STATE) == 3) {
-			checkplayergender
-			if (var(VAR_RESULT) != KYLE) {
+			if (var(VAR_FRIEND_CHOICE) != KYLE) {
 				clearflag (FLAG_HIDE_LITTLEROOT_TOWN_MOM_OUTSIDE)
 				setobjectmovementtype (LOCALID_MOM, MOVEMENT_TYPE_FACE_DOWN)
 			}
-			switch (var(VAR_RESULT)) {
+			switch (var(VAR_FRIEND_CHOICE)) {
 				case SPENCER:
 					setobjectxyperm (LOCALID_MOM, 5, 9)
 				case BREN:
@@ -232,10 +231,9 @@ script LittlerootTown_EventScript_EnterTruck {
 					waitmovement (0)
 					//fadescreen (FADE_TO_BLACK)
 					setvar (VAR_LITTLEROOT_RIVAL_STATE, 1)
-					checkplayergender
 					switch (var(VAR_0x8004)) {
 						case 4:
-							switch (var(VAR_RESULT)) {
+							switch (var(VAR_FRIEND_CHOICE)) {
 								case BREN:
 									setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
 								case KYLE:
@@ -247,7 +245,7 @@ script LittlerootTown_EventScript_EnterTruck {
 							setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
 							setdynamicwarp (MAP_LITTLEROOT_TOWN, 3, 10)
 						case 13:
-							switch (var(VAR_RESULT)) {
+							switch (var(VAR_FRIEND_CHOICE)) {
 								case SPENCER:
 									setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
 								case KYLE:
@@ -259,7 +257,7 @@ script LittlerootTown_EventScript_EnterTruck {
 							setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
 							setdynamicwarp (MAP_LITTLEROOT_TOWN, 12, 10)
 						case 16:
-							switch (var(VAR_RESULT)) {
+							switch (var(VAR_FRIEND_CHOICE)) {
 								case BREN:
 									setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
 								case SPENCER:
@@ -353,8 +351,7 @@ script LittlerootTown_EventScript_BeginDexUpgradeScene {
 script LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade {
 	addobject (LOCALID_BIRCH)
 	addobject (LOCALID_RIVAL)
-	checkplayergender
-	switch (var(VAR_RESULT)) {
+	switch (var(VAR_FRIEND_CHOICE)) {
 		case SPENCER:
 			setobjectxy (LOCALID_RIVAL, 6, 10)
 			setobjectxy (LOCALID_BIRCH, 5, 10)

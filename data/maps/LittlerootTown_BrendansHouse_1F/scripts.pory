@@ -64,8 +64,7 @@ mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 2)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
-			checkplayergender
-			switch (var(VAR_RESULT)) {
+			switch (var(VAR_FRIEND_CHOICE)) {
 				case BREN:
 					setflag(FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
 				case KYLE:

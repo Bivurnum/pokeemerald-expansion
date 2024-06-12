@@ -2199,7 +2199,7 @@ static void InitObjectEventsLocal(void)
 {
     u16 x, y;
     struct InitialPlayerAvatarState *player;
-    int friend = VarGet(VAR_FRIEND_CHOICE);
+    u8 friend = VarGet(VAR_FRIEND_CHOICE);
 
     gTotalCameraPixelOffsetX = 0;
     gTotalCameraPixelOffsetY = 0;
