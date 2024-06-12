@@ -160,7 +160,7 @@ gScriptCmdTable::
 	.4byte ScrCmd_setfieldeffectargument            @ 0x9d
 	.4byte ScrCmd_waitfieldeffect                   @ 0x9e
 	.4byte ScrCmd_setrespawn                        @ 0x9f
-	.4byte ScrCmd_checkfriendchoice                 @ 0xa0
+	.4byte ScrCmd_checkplayergender                 @ 0xa0
 	.4byte ScrCmd_playmoncry                        @ 0xa1
 	.4byte ScrCmd_setmetatile                       @ 0xa2
 	.4byte ScrCmd_resetweather                      @ 0xa3

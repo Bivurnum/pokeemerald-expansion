@@ -59,7 +59,7 @@ BattleFrontier_BattleArenaBattleRoom_OnTransition:
 # 30 "data/maps/BattleFrontier_BattleArenaBattleRoom/scripts.pory"
 BattleFrontier_BattleArenaBattleRoom_EventScript_SetPlayerGfx::
 # 31 "data/maps/BattleFrontier_BattleArenaBattleRoom/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 32 "data/maps/BattleFrontier_BattleArenaBattleRoom/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, BattleFrontier_BattleArenaBattleRoom_EventScript_SetPlayerGfxMale
 # 33 "data/maps/BattleFrontier_BattleArenaBattleRoom/scripts.pory"

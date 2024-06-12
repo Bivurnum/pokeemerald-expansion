@@ -332,7 +332,7 @@ MossdeepCity_SpaceCenter_2F_EventScript_StevenFacePlayerWest::
 
 MossdeepCity_SpaceCenter_2F_EventScript_RivalRayquazaCall::
 	lockall
-	checkfriendchoice
+	checkplayergender
 	call_if_eq VAR_RESULT, MALE, MossdeepCity_SpaceCenter_2F_EventScript_MayRayquazaCall
 	call_if_eq VAR_RESULT, FEMALE, MossdeepCity_SpaceCenter_2F_EventScript_BrendanRayquazaCall
 	closemessage

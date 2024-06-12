@@ -41,7 +41,7 @@ BattleFrontier_BattleFactoryBattleRoom_OnTransition:
 # 21 "data/maps/BattleFrontier_BattleFactoryBattleRoom/scripts.pory"
 	frontier_settrainers
 # 22 "data/maps/BattleFrontier_BattleFactoryBattleRoom/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 23 "data/maps/BattleFrontier_BattleFactoryBattleRoom/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, BattleFrontier_BattleFactoryBattleRoom_EventScript_SetPlayerGfxMale
 # 24 "data/maps/BattleFrontier_BattleFactoryBattleRoom/scripts.pory"

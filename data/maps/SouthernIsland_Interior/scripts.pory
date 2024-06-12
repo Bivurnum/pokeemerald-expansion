@@ -33,7 +33,7 @@ SouthernIsland_Interior_EventScript_SetUpLatias::
 	return
 
 SouthernIsland_Interior_EventScript_SetUpPlayerGfx::
-	checkfriendchoice
+	checkplayergender
 	goto_if_eq VAR_RESULT, MALE, SouthernIsland_Interior_EventScript_SetBrendanGfx
 	goto_if_eq VAR_RESULT, FEMALE, SouthernIsland_Interior_EventScript_SetMayGfx
 	end

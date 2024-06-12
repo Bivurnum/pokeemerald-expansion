@@ -49,7 +49,7 @@ BattleFrontier_BattleTowerMultiBattleRoom_EventScript_SetObjGfx::
 # 25 "data/maps/BattleFrontier_BattleTowerMultiBattleRoom/scripts.pory"
 	tower_setpartnergfx
 # 26 "data/maps/BattleFrontier_BattleTowerMultiBattleRoom/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 27 "data/maps/BattleFrontier_BattleTowerMultiBattleRoom/scripts.pory"
 	goto_if_eq VAR_RESULT, FEMALE, BattleFrontier_BattleTowerMultiBattleRoom_EventScript_SetPlayerGfxFemale
 # 28 "data/maps/BattleFrontier_BattleTowerMultiBattleRoom/scripts.pory"

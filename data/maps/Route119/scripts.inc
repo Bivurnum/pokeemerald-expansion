@@ -91,7 +91,7 @@ Route119_EventScript_RivalEncounter::
 # 46 "data/maps/Route119/scripts.pory"
 	addobject LOCALID_RIVAL_ON_BIKE
 # 47 "data/maps/Route119/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 48 "data/maps/Route119/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, Route119_EventScript_PlayMayMusic
 # 49 "data/maps/Route119/scripts.pory"
@@ -119,7 +119,7 @@ Route119_EventScript_RivalEncounter::
 # 60 "data/maps/Route119/scripts.pory"
 	delay 30
 # 61 "data/maps/Route119/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 62 "data/maps/Route119/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, Route119_EventScript_BattleMay
 # 63 "data/maps/Route119/scripts.pory"

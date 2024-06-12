@@ -145,7 +145,7 @@ LittlerootTown_MaysHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3:
 # 65 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
 	setvar VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2
 # 66 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 67 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
 	switch VAR_RESULT
 # 68 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
@@ -181,7 +181,7 @@ LittlerootTown_MaysHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4:
 
 LittlerootTown_MaysHouse_1F_EventScript_CheckShowShoesManual::
 # 88 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 89 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
 	compare VAR_RESULT, BREN
 	goto_if_eq LittlerootTown_MaysHouse_1F_EventScript_CheckShowShoesManual_1

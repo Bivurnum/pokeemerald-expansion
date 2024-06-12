@@ -469,7 +469,7 @@ LilycoveCity_EventScript_Rival::
 # 235 "data/maps/LilycoveCity/scripts.pory"
 	faceplayer
 # 236 "data/maps/LilycoveCity/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 237 "data/maps/LilycoveCity/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, LilycoveCity_EventScript_May
 # 238 "data/maps/LilycoveCity/scripts.pory"

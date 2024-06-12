@@ -521,7 +521,7 @@ OldaleTown_EventScript_RivalTrigger3::
 # 261 "data/maps/OldaleTown/scripts.pory"
 OldaleTown_EventScript_ShowRivalMessage::
 # 262 "data/maps/OldaleTown/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 263 "data/maps/OldaleTown/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, OldaleTown_EventScript_ShowMayMessage
 # 264 "data/maps/OldaleTown/scripts.pory"

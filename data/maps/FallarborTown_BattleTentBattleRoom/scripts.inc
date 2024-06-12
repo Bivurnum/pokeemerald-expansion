@@ -39,7 +39,7 @@ FallarborTown_BattleTentBattleRoom_OnTransition:
 # 20 "data/maps/FallarborTown_BattleTentBattleRoom/scripts.pory"
 FallarborTown_BattleTentBattleRoom_EventScript_SetPlayerGfx::
 # 21 "data/maps/FallarborTown_BattleTentBattleRoom/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 22 "data/maps/FallarborTown_BattleTentBattleRoom/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, FallarborTown_BattleTentBattleRoom_EventScript_SetPlayerGfxMale
 # 23 "data/maps/FallarborTown_BattleTentBattleRoom/scripts.pory"

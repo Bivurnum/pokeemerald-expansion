@@ -875,7 +875,7 @@ ContestHall_EventScript_SetExitWarpLinkContest::
 # 438 "data/maps/ContestHall/scripts.pory"
 LilycoveCity_ContestLobby_EventScript_SetPlayerGfx::
 # 439 "data/maps/ContestHall/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 440 "data/maps/ContestHall/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, LilycoveCity_ContestLobby_EventScript_SetPlayerGfxBrendan
 # 441 "data/maps/ContestHall/scripts.pory"

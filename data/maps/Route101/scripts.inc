@@ -485,7 +485,7 @@ Route101_EventScript_BirchsBag::
 # 243 "data/maps/Route101/scripts.pory"
 	clearflag FLAG_HIDE_MAP_NAME_POPUP
 # 244 "data/maps/Route101/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 245 "data/maps/Route101/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, Route101_EventScript_HideMayInBedroom
 # 246 "data/maps/Route101/scripts.pory"

@@ -14,14 +14,14 @@ mapscripts LittlerootTown_BrendansHouse_2F_MapScripts {
 	}
 	MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
 		VAR_SECRET_BASE_INITIALIZED, 0 {
-			checkfriendchoice
+			checkplayergender
 			goto_if_eq (VAR_RESULT, SPENCER, SecretBase_EventScript_InitDecorations)
 		}
 	]
 }
 
 script LittlerootTown_BrendansHouse_2F_EventScript_TryUpdateBrendanPos {
-	checkfriendchoice
+	checkplayergender
 	goto_if_eq (VAR_RESULT, MALE, LittlerootTown_BrendansHouse_2F_EventScript_Ret)
 	goto_if_ge (VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 2, LittlerootTown_BrendansHouse_2F_EventScript_Ret)
 	setobjectxyperm (LOCALID_RIVAL, 0, 2)
@@ -35,8 +35,7 @@ script LittlerootTown_BrendansHouse_2F_EventScript_Ret {
 
 script LittlerootTown_BrendansHouse_2F_EventScript_PC {
 	lockall
-	checkfriendchoice
-	if (var(VAR_RESULT) == SPENCER) {
+	if (var(VAR_FRIEND_CHOICE) == SPENCER) {
 		goto (LittlerootTown_BrendansHouse_2F_EventScript_CheckPlayersPC)
 	}
 	else {

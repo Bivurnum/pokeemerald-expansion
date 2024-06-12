@@ -34,7 +34,7 @@ LittlerootTown_BrendansHouse_2F_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE:
 
 LittlerootTown_BrendansHouse_2F_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE_0:
 # 17 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 18 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, SPENCER, SecretBase_EventScript_InitDecorations
 	return
@@ -42,7 +42,7 @@ LittlerootTown_BrendansHouse_2F_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE_0:
 
 LittlerootTown_BrendansHouse_2F_EventScript_TryUpdateBrendanPos::
 # 24 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 25 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, LittlerootTown_BrendansHouse_2F_EventScript_Ret
 # 26 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
@@ -62,7 +62,7 @@ LittlerootTown_BrendansHouse_2F_EventScript_PC::
 # 37 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 	lockall
 # 38 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 39 "data/maps/LittlerootTown_BrendansHouse_2F/scripts.pory"
 	compare VAR_RESULT, SPENCER
 	goto_if_eq LittlerootTown_BrendansHouse_2F_EventScript_PC_1

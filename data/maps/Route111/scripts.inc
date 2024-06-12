@@ -119,7 +119,7 @@ Route111_OnTransition:
 # 60 "data/maps/Route111/scripts.pory"
 Route111_EventScript_SetFallingPlayerGfx::
 # 61 "data/maps/Route111/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 62 "data/maps/Route111/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, Route111_EventScript_SetFallingPlayerGfxMale
 # 63 "data/maps/Route111/scripts.pory"

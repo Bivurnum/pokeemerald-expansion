@@ -95,7 +95,7 @@ EverGrandeCity_HallOfFame_EventScript_EnterHallOfFame::
 # 48 "data/maps/EverGrandeCity_HallOfFame/scripts.pory"
 	call EverGrandeCity_HallOfFame_EventScript_SetGameClearFlags
 # 49 "data/maps/EverGrandeCity_HallOfFame/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 50 "data/maps/EverGrandeCity_HallOfFame/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, EverGrandeCity_HallOfFame_EventScript_GameClearMale
 # 51 "data/maps/EverGrandeCity_HallOfFame/scripts.pory"

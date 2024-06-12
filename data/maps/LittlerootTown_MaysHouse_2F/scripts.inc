@@ -34,7 +34,7 @@ LittlerootTown_MaysHouse_2F_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE:
 
 LittlerootTown_MaysHouse_2F_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE_0:
 # 17 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 18 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, BREN, SecretBase_EventScript_InitDecorations
 	return
@@ -42,7 +42,7 @@ LittlerootTown_MaysHouse_2F_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE_0:
 
 LittlerootTown_MaysHouse_2F_EventScript_TryUpdateMayPos::
 # 24 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 25 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, FEMALE, LittlerootTown_MaysHouse_2F_EventScript_Ret
 # 26 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
@@ -103,7 +103,7 @@ RivalsHouse_2F_EventScript_RivalPostLilycove::
 # 57 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	waitmovement 0
 # 58 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 59 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	call_if_eq VAR_RESULT, SPENCER, RivalsHouse_2F_EventScript_MayPostLilycove
 # 60 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
@@ -147,7 +147,7 @@ LittlerootTown_MaysHouse_2F_EventScript_PC::
 # 89 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	lockall
 # 90 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 91 "data/maps/LittlerootTown_MaysHouse_2F/scripts.pory"
 	compare VAR_RESULT, BREN
 	goto_if_eq LittlerootTown_MaysHouse_2F_EventScript_PC_1

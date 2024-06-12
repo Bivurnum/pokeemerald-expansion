@@ -25,7 +25,7 @@ script InsideOfTruck_EventScript_SetIntroFlags {
 	setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 1)
 	setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 1)
 	setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 1)
-    checkfriendchoice
+    checkplayergender
     switch (var(VAR_RESULT)) {
         case SPENCER:
             goto (InsideOfTruck_EventScript_SetIntroFlagsSpencer)
@@ -96,7 +96,7 @@ script InsideOfTruck_EventScript_WakeFriend {
 	}
 	waitmovement (0)
 	waitse
-	checkfriendchoice
+	checkplayergender
 	switch (var(VAR_RESULT)) {
 		case SPENCER:
 			if (var(VAR_0x8009) == 5) {

@@ -34,7 +34,7 @@ LittlerootTown_KylesHouse_2F_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE:
 
 LittlerootTown_KylesHouse_2F_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE_0:
 # 14 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 15 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, KYLE, SecretBase_EventScript_InitDecorations
 	return
@@ -42,7 +42,7 @@ LittlerootTown_KylesHouse_2F_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE_0:
 
 LittlerootTown_KylesHouse_2F_EventScript_TryUpdateMayPos::
 # 21 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 22 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"
 	goto_if_eq VAR_RESULT, FEMALE, LittlerootTown_KylesHouse_2F_EventScript_Ret
 # 23 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"
@@ -62,7 +62,7 @@ LittlerootTown_KylesHouse_2F_EventScript_PC::
 # 35 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"
 	lockall
 # 36 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 37 "data/maps/LittlerootTown_KylesHouse_2F/scripts.pory"
 	compare VAR_RESULT, KYLE
 	goto_if_eq LittlerootTown_KylesHouse_2F_EventScript_PC_1

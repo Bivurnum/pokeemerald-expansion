@@ -147,7 +147,7 @@ LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3:
 # 67 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	setvar VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2
 # 68 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 69 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	switch VAR_RESULT
 # 70 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
@@ -183,7 +183,7 @@ LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4:
 
 LittlerootTown_KylesHouse_1F_EventScript_CheckShowShoesManual::
 # 90 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 91 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	compare VAR_RESULT, BREN
 	goto_if_eq LittlerootTown_KylesHouse_1F_EventScript_CheckShowShoesManual_1

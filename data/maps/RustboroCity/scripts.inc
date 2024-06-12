@@ -1375,7 +1375,7 @@ RustboroCity_EventScript_Rival::
 # 688 "data/maps/RustboroCity/scripts.pory"
 RustboroCity_EventScript_PlayRivalMusic::
 # 689 "data/maps/RustboroCity/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 690 "data/maps/RustboroCity/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, RustboroCity_EventScript_PlayMayMusic
 # 691 "data/maps/RustboroCity/scripts.pory"
@@ -1659,7 +1659,7 @@ RustboroCity_EventScript_RivalTrigger7::
 # 830 "data/maps/RustboroCity/scripts.pory"
 RustboroCity_EventScript_RivalEncounter::
 # 831 "data/maps/RustboroCity/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 832 "data/maps/RustboroCity/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, RustboroCity_EventScript_MayEncounter
 # 833 "data/maps/RustboroCity/scripts.pory"

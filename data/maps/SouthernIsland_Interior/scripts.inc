@@ -69,7 +69,7 @@ SouthernIsland_Interior_EventScript_SetUpLatias::
 # 35 "data/maps/SouthernIsland_Interior/scripts.pory"
 SouthernIsland_Interior_EventScript_SetUpPlayerGfx::
 # 36 "data/maps/SouthernIsland_Interior/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 37 "data/maps/SouthernIsland_Interior/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, SouthernIsland_Interior_EventScript_SetBrendanGfx
 # 38 "data/maps/SouthernIsland_Interior/scripts.pory"

@@ -667,7 +667,7 @@ MossdeepCity_SpaceCenter_2F_EventScript_RivalRayquazaCall::
 # 334 "data/maps/MossdeepCity_SpaceCenter_2F/scripts.pory"
 	lockall
 # 335 "data/maps/MossdeepCity_SpaceCenter_2F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 336 "data/maps/MossdeepCity_SpaceCenter_2F/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, MossdeepCity_SpaceCenter_2F_EventScript_MayRayquazaCall
 # 337 "data/maps/MossdeepCity_SpaceCenter_2F/scripts.pory"

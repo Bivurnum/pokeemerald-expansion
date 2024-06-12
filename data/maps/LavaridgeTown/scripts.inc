@@ -105,7 +105,7 @@ LavaridgeTown_EventScript_RivalGiveGoGoggles::
 # 53 "data/maps/LavaridgeTown/scripts.pory"
 	delay 20
 # 54 "data/maps/LavaridgeTown/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 55 "data/maps/LavaridgeTown/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, LavaridgeTown_EventScript_PlayMayMusic
 # 56 "data/maps/LavaridgeTown/scripts.pory"
@@ -115,7 +115,7 @@ LavaridgeTown_EventScript_RivalGiveGoGoggles::
 # 58 "data/maps/LavaridgeTown/scripts.pory"
 	call_if_ne VAR_0x8008, 9, LavaridgeTown_EventScript_RivalApproachPlayer2
 # 59 "data/maps/LavaridgeTown/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 60 "data/maps/LavaridgeTown/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, LavaridgeTown_EventScript_MayGiveGoGoggles
 # 61 "data/maps/LavaridgeTown/scripts.pory"

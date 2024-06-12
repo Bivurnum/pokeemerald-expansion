@@ -117,7 +117,7 @@ EverGrandeCity_ChampionsRoom_EventScript_Defeated::
 # 59 "data/maps/EverGrandeCity_ChampionsRoom/scripts.pory"
 	playse SE_DOOR
 # 60 "data/maps/EverGrandeCity_ChampionsRoom/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 61 "data/maps/EverGrandeCity_ChampionsRoom/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, EverGrandeCity_ChampionsRoom_EventScript_PlayMayMusic
 # 62 "data/maps/EverGrandeCity_ChampionsRoom/scripts.pory"
@@ -127,7 +127,7 @@ EverGrandeCity_ChampionsRoom_EventScript_Defeated::
 # 64 "data/maps/EverGrandeCity_ChampionsRoom/scripts.pory"
 	call EverGrandeCity_ChampionsRoom_EventScript_RivalApproachPlayer
 # 65 "data/maps/EverGrandeCity_ChampionsRoom/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 66 "data/maps/EverGrandeCity_ChampionsRoom/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, EverGrandeCity_ChampionsRoom_EventScript_MayAdvice
 # 67 "data/maps/EverGrandeCity_ChampionsRoom/scripts.pory"
@@ -259,7 +259,7 @@ EverGrandeCity_ChampionsRoom_EventScript_BirchArrivesExitForHoF::
 # 130 "data/maps/EverGrandeCity_ChampionsRoom/scripts.pory"
 	msgbox EverGrandeCity_ChampionsRoom_Text_WallaceWaitOutside, MSGBOX_DEFAULT
 # 131 "data/maps/EverGrandeCity_ChampionsRoom/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 132 "data/maps/EverGrandeCity_ChampionsRoom/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, EverGrandeCity_ChampionsRoom_EventScript_MayCongratulations
 # 133 "data/maps/EverGrandeCity_ChampionsRoom/scripts.pory"

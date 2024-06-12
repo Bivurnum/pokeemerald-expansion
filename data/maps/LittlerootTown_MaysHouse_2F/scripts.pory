@@ -14,14 +14,14 @@ mapscripts LittlerootTown_MaysHouse_2F_MapScripts {
 	}
 	MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
 		VAR_SECRET_BASE_INITIALIZED, 0 {
-			checkfriendchoice
+			checkplayergender
 			goto_if_eq (VAR_RESULT, BREN, SecretBase_EventScript_InitDecorations)
 		}
 	]
 }
 
 script LittlerootTown_MaysHouse_2F_EventScript_TryUpdateMayPos {
-	checkfriendchoice
+	checkplayergender
 	goto_if_eq (VAR_RESULT, FEMALE, LittlerootTown_MaysHouse_2F_EventScript_Ret)
 	goto_if_ge (VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 2, LittlerootTown_MaysHouse_2F_EventScript_Ret)
 	setobjectxyperm (LOCALID_RIVAL, 8, 2)
@@ -57,7 +57,7 @@ script LittlerootTown_MaysHouse_2F_EventScript_FriendRival {
 script RivalsHouse_2F_EventScript_RivalPostLilycove {
 	applymovement (VAR_LAST_TALKED, Common_Movement_FacePlayer)
 	waitmovement (0)
-	checkfriendchoice
+	checkplayergender
 	call_if_eq (VAR_RESULT, SPENCER, RivalsHouse_2F_EventScript_MayPostLilycove)
 	call_if_eq (VAR_RESULT, BREN, RivalsHouse_2F_EventScript_BrendanPostLilycove)
 	setflag (FLAG_MET_RIVAL_IN_HOUSE_AFTER_LILYCOVE)
@@ -89,8 +89,7 @@ script RivalsHouse_2F_EventScript_BrendanWhereShouldIGoNext {
 
 script LittlerootTown_MaysHouse_2F_EventScript_PC {
 	lockall
-	checkfriendchoice
-	if (var(VAR_RESULT) == BREN) {
+	if (var(VAR_FRIEND_CHOICE) == BREN) {
 		goto (LittlerootTown_MaysHouse_2F_EventScript_CheckPlayersPC)
 	}
 	else {

@@ -39,7 +39,7 @@ VerdanturfTown_BattleTentBattleRoom_OnTransition:
 # 20 "data/maps/VerdanturfTown_BattleTentBattleRoom/scripts.pory"
 VerdanturfTown_BattleTentBattleRoom_EventScript_SetPlayerGfx::
 # 21 "data/maps/VerdanturfTown_BattleTentBattleRoom/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 22 "data/maps/VerdanturfTown_BattleTentBattleRoom/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, VerdanturfTown_BattleTentBattleRoom_EventScript_SetPlayerGfxMale
 # 23 "data/maps/VerdanturfTown_BattleTentBattleRoom/scripts.pory"

@@ -35,7 +35,7 @@ SlateportCity_BattleTentBattleRoom_OnTransition:
 # 18 "data/maps/SlateportCity_BattleTentBattleRoom/scripts.pory"
 SlateportCity_BattleTentBattleRoom_EventScript_SetPlayerGfx::
 # 19 "data/maps/SlateportCity_BattleTentBattleRoom/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 20 "data/maps/SlateportCity_BattleTentBattleRoom/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, SlateportCity_BattleTentBattleRoom_EventScript_SetPlayerGfxMale
 # 21 "data/maps/SlateportCity_BattleTentBattleRoom/scripts.pory"

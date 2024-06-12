@@ -67,7 +67,7 @@ LittlerootTown_MapScripts_MAP_SCRIPT_ON_TRANSITION_5:
 
 LittlerootTown_MapScripts_MAP_SCRIPT_ON_TRANSITION_8:
 # 54 "data/maps/LittlerootTown/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 55 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, KYLE
 	goto_if_ne LittlerootTown_MapScripts_MAP_SCRIPT_ON_TRANSITION_14
@@ -415,7 +415,7 @@ LittlerootTown_EventScript_EnterTruck_17:
 # 234 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_LITTLEROOT_RIVAL_STATE, 1
 # 235 "data/maps/LittlerootTown/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 236 "data/maps/LittlerootTown/scripts.pory"
 	switch VAR_0x8004
 # 237 "data/maps/LittlerootTown/scripts.pory"
@@ -643,7 +643,7 @@ LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade::
 # 355 "data/maps/LittlerootTown/scripts.pory"
 	addobject 7
 # 356 "data/maps/LittlerootTown/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 357 "data/maps/LittlerootTown/scripts.pory"
 	switch VAR_RESULT
 # 358 "data/maps/LittlerootTown/scripts.pory"
@@ -1065,7 +1065,7 @@ LittlerootTown_EventScript_GiveRunningShoesTrigger5::
 
 LittlerootTown_EventScript_GiveRunningShoesTrigger::
 # 609 "data/maps/LittlerootTown/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 610 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, SPENCER
 	goto_if_eq LittlerootTown_EventScript_GiveRunningShoesTrigger_2
@@ -1501,7 +1501,7 @@ LittlerootTown_EventScript_Mom::
 # 793 "data/maps/LittlerootTown/scripts.pory"
 	faceplayer
 # 794 "data/maps/LittlerootTown/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 795 "data/maps/LittlerootTown/scripts.pory"
 	compare VAR_RESULT, SPENCER
 	goto_if_eq LittlerootTown_EventScript_Mom_2

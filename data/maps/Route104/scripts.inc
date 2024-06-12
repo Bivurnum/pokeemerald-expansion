@@ -155,7 +155,7 @@ Route104_EventScript_RivalTrigger::
 # 78 "data/maps/Route104/scripts.pory"
 Route104_EventScript_PlayRivalMusic::
 # 79 "data/maps/Route104/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 80 "data/maps/Route104/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, Route104_EventScript_PlayMayMusic
 # 81 "data/maps/Route104/scripts.pory"
@@ -183,7 +183,7 @@ Route104_EventScript_PlayBrendanMusic::
 # 92 "data/maps/Route104/scripts.pory"
 Route104_EventScript_RivalEncounter::
 # 93 "data/maps/Route104/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 94 "data/maps/Route104/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, Route104_EventScript_MayEncounter
 # 95 "data/maps/Route104/scripts.pory"

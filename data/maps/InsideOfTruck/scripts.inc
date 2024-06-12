@@ -34,7 +34,7 @@ InsideOfTruck_EventScript_SetIntroFlags::
 # 27 "data/maps/InsideOfTruck/scripts.pory"
 	setvar VAR_LITTLEROOT_HOUSES_STATE_KYLE, 1
 # 28 "data/maps/InsideOfTruck/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 29 "data/maps/InsideOfTruck/scripts.pory"
 	switch VAR_RESULT
 # 30 "data/maps/InsideOfTruck/scripts.pory"
@@ -159,7 +159,7 @@ InsideOfTruck_EventScript_WakeFriend_1:
 # 98 "data/maps/InsideOfTruck/scripts.pory"
 	waitse
 # 99 "data/maps/InsideOfTruck/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 100 "data/maps/InsideOfTruck/scripts.pory"
 	switch VAR_RESULT
 # 101 "data/maps/InsideOfTruck/scripts.pory"

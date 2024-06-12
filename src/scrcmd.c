@@ -2114,7 +2114,7 @@ bool8 ScrCmd_setrespawn(struct ScriptContext *ctx)
     return FALSE;
 }
 
-bool8 ScrCmd_checkfriendchoice(struct ScriptContext *ctx)
+bool8 ScrCmd_checkplayergender(struct ScriptContext *ctx)
 {
     gSpecialVar_Result = gSaveBlock2Ptr->playerGender;
     return FALSE;

@@ -47,7 +47,7 @@ Route103_EventScript_Rival::
 # 24 "data/maps/Route103/scripts.pory"
 	lockall
 # 25 "data/maps/Route103/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 26 "data/maps/Route103/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, Route103_EventScript_RivalMay
 # 27 "data/maps/Route103/scripts.pory"

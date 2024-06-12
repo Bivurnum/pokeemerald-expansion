@@ -755,7 +755,7 @@ Route110_EventScript_RivalScene::
 # 378 "data/maps/Route110/scripts.pory"
 	lockall
 # 379 "data/maps/Route110/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 380 "data/maps/Route110/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, Route110_EventScript_PlayMayMusic
 # 381 "data/maps/Route110/scripts.pory"
@@ -781,7 +781,7 @@ Route110_EventScript_RivalScene::
 # 391 "data/maps/Route110/scripts.pory"
 	call_if_eq VAR_0x8008, 3, Route110_EventScript_RivalApproachPlayer3
 # 392 "data/maps/Route110/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 393 "data/maps/Route110/scripts.pory"
 	goto_if_eq VAR_RESULT, MALE, Route110_EventScript_MayBattle
 # 394 "data/maps/Route110/scripts.pory"

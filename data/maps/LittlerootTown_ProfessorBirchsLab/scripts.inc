@@ -373,7 +373,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_UpgradeToNationalDex::
 # 187 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	waitmovement 0
 # 188 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 189 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, LittlerootTown_ProfessorBirchsLab_EventScript_MayUpgradeComment
 # 190 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
@@ -1043,7 +1043,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_GivePokedex::
 # 522 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	waitmovement 0
 # 523 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 524 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, LittlerootTown_ProfessorBirchsLab_EventScript_MayGivePokeBalls
 # 525 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
@@ -1173,7 +1173,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_Rival::
 # 587 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	goto_if_ge VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 2, LittlerootTown_ProfessorBirchsLab_EventScript_RivalTakeBreakFromFieldwork
 # 588 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 589 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, LittlerootTown_ProfessorBirchsLab_EventScript_MayWhereShouldIGoNext
 # 590 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
@@ -1203,7 +1203,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BrendanWhereShouldIGoNext::
 # 602 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 LittlerootTown_ProfessorBirchsLab_EventScript_RivalFuturePlans::
 # 603 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 604 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, LittlerootTown_ProfessorBirchsLab_EventScript_MayWhatNextImStayingHere
 # 605 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
@@ -1233,7 +1233,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BrendanPreferCollectingSlowly:
 # 617 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 LittlerootTown_ProfessorBirchsLab_EventScript_RivalHaveYouGoneToBattleFrontier::
 # 618 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 619 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, LittlerootTown_ProfessorBirchsLab_EventScript_MayHaveYouGoneToBattleFrontier
 # 620 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
@@ -1263,7 +1263,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BrendanHaveYouGoneToBattleFrontier
 # 632 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 LittlerootTown_ProfessorBirchsLab_EventScript_RivalTakeBreakFromFieldwork::
 # 633 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 634 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	call_if_eq VAR_RESULT, MALE, LittlerootTown_ProfessorBirchsLab_EventScript_MayTakeBreakFromFieldwork
 # 635 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"

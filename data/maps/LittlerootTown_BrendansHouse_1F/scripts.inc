@@ -147,7 +147,7 @@ LittlerootTown_BrendansHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3:
 # 66 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	setvar VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2
 # 67 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 68 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	switch VAR_RESULT
 # 69 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
@@ -183,7 +183,7 @@ LittlerootTown_BrendansHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4:
 
 LittlerootTown_BrendansHouse_1F_EventScript_CheckShowShoesManual::
 # 90 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	checkfriendchoice
+	checkplayergender
 # 91 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	compare VAR_RESULT, SPENCER
 	goto_if_eq LittlerootTown_BrendansHouse_1F_EventScript_CheckShowShoesManual_2
