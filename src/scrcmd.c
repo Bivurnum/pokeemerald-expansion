@@ -2120,6 +2120,12 @@ bool8 ScrCmd_checkplayergender(struct ScriptContext *ctx)
     return FALSE;
 }
 
+bool8 ScrCmd_checkfriendchoice(struct ScriptContext *ctx)
+{
+    gSpecialVar_Result = gSaveBlock2Ptr->friendChoice;
+    return FALSE;
+}
+
 bool8 ScrCmd_playmoncry(struct ScriptContext *ctx)
 {
     u16 species = VarGet(ScriptReadHalfword(ctx));

@@ -1813,6 +1813,11 @@
 	_dynmultichoice \left, \top, \ignoreBPress, \maxBeforeScroll, \shouldSort, \initialSelected, \callbacks, NULL
 	.endm
 
+	@ Checks the player's character choice. Stores the result (KYLE (0) or BREN (1) or SPENCER (2)) in VAR_RESULT.
+	.macro checkfriendchoice
+	.byte 0xe5
+	.endm
+
 
 @ Supplementary
 
