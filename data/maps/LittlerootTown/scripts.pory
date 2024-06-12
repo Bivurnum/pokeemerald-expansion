@@ -37,6 +37,7 @@ const LOCALID_BIRCH = 8
 	// 4: Exited friend's truck
 	// 5: All trucks hidden
 	// 6: Talked to 2F friend
+	// 7: Saved Birch
 	// 19: Met Rival
 	// 20: Received Pokedex
 

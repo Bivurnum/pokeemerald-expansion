@@ -22,82 +22,96 @@ Route103_EventScript_OpenAlteringCave::
 
 Route103_EventScript_Rival::
 	lockall
-	checkplayergender
-	goto_if_eq VAR_RESULT, MALE, Route103_EventScript_RivalMay
-	goto_if_eq VAR_RESULT, FEMALE, Route103_EventScript_RivalBrendan
+	checkfriendchoice
+	goto_if_eq VAR_RESULT, SPENCER, Route103_EventScript_RivalBren
+	goto_if_eq VAR_RESULT, BREN, Route103_EventScript_RivalKyle
+	goto_if_eq VAR_RESULT, KYLE, Route103_EventScript_RivalSpencer
 	end
+`
 
-Route103_EventScript_RivalMay::
-	msgbox Route103_Text_MayRoute103Pokemon, MSGBOX_DEFAULT
+script Route103_EventScript_Rival2 {
+	lock
+	faceplayer
+	msgbox (Route103_Text_CantBeatWingull, MSGBOX_DEFAULT)
 	closemessage
-	playbgm MUS_ENCOUNTER_MAY, TRUE
-	applymovement LOCALID_RIVAL, Common_Movement_FacePlayer
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-	waitmovement 0
-	msgbox Route103_Text_MayLetsBattle, MSGBOX_DEFAULT
-	switch VAR_STARTER_MON
-	case 0, Route103_EventScript_StartMayBattleTreecko
-	case 1, Route103_EventScript_StartMayBattleTorchic
-	case 2, Route103_EventScript_StartMayBattleMudkip
+	release
 	end
+}
 
-Route103_EventScript_RivalBrendan::
-	msgbox Route103_Text_BrendanRoute103Pokemon, MSGBOX_DEFAULT
+script Route103_EventScript_RivalBren {
+	msgbox (Route103_Text_BrenRoute103Pokemon, MSGBOX_DEFAULT)
 	closemessage
-	playbgm MUS_ENCOUNTER_BRENDAN, TRUE
-	applymovement LOCALID_RIVAL, Common_Movement_FacePlayer
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-	waitmovement 0
-	msgbox Route103_Text_BrendanLetsBattle, MSGBOX_DEFAULT
-	switch VAR_STARTER_MON
-	case 0, Route103_EventScript_StartBrendanBattleTreecko
-	case 1, Route103_EventScript_StartBrendanBattleTorchic
-	case 2, Route103_EventScript_StartBrendanBattleMudkip
+	playbgm (MUS_ENCOUNTER_BRENDAN, TRUE)
+	applymovement (LOCALID_RIVAL, Common_Movement_FacePlayer)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_Delay48)
+	waitmovement (0)
+	msgbox (Route103_Text_BrenLetsBattle, MSGBOX_DEFAULT)
+	goto (Route103_EventScript_StartBrenBattle)
+	end
+}
+
+script Route103_EventScript_RivalKyle {
+	msgbox (Route103_Text_KyleRoute103Pokemon, MSGBOX_DEFAULT)
+	closemessage
+	playbgm (MUS_ENCOUNTER_BRENDAN, TRUE)
+	applymovement (LOCALID_RIVAL, Common_Movement_FacePlayer)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_Delay48)
+	waitmovement (0)
+	msgbox (Route103_Text_KyleLetsBattle, MSGBOX_DEFAULT)
+	goto (Route103_EventScript_StartKyleBattle)
+	end
+}
+
+script Route103_EventScript_RivalSpencer {
+	msgbox (Route103_Text_SpencerRoute103Pokemon, MSGBOX_DEFAULT)
+	closemessage
+	playbgm (MUS_ENCOUNTER_BRENDAN, TRUE)
+	applymovement (LOCALID_RIVAL, Common_Movement_FacePlayer)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_Delay48)
+	waitmovement (0)
+	msgbox (Route103_Text_SpencerLetsBattle, MSGBOX_DEFAULT)
+	goto (Route103_EventScript_StartSpencerBattle)
+	end
+}
+
+raw `
+
+Route103_EventScript_StartKyleBattle::
+	trainerbattle_no_intro TRAINER_KYLE_ROUTE_103, Route103_Text_KyleDefeated
+	goto Route103_EventScript_AfterKyleBattle
 	end
 
-Route103_EventScript_StartMayBattleTreecko::
-	trainerbattle_no_intro TRAINER_MAY_ROUTE_103_TREECKO, Route103_Text_MayDefeated
-	goto Route103_EventScript_AfterMayBattle
+Route103_EventScript_StartBrenBattle::
+	trainerbattle_no_intro TRAINER_BREN_ROUTE_103, Route103_Text_BrenDefeated
+	goto Route103_EventScript_AfterBrenBattle
 	end
 
-Route103_EventScript_StartMayBattleTorchic::
-	trainerbattle_no_intro TRAINER_MAY_ROUTE_103_TORCHIC, Route103_Text_MayDefeated
-	goto Route103_EventScript_AfterMayBattle
+Route103_EventScript_StartSpencerBattle::
+	trainerbattle_no_intro TRAINER_SPENCER_ROUTE_103, Route103_Text_SpencerDefeated
+	goto Route103_EventScript_AfterSpencerBattle
 	end
 
-Route103_EventScript_StartMayBattleMudkip::
-	trainerbattle_no_intro TRAINER_MAY_ROUTE_103_MUDKIP, Route103_Text_MayDefeated
-	goto Route103_EventScript_AfterMayBattle
-	end
-
-Route103_EventScript_StartBrendanBattleTreecko::
-	trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_103_TREECKO, Route103_Text_BrendanDefeated
-	goto Route103_EventScript_AfterBrendanBattle
-	end
-
-Route103_EventScript_StartBrendanBattleTorchic::
-	trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_103_TORCHIC, Route103_Text_BrendanDefeated
-	goto Route103_EventScript_AfterBrendanBattle
-	end
-
-Route103_EventScript_StartBrendanBattleMudkip::
-	trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_103_MUDKIP, Route103_Text_BrendanDefeated
-	goto Route103_EventScript_AfterBrendanBattle
-	end
-
-Route103_EventScript_AfterMayBattle::
-	msgbox Route103_Text_MayTimeToHeadBack, MSGBOX_DEFAULT
+Route103_EventScript_AfterKyleBattle::
+	msgbox Route103_Text_KyleTimeToHeadBack, MSGBOX_DEFAULT
 	goto Route103_EventScript_RivalExit
 	end
 
-Route103_EventScript_AfterBrendanBattle::
-	msgbox Route103_Text_BrendanTimeToHeadBack, MSGBOX_DEFAULT
+Route103_EventScript_AfterBrenBattle::
+	msgbox Route103_Text_BrenTimeToHeadBack, MSGBOX_DEFAULT
+	goto Route103_EventScript_RivalExit
+	end
+
+Route103_EventScript_AfterSpencerBattle::
+	msgbox Route103_Text_SpencerTimeToHeadBack, MSGBOX_DEFAULT
 	goto Route103_EventScript_RivalExit
 	end
 
@@ -144,6 +158,7 @@ Route103_EventScript_RivalEnd::
 	setvar VAR_BIRCH_LAB_STATE, 4
 	clearflag FLAG_HIDE_LITTLEROOT_TOWN_BIRCHS_LAB_RIVAL
 	setflag FLAG_DEFEATED_RIVAL_ROUTE103
+	setflag FLAG_HIDE_ROUTE_103_RIVAL
 	setvar VAR_OLDALE_RIVAL_STATE, 1
 	clearflag FLAG_HIDE_OLDALE_TOWN_RIVAL
 	savebgm MUS_DUMMY
@@ -289,57 +304,84 @@ Route103_EventScript_Isabelle::
 	msgbox Route103_Text_IsabellePostBattle, MSGBOX_AUTOCLOSE
 	end
 
-Route103_Text_MayRoute103Pokemon:
-	.string "MAY: Let's see… The POKéMON found\n"
-	.string "on ROUTE 103 include…$"
+Route103_Text_KyleRoute103Pokemon:
+	.string "KYLE: Let's see… Is PIKACHU\n"
+	.string "found on this route?$"
 
-Route103_Text_MayLetsBattle:
+Route103_Text_KyleLetsBattle:
 	.string "Oh, hi, {PLAYER}{KUN}!\p"
-	.string "…Oh, I see, my dad gave you\n"
-	.string "a POKéMON as a gift.\p"
+	.string "…Oh, I see you finally got\n"
+	.string "your POKéMON from PROF. BIRCH.\p"
 	.string "Since we're here, let's have a quick\n"
 	.string "battle!\p"
 	.string "I'll give you a taste of what being\n"
-	.string "a TRAINER is like.$"
+	.string "a real TRAINER is like.$"
 
-Route103_Text_MayDefeated:
+Route103_Text_KyleDefeated:
 	.string "Wow! That's great!\n"
 	.string "{PLAYER}{KUN}, you're pretty good!$"
 
-Route103_Text_MayTimeToHeadBack:
-	.string "MAY: I think I know why my dad has\n"
-	.string "an eye out for you now.\p"
+Route103_Text_KyleTimeToHeadBack:
+	.string "KYLE: That's really impressive!\n"
 	.string "I mean, you just got that POKéMON,\n"
 	.string "but it already likes you.\p"
 	.string "You might be able to befriend any\n"
 	.string "kind of POKéMON easily.\p"
-	.string "Well, it's time to head back to\n"
-	.string "the LAB.$"
+	.string "What was that? PROF. BIRCH mentioned\n"
+	.string "that he wanted to speak to the three\l"
+	.string "of us once we all had POKéMON?\p"
+	.string "Then, let's head back to the LAB!$"
 
-Route103_Text_BrendanRoute103Pokemon:
-	.string "BRENDAN: Okay, so it's this one and\n"
-	.string "that one that live on ROUTE 103…$"
+Route103_Text_BrenRoute103Pokemon:
+	.string "BREN: It's ok, PIPLUP.\n"
+	.string "we'll win the next one…"
 
-Route103_Text_BrendanLetsBattle:
+Route103_Text_BrenLetsBattle:
 	.string "Hey, it's {PLAYER}!\p"
-	.string "…Oh, yeah, Dad gave you a POKéMON.\p"
-	.string "Since we're here, how about a little\n"
-	.string "battle?\p"
-	.string "I'll teach you what being a TRAINER's\n"
-	.string "about!$"
+	.string "What kind of POKéMON did you get?\p"
+	.string "Since we're here, how about a\n"
+	.string "little battle?\p"
+	.string "I won't go easy on you!$"
 
-Route103_Text_BrendanDefeated:
+Route103_Text_BrenDefeated:
 	.string "Huh, {PLAYER}, you're not too shabby.$"
 
-Route103_Text_BrendanTimeToHeadBack:
-	.string "BRENDAN: I think I get it.\n"
-	.string "I think I know why my dad has his eye\l"
-	.string "out for you now.\p"
-	.string "Look, your POKéMON already likes you,\n"
-	.string "even though you just got it.\p"
-	.string "{PLAYER}, I get the feeling that you\n"
-	.string "could befriend any POKéMON with ease.\p"
-	.string "We should head back to the LAB.$"
+Route103_Text_BrenTimeToHeadBack:
+	.string "BREN: Wow! You sure rocked it!\n"
+	.string "Here I had a head start and I\l"
+	.string "still have to play catch up.\p"
+	.string "Don't worry. Next time we'll be\n"
+	.string "ready for you!\p"
+	.string "Oh? The PROF. wants us back at\n"
+	.string "the lab?\p"
+	.string "Well, what are we waiting for?$"
+
+Route103_Text_SpencerRoute103Pokemon:
+	.string "SPENCER: Man, POTIONS are\n"
+	.string "pretty easy to use, huh…$"
+
+Route103_Text_SpencerLetsBattle:
+	.string "{PLAYER}! Hi!\p"
+	.string "Glad to see you made it out\n"
+	.string "here in one piece.\p"
+	.string "I hope you came prepared,\n"
+	.string "because it's battle time!\l"
+	.string "Let's go!$"
+
+Route103_Text_SpencerDefeated:
+	.string "Way to go, {PLAYER}!$"
+
+Route103_Text_SpencerTimeToHeadBack:
+	.string "SPENCER: That was a great battle!\n"
+	.string "You and your POKéMON are in\l"
+	.string "perfect sync.\p"
+	.string "I should expect nothing less from\n"
+	.string "the son of a GYM LEADER.\p"
+	.string "Huh? You're saying we should go back\n"
+	.string "to the lab? Leave it to that\l"
+	.string "scatterbrained PROF. to\l"
+	.string "forget something.\p"
+	.string "OK! I'll meet you there!$"
 
 Route103_Text_ShouldHaveBroughtPotion:
 	.string "My POKéMON is staggeringly tired…\n"
@@ -355,3 +397,9 @@ Route103_Text_RouteSign:
 	.string "{DOWN_ARROW} OLDALE TOWN$"
 
 `
+
+text Route103_Text_CantBeatWingull {
+	"Darn.\n"
+	"I'm really having trouble\l"
+	"beating WINGULL in battle."
+}

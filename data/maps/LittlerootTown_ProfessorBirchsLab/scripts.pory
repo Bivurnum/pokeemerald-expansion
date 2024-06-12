@@ -712,26 +712,29 @@ LittlerootTown_ProfessorBirchsLab_Text_MightBeGoodIdeaToGoSeeRival:
 	.string "PROF. BIRCH: If you work at POKéMON\n"
 	.string "and gain experience, I think you'll make\l"
 	.string "an extremely good TRAINER.\p"
-	.string "My kid, {RIVAL}, is also studying\n"
-	.string "POKéMON while helping me out.\p"
-	.string "{PLAYER}{KUN}, don't you think it might be\n"
-	.string "a good idea to go see {RIVAL}?$"
+	.string "You've got some good friends\n"
+	.string "to help you out along the way.\p"
+	.string "By the way, I'd like to speak to\n"
+	.string "all three of you together.\p"
+	.string "Would you please go find your friends\n"
+	.string "and bring them back here?"
 
 LittlerootTown_ProfessorBirchsLab_Text_GetRivalToTeachYou:
 	.string "PROF. BIRCH: Great!\n"
-	.string "{RIVAL} should be happy, too.\p"
-	.string "Get {RIVAL} to teach you what it\n"
+	.string "They should be overjoyed to see\l"
+	.string "you and your new POKéMON\n"
 	.string "means to be a TRAINER.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_DontBeThatWay:
 	.string "PROF. BIRCH: Oh, don't be that way.\n"
-	.string "You should go meet my kid.$"
+	.string "It's for something good. I promise.\p"
+	.string "Won't you please get them?"
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchRivalGoneHome:
-	.string "PROF. BIRCH: {RIVAL}?\n"
-	.string "Gone home, I think.\p"
-	.string "Or maybe that kid's scrabbling around\n"
-	.string "in tall grass again somewhere…\p"
+	.string "PROF. BIRCH: I haven't seen\n"
+	.string "Your friends around.\p"
+	.string "They're probably out having\n"
+	.string "fun with their POKéMON.\p"
 	.string "If you or your POKéMON get tired,\n"
 	.string "you should get some rest at home.$"
 

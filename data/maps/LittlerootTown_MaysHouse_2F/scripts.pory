@@ -275,13 +275,14 @@ text RivalsHouse_2F_Text_HesOnRoute101 {
 text RivalsHouse_2F_Text_WhereHaveYouBeen {
 	"Where have you been?\p"
 	"PROF. BIRCH is kind of a strange dude,\n"
-	"but the POKéMON he gave me is super cool!\l"
+	"but the POKéMON he gave me\l"
+	"is super cool!\l"
 	"You should hurry up and get yours!\p"
-	"Once I'm finished getting supplies together,\n"
-	"I'll be ready for our adventure."
+	"Once I'm finished getting supplies\n"
+	"together, I'll be ready to go."
 }
 
 text RivalsHouse_2F_Text_GettingSupplies {
-	"Once I'm finished getting supplies together,\n"
-	"I'll be ready for our adventure."
+	"Once I'm finished getting supplies\n"
+	"together, I'll be ready to go."
 }
