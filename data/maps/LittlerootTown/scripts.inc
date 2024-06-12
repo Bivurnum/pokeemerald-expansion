@@ -353,8 +353,6 @@ LittlerootTown_EventScript_EnterTruck_10:
 	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_PlayerEnterTruck
 # 197 "data/maps/LittlerootTown/scripts.pory"
 	waitmovement 0
-# 198 "data/maps/LittlerootTown/scripts.pory"
-	fadescreen FADE_TO_BLACK
 # 199 "data/maps/LittlerootTown/scripts.pory"
 	setvar VAR_LITTLEROOT_RIVAL_STATE, 1
 # 200 "data/maps/LittlerootTown/scripts.pory"
@@ -473,7 +471,7 @@ LittlerootTown_Movement_PlayerStepOffTruck:
 # 265 "data/maps/LittlerootTown/scripts.pory"
 LittlerootTown_Movement_PlayerEnterTruck:
 # 266 "data/maps/LittlerootTown/scripts.pory"
-	jump_special_left
+	jump_left
 	step_end
 
 LittlerootTown_EventScript_BeginDexUpgradeScene::

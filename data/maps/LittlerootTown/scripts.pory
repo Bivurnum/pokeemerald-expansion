@@ -195,7 +195,7 @@ script LittlerootTown_EventScript_EnterTruck {
 				playse (SE_LEDGE)
 				applymovement (OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_PlayerEnterTruck)
 				waitmovement (0)
-				fadescreen (FADE_TO_BLACK)
+				//fadescreen (FADE_TO_BLACK)
 				setvar (VAR_LITTLEROOT_RIVAL_STATE, 1)
 				switch (var(VAR_0x8004)) {
 					case 4:
@@ -263,7 +263,7 @@ movement LittlerootTown_Movement_PlayerStepOffTruck {
 }
 
 movement LittlerootTown_Movement_PlayerEnterTruck {
-	jump_special_left
+	jump_left
 }
 
 script LittlerootTown_EventScript_BeginDexUpgradeScene {
