@@ -63,12 +63,10 @@ LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
 # 44 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 7, LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_2
 # 51 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 1, LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3
-# 75 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_BREN, 1, LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4
-# 99 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	map_script_2 VAR_LITTLEROOT_RIVAL_STATE, 2, LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_5
-# 103 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_KYLE, 1, LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3
+# 76 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+	map_script_2 VAR_LITTLEROOT_RIVAL_STATE, 2, LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4
+# 80 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	map_script_2 VAR_LITTLEROOT_HOUSES_STATE_KYLE, 18, PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
 	.2byte 0
 
@@ -147,136 +145,86 @@ LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3:
 # 65 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	setvar VAR_LITTLEROOT_HOUSES_STATE_BREN, 2
 # 66 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	checkfriendchoice
+	setvar VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2
 # 67 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	switch VAR_RESULT
+	checkfriendchoice
 # 68 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+	switch VAR_RESULT
+# 69 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	case SPENCER, LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3_3
-# 70 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 71 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	case BREN, LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3_4
 LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3_1:
-# 73 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 74 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	releaseall
 	return
 
 LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3_3:
-# 69 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 70 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK
 	goto LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3_1
 
 LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3_4:
-# 71 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 72 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK
 	goto LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_3_1
 
 LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4:
-# 76 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	lockall
 # 77 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	playse SE_PIN
-# 78 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	applymovement 4, Common_Movement_ExclamationMark
-# 79 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	waitmovement 0
-# 80 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	applymovement 4, Common_Movement_Delay48
-# 81 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	waitmovement 0
-# 82 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
-# 83 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	applymovement 4, LittlerootTown_KylesHouse_1F_Movement_RivalMomApproach
-# 84 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	waitmovement 0
-# 85 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	special GetRivalSonDaughterString
-# 86 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	msgbox RivalsHouse_1F_Text_OhYoureTheNewNeighborKyle, MSGBOX_DEFAULT
-# 87 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	setflag FLAG_MET_RIVAL_MOM
-# 88 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	setvar VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2
-# 89 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	setvar VAR_LITTLEROOT_HOUSES_STATE_BREN, 2
-# 90 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	checkfriendchoice
-# 91 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	switch VAR_RESULT
-# 92 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	case SPENCER, LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4_3
-# 94 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	case BREN, LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4_4
-LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4_1:
-# 97 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	releaseall
-	return
-
-LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4_3:
-# 93 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK
-	goto LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4_1
-
-LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4_4:
-# 95 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK
-	goto LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_4_1
-
-LittlerootTown_KylesHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE_5:
-# 100 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	setvar VAR_LITTLEROOT_RIVAL_STATE, 19
-# 101 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 78 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	setvar VAR_LITTLEROOT_TOWN_STATE, 1
 	return
 
 
 LittlerootTown_KylesHouse_1F_EventScript_CheckShowShoesManual::
-# 110 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 87 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	checkfriendchoice
-# 111 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 88 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	compare VAR_RESULT, BREN
 	goto_if_eq LittlerootTown_KylesHouse_1F_EventScript_CheckShowShoesManual_1
 	return
 
 LittlerootTown_KylesHouse_1F_EventScript_CheckShowShoesManual_1:
-# 112 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 89 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	setmetatile 6, 7, METATILE_BrendansMaysHouse_BookOnTable, TRUE
 	return
 
 
 LittlerootTown_KylesHouse_1F_EventScript_GoSeeRoom::
-# 117 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 94 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	lockall
-# 118 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 95 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	setvar VAR_0x8004, 1
-# 119 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 96 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	setvar VAR_0x8005, FEMALE
-# 120 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 97 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	applymovement VAR_0x8004, Common_Movement_WalkInPlaceFasterRight
-# 121 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 98 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	waitmovement 0
-# 122 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 99 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	goto PlayersHouse_1F_EventScript_MomGoSeeRoom
 	end
 
 
-# 126 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 103 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 LittlerootTown_KylesHouse_1F_Movement_PushTowardStairs:
-# 127 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 104 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_up
 	step_end
 
-# 130 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 107 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 LittlerootTown_KylesHouse_1F_Movement_RivalMomApproach:
-# 131 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 108 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_down
-# 132 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 109 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_left
-# 132 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 109 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_left
-# 132 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 109 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_left
-# 132 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 109 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_left
-# 132 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
+# 109 "data/maps/LittlerootTown_KylesHouse_1F/scripts.pory"
 	walk_left
 	step_end

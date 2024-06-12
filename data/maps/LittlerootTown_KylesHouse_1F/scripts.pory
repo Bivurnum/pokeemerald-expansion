@@ -48,7 +48,7 @@ mapscripts LittlerootTown_KylesHouse_1F_MapScripts {
 			setvar (VAR_0x8005, LOCALID_MOM)
 			goto (PlayersHouse_1F_EventScript_PetalburgGymReportFemale)
 		}
-		VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 1 {
+		VAR_LITTLEROOT_HOUSES_STATE_KYLE, 1 {
 			lockall
 			playse (SE_PIN)
 			applymovement (LOCALID_RIVAL_MOM, Common_Movement_ExclamationMark)
@@ -63,30 +63,7 @@ mapscripts LittlerootTown_KylesHouse_1F_MapScripts {
 			setflag (FLAG_MET_RIVAL_MOM)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 2)
-			checkfriendchoice
-			switch (var(VAR_RESULT)) {
-				case SPENCER:
-					setflag(FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
-				case BREN:
-					setflag(FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK)
-			}
-			releaseall
-		}
-		VAR_LITTLEROOT_HOUSES_STATE_BREN, 1 {
-			lockall
-			playse (SE_PIN)
-			applymovement (LOCALID_RIVAL_MOM, Common_Movement_ExclamationMark)
-			waitmovement (0)
-			applymovement (LOCALID_RIVAL_MOM, Common_Movement_Delay48)
-			waitmovement (0)
-			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
-			applymovement (LOCALID_RIVAL_MOM, LittlerootTown_KylesHouse_1F_Movement_RivalMomApproach)
-			waitmovement (0)
-			special (GetRivalSonDaughterString)
-			msgbox (RivalsHouse_1F_Text_OhYoureTheNewNeighborKyle, MSGBOX_DEFAULT)
-			setflag (FLAG_MET_RIVAL_MOM)
-			setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
-			setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 2)
+			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
 			checkfriendchoice
 			switch (var(VAR_RESULT)) {
 				case SPENCER:

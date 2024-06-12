@@ -124,6 +124,7 @@ script LittlerootTown_EventScript_StepOffTruckSpencer {
 	setvar (VAR_0x8005, 8)
 	call (LittlerootTown_EventScript_GoInsideWithMom)
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK)
+	setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
 	warpsilent (MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F, 8, 8)
 	waitstate
 	releaseall
@@ -136,6 +137,7 @@ script LittlerootTown_EventScript_StepOffTruckBren {
 	setvar (VAR_0x8005, 8)
 	call (LittlerootTown_EventScript_GoInsideWithMom)
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
+	setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 2)
 	warpsilent (MAP_LITTLEROOT_TOWN_MAYS_HOUSE_1F, 2, 8)
 	waitstate
 	releaseall
@@ -148,6 +150,7 @@ script LittlerootTown_EventScript_StepOffTruckKyle {
 	setvar (VAR_0x8005, 15)
 	call (LittlerootTown_EventScript_GoInsideWithMom)
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
+	setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
 	warpsilent (MAP_LITTLEROOT_TOWN_KYLES_HOUSE_1F, 2, 8)
 	waitstate
 	releaseall
@@ -233,7 +236,6 @@ script LittlerootTown_EventScript_EnterTruck {
 							}
 							setvar (VAR_0x8009, 4)
 							clearflag (FLAG_HIDE_SPENCER_IN_TRUCK)
-							setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
 							setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
 							setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
 							setdynamicwarp (MAP_LITTLEROOT_TOWN, 3, 10)

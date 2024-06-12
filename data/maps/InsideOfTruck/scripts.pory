@@ -22,6 +22,9 @@ script InsideOfTruck_OnResume {
 script InsideOfTruck_EventScript_SetIntroFlags {
     lockall
 	setflag (FLAG_HIDE_MAP_NAME_POPUP)
+	setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 1)
+	setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 1)
+	setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 1)
     checkfriendchoice
     switch (var(VAR_RESULT)) {
         case SPENCER:
@@ -40,7 +43,6 @@ script InsideOfTruck_EventScript_SetIntroFlagsSpencer {
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_MOM)
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_RIVAL_MOM)
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_MOM)
-	setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 1)
 	setdynamicwarp (MAP_LITTLEROOT_TOWN, 3, 10)
 	releaseall
 	end
@@ -52,7 +54,6 @@ script InsideOfTruck_EventScript_SetIntroFlagsBren {
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_MOM)
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_RIVAL_MOM)
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_MOM)
-	setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 1)
 	setdynamicwarp (MAP_LITTLEROOT_TOWN, 12, 10)
 	releaseall
 	end
@@ -64,7 +65,6 @@ script InsideOfTruck_EventScript_SetIntroFlagsKyle {
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_MOM)
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_MOM)
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_RIVAL_MOM)
-	setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 1)
 	setdynamicwarp (MAP_LITTLEROOT_TOWN, 15, 17)
 	releaseall
 	end
