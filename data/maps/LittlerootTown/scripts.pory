@@ -35,6 +35,7 @@ const LOCALID_BIRCH = 8
 	// 3: Woke friend
 	// 4: Exited friend's truck
 	// 5: All trucks hidden
+	// 6: Talked to 2F friend
 	// 19: Met Rival
 	// 20: Received Pokedex
 

@@ -1,3 +1,5 @@
+const LOCALID_FRIEND = 14
+
 mapscripts LittlerootTown_MaysHouse_2F_MapScripts {
 	MAP_SCRIPT_ON_TRANSITION {
 		if (var(VAR_LITTLEROOT_RIVAL_STATE) >= 19) {
@@ -28,6 +30,24 @@ script LittlerootTown_MaysHouse_2F_EventScript_TryUpdateMayPos {
 
 script LittlerootTown_MaysHouse_2F_EventScript_Ret {
 	return
+}
+
+script LittlerootTown_MaysHouse_2F_EventScript_FriendRival {
+	lockall
+	faceplayer
+	if (var(VAR_LITTLEROOT_RIVAL_STATE) == 5) {
+		msgbox (RivalsHouse_2F_Text_GoFindBirch, MSGBOX_DEFAULT)
+		closemessage
+		applymovement (LOCALID_FRIEND, Common_Movement_FaceUp)
+		setvar (VAR_LITTLEROOT_RIVAL_STATE, 6)
+	}
+	elif (var(VAR_LITTLEROOT_RIVAL_STATE) == 6) {
+		msgbox (RivalsHouse_2F_Text_HesOnRoute101, MSGBOX_DEFAULT)
+		closemessage
+		applymovement (LOCALID_FRIEND, Common_Movement_FaceUp)
+	}
+	releaseall
+	end
 }
 
 script RivalsHouse_2F_EventScript_RivalPostLilycove {
@@ -133,4 +153,24 @@ text RivalsHouse_2F_Text_BrendanWhereShouldIGoNext {
 	"Hey, {PLAYER}, if I see you while I'm out\n"
 	"catching POKéMON, I can pitch you a\l"
 	"battle if you'd like."
+}
+
+text RivalsHouse_2F_Text_GoFindBirch {
+	"Oh, hey!\p"
+	"Isn't it crazy that the three of us\n"
+	"all moved here at the same time?\l"
+	"Now we all get to start our POKéMON\l"
+	"journey together!\p"
+	"What?\n"
+	"You don't have a POKéMON yet?\p"
+	"I've got mine already.\n"
+	"Maybe I'll show it to you sometime.\p"
+	"Well? What are you waiting for?\n"
+	"Go find PROF. BIRCH and\l"
+	"get your first POKéMON!"
+}
+
+text RivalsHouse_2F_Text_HesOnRoute101 {
+	"Last I heard, PROF. BIRCH was\n"
+	"doing field work on ROUTE 101."
 }
