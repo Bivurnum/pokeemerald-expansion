@@ -89,7 +89,8 @@ script RivalsHouse_2F_EventScript_BrendanWhereShouldIGoNext {
 
 script LittlerootTown_MaysHouse_2F_EventScript_PC {
 	lockall
-	if (var(VAR_FRIEND_CHOICE) == BREN) {
+	checkfriendchoice
+	if (var(VAR_RESULT) == BREN) {
 		goto (LittlerootTown_MaysHouse_2F_EventScript_CheckPlayersPC)
 	}
 	else {

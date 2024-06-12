@@ -1706,9 +1706,9 @@ static void Task_NewGameBirchSpeech_AreYouReady(u8 taskId)
             gTasks[taskId].tTimer--;
             return;
         }
-        if (VarGet(VAR_FRIEND_CHOICE) == KYLE)
+        if (gSaveBlock2Ptr->friendChoice == KYLE)
             spriteId = gTasks[taskId].tKyleSpriteId;
-        else if (VarGet(VAR_FRIEND_CHOICE) == BREN)
+        else if (gSaveBlock2Ptr->friendChoice == BREN)
             spriteId = gTasks[taskId].tBrenSpriteId;
         else
             spriteId = gTasks[taskId].tSpencerSpriteId;
@@ -1819,12 +1819,12 @@ static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void)
     FreeAllSpritePalettes();
     ResetAllPicSprites();
     AddBirchSpeechObjects(taskId);
-    if (VarGet(VAR_FRIEND_CHOICE) == KYLE)
+    if (gSaveBlock2Ptr->friendChoice == KYLE)
     {
         gTasks[taskId].tFriendChoice = KYLE;
         spriteId = gTasks[taskId].tKyleSpriteId;
     }
-    else if (VarGet(VAR_FRIEND_CHOICE) == BREN)
+    else if (gSaveBlock2Ptr->friendChoice == BREN)
     {
         gTasks[taskId].tFriendChoice = BREN;
         spriteId = gTasks[taskId].tBrenSpriteId;
@@ -2116,9 +2116,9 @@ void NewGameBirchSpeech_SetDefaultPlayerName(u8 nameId)
     const u8 *name;
     u8 i;
 
-    if (VarGet(VAR_FRIEND_CHOICE) == KYLE)
+    if (gSaveBlock2Ptr->friendChoice == KYLE)
         name = sKylePresetName[nameId];
-    else if (VarGet(VAR_FRIEND_CHOICE) == BREN)
+    else if (gSaveBlock2Ptr->friendChoice == BREN)
         name = sBrenPresetName[nameId];
     else
         name = sSpencerPresetName[nameId];

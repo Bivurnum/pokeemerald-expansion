@@ -51,11 +51,12 @@ mapscripts LittlerootTown_MapScripts {
 			setobjectxyperm (LOCALID_MOM, 17, 15)
 		}
 		if (var(VAR_LITTLEROOT_TOWN_STATE) == 3) {
-			if (var(VAR_FRIEND_CHOICE) != KYLE) {
+			checkfriendchoice
+			if (var(VAR_RESULT) != KYLE) {
 				clearflag (FLAG_HIDE_LITTLEROOT_TOWN_MOM_OUTSIDE)
 				setobjectmovementtype (LOCALID_MOM, MOVEMENT_TYPE_FACE_DOWN)
 			}
-			switch (var(VAR_FRIEND_CHOICE)) {
+			switch (var(VAR_RESULT)) {
 				case SPENCER:
 					setobjectxyperm (LOCALID_MOM, 5, 9)
 				case BREN:
@@ -231,9 +232,10 @@ script LittlerootTown_EventScript_EnterTruck {
 					waitmovement (0)
 					//fadescreen (FADE_TO_BLACK)
 					setvar (VAR_LITTLEROOT_RIVAL_STATE, 1)
+					checkfriendchoice
 					switch (var(VAR_0x8004)) {
 						case 4:
-							switch (var(VAR_FRIEND_CHOICE)) {
+							switch (var(VAR_RESULT)) {
 								case BREN:
 									setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
 								case KYLE:
@@ -245,7 +247,7 @@ script LittlerootTown_EventScript_EnterTruck {
 							setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
 							setdynamicwarp (MAP_LITTLEROOT_TOWN, 3, 10)
 						case 13:
-							switch (var(VAR_FRIEND_CHOICE)) {
+							switch (var(VAR_RESULT)) {
 								case SPENCER:
 									setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
 								case KYLE:
@@ -257,7 +259,7 @@ script LittlerootTown_EventScript_EnterTruck {
 							setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
 							setdynamicwarp (MAP_LITTLEROOT_TOWN, 12, 10)
 						case 16:
-							switch (var(VAR_FRIEND_CHOICE)) {
+							switch (var(VAR_RESULT)) {
 								case BREN:
 									setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
 								case SPENCER:
@@ -351,7 +353,8 @@ script LittlerootTown_EventScript_BeginDexUpgradeScene {
 script LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade {
 	addobject (LOCALID_BIRCH)
 	addobject (LOCALID_RIVAL)
-	switch (var(VAR_FRIEND_CHOICE)) {
+	checkfriendchoice
+	switch (var(VAR_RESULT)) {
 		case SPENCER:
 			setobjectxy (LOCALID_RIVAL, 6, 10)
 			setobjectxy (LOCALID_BIRCH, 5, 10)
@@ -603,7 +606,8 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger5 {
 }
 
 script LittlerootTown_EventScript_GiveRunningShoesTrigger {
-	if (var(VAR_FRIEND_CHOICE) == SPENCER) {
+	checkfriendchoice
+	if (var(VAR_RESULT) == SPENCER) {
 		applymovement (LOCALID_MOM, Common_Movement_WalkInPlaceFasterRight)
 		waitmovement (0)
 	}
@@ -611,20 +615,21 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger {
 		applymovement (LOCALID_MOM, Common_Movement_WalkInPlaceFasterLeft)
 		waitmovement (0)
 	}
-	if (var(VAR_FRIEND_CHOICE) == SPENCER) {
+	if (var(VAR_RESULT) == SPENCER) {
 		setvar (VAR_0x8009, 5)
 		setvar (VAR_0x800A, 8)
 	}
-	if (var(VAR_FRIEND_CHOICE) == BREN) {
+	if (var(VAR_RESULT) == BREN) {
 		setvar (VAR_0x8009, 14)
 		setvar (VAR_0x800A, 8)
 	}
-	if (var(VAR_FRIEND_CHOICE) == KYLE) {
+	if (var(VAR_RESULT) == KYLE) {
 		setvar (VAR_0x8009, 17)
 		setvar (VAR_0x800A, 15)
 	}
 	msgbox (LittlerootTown_Text_WaitPlayer, MSGBOX_DEFAULT)
 	closemessage
+	checkfriendchoice
 	if (var(VAR_0x8008) <= 1) {
 		switch (var(VAR_0x8008)) {
 			case 0:
@@ -637,7 +642,7 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger {
 				applymovement (LOCALID_MOM, LittlerootTown_Movement_MomApproachPlayer1)
 		}
 	}
-	elif (var(VAR_FRIEND_CHOICE) == SPENCER) {
+	elif (var(VAR_RESULT) == SPENCER) {
 		switch (var(VAR_0x8008)) {
 			case 2:
 				applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterLeft)
@@ -657,7 +662,7 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger {
 				applymovement (LOCALID_MOM, LittlerootTown_Movement_MomApproachPlayerMale5)
 		}
 	}
-	elif (var(VAR_FRIEND_CHOICE) == BREN) {
+	elif (var(VAR_RESULT) == BREN) {
 		switch (var(VAR_0x8008)) {
 			case 2:
 				applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
@@ -679,6 +684,7 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger {
 	}
 	waitmovement (0)
 	call (LittlerootTown_EventScript_GiveRunningShoes)
+	checkfriendchoice
 	if (var(VAR_0x8008) <= 1) {
 		switch (var(VAR_0x8008)) {
 			case 0:
@@ -689,7 +695,7 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger {
 				waitmovement (0)
 		}
 	}
-	elif (var(VAR_FRIEND_CHOICE) == SPENCER) {
+	elif (var(VAR_RESULT) == SPENCER) {
 		switch (var(VAR_0x8008)) {
 			case 2:
 				applymovement (LOCALID_MOM, LittlerootTown_Movement_MomReturnHomeMale2)
@@ -733,7 +739,7 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger {
 				waitdooranim
 		}
 	}
-	elif (var(VAR_FRIEND_CHOICE) == BREN) {
+	elif (var(VAR_RESULT) == BREN) {
 		switch (var(VAR_0x8008)) {
 			case 2:
 				applymovement (LOCALID_MOM, LittlerootTown_Movement_MomReturnHomeFemale2)
@@ -787,15 +793,16 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger {
 script LittlerootTown_EventScript_Mom {
 	lock
 	faceplayer
-	if (var(VAR_FRIEND_CHOICE) == SPENCER) {
+	checkfriendchoice
+	if (var(VAR_RESULT) == SPENCER) {
 		setvar (VAR_0x8009, 5)
 		setvar (VAR_0x800A, 8)
 	}
-	if (var(VAR_FRIEND_CHOICE) == BREN) {
+	if (var(VAR_RESULT) == BREN) {
 		setvar (VAR_0x8009, 14)
 		setvar (VAR_0x800A, 8)
 	}
-	if (var(VAR_FRIEND_CHOICE) == KYLE) {
+	if (var(VAR_RESULT) == KYLE) {
 		setvar (VAR_0x8009, 17)
 		setvar (VAR_0x800A, 15)
 	}

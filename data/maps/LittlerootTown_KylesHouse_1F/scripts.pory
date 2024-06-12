@@ -65,7 +65,8 @@ mapscripts LittlerootTown_KylesHouse_1F_MapScripts {
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 2)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
-			switch (var(VAR_FRIEND_CHOICE)) {
+			checkfriendchoice
+			switch (var(VAR_RESULT)) {
 				case SPENCER:
 					setflag(FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
 				case BREN:
@@ -86,7 +87,8 @@ mapscripts LittlerootTown_KylesHouse_1F_MapScripts {
 // Many of the below scripts have no gender check because they assume youre in the correct house
 
 script LittlerootTown_KylesHouse_1F_EventScript_CheckShowShoesManual {
-	if (var(VAR_FRIEND_CHOICE) == BREN) {
+	checkfriendchoice
+	if (var(VAR_RESULT) == BREN) {
 		setmetatile (6, 7, METATILE_BrendansMaysHouse_BookOnTable, TRUE)
 	}
 }

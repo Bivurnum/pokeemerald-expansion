@@ -35,7 +35,8 @@ script LittlerootTown_BrendansHouse_2F_EventScript_Ret {
 
 script LittlerootTown_BrendansHouse_2F_EventScript_PC {
 	lockall
-	if (var(VAR_FRIEND_CHOICE) == SPENCER) {
+	checkfriendchoice
+	if (var(VAR_RESULT) == SPENCER) {
 		goto (LittlerootTown_BrendansHouse_2F_EventScript_CheckPlayersPC)
 	}
 	else {

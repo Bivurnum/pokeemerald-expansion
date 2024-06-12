@@ -64,7 +64,8 @@ mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 2)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
-			switch (var(VAR_FRIEND_CHOICE)) {
+			checkfriendchoice
+			switch (var(VAR_RESULT)) {
 				case BREN:
 					setflag(FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
 				case KYLE:
@@ -86,7 +87,8 @@ mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {
 // The below SS Ticket script uses Mays house state by accident(?), but theyre both set identically after the intro
 
 script LittlerootTown_BrendansHouse_1F_EventScript_CheckShowShoesManual {
-	if (var(VAR_FRIEND_CHOICE) == SPENCER) {
+	checkfriendchoice
+	if (var(VAR_RESULT) == SPENCER) {
 		setmetatile (3, 7, METATILE_BrendansMaysHouse_BookOnTable, TRUE)
 	}
 	return
