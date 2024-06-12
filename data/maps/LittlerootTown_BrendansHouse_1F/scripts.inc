@@ -280,19 +280,19 @@ PlayersHouse_1F_Text_ItsOverWeMissedHim::
 PlayersHouse_1F_Text_GoIntroduceYourselfNextDoor::
 # 158 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	.string "Oh, yes.\n"
-	.string "One of DAD's friends lives in town.\p"
-	.string "PROF. BIRCH is his name.\p"
-	.string "He lives right next door, so you should\n"
-	.string "go over and introduce yourself.$"
+	.string "Your friends also moved here today.\p"
+	.string "You should go see how they\n"
+	.string "are settling in.\p"
+	.string "I'm sure they'd enjoy your company\n"
+	.string "after such a long trip.$"
 
 PlayersHouse_1F_Text_SeeYouHoney::
-# 166 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
+# 167 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
 	.string "MOM: See you, honey!$"
 
 PlayersHouse_1F_Text_DidYouMeetProfBirch::
-# 170 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
-	.string "MOM: Did you introduce yourself to\n"
-	.string "PROF. BIRCH?$"
+# 171 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"
+	.string "MOM: Did you find your friends?$"
 
 PlayersHouse_1F_Text_YouShouldRestABit::
 # 175 "data/maps/LittlerootTown_BrendansHouse_1F/scripts.pory"

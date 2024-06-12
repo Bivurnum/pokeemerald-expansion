@@ -43,7 +43,7 @@ mapscripts LittlerootTown_MapScripts {
 	MAP_SCRIPT_ON_TRANSITION {
 		setflag (FLAG_VISITED_LITTLEROOT_TOWN)
 		call (Common_EventScript_SetupRivalGfxId)
-		call_if_unset (FLAG_RESCUED_BIRCH, LittlerootTown_EventScript_SetTwinPos)
+		call (LittlerootTown_EventScript_CheckForTwin)
 		if (var(VAR_LITTLEROOT_INTRO_STATE) == 2) {
 			setobjectxyperm (LOCALID_MOM, 14, 8)
 		}
@@ -105,6 +105,11 @@ mapscripts LittlerootTown_MapScripts {
 	MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
 		VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 1: LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade
 	]
+}
+
+script LittlerootTown_EventScript_CheckForTwin {
+	call_if_unset (FLAG_RESCUED_BIRCH, LittlerootTown_EventScript_SetTwinPos)
+	return
 }
 
 script LittlerootTown_EventScript_SetTwinPos {
@@ -384,7 +389,7 @@ script LittlerootTown_EventScript_Twin {
 	faceplayer
 	goto_if_set (FLAG_ADVENTURE_STARTED, LittlerootTown_EventScript_GoodLuck)
 	goto_if_set (FLAG_RESCUED_BIRCH, LittlerootTown_EventScript_YouSavedBirch)
-	if (var(VAR_LITTLEROOT_TOWN_STATE) == 0) {
+	if (var(VAR_LITTLEROOT_TOWN_STATE) == 1) {
 		special (GetPlayerBigGuyGirlString)
 		msgbox (LittlerootTown_Text_CanYouGoSeeWhatsHappening, MSGBOX_DEFAULT)
 		closemessage

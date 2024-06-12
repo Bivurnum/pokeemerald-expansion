@@ -47,6 +47,7 @@ script LittlerootTown_MaysHouse_2F_EventScript_FriendRival {
 		closemessage
 		applymovement (LOCALID_FRIEND, Common_Movement_FaceUp)
 	}
+	setvar (VAR_LITTLEROOT_TOWN_STATE, 1)
 	releaseall
 	end
 }
