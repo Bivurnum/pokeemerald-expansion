@@ -158,7 +158,7 @@ script LittlerootTown_EventScript_JumpOffFriendTruck {
 	lockall
 	delay (15)
 	playse (SE_LEDGE)
-	applymovement (OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_PlayerStepOffTruck)
+	applymovement (OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_JumpOffFriendTruck)
 	waitmovement (0)
 	if (var(VAR_LITTLEROOT_RIVAL_STATE) == 2) {
 		setvar (VAR_LITTLEROOT_RIVAL_STATE, 1)
@@ -317,6 +317,10 @@ movement LittlerootTown_Movement_PlayerStepOffTruck {
 
 movement LittlerootTown_Movement_PlayerEnterTruck {
 	jump_left
+}
+
+movement LittlerootTown_Movement_JumpOffFriendTruck {
+	jump_right
 }
 
 script LittlerootTown_EventScript_BeginDexUpgradeScene {

@@ -201,7 +201,7 @@ InsideOfTruck_EventScript_WakeFriend_10:
 # 148 "data/maps/InsideOfTruck/scripts.pory"
 	setflag FLAG_HIDE_KYLE_IN_TRUCK
 # 149 "data/maps/InsideOfTruck/scripts.pory"
-	setvar VAR_LITTLEROOT_RIVAL_STATE, 2
+	setvar VAR_LITTLEROOT_RIVAL_STATE, 3
 # 150 "data/maps/InsideOfTruck/scripts.pory"
 	switch VAR_0x8009
 # 151 "data/maps/InsideOfTruck/scripts.pory"

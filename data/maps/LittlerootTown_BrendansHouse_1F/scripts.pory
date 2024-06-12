@@ -63,6 +63,13 @@ mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {
 			setflag (FLAG_MET_RIVAL_MOM)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 2)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
+			checkfriendchoice
+			switch (var(VAR_RESULT)) {
+				case BREN:
+					setflag(FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
+				case KYLE:
+					setflag(FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
+			}
 			releaseall
 		}
 		VAR_LITTLEROOT_HOUSES_STATE_KYLE, 1 {
@@ -80,6 +87,13 @@ mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {
 			setflag (FLAG_MET_RIVAL_MOM)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 2)
 			setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)
+			checkfriendchoice
+			switch (var(VAR_RESULT)) {
+				case BREN:
+					setflag(FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
+				case KYLE:
+					setflag(FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
+			}
 			releaseall
 		}
 		VAR_LITTLEROOT_RIVAL_STATE, 2{
