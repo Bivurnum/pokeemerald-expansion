@@ -918,7 +918,7 @@ void GetPlayerBigGuyGirlString(void)
 
 void GetRivalSonDaughterString(void)
 {
-//    if (gSaveBlock2Ptr->friendChoice == MALE)
+//    if (gSaveBlock2Ptr->playerGender == MALE)
 //        StringCopy(gStringVar1, gText_Daughter);
 //    else
         StringCopy(gStringVar1, gText_Son);

@@ -382,7 +382,7 @@ u32 ScriptGiveMonParameterized(u16 species, u8 level, u16 item, u8 ball, u8 natu
 
     // assign OT name and gender
     SetMonData(&mon, MON_DATA_OT_NAME, gSaveBlock2Ptr->playerName);
-    SetMonData(&mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->friendChoice);
+    SetMonData(&mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
 
     // find empty party slot to decide whether the Pokémon goes to the Player's party or the storage system.
     for (i = 0; i < PARTY_SIZE; i++)

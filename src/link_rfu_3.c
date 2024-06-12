@@ -668,7 +668,7 @@ void InitHostRfuGameData(struct RfuGameData *data, u8 activity, bool32 startedAc
         data->partnerInfo[i] = partnerInfo;
         partnerInfo >>= 8; // Each element is 1 byte
     }
-    data->playerGender = gSaveBlock2Ptr->friendChoice;
+    data->playerGender = gSaveBlock2Ptr->playerGender;
     data->activity = activity;
     data->startedActivity = startedActivity;
     data->compatibility.language = GAME_LANGUAGE;

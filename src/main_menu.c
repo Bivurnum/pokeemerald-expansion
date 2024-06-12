@@ -733,7 +733,7 @@ static void Task_DisplayMainMenu(u8 taskId)
 
         // Note: If there is no save file, the save block is zeroed out,
         // so the default gender is MALE.
-        if (gSaveBlock2Ptr->friendChoice == MALE)
+        if (gSaveBlock2Ptr->playerGender == MALE)
         {
             palette = RGB(4, 16, 31);
             LoadPalette(&palette, BG_PLTT_ID(15) + 1, PLTT_SIZEOF(1));
@@ -1475,7 +1475,8 @@ static void Task_NewGameBirchSpeech_ChooseGender(u8 taskId)
     {
         case KYLE:
             PlaySE(SE_SELECT);
-            gSaveBlock2Ptr->friendChoice = gender;
+            gSaveBlock2Ptr->playerGender = MALE;
+            VarSet(VAR_FRIEND_CHOICE, KYLE);
             NewGameBirchSpeech_ClearGenderWindow(1, 1);
             FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);
             NewGameBirchSpeech_SetDefaultPlayerName(0);
@@ -1486,7 +1487,8 @@ static void Task_NewGameBirchSpeech_ChooseGender(u8 taskId)
             break;
         case BREN:
             PlaySE(SE_SELECT);
-            gSaveBlock2Ptr->friendChoice = gender;
+            gSaveBlock2Ptr->playerGender = MALE;
+            VarSet(VAR_FRIEND_CHOICE, BREN);
             NewGameBirchSpeech_ClearGenderWindow(1, 1);
             FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);
             NewGameBirchSpeech_SetDefaultPlayerName(0);
@@ -1497,7 +1499,8 @@ static void Task_NewGameBirchSpeech_ChooseGender(u8 taskId)
             break;
         case SPENCER:
             PlaySE(SE_SELECT);
-            gSaveBlock2Ptr->friendChoice = gender;
+            gSaveBlock2Ptr->playerGender = MALE;
+            VarSet(VAR_FRIEND_CHOICE, SPENCER);
             NewGameBirchSpeech_ClearGenderWindow(1, 1);
             FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);
             NewGameBirchSpeech_SetDefaultPlayerName(0);
@@ -1593,7 +1596,7 @@ static void Task_NewGameBirchSpeech_StartNamingScreen(u8 taskId)
         FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);
         NewGameBirchSpeech_SetDefaultPlayerName(0);
         DestroyTask(taskId);
-//        DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->friendChoice, 0, 0, CB2_NewGameBirchSpeech_ReturnFromNamingScreen);
+//        DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_NewGameBirchSpeech_ReturnFromNamingScreen);
         SetMainCallback2(CB2_NewGameBirchSpeech_ReturnFromNamingScreen);
     }
 }
@@ -1705,9 +1708,9 @@ static void Task_NewGameBirchSpeech_AreYouReady(u8 taskId)
             gTasks[taskId].tTimer--;
             return;
         }
-        if (gSaveBlock2Ptr->friendChoice == KYLE)
+        if (VarGet(VAR_FRIEND_CHOICE) == KYLE)
             spriteId = gTasks[taskId].tKyleSpriteId;
-        else if (gSaveBlock2Ptr->friendChoice == BREN)
+        else if (VarGet(VAR_FRIEND_CHOICE) == BREN)
             spriteId = gTasks[taskId].tBrenSpriteId;
         else
             spriteId = gTasks[taskId].tSpencerSpriteId;
@@ -1818,12 +1821,12 @@ static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void)
     FreeAllSpritePalettes();
     ResetAllPicSprites();
     AddBirchSpeechObjects(taskId);
-    if (gSaveBlock2Ptr->friendChoice == KYLE)
+    if (VarGet(VAR_FRIEND_CHOICE) == KYLE)
     {
         gTasks[taskId].tFriendChoice = KYLE;
         spriteId = gTasks[taskId].tKyleSpriteId;
     }
-    else if (gSaveBlock2Ptr->friendChoice == BREN)
+    else if (VarGet(VAR_FRIEND_CHOICE) == BREN)
     {
         gTasks[taskId].tFriendChoice = BREN;
         spriteId = gTasks[taskId].tBrenSpriteId;
@@ -2115,9 +2118,9 @@ void NewGameBirchSpeech_SetDefaultPlayerName(u8 nameId)
     const u8 *name;
     u8 i;
 
-    if (gSaveBlock2Ptr->friendChoice == KYLE)
+    if (VarGet(VAR_FRIEND_CHOICE) == KYLE)
         name = sKylePresetName[nameId];
-    else if (gSaveBlock2Ptr->friendChoice == BREN)
+    else if (VarGet(VAR_FRIEND_CHOICE) == BREN)
         name = sBrenPresetName[nameId];
     else
         name = sSpencerPresetName[nameId];

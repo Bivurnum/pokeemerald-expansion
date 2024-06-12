@@ -4181,7 +4181,7 @@ static void DisplayTrainerInfoOnCard(u8 flags, u8 trainerTourneyId)
 
     // Create trainer pic sprite
     if (trainerId == TRAINER_PLAYER)
-        sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->friendChoice), TRUE, x + 48, y + 64, palSlot + 12, TAG_NONE);
+        sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->playerGender), TRUE, x + 48, y + 64, palSlot + 12, TAG_NONE);
     else if (trainerId == TRAINER_FRONTIER_BRAIN)
         sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(GetFrontierBrainTrainerPicIndex(), TRUE, x + 48, y + 64, palSlot + 12, TAG_NONE);
     else
@@ -4707,7 +4707,7 @@ static void DisplayMatchInfoOnCard(u8 flags, u8 matchNo)
 
     // Draw left trainer sprite.
     if (trainerIds[0] == TRAINER_PLAYER)
-        sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->friendChoice), TRUE, x + 48, y + 88, palSlot + 12, TAG_NONE);
+        sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->playerGender), TRUE, x + 48, y + 88, palSlot + 12, TAG_NONE);
     else if (trainerIds[0] == TRAINER_FRONTIER_BRAIN)
         sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(GetFrontierBrainTrainerPicIndex(), TRUE, x + 48, y + 88, palSlot + 12, TAG_NONE);
     else
@@ -4720,7 +4720,7 @@ static void DisplayMatchInfoOnCard(u8 flags, u8 matchNo)
 
     // Draw right trainer sprite.
     if (trainerIds[1] == TRAINER_PLAYER)
-        sInfoCard->spriteIds[1 + arrId] = CreateTrainerPicSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->friendChoice), TRUE, x + 192, y + 88, palSlot + 13, TAG_NONE);
+        sInfoCard->spriteIds[1 + arrId] = CreateTrainerPicSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->playerGender), TRUE, x + 192, y + 88, palSlot + 13, TAG_NONE);
     else if (trainerIds[1] == TRAINER_FRONTIER_BRAIN)
         sInfoCard->spriteIds[1 + arrId] = CreateTrainerPicSprite(GetFrontierBrainTrainerPicIndex(), TRUE, x + 192, y + 88, palSlot + 13, TAG_NONE);
     else
