@@ -157,10 +157,11 @@ text PlayersHouse_1F_Text_ItsOverWeMissedHim {
 
 text PlayersHouse_1F_Text_GoIntroduceYourselfNextDoor {
 	"Oh, yes.\n"
-	"One of DAD's friends lives in town.\p"
-	"PROF. BIRCH is his name.\p"
-	"He lives right next door, so you should\n"
-	"go over and introduce yourself."
+	"Your friends also moved here today.\p"
+	"You should go see how they\n"
+	"are settling in.\p"
+	"I'm sure they'd enjoy your company\n"
+	"after such a long trip."
 }
 
 text PlayersHouse_1F_Text_SeeYouHoney {
@@ -168,8 +169,7 @@ text PlayersHouse_1F_Text_SeeYouHoney {
 }
 
 text PlayersHouse_1F_Text_DidYouMeetProfBirch {
-	"MOM: Did you introduce yourself to\n"
-	"PROF. BIRCH?"
+	"MOM: Did you find your friends?"
 }
 
 text PlayersHouse_1F_Text_YouShouldRestABit {

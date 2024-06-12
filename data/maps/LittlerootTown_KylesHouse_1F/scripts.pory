@@ -1,6 +1,7 @@
 const LOCALID_MOM = 1
 const LOCALID_RIVAL_MOM = 4
 const LOCALID_RIVAL = 6
+const LOCALID_FRIEND = 15
 
 mapscripts LittlerootTown_KylesHouse_1F_MapScripts {
 	MAP_SCRIPT_ON_LOAD {

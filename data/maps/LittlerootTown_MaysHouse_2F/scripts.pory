@@ -1,4 +1,5 @@
-const LOCALID_FRIEND = 14
+const LOCALID_RIVAL = 1
+const LOCALID_FRIEND = 15
 
 mapscripts LittlerootTown_MaysHouse_2F_MapScripts {
 	MAP_SCRIPT_ON_TRANSITION {
