@@ -536,14 +536,6 @@ script LittlerootTown_ProfessorBirchsLab_EventScript_GivePokedex {
 	setvar (VAR_OLDALE_TOWN_STATE, 1)
 	setvar (VAR_LITTLEROOT_RIVAL_STATE, 20)
 	setvar (VAR_LITTLEROOT_TOWN_STATE, 3)
-	switch (var(VAR_RESULT)) {
-		case SPENCER:
-			setvar (VAR_RESULT, 0)
-		case BREN:
-			setvar (VAR_RESULT, 1)
-		case KYLE:
-			setvar (VAR_RESULT, 2)
-	}
 	releaseall
 	end
 }
@@ -558,6 +550,7 @@ script LittlerootTown_ProfessorBirchsLab_EventScript_KyleGivePokeBalls {
 	}
 	msgbox (LittlerootTown_ProfessorBirchsLab_Text_KyleAlreadyGaveSome, MSGBOX_DEFAULT)
 	call (LittlerootTown_ProfessorBirchsLab_EventScript_RivalsRunOut)
+	setvar (VAR_RESULT, SPENCER)
 	return
 }
 
@@ -571,6 +564,7 @@ script LittlerootTown_ProfessorBirchsLab_EventScript_SpencerGivePokeBalls {
 	}
 	msgbox (LittlerootTown_ProfessorBirchsLab_Text_SpencerAlreadyGaveSome, MSGBOX_DEFAULT)
 	call (LittlerootTown_ProfessorBirchsLab_EventScript_RivalsRunOut)
+	setvar (VAR_RESULT, BREN)
 	return
 }
 
@@ -584,6 +578,7 @@ script LittlerootTown_ProfessorBirchsLab_EventScript_BrenGivePokeBalls {
 	}
 	msgbox (LittlerootTown_ProfessorBirchsLab_Text_BrenAlreadyGaveSome, MSGBOX_DEFAULT)
 	call (LittlerootTown_ProfessorBirchsLab_EventScript_RivalsRunOut)
+	setvar (VAR_RESULT, KYLE)
 	return
 }
 
