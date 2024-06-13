@@ -532,9 +532,12 @@ script LittlerootTown_ProfessorBirchsLab_EventScript_GivePokedex {
 	call_if_eq (VAR_RESULT, BREN, LittlerootTown_ProfessorBirchsLab_EventScript_SpencerGivePokeBalls)
 	call_if_eq (VAR_RESULT, KYLE, LittlerootTown_ProfessorBirchsLab_EventScript_BrenGivePokeBalls)
 	setvar (VAR_BIRCH_LAB_STATE, 5)
+	special (HealPlayerParty)
 	setflag (FLAG_ADVENTURE_STARTED)
 	setvar (VAR_OLDALE_TOWN_STATE, 1)
 	setvar (VAR_LITTLEROOT_RIVAL_STATE, 20)
+	//clearflag (FLAG_HIDE_LITTLEROOT_TOWN_MOM2)
+	setvar (VAR_LITTLEROOT_INTRO_STATE, 9)
 	releaseall
 	end
 }
@@ -643,7 +646,7 @@ movement LittlerootTown_ProfessorBirchsLab_Movement_RivalLeaves {
 }
 
 movement LittlerootTown_ProfessorBirchsLab_Movement_RivalAgitated {
-	walk_in_place_down * 3
+	walk_in_place_down * 2
 }
 
 raw `

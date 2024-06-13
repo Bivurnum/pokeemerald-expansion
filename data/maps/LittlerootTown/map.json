@@ -38,7 +38,7 @@
       "x": 13,
       "y": 14,
       "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_type": "MOVEMENT_TYPE_WANDER_LEFT_AND_RIGHT",
       "movement_range_x": 2,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -214,6 +214,19 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "LittlerootTown_EventScript_EnterTruck",
       "flag": "FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_MOM",
+      "x": 10,
+      "y": 8,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "FLAG_HIDE_LITTLEROOT_TOWN_MOM2"
     }
   ],
   "warp_events": [
@@ -324,7 +337,7 @@
       "x": 11,
       "y": 2,
       "elevation": 3,
-      "var": "VAR_LITTLEROOT_TOWN_STATE",
+      "var": "VAR_LITTLEROOT_INTRO_STATE",
       "var_value": "9",
       "script": "LittlerootTown_EventScript_GiveRunningShoesTrigger1"
     },

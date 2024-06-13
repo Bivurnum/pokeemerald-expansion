@@ -224,6 +224,7 @@ OldaleTown_EventScript_NotBlockingPath::
 script OldaleTown_EventScript_Rival {
 	lockall
 	faceplayer
+	playbgm (MUS_ENCOUNTER_BRENDAN, TRUE)
 	setvar (VAR_0x8009, 0)
 	goto (OldaleTown_EventScript_ShowRivalMessage)
 	end
@@ -231,6 +232,7 @@ script OldaleTown_EventScript_Rival {
 
 script OldaleTown_EventScript_RivalTrigger1 {
 	lockall
+	playbgm (MUS_ENCOUNTER_BRENDAN, TRUE)
 	applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalApproachPlayer1)
 	waitmovement (0)
 	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
@@ -242,6 +244,7 @@ script OldaleTown_EventScript_RivalTrigger1 {
 
 script OldaleTown_EventScript_RivalTrigger2 {
 	lockall
+	playbgm (MUS_ENCOUNTER_BRENDAN, TRUE)
 	applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalApproachPlayer2)
 	waitmovement (0)
 	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
@@ -253,6 +256,7 @@ script OldaleTown_EventScript_RivalTrigger2 {
 
 script OldaleTown_EventScript_RivalTrigger3 {
 	lockall
+	playbgm (MUS_ENCOUNTER_BRENDAN, TRUE)
 	applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalApproachPlayer3)
 	waitmovement (0)
 	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
@@ -299,6 +303,7 @@ script OldaleTown_EventScript_DontBattle {
 		applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalPush)
 		applymovement (OBJ_EVENT_ID_PLAYER, OldaleTown_Movement_GetPushedUp)
 		waitmovement (0)
+		fadedefaultbgm
 		switch (var(VAR_0x8009)) {
 			case 1:
 				applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalReturn1)
@@ -353,6 +358,7 @@ script OldaleTown_EventScript_RivalFinish {
 	closemessage
 	call_if_eq (VAR_0x8009, 0, OldaleTown_EventScript_DoExitMovement1)
 	call_if_eq (VAR_0x8009, 1, OldaleTown_EventScript_DoExitMovement2)
+	fadedefaultbgm
 	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown)
 	applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalExit)
 	waitmovement (0)
@@ -575,7 +581,7 @@ text OldaleTown_Text_GoToLabSpencer {
 
 text OldaleTown_Text_GoToLabBren {
 	"That was fun!\n"
-	"Let's do it again!\p"
+	"Let's do it again right now!\p"
 	"Oh, wait… SPENCER said we had to\n"
 	"go to the lab, right?\p"
 	"We'd better put our rematch\n"
