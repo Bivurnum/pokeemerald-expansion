@@ -717,7 +717,7 @@ LittlerootTown_ProfessorBirchsLab_Text_MightBeGoodIdeaToGoSeeRival:
 	.string "By the way, I'd like to speak to\n"
 	.string "all three of you together.\p"
 	.string "Would you please go find your friends\n"
-	.string "and bring them back here?"
+	.string "and bring them back here?$"
 
 LittlerootTown_ProfessorBirchsLab_Text_GetRivalToTeachYou:
 	.string "PROF. BIRCH: Great!\n"
@@ -728,7 +728,7 @@ LittlerootTown_ProfessorBirchsLab_Text_GetRivalToTeachYou:
 LittlerootTown_ProfessorBirchsLab_Text_DontBeThatWay:
 	.string "PROF. BIRCH: Oh, don't be that way.\n"
 	.string "It's for something good. I promise.\p"
-	.string "Won't you please get them?"
+	.string "Won't you please get them?$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchRivalGoneHome:
 	.string "PROF. BIRCH: I haven't seen\n"

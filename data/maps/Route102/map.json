@@ -165,6 +165,22 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "Route102_EventScript_RouteSignOldale"
+    },
+    {
+      "type": "sign",
+      "x": 49,
+      "y": 10,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Route102_EventScript_EndOfDemo"
+    },
+    {
+      "type": "sign",
+      "x": 49,
+      "y": 11,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Route102_EventScript_EndOfDemo"
     }
   ]
 }

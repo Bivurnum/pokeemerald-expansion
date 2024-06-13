@@ -3,6 +3,11 @@ const LOCALID_BREN = 5
 const LOCALID_KYLE = 6
 
 mapscripts InsideOfTruck_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION {
+		if (var(VAR_LITTLEROOT_INTRO_STATE) > 3) {
+			playbgm (MUS_FORTREE, TRUE)
+		}
+	}
     MAP_SCRIPT_ON_LOAD: InsideOfTruck_OnLoad
     MAP_SCRIPT_ON_RESUME: InsideOfTruck_OnResume
 }

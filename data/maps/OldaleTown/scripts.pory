@@ -219,73 +219,150 @@ OldaleTown_EventScript_NotBlockingPath::
 	msgbox OldaleTown_Text_FinishedSketchingFootprints, MSGBOX_DEFAULT
 	release
 	end
+`
 
-OldaleTown_EventScript_Rival::
+script OldaleTown_EventScript_Rival {
 	lockall
-	applymovement LOCALID_RIVAL, Common_Movement_FacePlayer
-	waitmovement 0
-	setvar VAR_0x8009, 0
-	goto OldaleTown_EventScript_ShowRivalMessage
+	faceplayer
+	setvar (VAR_0x8009, 0)
+	goto (OldaleTown_EventScript_ShowRivalMessage)
 	end
+}
 
-OldaleTown_EventScript_RivalTrigger1::
+script OldaleTown_EventScript_RivalTrigger1 {
 	lockall
-	applymovement LOCALID_RIVAL, OldaleTown_Movement_RivalApproachPlayer1
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
-	waitmovement 0
-	setvar VAR_0x8009, 1
-	goto OldaleTown_EventScript_ShowRivalMessage
+	applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalApproachPlayer1)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
+	waitmovement (0)
+	setvar (VAR_0x8009, 1)
+	goto (OldaleTown_EventScript_ShowRivalMessage)
 	end
+}
 
-OldaleTown_EventScript_RivalTrigger2::
+script OldaleTown_EventScript_RivalTrigger2 {
 	lockall
-	applymovement LOCALID_RIVAL, OldaleTown_Movement_RivalApproachPlayer2
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
-	waitmovement 0
-	setvar VAR_0x8009, 1
-	goto OldaleTown_EventScript_ShowRivalMessage
+	applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalApproachPlayer2)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
+	waitmovement (0)
+	setvar (VAR_0x8009, 2)
+	goto (OldaleTown_EventScript_ShowRivalMessage)
 	end
+}
 
-OldaleTown_EventScript_RivalTrigger3::
+script OldaleTown_EventScript_RivalTrigger3 {
 	lockall
-	applymovement LOCALID_RIVAL, OldaleTown_Movement_RivalApproachPlayer3
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
-	waitmovement 0
-	setvar VAR_0x8009, 1
-	goto OldaleTown_EventScript_ShowRivalMessage
+	applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalApproachPlayer3)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
+	waitmovement (0)
+	setvar (VAR_0x8009, 3)
+	goto (OldaleTown_EventScript_ShowRivalMessage)
 	end
+}
 
-OldaleTown_EventScript_ShowRivalMessage::
-	checkplayergender
-	goto_if_eq VAR_RESULT, MALE, OldaleTown_EventScript_ShowMayMessage
-	goto_if_eq VAR_RESULT, FEMALE, OldaleTown_EventScript_ShowBrendanMessage
+script OldaleTown_EventScript_ShowRivalMessage {
+	checkfriendchoice
+	goto_if_eq (VAR_RESULT, SPENCER, OldaleTown_EventScript_ShowKyleMessage)
+	goto_if_eq (VAR_RESULT, BREN, OldaleTown_EventScript_ShowSpencerMessage)
+	goto_if_eq (VAR_RESULT, KYLE, OldaleTown_EventScript_ShowBrenMessage)
 	end
+}
 
-OldaleTown_EventScript_ShowMayMessage::
-	msgbox OldaleTown_Text_MayLetsGoBack, MSGBOX_DEFAULT
-	goto OldaleTown_EventScript_RivalFinish
+script OldaleTown_EventScript_ShowBrenMessage {
+	msgbox (OldaleTown_Text_BrenWantToBattle, MSGBOX_YESNO)
+	goto_if_eq (VAR_RESULT, NO, OldaleTown_EventScript_DontBattle)
+	goto (OldaleTown_EventScript_RivalDoBattle)
 	end
+}
 
-OldaleTown_EventScript_ShowBrendanMessage::
-	msgbox OldaleTown_Text_BrendanLetsGoBack, MSGBOX_DEFAULT
-	goto OldaleTown_EventScript_RivalFinish
+script OldaleTown_EventScript_ShowKyleMessage {
+	msgbox (OldaleTown_Text_KyleWantToBattle, MSGBOX_YESNO)
+	goto_if_eq (VAR_RESULT, NO, OldaleTown_EventScript_DontBattle)
+	goto (OldaleTown_EventScript_RivalFinish)
 	end
+}
 
-OldaleTown_EventScript_RivalFinish::
+script OldaleTown_EventScript_ShowSpencerMessage {
+	msgbox (OldaleTown_Text_SpencerWantToBattle, MSGBOX_YESNO)
+	goto_if_eq (VAR_RESULT, NO, OldaleTown_EventScript_DontBattle)
+	goto (OldaleTown_EventScript_RivalFinish)
+	end
+}
+
+script OldaleTown_EventScript_DontBattle {
+	msgbox (OldaleTown_Text_GoPrepare)
 	closemessage
-	call_if_eq VAR_0x8009, 0, OldaleTown_EventScript_DoExitMovement1
-	call_if_eq VAR_0x8009, 1, OldaleTown_EventScript_DoExitMovement2
-	applymovement LOCALID_RIVAL, OldaleTown_Movement_RivalExit
-	waitmovement 0
-	removeobject LOCALID_RIVAL
-	setvar VAR_OLDALE_RIVAL_STATE, 2
-	setflag FLAG_HIDE_OLDALE_TOWN_RIVAL
+	if (var(VAR_0x8009) != 0) {
+		playse (SE_NOT_EFFECTIVE)
+		applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalPush)
+		applymovement (OBJ_EVENT_ID_PLAYER, OldaleTown_Movement_GetPushedUp)
+		waitmovement (0)
+		switch (var(VAR_0x8009)) {
+			case 1:
+				applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalReturn1)
+			case 2:
+				applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalReturn2)
+			case 3:
+				applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalReturn3)
+		}
+		waitmovement (0)
+	}
+	applymovement (LOCALID_RIVAL, Common_Movement_FaceLeft)
+	waitmovement (0)
 	releaseall
 	end
+}
 
+script OldaleTown_EventScript_RivalDoBattle {
+	msgbox (OldaleTown_Text_LetsDoThis, MSGBOX_DEFAULT)
+	waitmessage
+	checkfriendchoice
+	goto_if_eq (VAR_RESULT, SPENCER, OldaleTown_EventScript_RivalBattleKyle)
+	goto_if_eq (VAR_RESULT, BREN, OldaleTown_EventScript_RivalBattleSpencer)
+	goto_if_eq (VAR_RESULT, KYLE, OldaleTown_EventScript_RivalBattleBren)
+	end
+}
+
+script OldaleTown_EventScript_RivalBattleKyle {
+	trainerbattle_no_intro (TRAINER_KYLE_OLDALE, OldaleTown_Text_KyleDefeated)
+	goto (OldaleTown_EventScript_RivalFinish)
+}
+
+script OldaleTown_EventScript_RivalBattleSpencer {
+	trainerbattle_no_intro (TRAINER_SPENCER_OLDALE, OldaleTown_Text_SpencerDefeated)
+	goto (OldaleTown_EventScript_RivalFinish)
+}
+
+script OldaleTown_EventScript_RivalBattleBren {
+	trainerbattle_no_intro (TRAINER_BREN_OLDALE, OldaleTown_Text_BrenDefeated)
+	goto (OldaleTown_EventScript_RivalFinish)
+}
+
+script OldaleTown_EventScript_RivalFinish {
+	checkfriendchoice
+	switch (var(VAR_RESULT)) {
+		case SPENCER:
+			msgbox (OldaleTown_Text_GoToLabKyle, MSGBOX_DEFAULT)
+		case BREN:
+			msgbox (OldaleTown_Text_GoToLabSpencer, MSGBOX_DEFAULT)
+		case KYLE:
+			msgbox (OldaleTown_Text_GoToLabBren, MSGBOX_DEFAULT)
+	}
+	closemessage
+	call_if_eq (VAR_0x8009, 0, OldaleTown_EventScript_DoExitMovement1)
+	call_if_eq (VAR_0x8009, 1, OldaleTown_EventScript_DoExitMovement2)
+	applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalExit)
+	waitmovement (0)
+	removeobject (LOCALID_RIVAL)
+	setvar (VAR_OLDALE_RIVAL_STATE, 2)
+	setflag (FLAG_HIDE_OLDALE_TOWN_RIVAL)
+	releaseall
+	end
+}
+
+raw `
 OldaleTown_EventScript_DoExitMovement1::
 	goto_if_ne VAR_FACING, DIR_SOUTH, OldaleTown_EventScript_DoExitMovement2
 	applymovement LOCALID_RIVAL, OldaleTown_Movement_RivalExit
@@ -297,7 +374,30 @@ OldaleTown_EventScript_DoExitMovement2::
 	applymovement LOCALID_RIVAL, OldaleTown_Movement_RivalExit
 	waitmovement 0
 	return
+`
 
+movement OldaleTown_Movement_RivalPush {
+	walk_fast_left
+}
+
+movement OldaleTown_Movement_GetPushedUp {
+	walk_up
+	face_down
+}
+
+movement OldaleTown_Movement_RivalReturn1 {
+	walk_right * 3
+}
+
+movement OldaleTown_Movement_RivalReturn2 {
+	walk_right * 2
+}
+
+movement OldaleTown_Movement_RivalReturn3 {
+	walk_right
+}
+
+raw `
 OldaleTown_Movement_RivalApproachPlayer1:
 	walk_left
 	walk_left
@@ -399,5 +499,85 @@ OldaleTown_Text_BrendanLetsGoBack:
 OldaleTown_Text_TownSign:
 	.string "OLDALE TOWN\n"
 	.string "“Where things start off scarce.”$"
-
 `
+
+text OldaleTown_Text_BrenWantToBattle {
+	"{PLAYER}! SPENCER told me that he had a\n"
+	"POKéMON battle with you!\l"
+	"No fair! I want a turn!\p"
+	"Are you ready to have a battle with me\n"
+	"right here and now?"
+}
+
+text OldaleTown_Text_KyleWantToBattle {
+	"{PLAYER}! BREN told me that he had a\n"
+	"POKéMON battle with you!\l"
+	"No fair! I want a turn!\p"
+	"Are you ready to have a battle with me\n"
+	"right here and now?"
+}
+
+text OldaleTown_Text_SpencerWantToBattle {
+	"{PLAYER}! KYLE told me that he had a\n"
+	"POKéMON battle with you!\l"
+	"No fair! I want a turn!\p"
+	"Are you ready to have a battle with me\n"
+	"right here and now?"
+}
+
+text OldaleTown_Text_GoPrepare {
+	"Oh… Okay…\p"
+	"Well, if you need to heal your\n"
+	"POKéMON, there's a POKéMON CENTER\l"
+	"right over there.\p"
+	"I'll wait here until you're prepared."
+}
+
+text OldaleTown_Text_LetsDoThis {
+	"Alright! Let's do this!"
+}
+
+text OldaleTown_Text_KyleDefeated {
+	"BREN wasn't kidding!\n"
+	"You're super strong!"
+}
+
+text OldaleTown_Text_SpencerDefeated {
+	"KYLE wasn't kidding!\n"
+	"You're super strong!"
+}
+
+text OldaleTown_Text_BrenDefeated {
+	"SPENCER wasn't kidding!\n"
+	"You're super strong!"
+}
+
+text OldaleTown_Text_GoToLabKyle {
+	"That was fun!\n"
+	"Let's do it again!\p"
+	"Oh, wait… BREN said we had to\n"
+	"go to the lab, right?\p"
+	"We'd better put our rematch\n"
+	"on hold for now.\p"
+	"Come on! Let's go see the PROF."
+}
+
+text OldaleTown_Text_GoToLabSpencer {
+	"That was fun!\n"
+	"Let's do it again!\p"
+	"Oh, wait… KYLE said we had to\n"
+	"go to the lab, right?\p"
+	"We'd better put our rematch\n"
+	"on hold for now.\p"
+	"Come on! Let's go see the PROF."
+}
+
+text OldaleTown_Text_GoToLabBren {
+	"That was fun!\n"
+	"Let's do it again!\p"
+	"Oh, wait… SPENCER said we had to\n"
+	"go to the lab, right?\p"
+	"We'd better put our rematch\n"
+	"on hold for now.\p"
+	"Come on! Let's go see the PROF."
+}

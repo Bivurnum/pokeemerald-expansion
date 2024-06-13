@@ -1,33 +1,37 @@
-raw `
-.set LOCALID_RIVAL, 2
+const LOCALID_RIVAL = 2
+const LOCALID_RIVAL2 = 21
 
-Route103_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, Route103_OnTransition
-	map_script MAP_SCRIPT_ON_LOAD, Route103_OnLoad
-	.byte 0
 
-Route103_OnTransition:
-	call Common_EventScript_SetupRivalGfxId
-	call ProfBirch_EventScript_UpdateLocation
+mapscripts Route103_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION: Route103_OnTransition
+	MAP_SCRIPT_ON_LOAD: Route103_OnLoad
+}
+
+script Route103_OnTransition {
+	call (Common_EventScript_SetupRivalGfxId)
+	call (ProfBirch_EventScript_UpdateLocation)
 	end
+}
 
-Route103_OnLoad:
-	call_if_set FLAG_SYS_GAME_CLEAR, Route103_EventScript_OpenAlteringCave
+script Route103_OnLoad {
+	call_if_set (FLAG_SYS_GAME_CLEAR, Route103_EventScript_OpenAlteringCave)
 	end
+}
 
-Route103_EventScript_OpenAlteringCave::
-	setmetatile 45, 5, METATILE_General_CaveEntrance_Top, TRUE
-	setmetatile 45, 6, METATILE_General_CaveEntrance_Bottom, FALSE
+script Route103_EventScript_OpenAlteringCave {
+	setmetatile (45, 5, METATILE_General_CaveEntrance_Top, TRUE)
+	setmetatile (45, 6, METATILE_General_CaveEntrance_Bottom, FALSE)
 	return
+}
 
-Route103_EventScript_Rival::
+script Route103_EventScript_Rival {
 	lockall
 	checkfriendchoice
-	goto_if_eq VAR_RESULT, SPENCER, Route103_EventScript_RivalBren
-	goto_if_eq VAR_RESULT, BREN, Route103_EventScript_RivalKyle
-	goto_if_eq VAR_RESULT, KYLE, Route103_EventScript_RivalSpencer
+	goto_if_eq (VAR_RESULT, SPENCER, Route103_EventScript_RivalBren)
+	goto_if_eq (VAR_RESULT, BREN, Route103_EventScript_RivalKyle)
+	goto_if_eq (VAR_RESULT, KYLE, Route103_EventScript_RivalSpencer)
 	end
-`
+}
 
 script Route103_EventScript_Rival2 {
 	lock
@@ -123,49 +127,56 @@ Route103_EventScript_RivalExit::
 	case DIR_WEST, Route103_EventScript_RivalExitFacingEastOrWest
 	case DIR_EAST, Route103_EventScript_RivalExitFacingEastOrWest
 	end
+`
 
-Route103_EventScript_RivalExitFacingNorth::
-	applymovement OBJ_EVENT_ID_PLAYER, Route103_Movement_WatchRivalExitFacingNorth
-	applymovement LOCALID_RIVAL, Route103_Movement_RivalExitFacingNorth1
-	waitmovement 0
-	playse SE_LEDGE
-	applymovement LOCALID_RIVAL, Route103_Movement_RivalExitFacingNorth2
-	waitmovement 0
-	goto Route103_EventScript_RivalEnd
+script Route103_EventScript_RivalExitFacingNorth {
+	applymovement (OBJ_EVENT_ID_PLAYER, Route103_Movement_WatchRivalExitFacingNorth)
+	applymovement (LOCALID_RIVAL, Route103_Movement_RivalExitFacingNorth1)
+	waitmovement (0)
+	playse (SE_LEDGE)
+	applymovement (LOCALID_RIVAL, Route103_Movement_RivalExitFacingNorth2)
+	waitmovement (0)
+	goto (Route103_EventScript_RivalEnd)
 	end
+}
 
-Route103_EventScript_RivalExitFacingEastOrWest::
-	applymovement OBJ_EVENT_ID_PLAYER, Route103_Movement_WatchRivalExitFacingEastOrWest
-	applymovement LOCALID_RIVAL, Route103_Movement_RivalExit1
-	waitmovement 0
-	playse SE_LEDGE
-	applymovement LOCALID_RIVAL, Route103_Movement_RivalExit2
-	waitmovement 0
-	goto Route103_EventScript_RivalEnd
+script Route103_EventScript_RivalExitFacingEastOrWest {
+	applymovement (OBJ_EVENT_ID_PLAYER, Route103_Movement_WatchRivalExitFacingEastOrWest)
+	applymovement (LOCALID_RIVAL, Route103_Movement_RivalExit1)
+	waitmovement (0)
+	playse (SE_LEDGE)
+	applymovement (LOCALID_RIVAL, Route103_Movement_RivalExit2)
+	waitmovement (0)
+	goto (Route103_EventScript_RivalEnd)
 	end
+}
 
-Route103_EventScript_RivalExitFacingSouth::
-	applymovement LOCALID_RIVAL, Route103_Movement_RivalExit1
-	waitmovement 0
-	playse SE_LEDGE
-	applymovement LOCALID_RIVAL, Route103_Movement_RivalExit2
-	waitmovement 0
-	goto Route103_EventScript_RivalEnd
+script Route103_EventScript_RivalExitFacingSouth {
+	applymovement (LOCALID_RIVAL, Route103_Movement_RivalExit1)
+	waitmovement (0)
+	playse (SE_LEDGE)
+	applymovement (LOCALID_RIVAL, Route103_Movement_RivalExit2)
+	waitmovement (0)
+	goto (Route103_EventScript_RivalEnd)
 	end
+}
 
-Route103_EventScript_RivalEnd::
-	removeobject LOCALID_RIVAL
-	setvar VAR_BIRCH_LAB_STATE, 4
-	clearflag FLAG_HIDE_LITTLEROOT_TOWN_BIRCHS_LAB_RIVAL
-	setflag FLAG_DEFEATED_RIVAL_ROUTE103
-	setflag FLAG_HIDE_ROUTE_103_RIVAL
-	setvar VAR_OLDALE_RIVAL_STATE, 1
-	clearflag FLAG_HIDE_OLDALE_TOWN_RIVAL
-	savebgm MUS_DUMMY
+script Route103_EventScript_RivalEnd {
+	removeobject (LOCALID_RIVAL)
+	removeobject (LOCALID_RIVAL2)
+	setvar (VAR_BIRCH_LAB_STATE, 4)
+	clearflag (FLAG_HIDE_LITTLEROOT_TOWN_BIRCHS_LAB_RIVAL)
+	setflag (FLAG_DEFEATED_RIVAL_ROUTE103)
+	setflag (FLAG_HIDE_ROUTE_103_RIVAL)
+	setvar (VAR_OLDALE_RIVAL_STATE, 1)
+	clearflag (FLAG_HIDE_OLDALE_TOWN_RIVAL)
+	savebgm (MUS_DUMMY)
 	fadedefaultbgm
 	releaseall
 	end
+}
 
+raw `
 Route103_Movement_RivalExitFacingNorth1:
 	walk_left
 	walk_down
@@ -323,7 +334,7 @@ Route103_Text_KyleDefeated:
 
 Route103_Text_KyleTimeToHeadBack:
 	.string "KYLE: That's really impressive!\n"
-	.string "I mean, you just got that POKéMON,\n"
+	.string "I mean, you just got that POKéMON,\l"
 	.string "but it already likes you.\p"
 	.string "You might be able to befriend any\n"
 	.string "kind of POKéMON easily.\p"
@@ -334,10 +345,10 @@ Route103_Text_KyleTimeToHeadBack:
 
 Route103_Text_BrenRoute103Pokemon:
 	.string "BREN: It's ok, PIPLUP.\n"
-	.string "we'll win the next one…"
+	.string "we'll win the next one…$"
 
 Route103_Text_BrenLetsBattle:
-	.string "Hey, it's {PLAYER}!\p"
+	.string "Hey, it's {PLAYER}!\n"
 	.string "What kind of POKéMON did you get?\p"
 	.string "Since we're here, how about a\n"
 	.string "little battle?\p"
@@ -365,7 +376,7 @@ Route103_Text_SpencerLetsBattle:
 	.string "Glad to see you made it out\n"
 	.string "here in one piece.\p"
 	.string "I hope you came prepared,\n"
-	.string "because it's battle time!\l"
+	.string "because it's battle time!\p"
 	.string "Let's go!$"
 
 Route103_Text_SpencerDefeated:
@@ -399,7 +410,7 @@ Route103_Text_RouteSign:
 `
 
 text Route103_Text_CantBeatWingull {
-	"Darn.\n"
-	"I'm really having trouble\l"
+	"Darn.\p"
+	"I'm really having trouble\n"
 	"beating WINGULL in battle."
 }

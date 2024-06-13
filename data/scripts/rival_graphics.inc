@@ -7,17 +7,17 @@ Common_EventScript_SetupRivalGfxId::
 
 EventScript_SetupRivalGfxIdSpencer::
 	setvar VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_BREN_NORMAL
-	setvar VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_KYLE_NORMAL
+	setvar VAR_OBJ_GFX_ID_F, OBJ_EVENT_GFX_KYLE_NORMAL
 	return
 
 EventScript_SetupRivalGfxIdBren::
 	setvar VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_KYLE_NORMAL
-	setvar VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_SPENCER_NORMAL
+	setvar VAR_OBJ_GFX_ID_F, OBJ_EVENT_GFX_SPENCER_NORMAL
 	return
 
 EventScript_SetupRivalGfxIdKyle::
 	setvar VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_SPENCER_NORMAL
-	setvar VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_BREN_NORMAL
+	setvar VAR_OBJ_GFX_ID_F, OBJ_EVENT_GFX_BREN_NORMAL
 	return
 
 Common_EventScript_SetupRivalOnBikeGfxId::

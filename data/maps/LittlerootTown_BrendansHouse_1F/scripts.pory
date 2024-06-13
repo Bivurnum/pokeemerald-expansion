@@ -43,7 +43,6 @@ mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {
 		}
 		VAR_LITTLEROOT_INTRO_STATE, 7 {
 			lockall
-			special (TurnOnTVScreen)
 			setvar (VAR_0x8004, MALE)
 			setvar (VAR_0x8005, LOCALID_MOM)
 			goto (PlayersHouse_1F_EventScript_PetalburgGymReportMale)
