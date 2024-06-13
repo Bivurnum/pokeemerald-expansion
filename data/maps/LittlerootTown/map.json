@@ -35,12 +35,12 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_FAT_MAN",
-      "x": 12,
-      "y": 15,
+      "x": 13,
+      "y": 14,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 2,
-      "movement_range_y": 1,
+      "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "LittlerootTown_EventScript_FatMan",
@@ -315,8 +315,8 @@
       "x": 10,
       "y": 2,
       "elevation": 3,
-      "var": "VAR_LITTLEROOT_TOWN_STATE",
-      "var_value": "3",
+      "var": "VAR_LITTLEROOT_INTRO_STATE",
+      "var_value": "9",
       "script": "LittlerootTown_EventScript_GiveRunningShoesTrigger0"
     },
     {
@@ -325,8 +325,53 @@
       "y": 2,
       "elevation": 3,
       "var": "VAR_LITTLEROOT_TOWN_STATE",
-      "var_value": "3",
+      "var_value": "9",
       "script": "LittlerootTown_EventScript_GiveRunningShoesTrigger1"
+    },
+    {
+      "type": "trigger",
+      "x": 10,
+      "y": 16,
+      "elevation": 0,
+      "var": "VAR_LITTLEROOT_TOWN_STATE",
+      "var_value": "4",
+      "script": "LittlerootTown_EventScript_GiveRunningShoesTrigger6"
+    },
+    {
+      "type": "trigger",
+      "x": 11,
+      "y": 16,
+      "elevation": 0,
+      "var": "VAR_LITTLEROOT_TOWN_STATE",
+      "var_value": "4",
+      "script": "LittlerootTown_EventScript_GiveRunningShoesTrigger4"
+    },
+    {
+      "type": "trigger",
+      "x": 12,
+      "y": 16,
+      "elevation": 0,
+      "var": "VAR_LITTLEROOT_TOWN_STATE",
+      "var_value": "4",
+      "script": "LittlerootTown_EventScript_GiveRunningShoesTrigger5"
+    },
+    {
+      "type": "trigger",
+      "x": 13,
+      "y": 16,
+      "elevation": 0,
+      "var": "VAR_LITTLEROOT_TOWN_STATE",
+      "var_value": "4",
+      "script": "LittlerootTown_EventScript_GiveRunningShoesTrigger2"
+    },
+    {
+      "type": "trigger",
+      "x": 14,
+      "y": 16,
+      "elevation": 0,
+      "var": "VAR_LITTLEROOT_TOWN_STATE",
+      "var_value": "4",
+      "script": "LittlerootTown_EventScript_GiveRunningShoesTrigger3"
     }
   ],
   "bg_events": [
