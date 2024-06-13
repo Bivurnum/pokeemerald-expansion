@@ -535,7 +535,7 @@ OldaleTown_EventScript_ShowKyleMessage::
 # 282 "data/maps/OldaleTown/scripts.pory"
 	goto_if_eq VAR_RESULT, NO, OldaleTown_EventScript_DontBattle
 # 283 "data/maps/OldaleTown/scripts.pory"
-	goto OldaleTown_EventScript_RivalFinish
+	goto OldaleTown_EventScript_RivalDoBattle
 	end
 
 
@@ -545,7 +545,7 @@ OldaleTown_EventScript_ShowSpencerMessage::
 # 289 "data/maps/OldaleTown/scripts.pory"
 	goto_if_eq VAR_RESULT, NO, OldaleTown_EventScript_DontBattle
 # 290 "data/maps/OldaleTown/scripts.pory"
-	goto OldaleTown_EventScript_RivalFinish
+	goto OldaleTown_EventScript_RivalDoBattle
 	end
 
 

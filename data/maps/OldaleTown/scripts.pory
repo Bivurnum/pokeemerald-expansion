@@ -280,14 +280,14 @@ script OldaleTown_EventScript_ShowBrenMessage {
 script OldaleTown_EventScript_ShowKyleMessage {
 	msgbox (OldaleTown_Text_KyleWantToBattle, MSGBOX_YESNO)
 	goto_if_eq (VAR_RESULT, NO, OldaleTown_EventScript_DontBattle)
-	goto (OldaleTown_EventScript_RivalFinish)
+	goto (OldaleTown_EventScript_RivalDoBattle)
 	end
 }
 
 script OldaleTown_EventScript_ShowSpencerMessage {
 	msgbox (OldaleTown_Text_SpencerWantToBattle, MSGBOX_YESNO)
 	goto_if_eq (VAR_RESULT, NO, OldaleTown_EventScript_DontBattle)
-	goto (OldaleTown_EventScript_RivalFinish)
+	goto (OldaleTown_EventScript_RivalDoBattle)
 	end
 }
 
