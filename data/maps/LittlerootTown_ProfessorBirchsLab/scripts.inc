@@ -1689,9 +1689,9 @@ LittlerootTown_ProfessorBirchsLab_Text_ExplainPokedex:
 # 848 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	.string "with it.\p"
 # 849 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
-	.string "She's currently traveling abroad, but\p"
+	.string "She's currently traveling abroad, but\n"
 # 850 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
-	.string "whenever she catches a rare POKéMON\n"
+	.string "whenever she catches a rare POKéMON\l"
 # 851 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	.string "and records its data in the POKéDEX,\l"
 # 852 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
@@ -2189,37 +2189,40 @@ LittlerootTown_ProfessorBirchsLab_Text_KyleGiveBalls::
 
 LittlerootTown_ProfessorBirchsLab_Text_KyleAlreadyGaveSome::
 # 1107 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
-	.string "I already gave some to BREN. We can use\n"
-	.string "these POKé BALLS to catch lots of POKéMON.\p"
+	.string "I already gave some to BREN.\n"
+	.string "We can use these POKé BALLS to\l"
+	.string "catch lots of POKéMON.\p"
 	.string "I'll bet I can catch more than you two!\n"
 	.string "First one to 50 POKéMON wins! Go!$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SpencerGiveBalls::
-# 1114 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
+# 1115 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	.string "SPENCER: I'm glad I went shopping. Here!\n"
 	.string "You should find these useful.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SpencerAlreadyGaveSome::
-# 1119 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
-	.string "I already gave some to KYLE. We can use\n"
-	.string "these POKé BALLS to catch lots of POKéMON.\p"
+# 1120 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
+	.string "I already gave some to KYLE.\n"
+	.string "We can use these POKé BALLS to\l"
+	.string "catch lots of POKéMON.\p"
 	.string "I'll bet I can catch more than you two!\n"
 	.string "First one to 50 POKéMON wins! Go!$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BrenGiveBalls::
-# 1126 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
+# 1128 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	.string "BREN: Here you go. A little gift to\n"
 	.string "commemorate the occasion.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BrenAlreadyGaveSome::
-# 1131 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
-	.string "I already gave some to SPENCER. We can use\n"
-	.string "these POKé BALLS to catch lots of POKéMON.\p"
+# 1133 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
+	.string "I already gave some to SPENCER.\n"
+	.string "We can use these POKé BALLS to\l"
+	.string "catch lots of POKéMON.\p"
 	.string "I'll bet I can catch more than you two!\n"
 	.string "First one to 50 POKéMON wins! Go!$"
 
 LittlerootTown_ProfessorBirchsLab_Text_50SeemsLikeALot::
-# 1138 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
+# 1141 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	.string "Hold on! 50 seems like a lot!\p"
-	.string "Um… Uh, yeah. I mean “Challenge accepted!”\n"
+	.string "Um… Uh, yeah.\lI mean “Challenge accepted!”\n"
 	.string "Wait for meeee!$"

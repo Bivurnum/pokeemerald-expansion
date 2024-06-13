@@ -846,8 +846,8 @@ LittlerootTown_ProfessorBirchsLab_Text_ExplainPokedex:
 	.string "of any POKéMON you meet or catch.\p"
 	.string "My kid, MAY, goes everywhere\n"
 	.string "with it.\p"
-	.string "She's currently traveling abroad, but\p"
-	.string "whenever she catches a rare POKéMON\n"
+	.string "She's currently traveling abroad, but\n"
+	.string "whenever she catches a rare POKéMON\l"
 	.string "and records its data in the POKéDEX,\l"
 	.string "why, MAY calls me with her POKéNAV\l"
 	.string "and tells me, night or day.$"
@@ -1105,8 +1105,9 @@ text LittlerootTown_ProfessorBirchsLab_Text_KyleGiveBalls {
 }
 
 text LittlerootTown_ProfessorBirchsLab_Text_KyleAlreadyGaveSome {
-	"I already gave some to BREN. We can use\n"
-	"these POKé BALLS to catch lots of POKéMON.\p"
+	"I already gave some to BREN.\n"
+	"We can use these POKé BALLS to\l"
+	"catch lots of POKéMON.\p"
 	"I'll bet I can catch more than you two!\n"
 	"First one to 50 POKéMON wins! Go!"
 }
@@ -1117,8 +1118,9 @@ text LittlerootTown_ProfessorBirchsLab_Text_SpencerGiveBalls {
 }
 
 text LittlerootTown_ProfessorBirchsLab_Text_SpencerAlreadyGaveSome {
-	"I already gave some to KYLE. We can use\n"
-	"these POKé BALLS to catch lots of POKéMON.\p"
+	"I already gave some to KYLE.\n"
+	"We can use these POKé BALLS to\l"
+	"catch lots of POKéMON.\p"
 	"I'll bet I can catch more than you two!\n"
 	"First one to 50 POKéMON wins! Go!"
 }
@@ -1129,14 +1131,15 @@ text LittlerootTown_ProfessorBirchsLab_Text_BrenGiveBalls {
 }
 
 text LittlerootTown_ProfessorBirchsLab_Text_BrenAlreadyGaveSome {
-	"I already gave some to SPENCER. We can use\n"
-	"these POKé BALLS to catch lots of POKéMON.\p"
+	"I already gave some to SPENCER.\n"
+	"We can use these POKé BALLS to\l"
+	"catch lots of POKéMON.\p"
 	"I'll bet I can catch more than you two!\n"
 	"First one to 50 POKéMON wins! Go!"
 }
 
 text LittlerootTown_ProfessorBirchsLab_Text_50SeemsLikeALot {
 	"Hold on! 50 seems like a lot!\p"
-	"Um… Uh, yeah. I mean “Challenge accepted!”\n"
+	"Um… Uh, yeah.\lI mean “Challenge accepted!”\n"
 	"Wait for meeee!"
 }
