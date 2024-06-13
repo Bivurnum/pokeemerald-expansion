@@ -402,19 +402,19 @@ RivalsHouse_1F_Text_SpencerAndBrenLeft::
 # 228 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
 	.string "Oh hey, {PLAYER}.\n"
 	.string "SPENCER and BREN said they were headed\l"
-	.string "out to train up their new POKéMON."
+	.string "out to train up their new POKéMON.\p"
 	.string "You should join them when you're ready.$"
 
 RivalsHouse_1F_Text_SpencerAndKyleLeft::
 # 235 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
 	.string "Oh hey, {PLAYER}.\n"
 	.string "SPENCER and KYLE said they were headed\l"
-	.string "out to train up their new POKéMON."
+	.string "out to train up their new POKéMON.\p"
 	.string "You should join them when you're ready.$"
 
 RivalsHouse_1F_Text_KyleAndBrenLeft::
 # 242 "data/maps/LittlerootTown_MaysHouse_1F/scripts.pory"
 	.string "Oh hey, {PLAYER}.\n"
 	.string "BREN and KYLE said they were headed\l"
-	.string "out to train up their new POKéMON."
+	.string "out to train up their new POKéMON.\p"
 	.string "You should join them when you're ready.$"

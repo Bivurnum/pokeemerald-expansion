@@ -228,20 +228,20 @@ text RivalsHouse_1F_Text_ShouldGoHomeEverySoOften {
 text RivalsHouse_1F_Text_SpencerAndBrenLeft {
 	"Oh hey, {PLAYER}.\n"
 	"SPENCER and BREN said they were headed\l"
-	"out to train up their new POKéMON."
+	"out to train up their new POKéMON.\p"
 	"You should join them when you're ready."
 }
 
 text RivalsHouse_1F_Text_SpencerAndKyleLeft {
 	"Oh hey, {PLAYER}.\n"
 	"SPENCER and KYLE said they were headed\l"
-	"out to train up their new POKéMON."
+	"out to train up their new POKéMON.\p"
 	"You should join them when you're ready."
 }
 
 text RivalsHouse_1F_Text_KyleAndBrenLeft {
 	"Oh hey, {PLAYER}.\n"
 	"BREN and KYLE said they were headed\l"
-	"out to train up their new POKéMON."
+	"out to train up their new POKéMON.\p"
 	"You should join them when you're ready."
 }

@@ -1,19 +1,18 @@
 InsideOfTruck_MapScripts::
-# 6 "data/maps/InsideOfTruck/scripts.pory"
-	map_script MAP_SCRIPT_ON_TRANSITION, InsideOfTruck_MapScripts_MAP_SCRIPT_ON_TRANSITION
 # 11 "data/maps/InsideOfTruck/scripts.pory"
 	map_script MAP_SCRIPT_ON_LOAD, InsideOfTruck_OnLoad
 # 12 "data/maps/InsideOfTruck/scripts.pory"
 	map_script MAP_SCRIPT_ON_RESUME, InsideOfTruck_OnResume
+# 6 "data/maps/InsideOfTruck/scripts.pory"
+	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, InsideOfTruck_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE
 	.byte 0
 
-InsideOfTruck_MapScripts_MAP_SCRIPT_ON_TRANSITION:
+InsideOfTruck_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE:
 # 7 "data/maps/InsideOfTruck/scripts.pory"
-	compare VAR_LITTLEROOT_INTRO_STATE, 3
-	goto_if_gt InsideOfTruck_MapScripts_MAP_SCRIPT_ON_TRANSITION_1
-	return
+	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 8, InsideOfTruck_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE_0
+	.2byte 0
 
-InsideOfTruck_MapScripts_MAP_SCRIPT_ON_TRANSITION_1:
+InsideOfTruck_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE_0:
 # 8 "data/maps/InsideOfTruck/scripts.pory"
 	playbgm MUS_FORTREE, TRUE
 	return

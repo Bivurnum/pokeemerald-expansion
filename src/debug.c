@@ -527,7 +527,7 @@ static const u8 sDebugText_Util_CheckWallClock[] =           _("Check wall clock
 static const u8 sDebugText_Util_SetWallClock[] =             _("Set wall clock…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Util_WatchCredits[] =             _("Watch credits…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Util_Player_Name[] =              _("Player name");
-static const u8 sDebugText_Util_Player_Gender[] =            _("Toggle gender");
+static const u8 sDebugText_Util_Player_Gender[] =            _("Toggle character");
 static const u8 sDebugText_Util_Player_Id[] =                _("New Trainer ID");
 static const u8 sDebugText_Util_CheatStart[] =               _("Cheat start");
 static const u8 sDebugText_Util_ExpansionVersion[] =         _("Expansion Version");
@@ -2306,10 +2306,12 @@ static void DebugAction_Util_Player_Name(u8 taskId)
 
 static void DebugAction_Util_Player_Gender(u8 taskId)
 {
-    if (gSaveBlock2Ptr->playerGender == MALE)
-        gSaveBlock2Ptr->playerGender = FEMALE;
+    if (gSaveBlock2Ptr->friendChoice == SPENCER)
+        gSaveBlock2Ptr->friendChoice = BREN;
+    else if (gSaveBlock2Ptr->friendChoice == BREN)
+        gSaveBlock2Ptr->friendChoice = KYLE;
     else
-        gSaveBlock2Ptr->playerGender = MALE;
+        gSaveBlock2Ptr->friendChoice = SPENCER;
     Debug_DestroyMenu_Full(taskId);
     ScriptContext_Enable();
 }

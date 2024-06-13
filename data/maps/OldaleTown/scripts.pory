@@ -295,7 +295,7 @@ script OldaleTown_EventScript_DontBattle {
 	msgbox (OldaleTown_Text_GoPrepare)
 	closemessage
 	if (var(VAR_0x8009) != 0) {
-		playse (SE_NOT_EFFECTIVE)
+		playse (SE_M_HEADBUTT)
 		applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalPush)
 		applymovement (OBJ_EVENT_ID_PLAYER, OldaleTown_Movement_GetPushedUp)
 		waitmovement (0)
@@ -309,7 +309,7 @@ script OldaleTown_EventScript_DontBattle {
 		}
 		waitmovement (0)
 	}
-	applymovement (LOCALID_RIVAL, Common_Movement_FaceLeft)
+	applymovement (LOCALID_RIVAL, Common_Movement_FaceUp)
 	waitmovement (0)
 	releaseall
 	end
@@ -353,6 +353,7 @@ script OldaleTown_EventScript_RivalFinish {
 	closemessage
 	call_if_eq (VAR_0x8009, 0, OldaleTown_EventScript_DoExitMovement1)
 	call_if_eq (VAR_0x8009, 1, OldaleTown_EventScript_DoExitMovement2)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown)
 	applymovement (LOCALID_RIVAL, OldaleTown_Movement_RivalExit)
 	waitmovement (0)
 	removeobject (LOCALID_RIVAL)
