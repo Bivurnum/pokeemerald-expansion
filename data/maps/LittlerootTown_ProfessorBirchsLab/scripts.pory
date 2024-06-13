@@ -854,7 +854,7 @@ LittlerootTown_ProfessorBirchsLab_Text_ExplainPokedex:
 	.string "whenever she catches a rare POKéMON\l"
 	.string "and records its data in the POKéDEX,\l"
 	.string "why, MAY calls me with her POKéNAV\l"
-	.string "and tells me, night or day.$"
+	.string "and tells me, day or night.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_CountlessPokemonAwait:
 	.string "PROF. BIRCH: Countless POKéMON\n"
