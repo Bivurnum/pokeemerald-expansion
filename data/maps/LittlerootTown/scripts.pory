@@ -2,7 +2,6 @@ const LOCALID_TWIN = 1
 const LOCALID_MOM = 4
 const LOCALID_RIVAL = 7
 const LOCALID_BIRCH = 8
-const LOCALID_MOM2 = 16
 
 	// State descriptions for VAR_LITTLEROOT_TOWN_STATE
 	// 1: Met Rival
@@ -110,14 +109,8 @@ mapscripts LittlerootTown_MapScripts {
 		VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 1: LittlerootTown_EventScript_BeginDexUpgradeScene
 	]
 	MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
-		VAR_LITTLEROOT_INTRO_STATE, 9: LittlerootTown_EventScript_HideMomForRouteRunningShoes
 		VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 1: LittlerootTown_EventScript_SetRivalBirchPosForDexUpgrade
 	]
-}
-
-script LittlerootTown_EventScript_HideMomForRouteRunningShoes {
-	hideobjectat (LOCALID_MOM2, MAP_LITTLEROOT_TOWN)
-	end
 }
 
 script LittlerootTown_EventScript_CheckForTwin {
@@ -243,7 +236,7 @@ script LittlerootTown_EventScript_EnterTruck {
 					playse (SE_LEDGE)
 					applymovement (OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_PlayerEnterTruck)
 					waitmovement (0)
-					//fadescreen (FADE_TO_BLACK)
+					setvar (VAR_PLAY_TRUCK_MUSIC, 1)
 					setvar (VAR_LITTLEROOT_RIVAL_STATE, 1)
 					checkfriendchoice
 					switch (var(VAR_0x8004)) {
@@ -577,8 +570,11 @@ text LittlerootTown_Text_KylesHouse {
 script LittlerootTown_EventScript_GiveRunningShoesTrigger0 {
 	lockall
 	setvar (VAR_0x8008, 0)
-	showobjectat (LOCALID_MOM2, MAP_LITTLEROOT_TOWN)
-	setobjectxy (LOCALID_MOM2, 10, 8)
+	setobjectxyperm (LOCALID_MOM, 10, 8)
+	setobjectxy (LOCALID_MOM, 10, 8)
+	setobjectmovementtype (LOCALID_MOM, MOVEMENT_TYPE_FACE_UP)
+	applymovement (LOCALID_MOM, Common_Movement_FaceUp)
+	showobjectat (LOCALID_MOM, MAP_LITTLEROOT_TOWN)
 	goto (LittlerootTown_EventScript_GiveRunningShoesTrigger)
 	end
 }
@@ -586,8 +582,11 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger0 {
 script LittlerootTown_EventScript_GiveRunningShoesTrigger1 {
 	lockall
 	setvar (VAR_0x8008, 1)
-	showobjectat (LOCALID_MOM2, MAP_LITTLEROOT_TOWN)
-	setobjectxy (LOCALID_MOM2, 11, 8)
+	setobjectxyperm (LOCALID_MOM, 11, 8)
+	setobjectxy (LOCALID_MOM, 11, 8)
+	setobjectmovementtype (LOCALID_MOM, MOVEMENT_TYPE_FACE_UP)
+	applymovement (LOCALID_MOM, Common_Movement_FaceUp)
+	showobjectat (LOCALID_MOM, MAP_LITTLEROOT_TOWN)
 	goto (LittlerootTown_EventScript_GiveRunningShoesTrigger)
 	end
 }
@@ -629,11 +628,11 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger6 {
 
 script LittlerootTown_EventScript_GiveRunningShoesTrigger {
 	checkfriendchoice
-	if (var(VAR_RESULT) == SPENCER) {
+	if (var(VAR_RESULT) == SPENCER && var(VAR_0x8008) > 1) {
 		applymovement (LOCALID_MOM, Common_Movement_WalkInPlaceFasterRight)
 		waitmovement (0)
 	}
-	else {
+	elif (var(VAR_0x8008) > 1) {
 		applymovement (LOCALID_MOM, Common_Movement_WalkInPlaceFasterLeft)
 		waitmovement (0)
 	}
@@ -653,16 +652,15 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger {
 	closemessage
 	checkfriendchoice
 	if (var(VAR_0x8008) <= 1) {
-		setvar (VAR_LITTLEROOT_INTRO_STATE, 10)
 		switch (var(VAR_0x8008)) {
 			case 0:
-				applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown)
+				applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkDown)
 				waitmovement (0)
-				applymovement (LOCALID_MOM2, LittlerootTown_Movement_MomApproachPlayer0)
+				applymovement (LOCALID_MOM, LittlerootTown_Movement_MomApproachPlayer)
 			case 1:
-				applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown)
+				applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkDown)
 				waitmovement (0)
-				applymovement (LOCALID_MOM2, LittlerootTown_Movement_MomApproachPlayer1)
+				applymovement (LOCALID_MOM, LittlerootTown_Movement_MomApproachPlayer)
 		}
 	}
 	elif (var(VAR_RESULT) == SPENCER) {
@@ -735,10 +733,10 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger {
 	if (var(VAR_0x8008) <= 1) {
 		switch (var(VAR_0x8008)) {
 			case 0:
-				applymovement (LOCALID_MOM, LittlerootTown_Movement_MomReturnHome0)
+				applymovement (LOCALID_MOM, LittlerootTown_Movement_MomReturnHome)
 				waitmovement (0)
 			case 1:
-				applymovement (LOCALID_MOM, LittlerootTown_Movement_MomReturnHome1)
+				applymovement (LOCALID_MOM, LittlerootTown_Movement_MomReturnHome)
 				waitmovement (0)
 		}
 	}
@@ -885,9 +883,9 @@ script LittlerootTown_EventScript_GiveRunningShoesTrigger {
 		}
 	}
 	removeobject (LOCALID_MOM)
-	removeobject (LOCALID_MOM2)
-	setflag (FLAG_HIDE_LITTLEROOT_TOWN_MOM2)
 	setflag (FLAG_SYS_B_DASH)
+	clearflag (FLAG_FORCE_LOAD_OFFSCREEN_OBJEV)
+	setvar (VAR_LITTLEROOT_INTRO_STATE, 10)
 	setvar (VAR_LITTLEROOT_TOWN_STATE, 5)
 	release
 	end
@@ -939,14 +937,9 @@ script LittlerootTown_EventScript_GiveRunningShoes {
 	return
 }
 
-movement LittlerootTown_Movement_MomApproachPlayer0 {
-	walk_up * 5
+movement LittlerootTown_Movement_MomApproachPlayer {
+	walk_up * 4
 }
-
-movement LittlerootTown_Movement_MomApproachPlayer1 {
-	walk_up * 5
-}
-
 movement LittlerootTown_Movement_MomApproachPlayerMale2 {
 	walk_right * 4
 }
@@ -983,11 +976,7 @@ movement LittlerootTown_Movement_MomApproachPlayerFemale6 {
 	walk_left * 6
 }
 
-movement LittlerootTown_Movement_MomReturnHome0 {
-	walk_down * 5
-}
-
-movement LittlerootTown_Movement_MomReturnHome1 {
+movement LittlerootTown_Movement_MomReturnHome {
 	walk_down * 5
 }
 

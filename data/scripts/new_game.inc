@@ -279,6 +279,5 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_INTRO_2F_SPENCER
 	setflag FLAG_HIDE_INTRO_2F_BREN
 	setflag FLAG_HIDE_INTRO_2F_KYLE
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_MOM2
 	call EventScript_ResetAllBerries
 	end

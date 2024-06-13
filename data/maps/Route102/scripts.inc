@@ -153,81 +153,83 @@ Route102_EventScript_EndOfDemo::
 # 79 "data/maps/Route102/scripts.pory"
 	lock
 # 80 "data/maps/Route102/scripts.pory"
-	msgbox Route102_EventScript_EndOfDemo_Text_0
-	return
+	msgbox Route102_EventScript_EndOfDemo_Text_0, MSGBOX_SIGN
+# 81 "data/maps/Route102/scripts.pory"
+	release
+	end
 
 
-# 83 "data/maps/Route102/scripts.pory"
-
-# 84 "data/maps/Route102/scripts.pory"
-Route102_Text_WatchMeCatchPokemon:
 # 85 "data/maps/Route102/scripts.pory"
-	.string "WALLY: {PLAYER}…\n"
+
 # 86 "data/maps/Route102/scripts.pory"
-	.string "POKéMON hide in tall grass like this,\l"
+Route102_Text_WatchMeCatchPokemon:
 # 87 "data/maps/Route102/scripts.pory"
-	.string "don't they?\p"
+	.string "WALLY: {PLAYER}…\n"
 # 88 "data/maps/Route102/scripts.pory"
-	.string "Please watch me and see if I can\n"
+	.string "POKéMON hide in tall grass like this,\l"
 # 89 "data/maps/Route102/scripts.pory"
-	.string "catch one properly.\p"
+	.string "don't they?\p"
 # 90 "data/maps/Route102/scripts.pory"
-	.string "…Whoa!$"
+	.string "Please watch me and see if I can\n"
 # 91 "data/maps/Route102/scripts.pory"
-
+	.string "catch one properly.\p"
 # 92 "data/maps/Route102/scripts.pory"
-Route102_Text_WallyIDidIt:
+	.string "…Whoa!$"
 # 93 "data/maps/Route102/scripts.pory"
-	.string "WALLY: I did it… It's my…\n"
+
 # 94 "data/maps/Route102/scripts.pory"
-	.string "My POKéMON!$"
+Route102_Text_WallyIDidIt:
 # 95 "data/maps/Route102/scripts.pory"
-
+	.string "WALLY: I did it… It's my…\n"
 # 96 "data/maps/Route102/scripts.pory"
-Route102_Text_LetsGoBack:
+	.string "My POKéMON!$"
 # 97 "data/maps/Route102/scripts.pory"
-	.string "{PLAYER}, thank you!\n"
+
 # 98 "data/maps/Route102/scripts.pory"
-	.string "Let's go back to the GYM!$"
+Route102_Text_LetsGoBack:
 # 99 "data/maps/Route102/scripts.pory"
-
+	.string "{PLAYER}, thank you!\n"
 # 100 "data/maps/Route102/scripts.pory"
-Route102_Text_ImNotVeryTall:
+	.string "Let's go back to the GYM!$"
 # 101 "data/maps/Route102/scripts.pory"
-	.string "I'm…not very tall, so I sink right\n"
+
 # 102 "data/maps/Route102/scripts.pory"
-	.string "into tall grass.\p"
+Route102_Text_ImNotVeryTall:
 # 103 "data/maps/Route102/scripts.pory"
-	.string "The grass goes up my nose and…\n"
+	.string "I'm…not very tall, so I sink right\n"
 # 104 "data/maps/Route102/scripts.pory"
-	.string "Fwafwafwafwafwa…\p"
+	.string "into tall grass.\p"
 # 105 "data/maps/Route102/scripts.pory"
-	.string "Fwatchoo!$"
+	.string "The grass goes up my nose and…\n"
 # 106 "data/maps/Route102/scripts.pory"
-
+	.string "Fwafwafwafwafwa…\p"
 # 107 "data/maps/Route102/scripts.pory"
-Route102_Text_CatchWholeBunchOfPokemon:
+	.string "Fwatchoo!$"
 # 108 "data/maps/Route102/scripts.pory"
-	.string "I'm going to catch a whole bunch of\n"
+
 # 109 "data/maps/Route102/scripts.pory"
-	.string "POKéMON!$"
+Route102_Text_CatchWholeBunchOfPokemon:
 # 110 "data/maps/Route102/scripts.pory"
-
+	.string "I'm going to catch a whole bunch of\n"
 # 111 "data/maps/Route102/scripts.pory"
-Route102_Text_RouteSignOldale:
+	.string "POKéMON!$"
 # 112 "data/maps/Route102/scripts.pory"
-	.string "ROUTE 102\n"
-# 113 "data/maps/Route102/scripts.pory"
-	.string "{RIGHT_ARROW} OLDALE TOWN$"
-# 114 "data/maps/Route102/scripts.pory"
 
-# 115 "data/maps/Route102/scripts.pory"
-Route102_Text_RouteSignPetalburg:
-# 116 "data/maps/Route102/scripts.pory"
+# 113 "data/maps/Route102/scripts.pory"
+Route102_Text_RouteSignOldale:
+# 114 "data/maps/Route102/scripts.pory"
 	.string "ROUTE 102\n"
+# 115 "data/maps/Route102/scripts.pory"
+	.string "{RIGHT_ARROW} OLDALE TOWN$"
+# 116 "data/maps/Route102/scripts.pory"
+
 # 117 "data/maps/Route102/scripts.pory"
+Route102_Text_RouteSignPetalburg:
+# 118 "data/maps/Route102/scripts.pory"
+	.string "ROUTE 102\n"
+# 119 "data/maps/Route102/scripts.pory"
 	.string "{LEFT_ARROW} PETALBURG CITY$"
 
 Route102_EventScript_EndOfDemo_Text_0:
 # 80 "data/maps/Route102/scripts.pory"
-	.string "/END OF DEMO/$"
+	.string "/ END OF DEMO /$"

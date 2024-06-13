@@ -77,7 +77,9 @@ Route102_EventScript_Allen::
 
 script Route102_EventScript_EndOfDemo {
 	lock
-	msgbox ("/END OF DEMO/")
+	msgbox ("/ END OF DEMO /", MSGBOX_SIGN)
+	release
+	end
 }
 
 raw `

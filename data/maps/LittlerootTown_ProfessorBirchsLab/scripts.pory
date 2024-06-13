@@ -536,7 +536,7 @@ script LittlerootTown_ProfessorBirchsLab_EventScript_GivePokedex {
 	setflag (FLAG_ADVENTURE_STARTED)
 	setvar (VAR_OLDALE_TOWN_STATE, 1)
 	setvar (VAR_LITTLEROOT_RIVAL_STATE, 20)
-	//clearflag (FLAG_HIDE_LITTLEROOT_TOWN_MOM2)
+	setflag (FLAG_FORCE_LOAD_OFFSCREEN_OBJEV)
 	setvar (VAR_LITTLEROOT_INTRO_STATE, 9)
 	releaseall
 	end
@@ -815,12 +815,11 @@ LittlerootTown_ProfessorBirchsLab_Text_MightBeGoodIdeaToGoSeeRival:
 LittlerootTown_ProfessorBirchsLab_Text_GetRivalToTeachYou:
 	.string "PROF. BIRCH: Great!\n"
 	.string "They should be overjoyed to see\l"
-	.string "you and your new POKéMON\n"
-	.string "means to be a TRAINER.$"
+	.string "you and your new POKéMON.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_DontBeThatWay:
 	.string "PROF. BIRCH: Oh, don't be that way.\n"
-	.string "It's for something good. I promise.\p"
+	.string "It's for something good. I promise.\l"
 	.string "Won't you please get them?$"
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchRivalGoneHome:
