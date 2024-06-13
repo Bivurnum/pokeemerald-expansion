@@ -1703,7 +1703,7 @@ LittlerootTown_ProfessorBirchsLab_Text_ExplainPokedex:
 # 856 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 	.string "why, MAY calls me with her POKéNAV\l"
 # 857 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
-	.string "and tells me, night or day.$"
+	.string "and tells me, day or night.$"
 # 858 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
 
 # 859 "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.pory"
