@@ -115,6 +115,7 @@ script LittlerootTown_EventScript_StepOffTruckSpencer {
 	lockall
 	setvar (VAR_0x8004, 5)
 	setvar (VAR_0x8005, 8)
+	setflag (FLAG_SYS_B_DASH)
 	call (LittlerootTown_EventScript_GoInsideWithMom)
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_SPENCERS_HOUSE_TRUCK)
 	setvar (VAR_LITTLEROOT_HOUSES_STATE_SPENCER, 2)
@@ -128,6 +129,7 @@ script LittlerootTown_EventScript_StepOffTruckBren {
 	lockall
 	setvar (VAR_0x8004, 14)
 	setvar (VAR_0x8005, 8)
+	setflag (FLAG_SYS_B_DASH)
 	call (LittlerootTown_EventScript_GoInsideWithMom)
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_BRENS_HOUSE_TRUCK)
 	setvar (VAR_LITTLEROOT_HOUSES_STATE_BREN, 2)
@@ -141,6 +143,7 @@ script LittlerootTown_EventScript_StepOffTruckKyle {
 	lockall
 	setvar (VAR_0x8004, 17)
 	setvar (VAR_0x8005, 15)
+	setflag (FLAG_SYS_B_DASH)
 	call (LittlerootTown_EventScript_GoInsideWithMom)
 	setflag (FLAG_HIDE_LITTLEROOT_TOWN_KYLES_HOUSE_TRUCK)
 	setvar (VAR_LITTLEROOT_HOUSES_STATE_KYLE, 2)

@@ -279,6 +279,7 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_INTRO_2F_SPENCER
 	setflag FLAG_HIDE_INTRO_2F_BREN
 	setflag FLAG_HIDE_INTRO_2F_KYLE
-	setflag FLAG_SYS_B_DASH
+	setflag FLAG_HIDE_ROUTE_101_RIVAL2
+	setflag FLAG_HIDE_PETALBURG_RIVAL2
 	call EventScript_ResetAllBerries
 	end

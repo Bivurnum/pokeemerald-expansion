@@ -94,6 +94,8 @@ PetalburgCity_Gym_EventScript_ReturnFromWallyTutorial::
 	waitmovement 0
 	msgbox PetalburgCity_Gym_Text_DadGoCollectBadges, MSGBOX_DEFAULT
 	setvar VAR_PETALBURG_GYM_STATE, 2
+	setvar VAR_0x8005 69
+	clearflag FLAG_HIDE_PETALBURG_RIVAL2
 	releaseall
 	end
 

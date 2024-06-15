@@ -4,38 +4,38 @@ raw `
 .set LOCALID_WALLYS_DAD, 5
 .set LOCALID_GYM_BOY, 8
 .set LOCALID_SCOTT, 9
+.set LOCALID_RIVAL2, 10
+`
 
-PetalburgCity_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, PetalburgCity_OnTransition
-	map_script MAP_SCRIPT_ON_FRAME_TABLE, PetalburgCity_OnFrame
-	.byte 0
+mapscripts PetalburgCity_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION {
+		setflag (FLAG_VISITED_PETALBURG_CITY)
+		call (Common_EventScript_SetupRivalGfxId)
+		switch (var(VAR_PETALBURG_CITY_STATE)) {
+			case 0:
+				setobjectxyperm (LOCALID_GYM_BOY, 5, 11)
+			case 2:
+				setflag (FLAG_HIDE_MAP_NAME_POPUP)
+				savebgm (MUS_FOLLOW_ME)
+			case 4:
+				setflag (FLAG_HIDE_MAP_NAME_POPUP)
+				savebgm (MUS_FOLLOW_ME)
+		}
+		if (var(VAR_PETALBURG_GYM_STATE) == 8) {
+			setvar (VAR_PETALBURG_GYM_STATE, 7)
+		}
+		if (var(VAR_0x8005) == 69) {
+			setflag (FLAG_HIDE_MAP_NAME_POPUP)
+		}
+	}
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_PETALBURG_CITY_STATE, 2: PetalburgCity_EventScript_WallyTutorial
+		VAR_PETALBURG_CITY_STATE, 4: PetalburgCity_EventScript_WalkToWallyHouse
+		VAR_0x8005, 69: PetalburgCity_EventScript_RivalJealousOfWally
+	]
+}
 
-PetalburgCity_OnTransition:
-	setflag FLAG_VISITED_PETALBURG_CITY
-	call_if_eq VAR_PETALBURG_CITY_STATE, 0, PetalburgCity_EventScript_MoveGymBoyToWestEntrance
-	call_if_eq VAR_PETALBURG_CITY_STATE, 2, PetalburgCity_EventScript_DisableMapNameAndMusic
-	call_if_eq VAR_PETALBURG_CITY_STATE, 4, PetalburgCity_EventScript_DisableMapNameAndMusic
-	call_if_eq VAR_PETALBURG_GYM_STATE, 8, PetalburgCity_EventScript_SetGymDoorsUnlocked
-	end
-
-PetalburgCity_EventScript_MoveGymBoyToWestEntrance::
-	setobjectxyperm LOCALID_GYM_BOY, 5, 11
-	return
-
-PetalburgCity_EventScript_DisableMapNameAndMusic::
-	setflag FLAG_HIDE_MAP_NAME_POPUP
-	savebgm MUS_FOLLOW_ME
-	return
-
-PetalburgCity_EventScript_SetGymDoorsUnlocked::
-	setvar VAR_PETALBURG_GYM_STATE, 7
-	return
-
-PetalburgCity_OnFrame:
-	map_script_2 VAR_PETALBURG_CITY_STATE, 2, PetalburgCity_EventScript_WallyTutorial
-	map_script_2 VAR_PETALBURG_CITY_STATE, 4, PetalburgCity_EventScript_WalkToWallyHouse
-	.2byte 0
-
+raw `
 PetalburgCity_EventScript_WallyTutorial::
 	lockall
 	special SavePlayerParty
@@ -86,7 +86,67 @@ PetalburgCity_EventScript_WalkToWallyHouse::
 	waitstate
 	releaseall
 	end
+`
 
+script PetalburgCity_EventScript_RivalJealousOfWally {
+	lockall
+	playse (SE_PIN)
+	applymovement (LOCALID_RIVAL2, PetalburgCity_Movement_Rival2NoticeLeavingGym)
+	waitmovement (0)
+	waitse
+	msgbox ("Oh, hey {PLAYER}!", MSGBOX_DEFAULT)
+	closemessage
+	applymovement (LOCALID_RIVAL2, PetalburgCity_Movement_Rival2ApproachAfterLeavingGym)
+	waitmovement (0)
+	msgbox (PetalburgCity_Text_WhatDoingWithWally, MSGBOX_DEFAULT)
+	closemessage
+	applymovement (OBJ_EVENT_ID_PLAYER, PetalburgCity_Movement_ExplainDown)
+	waitmovement (0)
+	msgbox (PetalburgCity_Text_HeCaughtARalts, MSGBOX_DEFAULT)
+	closemessage
+	applymovement (LOCALID_RIVAL2, PetalburgCity_Movement_Rival2LeaveToCatchRalts)
+	waitmovement (0)
+	//hideobjectat (LOCALID_RIVAL2, MAP_PETALBURG_CITY)
+	removeobject (LOCALID_RIVAL2)
+	setflag (FLAG_HIDE_PETALBURG_RIVAL2)
+	clearflag (FLAG_HIDE_ROUTE_101_RIVAL2)
+	setvar (VAR_0x8005, 0)
+	releaseall
+	end
+}
+
+movement PetalburgCity_Movement_Rival2NoticeLeavingGym {
+	emote_exclamation_mark
+	walk_in_place_faster_right
+}
+
+movement PetalburgCity_Movement_Rival2ApproachAfterLeavingGym {
+	walk_right * 2
+	walk_in_place_faster_up
+}
+
+movement PetalburgCity_Movement_ExplainDown {
+	walk_in_place_down * 4
+	delay_8
+}
+
+movement PetalburgCity_Movement_Rival2LeaveToCatchRalts {
+	walk_fast_down * 6
+	set_invisible
+}
+
+text PetalburgCity_Text_WhatDoingWithWally {
+	format ("What were you doing with that other kid just now?\N"
+		"He seemed really pleased with himself when he came out.")
+}
+
+text PetalburgCity_Text_HeCaughtARalts {
+	format ("WHAAAAT?! He caught a RALTS\Non ROUTE 102?\N"
+		"That's no fair! I didn't even know you could find those there.\N"
+		"I'm going to go catch one for myself right now!")
+}
+
+raw `
 PetalburgCity_EventScript_Boy::
 	lock
 	faceplayer

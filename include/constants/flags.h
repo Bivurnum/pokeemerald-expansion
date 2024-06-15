@@ -652,17 +652,17 @@
 #define FLAG_HIDDEN_ITEM_ROUTE_123_RARE_CANDY                (FLAG_HIDDEN_ITEMS_START + 0x6E)
 #define FLAG_HIDDEN_ITEM_ROUTE_105_BIG_PEARL                 (FLAG_HIDDEN_ITEMS_START + 0x6F)
 
-#define FLAG_FORCE_SHINY   0x264 // All new encounters will be shiny
-#define FLAG_PREVENT_SHINY 0x265 // Prevents any new encounters from being shiny
-#define FLAG_HIDE_SPENCER_IN_TRUCK  0x266 // Unused Flag
-#define FLAG_HIDE_BREN_IN_TRUCK  0x267 // Unused Flag
-#define FLAG_HIDE_KYLE_IN_TRUCK  0x268 // Unused Flag
-#define FLAG_HIDE_INTRO_2F_SPENCER  0x269 // Unused Flag
-#define FLAG_HIDE_INTRO_2F_BREN  0x26A // Unused Flag
-#define FLAG_HIDE_INTRO_2F_KYLE  0x26B // Unused Flag
-#define FLAG_UNUSED_0x26C  0x26C // Unused Flag
-#define FLAG_UNUSED_0x26D  0x26D // Unused Flag
-#define FLAG_UNUSED_0x26E  0x26E // Unused Flag
+#define FLAG_FORCE_SHINY                        0x264 // All new encounters will be shiny
+#define FLAG_PREVENT_SHINY                      0x265 // Prevents any new encounters from being shiny
+#define FLAG_HIDE_SPENCER_IN_TRUCK              0x266
+#define FLAG_HIDE_BREN_IN_TRUCK                 0x267
+#define FLAG_HIDE_KYLE_IN_TRUCK                 0x268
+#define FLAG_HIDE_INTRO_2F_SPENCER              0x269
+#define FLAG_HIDE_INTRO_2F_BREN                 0x26A
+#define FLAG_HIDE_INTRO_2F_KYLE                 0x26B
+#define FLAG_HIDE_ROUTE_101_RIVAL1              0x26C
+#define FLAG_HIDE_ROUTE_101_RIVAL2              0x26D
+#define FLAG_HIDE_PETALBURG_RIVAL2              0x26E
 #define FLAG_UNUSED_0x26F  0x26F // Unused Flag
 #define FLAG_UNUSED_0x270  0x270 // Unused Flag
 #define FLAG_UNUSED_0x271  0x271 // Unused Flag
