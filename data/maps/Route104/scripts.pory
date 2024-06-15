@@ -43,7 +43,31 @@ Route104_EventScript_TrySetRivalPos::
 
 Route104_EventScript_DontSetRivalPos::
 	return
+`
 
+script Route104_EventScript_Rival1 {
+	lock
+	faceplayer
+	if (var(VAR_TEMP_5) != 5) {
+		msgbox (Route104_Text_WhatsItLikeToSurf, MSGBOX_DEFAULT)
+		setvar (VAR_TEMP_5, 5)
+	}
+	else {
+		msgbox (Route104_Text_WhatsAcrossTheSea, MSGBOX_DEFAULT)
+	}
+	release
+	end
+}
+
+text Route104_Text_WhatsItLikeToSurf {
+	format ("Wouldn't it be awesome to ride a POKéMON over the water?")
+}
+
+text Route104_Text_WhatsAcrossTheSea {
+	format ("I wonder what's out there beyond the sea…")
+}
+
+raw `
 Route104_EventScript_Rival::
 	lockall
 	setvar VAR_0x8008, 1

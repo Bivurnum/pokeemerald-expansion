@@ -99,9 +99,14 @@ script Route102_EventScript_Rival1 {
 			msgbox (Route102_Text_RivalHowdYouGetThatItem, MSGBOX_DEFAULT)
 			setvar (VAR_TEMP_4, 5)
 			setflag (FLAG_HIDE_ROUTE_101_RIVAL1)
-			setobjectmovementtype (10, MOVEMENT_TYPE_NONE)
+			getplayerxy (VAR_0x8006, VAR_0x8007)
+				switch (var(VAR_0x8006)) {
+					case 16:
+						setobjectmovementtype (10, MOVEMENT_TYPE_FACE_UP)
+					case 17:
+						setobjectmovementtype (10, MOVEMENT_TYPE_FACE_RIGHT)
+				}
 			updateobject (10)
-			faceplayer
 		}
 		else {
 			msgbox (Route102_Text_RivalBetterAtThis)
