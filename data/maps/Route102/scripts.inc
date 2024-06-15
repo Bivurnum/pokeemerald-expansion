@@ -201,7 +201,7 @@ Route102_EventScript_Rival1_9:
 # 101 "data/maps/Route102/scripts.pory"
 	setflag FLAG_HIDE_ROUTE_101_RIVAL1
 # 102 "data/maps/Route102/scripts.pory"
-	setobjectmovementtype 10, MOVEMENT_TYPE_LOOK_AROUND
+	setobjectmovementtype 10, MOVEMENT_TYPE_NONE
 # 103 "data/maps/Route102/scripts.pory"
 	removeobject 10
 # 104 "data/maps/Route102/scripts.pory"
