@@ -3733,10 +3733,12 @@ static void DestroyDeoxysRockEffect_RockFragments(s16 *data, u8 taskId)
 
 static void DestroyDeoxysRockEffect_WaitAndEnd(s16 *data, u8 taskId)
 {
+    u8 setFlag = 0;
+
     if (!gPaletteFade.active && !FuncIsActiveTask(Task_DeoxysRockCameraShake))
     {
         InstallCameraPanAheadCallback();
-        RemoveObjectEventByLocalIdAndMap(tLocalId, tMapNum, tMapGroup);
+        RemoveObjectEventByLocalIdAndMap(tLocalId, tMapNum, tMapGroup, setFlag);
         FieldEffectActiveListRemove(FLDEFF_DESTROY_DEOXYS_ROCK);
         DestroyTask(taskId);
     }

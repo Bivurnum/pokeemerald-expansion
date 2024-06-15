@@ -636,6 +636,7 @@ void HideSecretBaseDecorationSprites(void)
 {
     u8 objectEventId;
     u16 flag;
+    u8 setFlag = 0;
 
     for (objectEventId = 0; objectEventId < gMapHeader.events->objectEventCount; objectEventId++)
     {
@@ -645,7 +646,8 @@ void HideSecretBaseDecorationSprites(void)
             RemoveObjectEventByLocalIdAndMap(
                 gMapHeader.events->objectEvents[objectEventId].localId,
                 gSaveBlock1Ptr->location.mapNum,
-                gSaveBlock1Ptr->location.mapGroup);
+                gSaveBlock1Ptr->location.mapGroup,
+                setFlag);
             FlagSet(flag);
         }
     }

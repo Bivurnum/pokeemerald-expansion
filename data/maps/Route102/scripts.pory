@@ -100,8 +100,8 @@ script Route102_EventScript_Rival1 {
 			setvar (VAR_TEMP_4, 5)
 			setflag (FLAG_HIDE_ROUTE_101_RIVAL1)
 			setobjectmovementtype (10, MOVEMENT_TYPE_NONE)
-			removeobject (10)
-			addobject (10)
+			updateobject (10)
+			faceplayer
 		}
 		else {
 			msgbox (Route102_Text_RivalBetterAtThis)

@@ -3411,8 +3411,9 @@ void GetMomOrDadStringForTVMessage(void)
 
 void HideBattleTowerReporter(void)
 {
+    u8 setFlag = 0;
     VarSet(VAR_BRAVO_TRAINER_BATTLE_TOWER_ON, 0);
-    RemoveObjectEventByLocalIdAndMap(LOCALID_BATTLE_TOWER_LOBBY_REPORTER, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+    RemoveObjectEventByLocalIdAndMap(LOCALID_BATTLE_TOWER_LOBBY_REPORTER, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, setFlag);
     FlagSet(FLAG_HIDE_BATTLE_TOWER_REPORTER);
 }
 

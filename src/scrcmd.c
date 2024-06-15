@@ -1051,8 +1051,9 @@ bool8 ScrCmd_waitmovementat(struct ScriptContext *ctx)
 bool8 ScrCmd_removeobject(struct ScriptContext *ctx)
 {
     u16 localId = VarGet(ScriptReadHalfword(ctx));
+    u8 setFlag = 0;
 
-    RemoveObjectEventByLocalIdAndMap(localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+    RemoveObjectEventByLocalIdAndMap(localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, setFlag);
     return FALSE;
 }
 
@@ -1061,8 +1062,31 @@ bool8 ScrCmd_removeobjectat(struct ScriptContext *ctx)
     u16 objectId = VarGet(ScriptReadHalfword(ctx));
     u8 mapGroup = ScriptReadByte(ctx);
     u8 mapNum = ScriptReadByte(ctx);
+    u8 setFlag = 0;
 
-    RemoveObjectEventByLocalIdAndMap(objectId, mapNum, mapGroup);
+    RemoveObjectEventByLocalIdAndMap(objectId, mapNum, mapGroup, setFlag);
+    return FALSE;
+}
+
+bool8 ScrCmd_updateobject(struct ScriptContext *ctx)
+{
+    u16 localId = VarGet(ScriptReadHalfword(ctx));
+    u8 setFlag = 1;
+
+    RemoveObjectEventByLocalIdAndMap(localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, setFlag);
+    TrySpawnObjectEvent(localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+    return FALSE;
+}
+
+bool8 ScrCmd_updateobjectat(struct ScriptContext *ctx)
+{
+    u16 objectId = VarGet(ScriptReadHalfword(ctx));
+    u8 mapGroup = ScriptReadByte(ctx);
+    u8 mapNum = ScriptReadByte(ctx);
+    u8 setFlag = 1;
+
+    RemoveObjectEventByLocalIdAndMap(objectId, mapNum, mapGroup, setFlag);
+    TrySpawnObjectEvent(objectId, mapNum, mapGroup);
     return FALSE;
 }
 

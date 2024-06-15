@@ -164,10 +164,10 @@ Route102_EventScript_Rival1::
 # 98 "data/maps/Route102/scripts.pory"
 	compare VAR_TEMP_4, 5
 	goto_if_ne Route102_EventScript_Rival1_9
-# 107 "data/maps/Route102/scripts.pory"
+# 106 "data/maps/Route102/scripts.pory"
 	msgbox Route102_Text_RivalBetterAtThis
 Route102_EventScript_Rival1_1:
-# 110 "data/maps/Route102/scripts.pory"
+# 109 "data/maps/Route102/scripts.pory"
 	release
 	end
 
@@ -203,131 +203,129 @@ Route102_EventScript_Rival1_9:
 # 102 "data/maps/Route102/scripts.pory"
 	setobjectmovementtype 10, MOVEMENT_TYPE_NONE
 # 103 "data/maps/Route102/scripts.pory"
-	removeobject 10
-# 104 "data/maps/Route102/scripts.pory"
-	addobject 10
+	updateobject 10
 	goto Route102_EventScript_Rival1_1
 
 
 Route102_EventScript_Rival2::
-# 115 "data/maps/Route102/scripts.pory"
+# 114 "data/maps/Route102/scripts.pory"
 	lock
-# 116 "data/maps/Route102/scripts.pory"
+# 115 "data/maps/Route102/scripts.pory"
 	faceplayer
-# 117 "data/maps/Route102/scripts.pory"
+# 116 "data/maps/Route102/scripts.pory"
 	compare VAR_TEMP_2, 5
 	goto_if_eq Route102_EventScript_Rival2_2
-# 121 "data/maps/Route102/scripts.pory"
+# 120 "data/maps/Route102/scripts.pory"
 	msgbox Route102_Text_Rival2CatchRalts, MSGBOX_DEFAULT
-# 122 "data/maps/Route102/scripts.pory"
+# 121 "data/maps/Route102/scripts.pory"
 	setvar VAR_TEMP_2, 5
 Route102_EventScript_Rival2_1:
-# 124 "data/maps/Route102/scripts.pory"
+# 123 "data/maps/Route102/scripts.pory"
 	release
 	end
 
 Route102_EventScript_Rival2_2:
-# 118 "data/maps/Route102/scripts.pory"
+# 117 "data/maps/Route102/scripts.pory"
 	msgbox Route102_Text_Rival2CmonRalts, MSGBOX_DEFAULT
 	goto Route102_EventScript_Rival2_1
 
 
+# 156 "data/maps/Route102/scripts.pory"
+
 # 157 "data/maps/Route102/scripts.pory"
-
-# 158 "data/maps/Route102/scripts.pory"
 Route102_Text_WatchMeCatchPokemon:
-# 159 "data/maps/Route102/scripts.pory"
+# 158 "data/maps/Route102/scripts.pory"
 	.string "WALLY: {PLAYER}…\n"
-# 160 "data/maps/Route102/scripts.pory"
+# 159 "data/maps/Route102/scripts.pory"
 	.string "POKéMON hide in tall grass like this,\l"
-# 161 "data/maps/Route102/scripts.pory"
+# 160 "data/maps/Route102/scripts.pory"
 	.string "don't they?\p"
-# 162 "data/maps/Route102/scripts.pory"
+# 161 "data/maps/Route102/scripts.pory"
 	.string "Please watch me and see if I can\n"
-# 163 "data/maps/Route102/scripts.pory"
+# 162 "data/maps/Route102/scripts.pory"
 	.string "catch one properly.\p"
-# 164 "data/maps/Route102/scripts.pory"
+# 163 "data/maps/Route102/scripts.pory"
 	.string "…Whoa!$"
+# 164 "data/maps/Route102/scripts.pory"
+
 # 165 "data/maps/Route102/scripts.pory"
-
-# 166 "data/maps/Route102/scripts.pory"
 Route102_Text_WallyIDidIt:
-# 167 "data/maps/Route102/scripts.pory"
+# 166 "data/maps/Route102/scripts.pory"
 	.string "WALLY: I did it… It's my…\n"
-# 168 "data/maps/Route102/scripts.pory"
+# 167 "data/maps/Route102/scripts.pory"
 	.string "My POKéMON!$"
+# 168 "data/maps/Route102/scripts.pory"
+
 # 169 "data/maps/Route102/scripts.pory"
-
-# 170 "data/maps/Route102/scripts.pory"
 Route102_Text_LetsGoBack:
-# 171 "data/maps/Route102/scripts.pory"
+# 170 "data/maps/Route102/scripts.pory"
 	.string "{PLAYER}, thank you!\n"
-# 172 "data/maps/Route102/scripts.pory"
+# 171 "data/maps/Route102/scripts.pory"
 	.string "Let's go back to the GYM!$"
+# 172 "data/maps/Route102/scripts.pory"
+
 # 173 "data/maps/Route102/scripts.pory"
-
-# 174 "data/maps/Route102/scripts.pory"
 Route102_Text_ImNotVeryTall:
-# 175 "data/maps/Route102/scripts.pory"
+# 174 "data/maps/Route102/scripts.pory"
 	.string "I'm…not very tall, so I sink right\n"
-# 176 "data/maps/Route102/scripts.pory"
+# 175 "data/maps/Route102/scripts.pory"
 	.string "into tall grass.\p"
-# 177 "data/maps/Route102/scripts.pory"
+# 176 "data/maps/Route102/scripts.pory"
 	.string "The grass goes up my nose and…\n"
-# 178 "data/maps/Route102/scripts.pory"
+# 177 "data/maps/Route102/scripts.pory"
 	.string "Fwafwafwafwafwa…\p"
-# 179 "data/maps/Route102/scripts.pory"
+# 178 "data/maps/Route102/scripts.pory"
 	.string "Fwatchoo!$"
+# 179 "data/maps/Route102/scripts.pory"
+
 # 180 "data/maps/Route102/scripts.pory"
-
-# 181 "data/maps/Route102/scripts.pory"
 Route102_Text_CatchWholeBunchOfPokemon:
-# 182 "data/maps/Route102/scripts.pory"
+# 181 "data/maps/Route102/scripts.pory"
 	.string "I'm going to catch a whole bunch of\n"
-# 183 "data/maps/Route102/scripts.pory"
+# 182 "data/maps/Route102/scripts.pory"
 	.string "POKéMON!$"
+# 183 "data/maps/Route102/scripts.pory"
+
 # 184 "data/maps/Route102/scripts.pory"
-
-# 185 "data/maps/Route102/scripts.pory"
 Route102_Text_RouteSignOldale:
+# 185 "data/maps/Route102/scripts.pory"
+	.string "ROUTE 102\n"
 # 186 "data/maps/Route102/scripts.pory"
-	.string "ROUTE 102\n"
-# 187 "data/maps/Route102/scripts.pory"
 	.string "{RIGHT_ARROW} OLDALE TOWN$"
-# 188 "data/maps/Route102/scripts.pory"
+# 187 "data/maps/Route102/scripts.pory"
 
-# 189 "data/maps/Route102/scripts.pory"
+# 188 "data/maps/Route102/scripts.pory"
 Route102_Text_RouteSignPetalburg:
-# 190 "data/maps/Route102/scripts.pory"
+# 189 "data/maps/Route102/scripts.pory"
 	.string "ROUTE 102\n"
-# 191 "data/maps/Route102/scripts.pory"
+# 190 "data/maps/Route102/scripts.pory"
 	.string "{LEFT_ARROW} PETALBURG CITY$"
 
 Route102_Text_RivalHowToGetItem::
-# 128 "data/maps/Route102/scripts.pory"
+# 127 "data/maps/Route102/scripts.pory"
 	.string "I can see that item on the ground\n"
 	.string "over there, but I just can't see\l"
 	.string "a way to get to it…$"
 
 Route102_Text_RivalItemSoClose::
-# 134 "data/maps/Route102/scripts.pory"
+# 133 "data/maps/Route102/scripts.pory"
 	.string "It's so tantalizingly close!$"
 
 Route102_Text_RivalHowdYouGetThatItem::
-# 138 "data/maps/Route102/scripts.pory"
+# 137 "data/maps/Route102/scripts.pory"
 	.string "How'd you get to that item?!$"
 
 Route102_Text_RivalBetterAtThis::
-# 142 "data/maps/Route102/scripts.pory"
+# 141 "data/maps/Route102/scripts.pory"
 	.string "You're obviously better at this\n"
 	.string "than I am…$"
 
 Route102_Text_Rival2CatchRalts::
-# 147 "data/maps/Route102/scripts.pory"
+# 146 "data/maps/Route102/scripts.pory"
 	.string "I'm going to find a RALTS.\n"
 	.string "No matter how long it takes!$"
 
 Route102_Text_Rival2CmonRalts::
-# 152 "data/maps/Route102/scripts.pory"
+# 151 "data/maps/Route102/scripts.pory"
 	.string "C'mon RALTS!\n"
 	.string "C'mon RALTS!$"

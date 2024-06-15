@@ -230,6 +230,8 @@ gScriptCmdTable::
 	.4byte ScrCmd_dynmultichoice                    @ 0xe3
 	.4byte ScrCmd_dynmultipush                      @ 0xe4
 	.4byte ScrCmd_checkfriendchoice                 @ 0xe5
+	.4byte ScrCmd_updateobject		                @ 0xe6
+	.4byte ScrCmd_updateobjectat		            @ 0xe7
 
 gScriptCmdTableEnd::
 	.4byte ScrCmd_nop

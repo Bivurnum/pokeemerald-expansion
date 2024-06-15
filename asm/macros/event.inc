@@ -1818,6 +1818,18 @@
 	.byte 0xe5
 	.endm
 
+	@ Reloads an object event to update a change in movement type on the specified map.
+	@ If no map is specified, then the current map is used.
+	.macro updateobject localId:req, map
+		.ifb \map
+			.byte 0xe6
+			.2byte \localId
+		.else
+			.byte 0xe7
+			.2byte \localId
+			map \map
+		.endif
+	.endm
 
 @ Supplementary
 
@@ -2177,3 +2189,4 @@
 	.2byte \status1
 	.2byte \slot
 	.endm
+

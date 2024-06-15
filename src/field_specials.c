@@ -1272,8 +1272,9 @@ void SpawnCameraObject(void)
 
 void RemoveCameraObject(void)
 {
+    u8 setFlag = 0;
     CameraObjectSetFollowedSpriteId(GetPlayerAvatarSpriteId());
-    RemoveObjectEventByLocalIdAndMap(OBJ_EVENT_ID_CAMERA, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+    RemoveObjectEventByLocalIdAndMap(OBJ_EVENT_ID_CAMERA, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, setFlag);
 }
 
 u8 GetPokeblockNameByMonNature(void)
