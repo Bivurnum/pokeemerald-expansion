@@ -121,6 +121,7 @@ script PetalburgWoods_EventScript_DevonResearcherIntro {
 script PetalburgWoods_EventScript_PrepareForGruntBattle {
 	msgbox (PetalburgWoods_Text_TakeHimOnTogether, MSGBOX_DEFAULT)
 	closemessage
+	savebgm (MUS_ENCOUNTER_AQUA)
 	special (SavePlayerParty)
 	fadescreen (FADE_TO_BLACK)
 	special (ChooseHalfPartyForBattle)
@@ -185,6 +186,7 @@ script PetalburgWoods_EventScript_DevonResearcherFinish {
 script PetalburgWoods_EventScript_RemoveDevonResearcher {
 	removeobject (LOCALID_DEVON_EMPLOYEE)
 	setvar (VAR_PETALBURG_WOODS_STATE, 1)
+	setflag (FLAG_HIDE_ROUTE_104_RIVAL1)
 	return
 }
 
