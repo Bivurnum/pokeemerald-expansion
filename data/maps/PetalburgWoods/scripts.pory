@@ -104,7 +104,7 @@ script PetalburgWoods_EventScript_DevonResearcherIntro {
 	waitmovement (0)
 	msgbox (PetalburgWoods_Text_HaveYouSeenShroomish, MSGBOX_DEFAULT)
 	closemessage
-	playbgm (MUS_ENCOUNTER_AQUA, FALSE)
+	playbgm (MUS_ENCOUNTER_AQUA, TRUE)
 	applymovement (LOCALID_GRUNT, PetalburgWoods_Movement_AquaEntrance)
 	waitmovement (0)
 	msgbox (PetalburgWoods_Text_IWasGoingToAmbushYou, MSGBOX_DEFAULT)
@@ -121,7 +121,7 @@ script PetalburgWoods_EventScript_DevonResearcherIntro {
 script PetalburgWoods_EventScript_PrepareForGruntBattle {
 	msgbox (PetalburgWoods_Text_TakeHimOnTogether, MSGBOX_DEFAULT)
 	closemessage
-	savebgm (MUS_ENCOUNTER_AQUA)
+	//savebgm (MUS_ENCOUNTER_AQUA)
 	special (SavePlayerParty)
 	fadescreen (FADE_TO_BLACK)
 	special (ChooseHalfPartyForBattle)
@@ -151,6 +151,7 @@ script PetalburgWoods_EventScript_DevonResearcherPostBattle {
 	msgbox (PetalburgWoods_Text_YouveGotSomeNerve, MSGBOX_DEFAULT)
 	closemessage
 	turnobject (LOCALID_DEVON_EMPLOYEE, DIR_NORTH)
+	fadedefaultbgm
 	applymovement (LOCALID_GRUNT, PetalburgWoods_Movement_AquaRunAway)
 	waitmovement (0)
 	removeobject (LOCALID_GRUNT)
@@ -228,7 +229,8 @@ text PetalburgWoods_Text_BattleWasFun {
 
 text PetalburgWoods_Text_TakeHimOnTogether {
 	format ("This guy looks pretty tough.\N"
-		"Let's take him on together!")
+		"Let's take him on together!\p"
+		"Pick the POKéMON you want to use.")
 }
 
 movement PetalburgWoods_Movement_Rival2ApproachBeforeDevonLeft {
@@ -490,7 +492,7 @@ PetalburgWoods_Text_HandOverThosePapers:
 
 PetalburgWoods_Text_YouHaveToHelpMe:
 	.string "Aiyeeeh!\p"
-	.string "You're both POKéMON TRAINERS,\laren't you?\n"
+	.string "You're both POKéMON TRAINERS,\naren't you?\p"
 	.string "You've got to help me, please!$"
 
 PetalburgWoods_Text_NoOneCrossesTeamAqua:
