@@ -4,5 +4,8 @@
 
 #define PARTNER_NONE                0
 #define PARTNER_STEVEN              1
+#define PARTNER_KYLE_WOODS          2
+#define PARTNER_BREN_WOODS          3
+#define PARTNER_SPENCER_WOODS       4
 
 #endif  // GUARD_CONSTANTS_BATTLE_PARTNERS_H

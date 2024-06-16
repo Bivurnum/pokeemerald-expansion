@@ -31,7 +31,9 @@ script PetalburgWoods_EventScript_DevonResearcherLeft {
 	applymovement (LOCALID_GRUNT, PetalburgWoods_Movement_AquaApproachPlayerLeft)
 	waitmovement (0)
 	msgbox (PetalburgWoods_Text_NoOneCrossesTeamAqua, MSGBOX_DEFAULT)
-	trainerbattle_no_intro (TRAINER_GRUNT_PETALBURG_WOODS, PetalburgWoods_Text_YoureKiddingMe)
+	turnobject (OBJ_EVENT_ID_PLAYER, DIR_EAST)
+	applymovement (LOCALID_RIVAL2, PetalburgWoods_Movement_Rival2PrepareToFightLeft)
+	call (PetalburgWoods_EventScript_PrepareForGruntBattle)
 	applymovement (LOCALID_GRUNT, PetalburgWoods_Movement_AquaBackOff)
 	waitmovement (0)
 	turnobject (LOCALID_DEVON_EMPLOYEE, DIR_WEST)
@@ -73,7 +75,10 @@ script PetalburgWoods_EventScript_DevonResearcherRight {
 	applymovement (LOCALID_GRUNT, PetalburgWoods_Movement_AquaApproachPlayerRight)
 	waitmovement (0)
 	msgbox (PetalburgWoods_Text_NoOneCrossesTeamAqua, MSGBOX_DEFAULT)
-	trainerbattle_no_intro (TRAINER_GRUNT_PETALBURG_WOODS, PetalburgWoods_Text_YoureKiddingMe)
+	closemessage
+	turnobject (OBJ_EVENT_ID_PLAYER, DIR_WEST)
+	applymovement (LOCALID_RIVAL2, PetalburgWoods_Movement_Rival2PrepareToFightRight)
+	call (PetalburgWoods_EventScript_PrepareForGruntBattle)
 	applymovement (LOCALID_GRUNT, PetalburgWoods_Movement_AquaBackOff)
 	waitmovement (0)
 	turnobject (LOCALID_DEVON_EMPLOYEE, DIR_EAST)
@@ -110,6 +115,31 @@ script PetalburgWoods_EventScript_DevonResearcherIntro {
 	waitmovement (0)
 	msgbox (PetalburgWoods_Text_HandOverThosePapers, MSGBOX_DEFAULT)
 	closemessage
+	return
+}
+
+script PetalburgWoods_EventScript_PrepareForGruntBattle {
+	msgbox (PetalburgWoods_Text_TakeHimOnTogether)
+	closemessage
+	delay (8)
+	turnobject (OBJ_EVENT_ID_PLAYER, DIR_NORTH)
+	turnobject (LOCALID_RIVAL2, DIR_NORTH)
+	msgbox ("Bring it on!", MSGBOX_DEFAULT)
+	closemessage
+	goto (PetalburgWoods_EventScript_BeginGruntBattle)
+	end
+}
+
+script PetalburgWoods_EventScript_BeginGruntBattle {
+	checkfriendchoice
+	switch (var(VAR_RESULT)) {
+		case SPENCER:
+			multi_2_vs_1 (TRAINER_GRUNT_PETALBURG_WOODS, PetalburgWoods_Text_YoureKiddingMe, PARTNER_KYLE_WOODS)
+		case BREN:
+			multi_2_vs_1 (TRAINER_GRUNT_PETALBURG_WOODS, PetalburgWoods_Text_YoureKiddingMe, PARTNER_SPENCER_WOODS)
+		case KYLE:
+			multi_2_vs_1 (TRAINER_GRUNT_PETALBURG_WOODS, PetalburgWoods_Text_YoureKiddingMe, PARTNER_BREN_WOODS)
+	}
 	return
 }
 
@@ -159,7 +189,9 @@ script PetalburgWoods_EventScript_RivalLeave {
 	msgbox (PetalburgWoods_Text_BattleWasFun, MSGBOX_DEFAULT)
 	closemessage
 	turnobject (OBJ_EVENT_ID_PLAYER, DIR_NORTH)
-	applymovement (LOCALID_RIVAL2, PetalburgWoods_Movement_DevonResearcherExit)
+	applymovement (LOCALID_RIVAL2, PetalburgWoods_Movement_Rival2Exit)
+	removeobject (LOCALID_RIVAL2)
+	setflag (FLAG_HIDE_PETALBURG_WOODS_RIVAL2)
 	waitmovement(0)
 	releaseall
 	end
@@ -172,7 +204,7 @@ text PetalburgWoods_Text_HoldUpPlayer {
 text PetalburgWoods_Text_DidYouHearThat {
 	format ("It's much darker inside this forest.\N"
 		"Things might be lurking in the shadows, waiting to ambush you.\p"
-		"Wait!\N… … …\N… … …\N"
+		"Wait!\N… … …\N"
 		"Do you hear that?")
 }
 
@@ -186,6 +218,11 @@ text PetalburgWoods_Text_BattleWasFun {
 		"That guy said there were SHROOMISH in these woods? "
 		"I'd sure like to get one for my POKéDEX.\p"
 		"I'll see you later. I have a SHROOMISH to find!")
+}
+
+text PetalburgWoods_Text_TakeHimOnTogether {
+	format ("This guy looks pretty tough.\N"
+		"Let's take him on together!")
 }
 
 movement PetalburgWoods_Movement_Rival2ApproachBeforeDevonLeft {
@@ -332,6 +369,19 @@ movement PetalburgWoods_Movement_GiveGreatBallsRight {
 	walk_in_place_down * 2
 	walk_right
 	walk_in_place_down * 2
+}
+
+movement PetalburgWoods_Movement_Rival2Exit {
+	walk_fast_up * 6
+	set_invisible
+}
+
+movement PetalburgWoods_Movement_Rival2PrepareToFightRight {
+	walk_in_place_right * 2
+}
+
+movement PetalburgWoods_Movement_Rival2PrepareToFightLeft {
+	walk_in_place_left * 2
 }
 
 raw `
