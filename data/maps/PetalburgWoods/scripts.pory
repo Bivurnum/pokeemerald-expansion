@@ -119,15 +119,18 @@ script PetalburgWoods_EventScript_DevonResearcherIntro {
 }
 
 script PetalburgWoods_EventScript_PrepareForGruntBattle {
-	msgbox (PetalburgWoods_Text_TakeHimOnTogether)
+	msgbox (PetalburgWoods_Text_TakeHimOnTogether, MSGBOX_DEFAULT)
 	closemessage
-	delay (8)
+	special (SavePlayerParty)
+	fadescreen (FADE_TO_BLACK)
+	special (ChooseHalfPartyForBattle)
+	waitstate
 	turnobject (OBJ_EVENT_ID_PLAYER, DIR_NORTH)
 	turnobject (LOCALID_RIVAL2, DIR_NORTH)
 	msgbox ("Bring it on!", MSGBOX_DEFAULT)
 	closemessage
-	goto (PetalburgWoods_EventScript_BeginGruntBattle)
-	end
+	call (PetalburgWoods_EventScript_BeginGruntBattle)
+	return
 }
 
 script PetalburgWoods_EventScript_BeginGruntBattle {
@@ -190,6 +193,7 @@ script PetalburgWoods_EventScript_RivalLeave {
 	closemessage
 	turnobject (OBJ_EVENT_ID_PLAYER, DIR_NORTH)
 	applymovement (LOCALID_RIVAL2, PetalburgWoods_Movement_Rival2Exit)
+	waitmovement (0)
 	removeobject (LOCALID_RIVAL2)
 	setflag (FLAG_HIDE_PETALBURG_WOODS_RIVAL2)
 	waitmovement(0)
@@ -305,13 +309,13 @@ movement PetalburgWoods_Movement_DevonResearcherFleeToPlayerRight {
 }
 
 movement PetalburgWoods_Movement_DevonResearcherStartExit {
-	walk_in_place_faster_down
+	walk_in_place_faster_right
 	delay_16
 	delay_16
 	delay_16
-	delay_16
-	delay_16
+	emote_exclamation_mark
 	face_up
+	delay_16
 }
 
 movement PetalburgWoods_Movement_AquaApproachResearcher {
