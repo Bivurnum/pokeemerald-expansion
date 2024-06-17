@@ -1,6 +1,7 @@
 raw `
 .set LOCALID_BRINEY, 11
 .set LOCALID_WANDAS_BF_OUTSIDE, 21
+.set LOCALID_RIVAL2, 29
 
 Route116_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, Route116_OnTransition
@@ -9,6 +10,7 @@ Route116_MapScripts::
 	.byte 0
 
 Route116_OnTransition:
+	call Common_EventScript_SetupRivalGfxId
 	call_if_set FLAG_RECOVERED_DEVON_GOODS, Route116_EventScript_SetWandasBoyfriendPos
 	call_if_eq VAR_SHOULD_END_ABNORMAL_WEATHER, 1, AbnormalWeather_EventScript_HideMapNamePopup
 	call_if_eq VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_ROUTE_116_NORTH, AbnormalWeather_StartGroudonWeather
@@ -27,7 +29,31 @@ Route116_OnLoad:
 Route116_OnFrame:
 	map_script_2 VAR_SHOULD_END_ABNORMAL_WEATHER, 1, AbnormalWeather_EventScript_EndEventAndCleanup_1
 	.2byte 0
+`
 
+script Route116_EventScript_Rival2 {
+	lock
+	faceplayer
+	if (var(VAR_TEMP_5) != 5) {
+		msgbox (Route116_Text_TakingABreak, MSGBOX_DEFAULT)
+		setvar (VAR_TEMP_5, 5)
+	}
+	else {
+		msgbox (Route116_Text_ElusiveSkitty, MSGBOX_DEFAULT)
+	}
+	release
+	end
+}
+
+text Route116_Text_TakingABreak {
+	format ("I'm taking a break from hunting rare POKéMON.")
+}
+
+text Route116_Text_ElusiveSkitty {
+	format ("Why does SKITTY have to be so elusive?")
+}
+
+raw `
 Route116_EventScript_WandasBoyfriend::
 	lock
 	faceplayer
