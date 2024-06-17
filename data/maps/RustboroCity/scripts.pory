@@ -534,9 +534,83 @@ script RustboroCity_EventScript_EmployeeAskToGetGoods {
 	setvar (VAR_RUSTBORO_CITY_STATE, 3)
 	copyobjectxytoperm (LOCALID_DEVON_EMPLOYEE)
 	msgbox (RustboroCity_Text_HelpMeIWasRobbed, MSGBOX_DEFAULT)
-	applymovement (LOCALID_RIVAL1, )
+	call (RustboroCity_EventScript_Rival1AfterAskToGetGoods)
 	releaseall
 	end
+}
+
+script RustboroCity_EventScript_Rival1AfterAskToGetGoods {
+	closemessage
+	playse (SE_PIN)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterLeft)
+	waitmovement (0)
+	msgbox (RustboroCity_Text_YoPlayer, MSGBOX_DEFAULT)
+	closemessage
+	applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachPlayer)
+	waitmovement (0)
+	msgbox (RustboroCity_Text_WhatsGoingOn, MSGBOX_DEFAULT)
+	closemessage
+	applymovement (OBJ_EVENT_ID_PLAYER, RustboroCity_Movement_PlayerExplain)
+	waitmovement (0)
+	msgbox (RustboroCity_Text_GuyGotMugged, MSGBOX_DEFAULT)
+	closemessage
+	switch (var(VAR_TEMP_1)) {
+		case 0:
+			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown)
+			applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_FaceLeft)
+			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachDevonEmployee0)
+		case 1:
+			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight)
+			applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_FaceDown)
+			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachDevonEmployee1)
+		case 2:
+		case 3:
+			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp)
+			applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_FaceLeft)
+			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachDevonEmployee2and3)
+	}
+	waitmovement (0)
+	msgbox (RustboroCity_Text_DontWorrySir, MSGBOX_DEFAULT)
+	closemessage
+	if (var(VAR_TEMP_1) == 1) {
+		applymovement (LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_SpeakDown)
+	}
+	else {
+		applymovement (LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_SpeakLeft)
+	}
+	waitmovement (0)
+	msgbox (RustboroCity_Text_ThankBothOfYou, MSGBOX_DEFAULT)
+	closemessage
+	switch (var(VAR_TEMP_1)) {
+		case 0:
+			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft)
+			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachDevonEmployee2and3)
+		case 1:
+			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown)
+			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ReturnToPlayer1)
+		case 2:
+		case 3:
+			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft)
+			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachDevonEmployee0)
+	}
+	waitmovement (0)
+	msgbox (RustboroCity_Text_LetsGoCatchMugger, MSGBOX_DEFAULT)
+	closemessage
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_FaceRight)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight)
+	switch (var(VAR_TEMP_1)) {
+		case 0:
+			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ChaseMugger0)
+		case 1:
+			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ChaseMugger1)
+		case 2:
+		case 3:
+			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ChaseMugger2and3)
+	}
+	waitmovement (0)
+	setflag (FLAG_HIDE_RUSTBORO_RIVAL1)
+	removeobject (LOCALID_RIVAL1)
+	return
 }
 
 // The below movement scripts are either partially or fully duplicated by the movement scripts when the player returns the goods
@@ -600,6 +674,96 @@ script RustboroCity_EventScript_EmployeeApproachPlayerDown1 {
 movement RustboroCity_Movement_EmployeeApproachPlayerDown {
 	walk_down
 	step_end
+}
+
+movement RustboroCity_Movement_Rival1ApproachPlayer {
+	walk_right * 7
+}
+
+movement RustboroCity_Movement_PlayerExplain {
+	walk_in_place_left * 3
+	delay_16
+}
+
+movement RustboroCity_Movement_Rival1ApproachDevonEmployee0 {
+	walk_down
+	walk_in_place_right * 2
+}
+
+movement RustboroCity_Movement_Rival1ApproachDevonEmployee1 {
+	walk_down
+	walk_right * 2
+	walk_in_place_up * 2
+}
+
+movement RustboroCity_Movement_Rival1ApproachDevonEmployee2and3 {
+	walk_up
+	walk_in_place_right * 2
+}
+
+movement RustboroCity_Movement_SpeakUp {
+	walk_in_place_up * 2
+}
+
+movement RustboroCity_Movement_SpeakDown {
+	walk_in_place_down * 2
+}
+
+movement RustboroCity_Movement_SpeakRight {
+	walk_in_place_right * 2
+}
+
+movement RustboroCity_Movement_SpeakLeft {
+	walk_in_place_left * 2
+}
+
+movement RustboroCity_Movement_Rival1ReturnToPlayer1 {
+	walk_left
+	walk_in_place_up * 2
+}
+
+movement RustboroCity_Movement_Rival1ChaseMugger0 {
+	walk_fast_down * 2
+	walk_fast_right * 9
+	set_invisible
+}
+
+movement RustboroCity_Movement_Rival1ChaseMugger1 {
+	walk_fast_right * 8
+	set_invisible
+}
+
+movement RustboroCity_Movement_Rival1ChaseMugger2and3 {
+	walk_fast_up * 2
+	walk_fast_right * 9
+	set_invisible
+}
+
+text RustboroCity_Text_YoPlayer {
+	format ("Yo! {PLAYER}!")
+}
+
+text RustboroCity_Text_WhatsGoingOn {
+	format ("I heard there was a commotion going on here. "
+		"What's going on?")
+}
+
+text RustboroCity_Text_GuyGotMugged {
+	format ("So this guy got mugged? That's absolutely despicable!")
+}
+
+text RustboroCity_Text_DontWorrySir {
+	format ("Don't worry, sir. {PLAYER} and I will get your GOODS back.")
+}
+
+text RustboroCity_Text_ThankBothOfYou {
+	format ("Oh, thank you! Both of you!\n"
+		"I do hope you can get them back.")
+}
+
+text RustboroCity_Text_LetsGoCatchMugger {
+	format ("C'mon, {PLAYER}!\n"
+		"Let's go catch that mugger!")
 }
 
 raw `
@@ -1140,8 +1304,9 @@ RustboroCity_Text_WaitDontTakeMyGoods:
 
 RustboroCity_Text_HelpMeIWasRobbed:
 	.string "Oh, it's you!\p"
-	.string "You're that fantastic TRAINER who\n"
-	.string "helped me in PETALBURG WOODS!\p"
+	.string "You're one of those fantastic\n"
+	.string "TRAINERS who helped me in\l"
+	.string "PETALBURG WOODS!\p"
 	.string "Help me! I was robbed by TEAM AQUA!\n"
 	.string "I have to get the DEVON GOODS back!\p"
 	.string "If I don't…\n"
