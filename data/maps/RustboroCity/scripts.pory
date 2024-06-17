@@ -767,7 +767,7 @@ text RustboroCity_Text_LetsGoCatchMugger {
 }
 
 raw `
-script RustboroCity_EventScript_ReturnGoodsTrigger0::
+RustboroCity_EventScript_ReturnGoodsTrigger0::
 	lockall
 	setvar VAR_TEMP_1, 0
 	goto RustboroCity_EventScript_ReturnGoods
