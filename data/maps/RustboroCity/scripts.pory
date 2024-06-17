@@ -541,8 +541,9 @@ script RustboroCity_EventScript_EmployeeAskToGetGoods {
 
 script RustboroCity_EventScript_Rival1AfterAskToGetGoods {
 	closemessage
+	delay (30)
 	playse (SE_PIN)
-	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterLeft)
+	applymovement (OBJ_EVENT_ID_PLAYER, RustboroCity_Movement_NoticeRival1)
 	waitmovement (0)
 	msgbox (RustboroCity_Text_YoPlayer, MSGBOX_DEFAULT)
 	closemessage
@@ -604,8 +605,9 @@ script RustboroCity_EventScript_Rival1AfterAskToGetGoods {
 		case 1:
 			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ChaseMugger1)
 		case 2:
+			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ChaseMugger2)
 		case 3:
-			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ChaseMugger2and3)
+			applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1ChaseMugger3)
 	}
 	waitmovement (0)
 	setflag (FLAG_HIDE_RUSTBORO_RIVAL1)
@@ -676,6 +678,11 @@ movement RustboroCity_Movement_EmployeeApproachPlayerDown {
 	step_end
 }
 
+movement RustboroCity_Movement_NoticeRival1 {
+	emote_exclamation_mark
+	walk_in_place_faster_left
+}
+
 movement RustboroCity_Movement_Rival1ApproachPlayer {
 	walk_right * 7
 }
@@ -733,7 +740,13 @@ movement RustboroCity_Movement_Rival1ChaseMugger1 {
 	set_invisible
 }
 
-movement RustboroCity_Movement_Rival1ChaseMugger2and3 {
+movement RustboroCity_Movement_Rival1ChaseMugger2 {
+	walk_fast_down
+	walk_fast_right * 9
+	set_invisible
+}
+
+movement RustboroCity_Movement_Rival1ChaseMugger3 {
 	walk_fast_up * 2
 	walk_fast_right * 9
 	set_invisible

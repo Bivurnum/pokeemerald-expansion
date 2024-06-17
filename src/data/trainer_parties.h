@@ -149,6 +149,10 @@ static const struct TrainerMon sParty_GruntRusturfTunnel[] = {
     {
     .lvl = 11,
     .species = SPECIES_POOCHYENA,
+    },
+    {
+    .lvl = 12,
+    .species = SPECIES_ZUBAT,
     }
 };
 
