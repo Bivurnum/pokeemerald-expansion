@@ -33,10 +33,11 @@ script PetalburgWoods_EventScript_DevonResearcherLeft {
 	msgbox (PetalburgWoods_Text_NoOneCrossesTeamAqua, MSGBOX_DEFAULT)
 	turnobject (OBJ_EVENT_ID_PLAYER, DIR_EAST)
 	applymovement (LOCALID_RIVAL2, PetalburgWoods_Movement_Rival2PrepareToFightLeft)
+	waitmovement (0)
+	turnobject (LOCALID_DEVON_EMPLOYEE, DIR_WEST)
 	call (PetalburgWoods_EventScript_PrepareForGruntBattle)
 	applymovement (LOCALID_GRUNT, PetalburgWoods_Movement_AquaBackOff)
 	waitmovement (0)
-	turnobject (LOCALID_DEVON_EMPLOYEE, DIR_WEST)
 	call (PetalburgWoods_EventScript_DevonResearcherPostBattle)
 	applymovement (LOCALID_DEVON_EMPLOYEE, PetalburgWoods_Movement_GiveGreatBallsLeft)
 	waitmovement (0)
@@ -78,10 +79,11 @@ script PetalburgWoods_EventScript_DevonResearcherRight {
 	closemessage
 	turnobject (OBJ_EVENT_ID_PLAYER, DIR_WEST)
 	applymovement (LOCALID_RIVAL2, PetalburgWoods_Movement_Rival2PrepareToFightRight)
+	waitmovement (0)
+	turnobject (LOCALID_DEVON_EMPLOYEE, DIR_EAST)
 	call (PetalburgWoods_EventScript_PrepareForGruntBattle)
 	applymovement (LOCALID_GRUNT, PetalburgWoods_Movement_AquaBackOff)
 	waitmovement (0)
-	turnobject (LOCALID_DEVON_EMPLOYEE, DIR_EAST)
 	call (PetalburgWoods_EventScript_DevonResearcherPostBattle)
 	applymovement (LOCALID_DEVON_EMPLOYEE, PetalburgWoods_Movement_GiveGreatBallsRight)
 	waitmovement (0)
@@ -126,15 +128,28 @@ script PetalburgWoods_EventScript_PrepareForGruntBattle {
 	fadescreen (FADE_TO_BLACK)
 	special (ChooseHalfPartyForBattle)
 	waitstate
+	goto_if_ne (VAR_RESULT, 0, PetalburgWoods_EventScript_BeginGruntBattle)
+	goto (PetalburgWoods_EventScript_QuitPartySelect)
+	return
+}
+
+script PetalburgWoods_EventScript_QuitPartySelect {
+	msgbox (PetalburgWoods_Text_NotGetOutOfThisOne)
+	closemessage
+	special (SavePlayerParty)
+	fadescreen (FADE_TO_BLACK)
+	special (ChooseHalfPartyForBattle)
+	waitstate
+	goto_if_ne (VAR_RESULT, 0, PetalburgWoods_EventScript_BeginGruntBattle)
+	goto (PetalburgWoods_EventScript_QuitPartySelect)
+	end
+}
+
+script PetalburgWoods_EventScript_BeginGruntBattle {
 	turnobject (OBJ_EVENT_ID_PLAYER, DIR_NORTH)
 	turnobject (LOCALID_RIVAL2, DIR_NORTH)
 	msgbox ("Bring it on!", MSGBOX_DEFAULT)
 	closemessage
-	call (PetalburgWoods_EventScript_BeginGruntBattle)
-	return
-}
-
-script PetalburgWoods_EventScript_BeginGruntBattle {
 	checkfriendchoice
 	switch (var(VAR_RESULT)) {
 		case SPENCER:
@@ -199,6 +214,8 @@ script PetalburgWoods_EventScript_RivalLeave {
 	waitmovement (0)
 	removeobject (LOCALID_RIVAL2)
 	setflag (FLAG_HIDE_PETALBURG_WOODS_RIVAL2)
+	setflag (FLAG_HIDE_ROUTE_104_RIVAL1)
+	setflag (FLAG_HIDE_ROUTE_101_RIVAL2)
 	waitmovement(0)
 	releaseall
 	end
@@ -231,6 +248,11 @@ text PetalburgWoods_Text_TakeHimOnTogether {
 	format ("This guy looks pretty tough.\N"
 		"Let's take him on together!\p"
 		"Pick the POKéMON you want to use.")
+}
+
+text PetalburgWoods_Text_NotGetOutOfThisOne {
+	format ("I don't think we're getting out of this one.\N"
+		"Go on, pick the POKéMON you'd like to battle with.")
 }
 
 movement PetalburgWoods_Movement_Rival2ApproachBeforeDevonLeft {
@@ -268,6 +290,7 @@ movement PetalburgWoods_Movement_DevonResearcherExit {
 	walk_fast_up
 	walk_fast_up
 	walk_fast_up
+	delay_16 * 2
 }
 
 movement PetalburgWoods_Movement_DevonResearcherApproachPlayer {
