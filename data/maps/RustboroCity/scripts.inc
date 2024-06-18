@@ -2078,7 +2078,7 @@ RustboroCity_EventScript_MayEncounter::
 # 1058 "data/maps/RustboroCity/scripts.pory"
 	delay 30
 # 1059 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_ENABLE_RIVAL_MATCH_CALL
+	setflag FLAG_ENABLE_SPENCER_MATCH_CALL
 # 1060 "data/maps/RustboroCity/scripts.pory"
 	setvar VAR_RUSTBORO_CITY_STATE, 8
 # 1061 "data/maps/RustboroCity/scripts.pory"
@@ -2214,7 +2214,7 @@ RustboroCity_EventScript_BrendanEncounter::
 # 1126 "data/maps/RustboroCity/scripts.pory"
 	delay 30
 # 1127 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_ENABLE_RIVAL_MATCH_CALL
+	setflag FLAG_ENABLE_SPENCER_MATCH_CALL
 # 1128 "data/maps/RustboroCity/scripts.pory"
 	setvar VAR_RUSTBORO_CITY_STATE, 8
 # 1129 "data/maps/RustboroCity/scripts.pory"

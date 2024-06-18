@@ -2335,14 +2335,14 @@ MatchCall_Text_BrendanRayquazaCall:
 	.string "… … … … … …\n"
 	.string "… … … … … Click!$"
 
-MatchCall_Text_May1::
+MatchCall_Text_Bren1::
 	.string "BREN: Hi, {PLAYER}{KUN}!\p"
 	.string "MR. BRINEY retired as a SAILOR,\n"
 	.string "but I still see him out on the sea\l"
 	.string "with his pet PEEKO sometimes.\p"
 	.string "He must love the sea still.$"
 
-MatchCall_Text_May2::
+MatchCall_Text_Bren2::
 	.string "BREN: Hi, {PLAYER}{KUN}!\p"
 	.string "You know how little towns like\n"
 	.string "PETALBURG and DEWFORD have GYMS?\p"
@@ -2351,7 +2351,7 @@ MatchCall_Text_May2::
 	.string "When they finally build a GYM there,\n"
 	.string "I should apply to be the LEADER.$"
 
-MatchCall_Text_May3::
+MatchCall_Text_Bren3::
 	.string "BREN: Hi, {PLAYER}{KUN}!\p"
 	.string "Do you remember a man named\n"
 	.string "the CUTTER in RUSTBORO?\l"
@@ -2363,13 +2363,13 @@ MatchCall_Text_May3::
 	.string "… … … … … …\p"
 	.string "The ROCK SMASH GUY!$"
 
-MatchCall_Text_May4::
+MatchCall_Text_Bren4::
 	.string "BREN: {PLAYER}{KUN}?\p"
 	.string "RUSTURF TUNNEL…\n"
 	.string "They named it that because it\l"
 	.string "joins RUSTBORO and VERDANTURF.$"
 
-MatchCall_Text_May5::
+MatchCall_Text_Bren5::
 	.string "BREN: {PLAYER}{KUN}, how are you?\p"
 	.string "I'm out on ROUTE 111 now.\p"
 	.string "I'm going to get a rest at an old\n"
@@ -2377,7 +2377,7 @@ MatchCall_Text_May5::
 	.string "She lives just north of\n"
 	.string "the desert.$"
 
-MatchCall_Text_May6::
+MatchCall_Text_Bren6::
 	.string "BREN: Hi, {PLAYER}{KUN}!\p"
 	.string "Did you know about the MIRAGE\n"
 	.string "TOWER in the desert?\p"
@@ -2385,21 +2385,21 @@ MatchCall_Text_May6::
 	.string "to mysteriously come and go.\p"
 	.string "I wish I could see it.$"
 
-MatchCall_Text_May7::
+MatchCall_Text_Bren7::
 	.string "BREN: {PLAYER}{KUN}, yahoo!\n"
 	.string "I'm on ROUTE 119 now.\p"
 	.string "There's a big river here, and\n"
 	.string "it often rains.\p"
 	.string "I got soaked!$"
 
-MatchCall_Text_May8::
+MatchCall_Text_Bren8::
 	.string "BREN: {PLAYER}{KUN}, hi.\p"
 	.string "MT. PYRE is a memorial to POKéMON\n"
 	.string "whose lives have ended.\p"
-	.string "Maybe as a result, it's infested\n"
+	.string "Brenbe as a result, it's infested\n"
 	.string "with many GHOST-type POKéMON!$"
 
-MatchCall_Text_May9::
+MatchCall_Text_Bren9::
 	.string "BREN: Hi, {PLAYER}{KUN}!\p"
 	.string "I was thinking of going to the hot\n"
 	.string "spring in LAVARIDGE.\p"
@@ -2407,14 +2407,14 @@ MatchCall_Text_May9::
 	.string "PASS, I ran into some bad-looking\l"
 	.string "characters. The mood was ugly!$"
 
-MatchCall_Text_May10::
+MatchCall_Text_Bren10::
 	.string "BREN: Hi, {PLAYER}{KUN}!\n"
 	.string "Did you see the news?\p"
 	.string "They say CAPT. STERN discovered\n"
 	.string "the SEAFLOOR CAVERN while on his\l"
 	.string "submarine expedition.$"
 
-MatchCall_Text_May11::
+MatchCall_Text_Bren11::
 	.string "BREN: Hi, {PLAYER}{KUN}!\n"
 	.string "Don't you think it's neat?\p"
 	.string "Even if you don't have a boat,\n"
@@ -2424,7 +2424,7 @@ MatchCall_Text_May11::
 	.string "There's a POKéMON move that lets\n"
 	.string "you go to the bottom of the sea.$"
 
-MatchCall_Text_May12::
+MatchCall_Text_Bren12::
 	.string "BREN: Hi, {PLAYER}{KUN}!\n"
 	.string "Hope things are okay!\p"
 	.string "Have you been on the sea and\n"
@@ -2435,7 +2435,7 @@ MatchCall_Text_May12::
 	.string "When you get to the other side,\n"
 	.string "come up to the surface. Easy!$"
 
-MatchCall_Text_May13::
+MatchCall_Text_Bren13::
 	.string "BREN: Hi, {PLAYER}{KUN}!\p"
 	.string "How's it going?\n"
 	.string "Are you filling your POKéDEX?\p"
@@ -2444,7 +2444,7 @@ MatchCall_Text_May13::
 	.string "And there are three of them!\p"
 	.string "I would love to see even one…$"
 
-MatchCall_Text_May14::
+MatchCall_Text_Bren14::
 	.string "BREN: {PLAYER}{KUN}!\n"
 	.string "I heard the rumors!\p"
 	.string "You beat the SOOTOPOLIS GYM\n"
@@ -2452,7 +2452,7 @@ MatchCall_Text_May14::
 	.string "That means you don't have far\n"
 	.string "to go, do you?$"
 
-MatchCall_Text_May15::
+MatchCall_Text_Bren15::
 	.string "BREN: There isn't a single TRAINER\n"
 	.string "left in HOENN who doesn't know who\l"
 	.string "you are, {PLAYER}{KUN}!\p"
@@ -2460,7 +2460,7 @@ MatchCall_Text_May15::
 	.string "with you, {PLAYER}{KUN}, they're all\l"
 	.string "surprised!$"
 
-MatchCall_Text_Brendan1::
+MatchCall_Text_Spencer1::
 	.string "SPENCER: Hey, {PLAYER}!\p"
 	.string "MR. BRINEY retired as a SAILOR,\n"
 	.string "but I still see him out on the sea\l"
@@ -2468,7 +2468,7 @@ MatchCall_Text_Brendan1::
 	.string "I guess he must love\n"
 	.string "the sea still.$"
 
-MatchCall_Text_Brendan2::
+MatchCall_Text_Spencer2::
 	.string "SPENCER: Hey, {PLAYER}!\p"
 	.string "I don't get how little towns like\n"
 	.string "PETALBURG and DEWFORD have GYMS.\p"
@@ -2477,7 +2477,7 @@ MatchCall_Text_Brendan2::
 	.string "When they finally build a GYM there,\n"
 	.string "I should apply to be the LEADER.$"
 
-MatchCall_Text_Brendan3::
+MatchCall_Text_Spencer3::
 	.string "SPENCER: Yo, {PLAYER}!\p"
 	.string "Do you remember a guy named\n"
 	.string "the CUTTER in RUSTBORO?\l"
@@ -2489,14 +2489,14 @@ MatchCall_Text_Brendan3::
 	.string "… … … … … …\p"
 	.string "The ROCK SMASH GUY!$"
 
-MatchCall_Text_Brendan4::
+MatchCall_Text_Spencer4::
 	.string "SPENCER: This voice… {PLAYER}?\p"
 	.string "They gave RUSTURF TUNNEL its name\n"
 	.string "because it joins RUSTBORO and\l"
 	.string "VERDANTURF.\p"
 	.string "Did you know that?$"
 
-MatchCall_Text_Brendan5::
+MatchCall_Text_Spencer5::
 	.string "SPENCER: {PLAYER}, what's up?\p"
 	.string "Hey, I'm out on ROUTE 111 now.\p"
 	.string "I'm going to rest up at an old\n"
@@ -2504,7 +2504,7 @@ MatchCall_Text_Brendan5::
 	.string "If you're in the area, you should\n"
 	.string "visit her, too.$"
 
-MatchCall_Text_Brendan6::
+MatchCall_Text_Spencer6::
 	.string "SPENCER: Hey, {PLAYER}!\p"
 	.string "Did you know about the MIRAGE\n"
 	.string "TOWER in the desert?\p"
@@ -2512,21 +2512,21 @@ MatchCall_Text_Brendan6::
 	.string "seen only sometimes.\p"
 	.string "I'd like to see that!$"
 
-MatchCall_Text_Brendan7::
+MatchCall_Text_Spencer7::
 	.string "SPENCER: Who's this? Oh, {PLAYER}?\n"
 	.string "Guess what? I'm on ROUTE 119 now.\p"
 	.string "There's a big river here, and\n"
 	.string "it rains all the time.\p"
 	.string "I got soaked to the bone!$"
 
-MatchCall_Text_Brendan8::
+MatchCall_Text_Spencer8::
 	.string "SPENCER: {PLAYER}!\p"
 	.string "MT. PYRE is a memorial to POKéMON\n"
 	.string "whose lives have ended.\p"
 	.string "That's probably why it's infested\n"
 	.string "with many GHOST-type POKéMON!$"
 
-MatchCall_Text_Brendan9::
+MatchCall_Text_Spencer9::
 	.string "SPENCER: Hey there, {PLAYER}.\p"
 	.string "I was on my way back to the hot\n"
 	.string "spring in LAVARIDGE.\p"
@@ -2535,14 +2535,14 @@ MatchCall_Text_Brendan9::
 	.string "Those creeps…\n"
 	.string "I think they were TEAM MAGMA.$"
 
-MatchCall_Text_Brendan10::
+MatchCall_Text_Spencer10::
 	.string "SPENCER: Hi, {PLAYER}!\n"
 	.string "Did you catch the news?\p"
 	.string "They say CAPT. STERN discovered\n"
 	.string "the SEAFLOOR CAVERN while on his\l"
 	.string "submarine expedition.$"
 
-MatchCall_Text_Brendan11::
+MatchCall_Text_Spencer11::
 	.string "SPENCER: Hey there, {PLAYER}!\n"
 	.string "Don't you think it's awesome?\p"
 	.string "Even if you don't have a boat,\n"
@@ -2552,7 +2552,7 @@ MatchCall_Text_Brendan11::
 	.string "travel to the bottom of the sea.\p"
 	.string "Man, POKéMON can do anything!$"
 
-MatchCall_Text_Brendan12::
+MatchCall_Text_Spencer12::
 	.string "SPENCER: Howdy, {PLAYER}!\n"
 	.string "How are you holding up?\p"
 	.string "Ever found your way to the other\n"
@@ -2562,7 +2562,7 @@ MatchCall_Text_Brendan12::
 	.string "When you get to the other side,\n"
 	.string "come up to the surface. Simple!$"
 
-MatchCall_Text_Brendan13::
+MatchCall_Text_Spencer13::
 	.string "SPENCER: Hey there, {PLAYER}!\p"
 	.string "How's it going? Filling up your\n"
 	.string "POKéDEX successfully?\p"
@@ -2571,14 +2571,14 @@ MatchCall_Text_Brendan13::
 	.string "And not just one--three!\p"
 	.string "I'd love to catch even one…$"
 
-MatchCall_Text_Brendan14::
+MatchCall_Text_Spencer14::
 	.string "SPENCER: {PLAYER}!\n"
 	.string "I heard the rumors!\p"
 	.string "You beat the SOOTOPOLIS GYM\n"
 	.string "LEADER? Awesome!\p"
 	.string "You're getting awful close now!$"
 
-MatchCall_Text_Brendan15::
+MatchCall_Text_Spencer15::
 	.string "SPENCER: There isn't a TRAINER in\n"
 	.string "all of HOENN who doesn't know who\l"
 	.string "you are, {PLAYER}!\p"

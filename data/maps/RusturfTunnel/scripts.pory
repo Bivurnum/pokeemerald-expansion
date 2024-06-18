@@ -404,7 +404,7 @@ text RusturfTunnel_Text_LetMeHealYourTeam {
 }
 
 text RusturfTunnel_Text_LetsGetOutOfTunnel {
-	format ("Let's get out of this dark tunnel. "
+	format ("Let's get out of this dark tunnel.\N"
 		"It echoes so much in here!")
 }
 

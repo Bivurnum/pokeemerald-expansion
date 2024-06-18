@@ -695,7 +695,7 @@ RusturfTunnel_EventScript_Grunt::
 # 355 "data/maps/RusturfTunnel/scripts.pory"
 	closemessage
 # 356 "data/maps/RusturfTunnel/scripts.pory"
-	call Common_EventScript_OutOfCenterPartyHeal
+	call Common_EventScript_FieldPartyHeal
 # 357 "data/maps/RusturfTunnel/scripts.pory"
 	msgbox RusturfTunnel_Text_LetsGetOutOfTunnel, MSGBOX_DEFAULT
 # 358 "data/maps/RusturfTunnel/scripts.pory"
@@ -1181,5 +1181,5 @@ RusturfTunnel_Text_LetMeHealYourTeam::
 
 RusturfTunnel_Text_LetsGetOutOfTunnel::
 # 406 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Let's get out of this dark tunnel. It\n"
-	.string "echoes so much in here!$"
+	.string "Let's get out of this dark tunnel.\n"
+	.string "It echoes so much in here!$"

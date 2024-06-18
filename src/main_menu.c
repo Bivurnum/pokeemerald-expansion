@@ -218,7 +218,6 @@ static void Task_NewGameBirchSpeech_ChooseGender(u8);
 static void NewGameBirchSpeech_ShowGenderMenu(void);
 static s8 NewGameBirchSpeech_ProcessGenderMenuInput(void);
 static void NewGameBirchSpeech_ClearGenderWindow(u8, u8);
-static void Task_NewGameBirchSpeech_WhatsYourName(u8);
 static void Task_NewGameBirchSpeech_SlideOutOldGenderSprite(u8);
 static void Task_NewGameBirchSpeech_SlideInNewGenderSprite(u8);
 static void Task_NewGameBirchSpeech_WaitForWhatsYourNameToPrint(u8);
@@ -1561,14 +1560,6 @@ static void Task_NewGameBirchSpeech_SlideInNewGenderSprite(u8 taskId)
             gTasks[taskId].func = Task_NewGameBirchSpeech_ChooseGender;
         }
     }
-}
-
-static void Task_NewGameBirchSpeech_WhatsYourName(u8 taskId)
-{
-//    NewGameBirchSpeech_ClearWindow(0);
-//    StringExpandPlaceholders(gStringVar4, gText_Birch_WhatsYourName);
-//    AddTextPrinterForMessage(TRUE);
-    gTasks[taskId].func = Task_NewGameBirchSpeech_WaitForWhatsYourNameToPrint;
 }
 
 static void Task_NewGameBirchSpeech_WaitForWhatsYourNameToPrint(u8 taskId)

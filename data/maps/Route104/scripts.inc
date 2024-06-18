@@ -243,7 +243,7 @@ Route104_EventScript_MayEncounter::
 # 134 "data/maps/Route104/scripts.pory"
 	delay 30
 # 135 "data/maps/Route104/scripts.pory"
-	setflag FLAG_ENABLE_RIVAL_MATCH_CALL
+	setflag FLAG_ENABLE_SPENCER_MATCH_CALL
 # 136 "data/maps/Route104/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Route104_Movement_PlayerFaceRival
 # 137 "data/maps/Route104/scripts.pory"
@@ -415,7 +415,7 @@ Route104_EventScript_BrendanEncounter::
 # 220 "data/maps/Route104/scripts.pory"
 	delay 30
 # 221 "data/maps/Route104/scripts.pory"
-	setflag FLAG_ENABLE_RIVAL_MATCH_CALL
+	setflag FLAG_ENABLE_SPENCER_MATCH_CALL
 # 222 "data/maps/Route104/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Route104_Movement_PlayerFaceRival
 # 223 "data/maps/Route104/scripts.pory"
