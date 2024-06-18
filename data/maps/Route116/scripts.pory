@@ -22,11 +22,17 @@ Route116_OnTransition:
 	call_if_eq VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_ROUTE_116_NORTH, AbnormalWeather_StartGroudonWeather
 	call_if_eq VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_ROUTE_116_SOUTH, AbnormalWeather_StartGroudonWeather
 	end
+`
 
-Route116_EventScript_SetWandasBoyfriendPos::
-	setobjectxyperm LOCALID_WANDAS_BF_OUTSIDE, 38, 10
+script Route116_EventScript_SetWandasBoyfriendPos {
+	setobjectxyperm (LOCALID_WANDAS_BF_OUTSIDE, 38, 10)
+	if (var(VAR_RUSTBORO_CITY_STATE) == 3 || var(VAR_RUSTBORO_CITY_STATE) == 4) {
+		setobjectxyperm (LOCALID_RIVAL1, 46, 9)
+	}
 	return
+}
 
+raw `
 Route116_OnLoad:
 	call_if_eq VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_ROUTE_116_NORTH, AbnormalWeather_EventScript_PlaceTilesRoute116North
 	call_if_eq VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_ROUTE_116_SOUTH, AbnormalWeather_EventScript_PlaceTilesRoute116South
@@ -34,8 +40,58 @@ Route116_OnLoad:
 
 Route116_OnFrame:
 	map_script_2 VAR_SHOULD_END_ABNORMAL_WEATHER, 1, AbnormalWeather_EventScript_EndEventAndCleanup_1
+	map_script_2 VAR_RUSTURF_TUNNEL_STATE, 4, Route116_EventScript_TalkToRivalAfterAquaBattle
 	.2byte 0
 `
+
+script Route116_EventScript_TalkToRivalAfterAquaBattle {
+	if (flag(FLAG_HIDE_ROUTE_116_MR_BRINEY) == FALSE) {
+		end
+	}
+	lockall
+	setvar (VAR_RUSTURF_TUNNEL_STATE, 5)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft)
+	applymovement (LOCALID_RIVAL1, Common_Movement_BeginTalkRight)
+	waitmovement (0)
+	msgbox (Route116_Text_WouldYouLikeToBattle, MSGBOX_YESNO)
+	goto_if_eq (VAR_RESULT, YES, Route116_EventScript_RivalBattle)
+	goto (Route116_EventScript_DeclineRivalBattle)
+	end
+}
+
+script Route116_EventScript_RivalBattle {
+	msgbox (Route116_Text_WontHoldAnythingBack)
+	checkfriendchoice
+	switch (var(VAR_RESULT)) {
+		case SPENCER:
+			trainerbattle_no_intro (TRAINER_BREN_ROUTE_116, Route116_Text_RivalDefeated)
+		case BREN:
+			trainerbattle_no_intro (TRAINER_KYLE_ROUTE_116, Route116_Text_RivalDefeated)
+		case KYLE:
+			trainerbattle_no_intro (TRAINER_SPENCER_ROUTE_116, Route116_Text_RivalDefeated)
+	}
+	msgbox (Route116_Text_MeetYouAtBrineysCottage, MSGBOX_DEFAULT)
+	getplayerxy (VAR_0x8001, VAR_0x8002)
+	if (var(VAR_0x8001) == 46) {
+		applymovement (LOCALID_RIVAL1, Route116_Movement_RivalLeaveAfterBattle2)
+	}
+	else {
+		applymovement (LOCALID_RIVAL1, Route116_Movement_RivalLeaveAfterBattle)
+	}
+	waitmovement (0)
+	removeobject (LOCALID_RIVAL1)
+	setflag (FLAG_HIDE_ROUTE_116_RIVAL1)
+	setvar (VAR_RUSTURF_TUNNEL_STATE, 6)
+	releaseall
+	end
+}
+
+script Route116_EventScript_DeclineRivalBattle {
+	msgbox (Route116_Text_HangingAroundForABit, MSGBOX_DEFAULT)
+	closemessage
+	releaseall
+	end
+}
 
 script Route116_EventScript_Rival2 {
 	lock
@@ -51,12 +107,62 @@ script Route116_EventScript_Rival2 {
 	end
 }
 
+movement Route116_Movement_RivalLeaveAfterBattle {
+	walk_fast_down * 2
+	walk_fast_left * 10
+	set_invisible
+}
+
+movement Route116_Movement_RivalLeaveAfterBattle2 {
+	walk_fast_left
+	walk_fast_down * 2
+	walk_fast_left * 9
+	set_invisible
+}
+
 text Route116_Text_TakingABreak {
 	format ("I'm taking a break from hunting rare POKéMON.")
 }
 
 text Route116_Text_ElusiveSkitty {
 	format ("Why does SKITTY have to be so elusive?")
+}
+
+text Route116_Text_WouldYouLikeToBattle {
+	format ("Ah! Fresh air!\N"
+		"Feels good to be in the sun again.\p"
+		"All that excitement has me energized!\N"
+		"I know you just went through a whole ordeal, but would you be up for a battle with me?\N"
+		"I'd love to experience your heroic skills first hand.\p"
+		"What do you say?\N"
+		"Would you like to battle?")
+}
+
+text Route116_Text_WontHoldAnythingBack {
+	format ("Excellent!\N"
+		"I won't hold anything back!")
+}
+
+text Route116_Text_RivalDefeated {
+	format("You really are the real deal, huh?")
+}
+
+text Route116_Text_MeetYouAtBrineysCottage {
+	format("You've certainly gotten stronger, but I got some licks in!\N"
+		"I thought since I beat ROXANNE that I would have an easier time against you, though.\N"
+		"But I suppose I should've expected it, since you've obviously beaten her too.\p"
+		"Well, I suppose we should make our way to the next GYM. "
+		"I hear it's in an island town called DEWFORD, but I don't have the slightest idea how we are going to get there.\N"
+		"Maybe MR. BRINEY can help us.\N"
+		"It can't hurt to ask.\p"
+		"I'll meet you at his cottage!")
+}
+
+text Route116_Text_HangingAroundForABit {
+	format ("No big deal.\N"
+		"If you change your mind, I'll be hanging around here for a bit.\N"
+		"I'm sure {RIVAL2} has gotten his hands on a SKITTY for his POKéDEX already.\N"
+		"I can't let him beat me!")
 }
 
 raw `
@@ -189,12 +295,17 @@ script Route116_EventScript_Briney {
 }
 
 script Route116_EventScript_Rival1 {
-	lock
+	lockall
 	faceplayer
+	if (var(VAR_RUSTURF_TUNNEL_STATE) == 5) {
+		msgbox (Route116_Text_BattleAfterAll, MSGBOX_YESNO)
+		goto_if_eq (VAR_RESULT, YES, Route116_EventScript_RivalBattle)
+		goto_if_eq (VAR_RESULT, NO, Route116_EventScript_DeclineRivalBattle)
+	}
 	msgbox (Route116_Text_Rival1, MSGBOX_DEFAULT)
 	closemessage
 	turnobject (LOCALID_RIVAL1, DIR_EAST)
-	release
+	releaseall
 	end
 }
 
@@ -363,6 +474,10 @@ text Route116_Text_BrineyStillMad {
 	format ("The scoundrel made off with my\n"
 		"darling PEEKO!\p"
 		"Wrrrooooooaaaar! PEEKO!")
+}
+
+text Route116_Text_BattleAfterAll {
+	format ("Are you ready to have that battle after all?")
 }
 
 raw `

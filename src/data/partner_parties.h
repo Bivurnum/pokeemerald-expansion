@@ -41,14 +41,6 @@ static const struct TrainerMon sParty_KylePetalburgWoods[] = {
         .iv = TRAINER_PARTY_IVS(10, 10, 10, 10, 10, 10),
         .ev = TRAINER_PARTY_EVS(32, 32, 32, 32, 32, 32),
         .moves = {MOVE_ASTONISH, MOVE_GROWL, MOVE_ABSORB, MOVE_NONE},
-    },
-    {
-        .species = SPECIES_TAILLOW,
-        .lvl = 6,
-        .nature = NATURE_ADAMANT,
-        .iv = TRAINER_PARTY_IVS(10, 10, 10, 10, 10, 10),
-        .ev = TRAINER_PARTY_EVS(32, 32, 32, 32, 32, 32),
-        .moves = {MOVE_PECK, MOVE_GROWL, MOVE_FOCUS_ENERGY, MOVE_NONE},
     }
 };
 
@@ -60,14 +52,6 @@ static const struct TrainerMon sParty_BrenPetalburgWoods[] = {
         .iv = TRAINER_PARTY_IVS(10, 10, 10, 10, 10, 10),
         .ev = TRAINER_PARTY_EVS(32, 32, 32, 32, 32, 32),
         .moves = {MOVE_POUND, MOVE_GROWL, MOVE_BUBBLE, MOVE_WATER_SPORT},
-    },
-    {
-        .species = SPECIES_ZIGZAGOON,
-        .lvl = 8,
-        .nature = NATURE_ADAMANT,
-        .iv = TRAINER_PARTY_IVS(10, 10, 10, 10, 10, 10),
-        .ev = TRAINER_PARTY_EVS(32, 32, 32, 32, 32, 32),
-        .moves = {MOVE_TACKLE, MOVE_GROWL, MOVE_TAIL_WHIP, MOVE_NONE},
     },
     {
         .species = SPECIES_NINCADA,
@@ -95,13 +79,5 @@ static const struct TrainerMon sParty_SpencerPetalburgWoods[] = {
         .iv = TRAINER_PARTY_IVS(10, 10, 10, 10, 10, 10),
         .ev = TRAINER_PARTY_EVS(32, 32, 32, 32, 32, 32),
         .moves = {MOVE_WATER_GUN, MOVE_GROWL, MOVE_SUPERSONIC, MOVE_NONE},
-    },
-    {
-        .species = SPECIES_WURMPLE,
-        .lvl = 6,
-        .nature = NATURE_BRAVE,
-        .iv = TRAINER_PARTY_IVS(10, 10, 10, 10, 10, 10),
-        .ev = TRAINER_PARTY_EVS(32, 32, 32, 32, 32, 32),
-        .moves = {MOVE_TACKLE, MOVE_STRING_SHOT, MOVE_POISON_STING, MOVE_NONE},
     }
 };

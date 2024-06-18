@@ -665,7 +665,7 @@
 #define FLAG_HIDE_PETALBURG_RIVAL2              0x26E
 #define FLAG_HIDE_ROUTE_104_RIVAL1              0x26F
 #define FLAG_HIDE_PETALBURG_WOODS_RIVAL2        0x270
-#define FLAG_UNUSED_0x271  0x271 // Unused Flag
+#define FLAG_HIDE_ROUTE_116_RIVAL1              0x271
 #define FLAG_UNUSED_0x272  0x272 // Unused Flag
 #define FLAG_UNUSED_0x273  0x273 // Unused Flag
 #define FLAG_UNUSED_0x274  0x274 // Unused Flag

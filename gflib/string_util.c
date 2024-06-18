@@ -454,12 +454,24 @@ static const u8 *ExpandPlaceholder_KunChan(void)
         return gText_ExpandedPlaceholder_Chan;
 }
 
-static const u8 *ExpandPlaceholder_RivalName(void)
+static const u8 *ExpandPlaceholder_RivalName1(void)
 {
-    if (gSaveBlock2Ptr->playerGender == MALE)
-        return gText_ExpandedPlaceholder_May;
+    if (gSaveBlock2Ptr->friendChoice == KYLE)
+        return gText_BirchSpencer;
+    else if (gSaveBlock2Ptr->friendChoice == BREN)
+        return gText_BirchKyle;
     else
-        return gText_ExpandedPlaceholder_Brendan;
+        return gText_BirchBren;
+}
+
+static const u8 *ExpandPlaceholder_RivalName2(void)
+{
+    if (gSaveBlock2Ptr->friendChoice == KYLE)
+        return gText_BirchBren;
+    else if (gSaveBlock2Ptr->friendChoice == BREN)
+        return gText_BirchSpencer;
+    else
+        return gText_BirchKyle;
 }
 
 static const u8 *ExpandPlaceholder_Version(void)
@@ -509,7 +521,7 @@ const u8 *GetExpandedPlaceholder(u32 id)
         [PLACEHOLDER_ID_STRING_VAR_2] = ExpandPlaceholder_StringVar2,
         [PLACEHOLDER_ID_STRING_VAR_3] = ExpandPlaceholder_StringVar3,
         [PLACEHOLDER_ID_KUN]          = ExpandPlaceholder_KunChan,
-        [PLACEHOLDER_ID_RIVAL]        = ExpandPlaceholder_RivalName,
+        [PLACEHOLDER_ID_RIVAL]        = ExpandPlaceholder_RivalName1,
         [PLACEHOLDER_ID_VERSION]      = ExpandPlaceholder_Version,
         [PLACEHOLDER_ID_AQUA]         = ExpandPlaceholder_Aqua,
         [PLACEHOLDER_ID_MAGMA]        = ExpandPlaceholder_Magma,
@@ -517,6 +529,7 @@ const u8 *GetExpandedPlaceholder(u32 id)
         [PLACEHOLDER_ID_MAXIE]        = ExpandPlaceholder_Maxie,
         [PLACEHOLDER_ID_KYOGRE]       = ExpandPlaceholder_Kyogre,
         [PLACEHOLDER_ID_GROUDON]      = ExpandPlaceholder_Groudon,
+        [PLACEHOLDER_ID_RIVAL2]       = ExpandPlaceholder_RivalName2,
     };
 
     if (id >= ARRAY_COUNT(funcs))

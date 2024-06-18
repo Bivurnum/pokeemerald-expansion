@@ -1,6 +1,7 @@
 const LOCALID_BRINEY = 5
 const LOCALID_GRUNT = 6
 const LOCALID_PEEKO = 7
+const LOCALID_RIVAL1 = 11
 
 raw `
 .equ LOCALID_WANDAS_BF, 1
@@ -8,6 +9,7 @@ raw `
 .set LOCALID_GRUNT, 6
 .set LOCALID_PEEKO, 7
 .equ LOCALID_WANDA, 10
+.set LOCALID_RIVAL1, 11
 
 RusturfTunnel_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, RusturfTunnel_OnTransition
@@ -15,8 +17,8 @@ RusturfTunnel_MapScripts::
 	.byte 0
 
 RusturfTunnel_OnFrame:
-	map_script_2 VAR_RUSTURF_TUNNEL_STATE, 4, RusturfTunnel_EventScript_ClearTunnelScene
-	map_script_2 VAR_RUSTURF_TUNNEL_STATE, 5, RusturfTunnel_EventScript_ClearTunnelScene
+	map_script_2 VAR_RUSTURF_TUNNEL_STATE, 7, RusturfTunnel_EventScript_ClearTunnelScene
+	map_script_2 VAR_RUSTURF_TUNNEL_STATE, 8, RusturfTunnel_EventScript_ClearTunnelScene
 	.2byte 0
 
 RusturfTunnel_OnTransition:
@@ -323,6 +325,8 @@ script RusturfTunnel_EventScript_Grunt {
 	removeobject (LOCALID_GRUNT)
 	delay (50)
 	addobject (LOCALID_BRINEY)
+	addobject (LOCALID_RIVAL1)
+	applymovement (LOCALID_RIVAL1, RusturfTunnel_Movement_RivalApproachPeeko1)
 	applymovement (LOCALID_BRINEY, RusturfTunnel_Movement_BrineyApproachPeeko1)
 	waitmovement (0)
 	applymovement (OBJ_EVENT_ID_PLAYER, RusturfTunnel_Movement_PlayerMoveAsideForBriney)
@@ -330,7 +334,7 @@ script RusturfTunnel_EventScript_Grunt {
 	waitmovement (0)
 	msgbox (RusturfTunnel_Text_PeekoGladToSeeYouSafe, MSGBOX_DEFAULT)
 	applymovement (LOCALID_BRINEY, Common_Movement_FacePlayer)
-	waitmovement (0)
+	waitmovement (0) 
 	message (RusturfTunnel_Text_ThankYouLetsGoHomePeeko)
 	waitmessage
 	waitse
@@ -339,18 +343,67 @@ script RusturfTunnel_EventScript_Grunt {
 	waitmoncry
 	closemessage
 	applymovement (OBJ_EVENT_ID_PLAYER, RusturfTunnel_Movement_PlayerWatchBrineyExit)
+	applymovement (LOCALID_RIVAL1, RusturfTunnel_Movement_RivalWatchBrineyLeave)
 	applymovement (LOCALID_BRINEY, RusturfTunnel_Movement_BrineyExit)
 	applymovement (LOCALID_PEEKO, RusturfTunnel_Movement_PeekoExit)
 	waitmovement (0)
 	removeobject (LOCALID_BRINEY)
 	removeobject (LOCALID_PEEKO)
+	applymovement (LOCALID_RIVAL1, RusturfTunnel_Movement_RivalApproachPlayer)
+	waitmovement (0)
+	msgbox (RusturfTunnel_Text_LetMeHealYourTeam, MSGBOX_DEFAULT)
+	closemessage
+	call (Common_EventScript_OutOfCenterPartyHeal)
+	msgbox (RusturfTunnel_Text_LetsGetOutOfTunnel, MSGBOX_DEFAULT)
+	closemessage
+	special (SpawnCameraObject)
+	applymovement (OBJ_EVENT_ID_PLAYER, RusturfTunnel_Movement_LeaveTunnel)
+	applymovement (LOCALID_RIVAL1, RusturfTunnel_Movement_LeaveTunnel)
+	fadescreenspeed (FADE_TO_BLACK, 8)
+	waitstate
 	clearflag (FLAG_DEVON_GOODS_STOLEN)
 	setflag (FLAG_RECOVERED_DEVON_GOODS)
 	setvar (VAR_RUSTBORO_CITY_STATE, 4)
 	setvar (VAR_BRINEY_HOUSE_STATE, 1)
+	setvar (VAR_RUSTURF_TUNNEL_STATE, 4)
 	setflag (FLAG_HIDE_ROUTE_116_MR_BRINEY)
+	clearflag (FLAG_HIDE_ROUTE_116_RIVAL1)
+	warp (MAP_ROUTE116, 47, 9)
+	waitstate
 	release
 	end
+}
+
+movement RusturfTunnel_Movement_RivalApproachPeeko1 {
+	delay_16
+	walk_right * 4
+}
+
+movement RusturfTunnel_Movement_RivalWatchBrineyLeave {
+	delay_16
+	face_up
+	delay_16
+	face_left
+}
+
+movement RusturfTunnel_Movement_RivalApproachPlayer {
+	delay_16
+	walk_right * 3
+}
+
+movement RusturfTunnel_Movement_LeaveTunnel {
+	walk_left * 7
+}
+
+text RusturfTunnel_Text_LetMeHealYourTeam {
+	format ("Man, you sent that grunt packing! "
+		"I'll bet your POKéMON are tired after that battle, though.\N"
+		"Here. Let me heal your team.")
+}
+
+text RusturfTunnel_Text_LetsGetOutOfTunnel {
+	format ("Let's get out of this dark tunnel. "
+		"It echoes so much in here!")
 }
 
 raw `

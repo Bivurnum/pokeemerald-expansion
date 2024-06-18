@@ -7518,20 +7518,7 @@ static const struct TrainerMon sParty_Jonathan[] = {
     }
 };
 
-static const struct TrainerMon sParty_BrendanRustboroTorchic[] = {
-    {
-    .iv = TRAINER_PARTY_IVS(3, 3, 3, 3, 3, 3),
-    .lvl = 13,
-    .species = SPECIES_SLUGMA,
-    },
-    {
-    .iv = TRAINER_PARTY_IVS(6, 6, 6, 6, 6, 6),
-    .lvl = 15,
-    .species = SPECIES_MUDKIP,
-    }
-};
-
-static const struct TrainerMon sParty_MayRustboroMudkip[] = {
+static const struct TrainerMon sParty_SpencerRoute116[] = {
     {
     .iv = TRAINER_PARTY_IVS(3, 3, 3, 3, 3, 3),
     .lvl = 13,
@@ -7541,6 +7528,19 @@ static const struct TrainerMon sParty_MayRustboroMudkip[] = {
     .iv = TRAINER_PARTY_IVS(6, 6, 6, 6, 6, 6),
     .lvl = 15,
     .species = SPECIES_TREECKO,
+    }
+};
+
+static const struct TrainerMon sParty_BrenRoute116[] = {
+    {
+    .iv = TRAINER_PARTY_IVS(3, 3, 3, 3, 3, 3),
+    .lvl = 13,
+    .species = SPECIES_NINCADA,
+    },
+    {
+    .iv = TRAINER_PARTY_IVS(6, 6, 6, 6, 6, 6),
+    .lvl = 15,
+    .species = SPECIES_PIPLUP,
     }
 };
 
@@ -9665,7 +9665,7 @@ static const struct TrainerMon sParty_Cristin1[] = {
     }
 };
 
-static const struct TrainerMon sParty_MayRustboroTreecko[] = {
+static const struct TrainerMon sParty_KyleRoute116[] = {
     {
     .iv = TRAINER_PARTY_IVS(3, 3, 3, 3, 3, 3),
     .lvl = 13,
@@ -9674,7 +9674,7 @@ static const struct TrainerMon sParty_MayRustboroTreecko[] = {
     {
     .iv = TRAINER_PARTY_IVS(6, 6, 6, 6, 6, 6),
     .lvl = 15,
-    .species = SPECIES_TORCHIC,
+    .species = SPECIES_CHARMANDER,
     }
 };
 

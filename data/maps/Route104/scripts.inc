@@ -357,7 +357,7 @@ Route104_EventScript_RestoreMusic::
 # 191 "data/maps/Route104/scripts.pory"
 Route104_EventScript_BattleMayTreecko::
 # 192 "data/maps/Route104/scripts.pory"
-	trainerbattle_no_intro TRAINER_MAY_RUSTBORO_TREECKO, Route104_Text_MayDefeat
+	@trainerbattle_no_intro TRAINER_MAY_RUSTBORO_TREECKO, Route104_Text_MayDefeat
 # 193 "data/maps/Route104/scripts.pory"
 	setflag FLAG_DEFEATED_RIVAL_ROUTE_104
 # 194 "data/maps/Route104/scripts.pory"
@@ -381,7 +381,7 @@ Route104_EventScript_BattleMayTorchic::
 # 203 "data/maps/Route104/scripts.pory"
 Route104_EventScript_BattleMayMudkip::
 # 204 "data/maps/Route104/scripts.pory"
-	trainerbattle_no_intro TRAINER_MAY_RUSTBORO_MUDKIP, Route104_Text_MayDefeat
+	@trainerbattle_no_intro TRAINER_MAY_RUSTBORO_MUDKIP, Route104_Text_MayDefeat
 # 205 "data/maps/Route104/scripts.pory"
 	setflag FLAG_DEFEATED_RIVAL_ROUTE_104
 # 206 "data/maps/Route104/scripts.pory"
@@ -503,7 +503,7 @@ Route104_EventScript_BattleBrendanTreecko::
 # 264 "data/maps/Route104/scripts.pory"
 Route104_EventScript_BattleBrendanTorchic::
 # 265 "data/maps/Route104/scripts.pory"
-	trainerbattle_no_intro TRAINER_BRENDAN_RUSTBORO_TORCHIC, Route104_Text_BrendanDefeat
+	@trainerbattle_no_intro TRAINER_BRENDAN_RUSTBORO_TORCHIC, Route104_Text_BrendanDefeat
 # 266 "data/maps/Route104/scripts.pory"
 	setflag FLAG_DEFEATED_RIVAL_ROUTE_104
 # 267 "data/maps/Route104/scripts.pory"

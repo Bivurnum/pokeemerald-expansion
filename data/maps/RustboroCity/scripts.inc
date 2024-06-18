@@ -632,113 +632,113 @@ RustboroCity_EventScript_StolenGoodsScene::
 # 328 "data/maps/RustboroCity/scripts.pory"
 	clearflag FLAG_HIDE_ROUTE_116_MR_BRINEY
 # 329 "data/maps/RustboroCity/scripts.pory"
-	clearflag FLAG_HIDE_RUSTURF_TUNNEL_PEEKO
+	clearflag FLAG_HIDE_ROUTE_116_RIVAL1
 # 330 "data/maps/RustboroCity/scripts.pory"
-	clearflag FLAG_HIDE_RUSTURF_TUNNEL_AQUA_GRUNT
+	clearflag FLAG_HIDE_RUSTURF_TUNNEL_PEEKO
 # 331 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_HIDE_BRINEYS_HOUSE_MR_BRINEY
+	clearflag FLAG_HIDE_RUSTURF_TUNNEL_AQUA_GRUNT
 # 332 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_HIDE_BRINEYS_HOUSE_PEEKO
+	setflag FLAG_HIDE_BRINEYS_HOUSE_MR_BRINEY
 # 333 "data/maps/RustboroCity/scripts.pory"
-	releaseall
+	setflag FLAG_HIDE_BRINEYS_HOUSE_PEEKO
 # 334 "data/maps/RustboroCity/scripts.pory"
-	end
+	releaseall
 # 335 "data/maps/RustboroCity/scripts.pory"
-
+	end
 # 336 "data/maps/RustboroCity/scripts.pory"
-@ Unused
+
 # 337 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_ShadyCharacterTookOff::
+@ Unused
 # 338 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_ShadyCharacterTookOffTowardsTunnel, MSGBOX_DEFAULT
+RustboroCity_EventScript_ShadyCharacterTookOff::
 # 339 "data/maps/RustboroCity/scripts.pory"
-	return
+	msgbox RustboroCity_Text_ShadyCharacterTookOffTowardsTunnel, MSGBOX_DEFAULT
 # 340 "data/maps/RustboroCity/scripts.pory"
-
+	return
 # 341 "data/maps/RustboroCity/scripts.pory"
-@ Unused
+
 # 342 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_YouGotItThankYou::
-# 343 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_YouGotItThankYou, MSGBOX_DEFAULT
-# 344 "data/maps/RustboroCity/scripts.pory"
-	return
-# 345 "data/maps/RustboroCity/scripts.pory"
-
-# 346 "data/maps/RustboroCity/scripts.pory"
-@ Unknown, unused employee movements. Based on the differences in movement theyre for approaching an object (probably the player) in different positions
-# 347 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_EmployeeApproachUp::
-# 348 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachUp
-# 349 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 350 "data/maps/RustboroCity/scripts.pory"
-	return
-# 351 "data/maps/RustboroCity/scripts.pory"
-
-# 352 "data/maps/RustboroCity/scripts.pory"
-@ Unused, see above
-# 353 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_EmployeeApproachLeft::
-# 354 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachLeft
-# 355 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 356 "data/maps/RustboroCity/scripts.pory"
-	return
-# 357 "data/maps/RustboroCity/scripts.pory"
-
-# 358 "data/maps/RustboroCity/scripts.pory"
-@ Unused, see above
-# 359 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_EmployeeApproachRight::
-# 360 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachRight
-# 361 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 362 "data/maps/RustboroCity/scripts.pory"
-	return
-# 363 "data/maps/RustboroCity/scripts.pory"
-
-# 364 "data/maps/RustboroCity/scripts.pory"
-@ Unused, see above
-# 365 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_EmployeeApproachDown::
-# 366 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachDown
-# 367 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 368 "data/maps/RustboroCity/scripts.pory"
-	return
-# 369 "data/maps/RustboroCity/scripts.pory"
-
-# 370 "data/maps/RustboroCity/scripts.pory"
-@ Unused, similar movement to the above scripts
-# 371 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_EmployeeApproachPlayerFar::
-# 372 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachPlayerFar
-# 373 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 374 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 375 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 376 "data/maps/RustboroCity/scripts.pory"
-	return
-# 377 "data/maps/RustboroCity/scripts.pory"
-
-# 378 "data/maps/RustboroCity/scripts.pory"
 @ Unused
+# 343 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_YouGotItThankYou::
+# 344 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_YouGotItThankYou, MSGBOX_DEFAULT
+# 345 "data/maps/RustboroCity/scripts.pory"
+	return
+# 346 "data/maps/RustboroCity/scripts.pory"
+
+# 347 "data/maps/RustboroCity/scripts.pory"
+@ Unknown, unused employee movements. Based on the differences in movement theyre for approaching an object (probably the player) in different positions
+# 348 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_EmployeeApproachUp::
+# 349 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachUp
+# 350 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 351 "data/maps/RustboroCity/scripts.pory"
+	return
+# 352 "data/maps/RustboroCity/scripts.pory"
+
+# 353 "data/maps/RustboroCity/scripts.pory"
+@ Unused, see above
+# 354 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_EmployeeApproachLeft::
+# 355 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachLeft
+# 356 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 357 "data/maps/RustboroCity/scripts.pory"
+	return
+# 358 "data/maps/RustboroCity/scripts.pory"
+
+# 359 "data/maps/RustboroCity/scripts.pory"
+@ Unused, see above
+# 360 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_EmployeeApproachRight::
+# 361 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachRight
+# 362 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 363 "data/maps/RustboroCity/scripts.pory"
+	return
+# 364 "data/maps/RustboroCity/scripts.pory"
+
+# 365 "data/maps/RustboroCity/scripts.pory"
+@ Unused, see above
+# 366 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_EmployeeApproachDown::
+# 367 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachDown
+# 368 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 369 "data/maps/RustboroCity/scripts.pory"
+	return
+# 370 "data/maps/RustboroCity/scripts.pory"
+
+# 371 "data/maps/RustboroCity/scripts.pory"
+@ Unused, similar movement to the above scripts
+# 372 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_EmployeeApproachPlayerFar::
+# 373 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachPlayerFar
+# 374 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 375 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+# 376 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 377 "data/maps/RustboroCity/scripts.pory"
+	return
+# 378 "data/maps/RustboroCity/scripts.pory"
+
 # 379 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_GruntEscapeExtended:
+@ Unused
 # 380 "data/maps/RustboroCity/scripts.pory"
-	walk_faster_right
+RustboroCity_Movement_GruntEscapeExtended:
 # 381 "data/maps/RustboroCity/scripts.pory"
 	walk_faster_right
 # 382 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
+	walk_faster_right
 # 383 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_right
 # 384 "data/maps/RustboroCity/scripts.pory"
@@ -746,7 +746,7 @@ RustboroCity_Movement_GruntEscapeExtended:
 # 385 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_right
 # 386 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_up
+	walk_fast_right
 # 387 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_up
 # 388 "data/maps/RustboroCity/scripts.pory"
@@ -768,17 +768,17 @@ RustboroCity_Movement_GruntEscapeExtended:
 # 396 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_up
 # 397 "data/maps/RustboroCity/scripts.pory"
-	step_end
+	walk_fast_up
 # 398 "data/maps/RustboroCity/scripts.pory"
-
+	step_end
 # 399 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_GruntEscape:
+
 # 400 "data/maps/RustboroCity/scripts.pory"
-	walk_faster_right
+RustboroCity_Movement_GruntEscape:
 # 401 "data/maps/RustboroCity/scripts.pory"
 	walk_faster_right
 # 402 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
+	walk_faster_right
 # 403 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_right
 # 404 "data/maps/RustboroCity/scripts.pory"
@@ -788,7 +788,7 @@ RustboroCity_Movement_GruntEscape:
 # 406 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_right
 # 407 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_up
+	walk_fast_right
 # 408 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_up
 # 409 "data/maps/RustboroCity/scripts.pory"
@@ -806,13 +806,13 @@ RustboroCity_Movement_GruntEscape:
 # 415 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_up
 # 416 "data/maps/RustboroCity/scripts.pory"
-	step_end
+	walk_fast_up
 # 417 "data/maps/RustboroCity/scripts.pory"
-
+	step_end
 # 418 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_EmployeeChaseGrunt1:
+
 # 419 "data/maps/RustboroCity/scripts.pory"
-	walk_right
+RustboroCity_Movement_EmployeeChaseGrunt1:
 # 420 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 # 421 "data/maps/RustboroCity/scripts.pory"
@@ -824,15 +824,15 @@ RustboroCity_Movement_EmployeeChaseGrunt1:
 # 424 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 # 425 "data/maps/RustboroCity/scripts.pory"
-	walk_in_place_faster_up
+	walk_right
 # 426 "data/maps/RustboroCity/scripts.pory"
-	step_end
+	walk_in_place_faster_up
 # 427 "data/maps/RustboroCity/scripts.pory"
-
+	step_end
 # 428 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_EmployeeChaseGrunt2:
+
 # 429 "data/maps/RustboroCity/scripts.pory"
-	walk_up
+RustboroCity_Movement_EmployeeChaseGrunt2:
 # 430 "data/maps/RustboroCity/scripts.pory"
 	walk_up
 # 431 "data/maps/RustboroCity/scripts.pory"
@@ -846,1475 +846,1475 @@ RustboroCity_Movement_EmployeeChaseGrunt2:
 # 435 "data/maps/RustboroCity/scripts.pory"
 	walk_up
 # 436 "data/maps/RustboroCity/scripts.pory"
-	step_end
+	walk_up
 # 437 "data/maps/RustboroCity/scripts.pory"
-
+	step_end
 # 438 "data/maps/RustboroCity/scripts.pory"
-@ Functionally unused
+
 # 439 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_EmployeeApproachUp:
+@ Functionally unused
 # 440 "data/maps/RustboroCity/scripts.pory"
-	walk_down
+RustboroCity_Movement_EmployeeApproachUp:
 # 441 "data/maps/RustboroCity/scripts.pory"
-	walk_right
+	walk_down
 # 442 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 # 443 "data/maps/RustboroCity/scripts.pory"
-	step_end
+	walk_right
 # 444 "data/maps/RustboroCity/scripts.pory"
-
+	step_end
 # 445 "data/maps/RustboroCity/scripts.pory"
-@ Functionally unused
+
 # 446 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_EmployeeApproachLeft:
+@ Functionally unused
 # 447 "data/maps/RustboroCity/scripts.pory"
-	walk_down
+RustboroCity_Movement_EmployeeApproachLeft:
 # 448 "data/maps/RustboroCity/scripts.pory"
 	walk_down
 # 449 "data/maps/RustboroCity/scripts.pory"
-	walk_right
+	walk_down
 # 450 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 # 451 "data/maps/RustboroCity/scripts.pory"
-	step_end
+	walk_right
 # 452 "data/maps/RustboroCity/scripts.pory"
-
+	step_end
 # 453 "data/maps/RustboroCity/scripts.pory"
-@ Functionally unused
+
 # 454 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_EmployeeApproachRight:
+@ Functionally unused
 # 455 "data/maps/RustboroCity/scripts.pory"
-	walk_down
+RustboroCity_Movement_EmployeeApproachRight:
 # 456 "data/maps/RustboroCity/scripts.pory"
 	walk_down
 # 457 "data/maps/RustboroCity/scripts.pory"
-	walk_right
+	walk_down
 # 458 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 # 459 "data/maps/RustboroCity/scripts.pory"
-	step_end
+	walk_right
 # 460 "data/maps/RustboroCity/scripts.pory"
-
+	step_end
 # 461 "data/maps/RustboroCity/scripts.pory"
-@ Functionally unused
+
 # 462 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_EmployeeApproachDown:
+@ Functionally unused
 # 463 "data/maps/RustboroCity/scripts.pory"
-	walk_down
+RustboroCity_Movement_EmployeeApproachDown:
 # 464 "data/maps/RustboroCity/scripts.pory"
 	walk_down
 # 465 "data/maps/RustboroCity/scripts.pory"
 	walk_down
 # 466 "data/maps/RustboroCity/scripts.pory"
-	walk_right
+	walk_down
 # 467 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 # 468 "data/maps/RustboroCity/scripts.pory"
-	step_end
+	walk_right
 # 469 "data/maps/RustboroCity/scripts.pory"
-
+	step_end
 # 470 "data/maps/RustboroCity/scripts.pory"
-@ Functionally unused
+
 # 471 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_EmployeeApproachPlayerFar:
+@ Functionally unused
 # 472 "data/maps/RustboroCity/scripts.pory"
-	walk_down
+RustboroCity_Movement_EmployeeApproachPlayerFar:
 # 473 "data/maps/RustboroCity/scripts.pory"
 	walk_down
 # 474 "data/maps/RustboroCity/scripts.pory"
 	walk_down
 # 475 "data/maps/RustboroCity/scripts.pory"
-	walk_right
+	walk_down
 # 476 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 # 477 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 # 478 "data/maps/RustboroCity/scripts.pory"
-	walk_in_place_faster_down
+	walk_right
 # 479 "data/maps/RustboroCity/scripts.pory"
+	walk_in_place_faster_down
+# 480 "data/maps/RustboroCity/scripts.pory"
 	step_end
 
 RustboroCity_EventScript_DevonEmployee1::
-# 483 "data/maps/RustboroCity/scripts.pory"
-	lock
 # 484 "data/maps/RustboroCity/scripts.pory"
-	faceplayer
+	lock
 # 485 "data/maps/RustboroCity/scripts.pory"
-	goto_if_set FLAG_RECOVERED_DEVON_GOODS, RustboroCity_EventScript_ReturnGoodsSpokeToEmployee
+	faceplayer
 # 486 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_ShadyCharacterTookOffTowardsTunnel, MSGBOX_DEFAULT
+	goto_if_set FLAG_RECOVERED_DEVON_GOODS, RustboroCity_EventScript_ReturnGoodsSpokeToEmployee
 # 487 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_ShadyCharacterTookOffTowardsTunnel, MSGBOX_DEFAULT
+# 488 "data/maps/RustboroCity/scripts.pory"
 	release
 	end
 
 
 RustboroCity_EventScript_ReturnGoodsSpokeToEmployee::
-# 492 "data/maps/RustboroCity/scripts.pory"
-	waitse
 # 493 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_TEMP_1, 4
+	waitse
 # 494 "data/maps/RustboroCity/scripts.pory"
+	setvar VAR_TEMP_1, 4
+# 495 "data/maps/RustboroCity/scripts.pory"
 	goto RustboroCity_EventScript_ReturnGoods
 	end
 
 
 RustboroCity_EventScript_HelpGetGoodsTrigger0::
-# 499 "data/maps/RustboroCity/scripts.pory"
-	lockall
 # 500 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_TEMP_1, 0
+	lockall
 # 501 "data/maps/RustboroCity/scripts.pory"
+	setvar VAR_TEMP_1, 0
+# 502 "data/maps/RustboroCity/scripts.pory"
 	goto RustboroCity_EventScript_EmployeeAskToGetGoods
 	end
 
 
 RustboroCity_EventScript_HelpGetGoodsTrigger1::
-# 506 "data/maps/RustboroCity/scripts.pory"
-	lockall
 # 507 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_TEMP_1, 1
+	lockall
 # 508 "data/maps/RustboroCity/scripts.pory"
+	setvar VAR_TEMP_1, 1
+# 509 "data/maps/RustboroCity/scripts.pory"
 	goto RustboroCity_EventScript_EmployeeAskToGetGoods
 	end
 
 
 RustboroCity_EventScript_HelpGetGoodsTrigger2::
-# 513 "data/maps/RustboroCity/scripts.pory"
-	lockall
 # 514 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_TEMP_1, 2
+	lockall
 # 515 "data/maps/RustboroCity/scripts.pory"
+	setvar VAR_TEMP_1, 2
+# 516 "data/maps/RustboroCity/scripts.pory"
 	goto RustboroCity_EventScript_EmployeeAskToGetGoods
 	end
 
 
 RustboroCity_EventScript_HelpGetGoodsTrigger3::
-# 520 "data/maps/RustboroCity/scripts.pory"
-	lockall
 # 521 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_TEMP_1, 3
+	lockall
 # 522 "data/maps/RustboroCity/scripts.pory"
+	setvar VAR_TEMP_1, 3
+# 523 "data/maps/RustboroCity/scripts.pory"
 	goto RustboroCity_EventScript_EmployeeAskToGetGoods
 	end
 
 
 RustboroCity_EventScript_EmployeeAskToGetGoods::
-# 527 "data/maps/RustboroCity/scripts.pory"
-	clearflag FLAG_HIDE_RUSTBORO_RIVAL1
 # 528 "data/maps/RustboroCity/scripts.pory"
-	addobject LOCALID_RIVAL1
+	clearflag FLAG_HIDE_RUSTBORO_RIVAL1
 # 529 "data/maps/RustboroCity/scripts.pory"
-	call_if_eq VAR_TEMP_1, 0, RustboroCity_EventScript_EmployeeFacePlayerUp1
+	addobject LOCALID_RIVAL1
 # 530 "data/maps/RustboroCity/scripts.pory"
-	call_if_eq VAR_TEMP_1, 1, RustboroCity_EventScript_EmployeeFacePlayerLeft1
+	call_if_eq VAR_TEMP_1, 0, RustboroCity_EventScript_EmployeeFacePlayerUp1
 # 531 "data/maps/RustboroCity/scripts.pory"
-	call_if_eq VAR_TEMP_1, 2, RustboroCity_EventScript_EmployeeFacePlayerDown1
+	call_if_eq VAR_TEMP_1, 1, RustboroCity_EventScript_EmployeeFacePlayerLeft1
 # 532 "data/maps/RustboroCity/scripts.pory"
-	call_if_eq VAR_TEMP_1, 3, RustboroCity_EventScript_EmployeeApproachPlayerDown1
+	call_if_eq VAR_TEMP_1, 2, RustboroCity_EventScript_EmployeeFacePlayerDown1
 # 533 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_INTERACTED_WITH_DEVON_EMPLOYEE_GOODS_STOLEN
+	call_if_eq VAR_TEMP_1, 3, RustboroCity_EventScript_EmployeeApproachPlayerDown1
 # 534 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_RUSTBORO_CITY_STATE, 3
+	setflag FLAG_INTERACTED_WITH_DEVON_EMPLOYEE_GOODS_STOLEN
 # 535 "data/maps/RustboroCity/scripts.pory"
-	copyobjectxytoperm LOCALID_DEVON_EMPLOYEE
+	setvar VAR_RUSTBORO_CITY_STATE, 3
 # 536 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_HelpMeIWasRobbed, MSGBOX_DEFAULT
+	copyobjectxytoperm LOCALID_DEVON_EMPLOYEE
 # 537 "data/maps/RustboroCity/scripts.pory"
-	call RustboroCity_EventScript_Rival1AfterAskToGetGoods
+	msgbox RustboroCity_Text_HelpMeIWasRobbed, MSGBOX_DEFAULT
 # 538 "data/maps/RustboroCity/scripts.pory"
+	call RustboroCity_EventScript_Rival1AfterAskToGetGoods
+# 539 "data/maps/RustboroCity/scripts.pory"
 	releaseall
 	end
 
 
 RustboroCity_EventScript_Rival1AfterAskToGetGoods::
-# 543 "data/maps/RustboroCity/scripts.pory"
-	closemessage
 # 544 "data/maps/RustboroCity/scripts.pory"
-	delay 30
+	closemessage
 # 545 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
+	delay 30
 # 546 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, RustboroCity_Movement_NoticeRival1
+	playse SE_PIN
 # 547 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, RustboroCity_Movement_NoticeRival1
 # 548 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_YoPlayer, MSGBOX_DEFAULT
+	waitmovement 0
 # 549 "data/maps/RustboroCity/scripts.pory"
-	closemessage
+	msgbox RustboroCity_Text_YoPlayer, MSGBOX_DEFAULT
 # 550 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachPlayer
+	closemessage
 # 551 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachPlayer
 # 552 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_WhatsGoingOn, MSGBOX_DEFAULT
-# 553 "data/maps/RustboroCity/scripts.pory"
-	closemessage
-# 554 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, RustboroCity_Movement_PlayerExplain
-# 555 "data/maps/RustboroCity/scripts.pory"
 	waitmovement 0
-# 556 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_GuyGotMugged, MSGBOX_DEFAULT
-# 557 "data/maps/RustboroCity/scripts.pory"
+# 553 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_WhatsGoingOn, MSGBOX_DEFAULT
+# 554 "data/maps/RustboroCity/scripts.pory"
 	closemessage
+# 555 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, RustboroCity_Movement_PlayerExplain
+# 556 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 557 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_GuyGotMugged, MSGBOX_DEFAULT
 # 558 "data/maps/RustboroCity/scripts.pory"
-	switch VAR_TEMP_1
+	closemessage
 # 559 "data/maps/RustboroCity/scripts.pory"
+	switch VAR_TEMP_1
+# 560 "data/maps/RustboroCity/scripts.pory"
 	case 0, RustboroCity_EventScript_Rival1AfterAskToGetGoods_3
-# 563 "data/maps/RustboroCity/scripts.pory"
+# 564 "data/maps/RustboroCity/scripts.pory"
 	case 1, RustboroCity_EventScript_Rival1AfterAskToGetGoods_4
-# 567 "data/maps/RustboroCity/scripts.pory"
-	case 2, RustboroCity_EventScript_Rival1AfterAskToGetGoods_5
 # 568 "data/maps/RustboroCity/scripts.pory"
+	case 2, RustboroCity_EventScript_Rival1AfterAskToGetGoods_5
+# 569 "data/maps/RustboroCity/scripts.pory"
 	case 3, RustboroCity_EventScript_Rival1AfterAskToGetGoods_5
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_1:
-# 573 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
 # 574 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_DontWorrySir, MSGBOX_DEFAULT
+	waitmovement 0
 # 575 "data/maps/RustboroCity/scripts.pory"
-	closemessage
+	msgbox RustboroCity_Text_DontWorrySir, MSGBOX_DEFAULT
 # 576 "data/maps/RustboroCity/scripts.pory"
+	closemessage
+# 577 "data/maps/RustboroCity/scripts.pory"
 	compare VAR_TEMP_1, 1
 	goto_if_eq RustboroCity_EventScript_Rival1AfterAskToGetGoods_7
-# 580 "data/maps/RustboroCity/scripts.pory"
+# 581 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_SpeakLeft
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_6:
-# 582 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
 # 583 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_ThankBothOfYou, MSGBOX_DEFAULT
+	waitmovement 0
 # 584 "data/maps/RustboroCity/scripts.pory"
-	closemessage
+	msgbox RustboroCity_Text_ThankBothOfYou, MSGBOX_DEFAULT
 # 585 "data/maps/RustboroCity/scripts.pory"
-	switch VAR_TEMP_1
+	closemessage
 # 586 "data/maps/RustboroCity/scripts.pory"
+	switch VAR_TEMP_1
+# 587 "data/maps/RustboroCity/scripts.pory"
 	case 0, RustboroCity_EventScript_Rival1AfterAskToGetGoods_12
-# 589 "data/maps/RustboroCity/scripts.pory"
+# 590 "data/maps/RustboroCity/scripts.pory"
 	case 1, RustboroCity_EventScript_Rival1AfterAskToGetGoods_13
-# 592 "data/maps/RustboroCity/scripts.pory"
-	case 2, RustboroCity_EventScript_Rival1AfterAskToGetGoods_14
 # 593 "data/maps/RustboroCity/scripts.pory"
+	case 2, RustboroCity_EventScript_Rival1AfterAskToGetGoods_14
+# 594 "data/maps/RustboroCity/scripts.pory"
 	case 3, RustboroCity_EventScript_Rival1AfterAskToGetGoods_14
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_10:
-# 597 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
 # 598 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_LetsGoCatchMugger, MSGBOX_DEFAULT
+	waitmovement 0
 # 599 "data/maps/RustboroCity/scripts.pory"
-	closemessage
+	msgbox RustboroCity_Text_LetsGoCatchMugger, MSGBOX_DEFAULT
 # 600 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_FaceRight
+	closemessage
 # 601 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_FaceRight
 # 602 "data/maps/RustboroCity/scripts.pory"
-	switch VAR_TEMP_1
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight
 # 603 "data/maps/RustboroCity/scripts.pory"
+	switch VAR_TEMP_1
+# 604 "data/maps/RustboroCity/scripts.pory"
 	case 0, RustboroCity_EventScript_Rival1AfterAskToGetGoods_17
-# 605 "data/maps/RustboroCity/scripts.pory"
+# 606 "data/maps/RustboroCity/scripts.pory"
 	case 1, RustboroCity_EventScript_Rival1AfterAskToGetGoods_18
-# 607 "data/maps/RustboroCity/scripts.pory"
+# 608 "data/maps/RustboroCity/scripts.pory"
 	case 2, RustboroCity_EventScript_Rival1AfterAskToGetGoods_19
-# 609 "data/maps/RustboroCity/scripts.pory"
+# 610 "data/maps/RustboroCity/scripts.pory"
 	case 3, RustboroCity_EventScript_Rival1AfterAskToGetGoods_20
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_15:
-# 612 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
 # 613 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_HIDE_RUSTBORO_RIVAL1
+	waitmovement 0
 # 614 "data/maps/RustboroCity/scripts.pory"
+	setflag FLAG_HIDE_RUSTBORO_RIVAL1
+# 615 "data/maps/RustboroCity/scripts.pory"
 	removeobject LOCALID_RIVAL1
 	return
 
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_3:
-# 560 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
 # 561 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_FaceLeft
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
 # 562 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_FaceLeft
+# 563 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachDevonEmployee0
 	goto RustboroCity_EventScript_Rival1AfterAskToGetGoods_1
 
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_4:
-# 564 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight
 # 565 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_FaceDown
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight
 # 566 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_FaceDown
+# 567 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachDevonEmployee1
 	goto RustboroCity_EventScript_Rival1AfterAskToGetGoods_1
 
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_5:
-# 569 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
 # 570 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_FaceLeft
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
 # 571 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_FaceLeft
+# 572 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachDevonEmployee2and3
 	goto RustboroCity_EventScript_Rival1AfterAskToGetGoods_1
 
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_7:
-# 577 "data/maps/RustboroCity/scripts.pory"
+# 578 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_SpeakDown
 	goto RustboroCity_EventScript_Rival1AfterAskToGetGoods_6
 
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_12:
-# 587 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
 # 588 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
+# 589 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachDevonEmployee2and3
 	goto RustboroCity_EventScript_Rival1AfterAskToGetGoods_10
 
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_13:
-# 590 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
 # 591 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
+# 592 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_RIVAL1, RustboroCity_Movement_Rival1ReturnToPlayer1
 	goto RustboroCity_EventScript_Rival1AfterAskToGetGoods_10
 
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_14:
-# 594 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
 # 595 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
+# 596 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_RIVAL1, RustboroCity_Movement_Rival1ApproachDevonEmployee0
 	goto RustboroCity_EventScript_Rival1AfterAskToGetGoods_10
 
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_17:
-# 604 "data/maps/RustboroCity/scripts.pory"
+# 605 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_RIVAL1, RustboroCity_Movement_Rival1ChaseMugger0
 	goto RustboroCity_EventScript_Rival1AfterAskToGetGoods_15
 
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_18:
-# 606 "data/maps/RustboroCity/scripts.pory"
+# 607 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_RIVAL1, RustboroCity_Movement_Rival1ChaseMugger1
 	goto RustboroCity_EventScript_Rival1AfterAskToGetGoods_15
 
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_19:
-# 608 "data/maps/RustboroCity/scripts.pory"
+# 609 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_RIVAL1, RustboroCity_Movement_Rival1ChaseMugger2
 	goto RustboroCity_EventScript_Rival1AfterAskToGetGoods_15
 
 RustboroCity_EventScript_Rival1AfterAskToGetGoods_20:
-# 610 "data/maps/RustboroCity/scripts.pory"
+# 611 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_RIVAL1, RustboroCity_Movement_Rival1ChaseMugger3
 	goto RustboroCity_EventScript_Rival1AfterAskToGetGoods_15
 
 
 RustboroCity_EventScript_EmployeeFacePlayerUp1::
-# 620 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterUp
 # 621 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterUp
 # 622 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
+	waitmovement 0
 # 623 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
+	playse SE_PIN
 # 624 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
 # 625 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
+	waitmovement 0
 # 626 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
 # 627 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown
-# 628 "data/maps/RustboroCity/scripts.pory"
 	waitmovement 0
+# 628 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown
 # 629 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 630 "data/maps/RustboroCity/scripts.pory"
 	setobjectxy LOCALID_RIVAL1, 22, 9
 	return
 
 
 RustboroCity_EventScript_EmployeeFacePlayerLeft1::
-# 634 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterLeft
 # 635 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterLeft
 # 636 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
+	waitmovement 0
 # 637 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
+	playse SE_PIN
 # 638 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
 # 639 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
-# 640 "data/maps/RustboroCity/scripts.pory"
 	waitmovement 0
+# 640 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
 # 641 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight
+	waitmovement 0
 # 642 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight
+# 643 "data/maps/RustboroCity/scripts.pory"
 	waitmovement 0
 	return
 
 
 RustboroCity_EventScript_EmployeeFacePlayerDown1::
-# 647 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterDown
 # 648 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterDown
 # 649 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
+	waitmovement 0
 # 650 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
+	playse SE_PIN
 # 651 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
 # 652 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
+	waitmovement 0
 # 653 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
 # 654 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 655 "data/maps/RustboroCity/scripts.pory"
 	waitmovement 0
+# 655 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
 # 656 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 657 "data/maps/RustboroCity/scripts.pory"
 	setobjectxy LOCALID_RIVAL1, 22, 11
 	return
 
 
 RustboroCity_EventScript_EmployeeApproachPlayerDown1::
-# 661 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterDown
 # 662 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterDown
 # 663 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
+	waitmovement 0
 # 664 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
+	playse SE_PIN
 # 665 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
 # 666 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
+	waitmovement 0
 # 667 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
 # 668 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachPlayerDown
+	waitmovement 0
 # 669 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachPlayerDown
 # 670 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 671 "data/maps/RustboroCity/scripts.pory"
 	waitmovement 0
+# 671 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
 # 672 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 673 "data/maps/RustboroCity/scripts.pory"
 	setobjectxy LOCALID_RIVAL1, 22, 12
 	return
 
 
-# 676 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_EmployeeApproachPlayerDown:
 # 677 "data/maps/RustboroCity/scripts.pory"
-	walk_down
+RustboroCity_Movement_EmployeeApproachPlayerDown:
 # 678 "data/maps/RustboroCity/scripts.pory"
+	walk_down
+# 679 "data/maps/RustboroCity/scripts.pory"
 	step_end
 
-# 681 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_NoticeRival1:
 # 682 "data/maps/RustboroCity/scripts.pory"
-	emote_exclamation_mark
+RustboroCity_Movement_NoticeRival1:
 # 683 "data/maps/RustboroCity/scripts.pory"
+	emote_exclamation_mark
+# 684 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_faster_left
 	step_end
 
-# 686 "data/maps/RustboroCity/scripts.pory"
+# 687 "data/maps/RustboroCity/scripts.pory"
 RustboroCity_Movement_Rival1ApproachPlayer:
-# 687 "data/maps/RustboroCity/scripts.pory"
+# 688 "data/maps/RustboroCity/scripts.pory"
 	walk_right
-# 687 "data/maps/RustboroCity/scripts.pory"
+# 688 "data/maps/RustboroCity/scripts.pory"
 	walk_right
-# 687 "data/maps/RustboroCity/scripts.pory"
+# 688 "data/maps/RustboroCity/scripts.pory"
 	walk_right
-# 687 "data/maps/RustboroCity/scripts.pory"
+# 688 "data/maps/RustboroCity/scripts.pory"
 	walk_right
-# 687 "data/maps/RustboroCity/scripts.pory"
+# 688 "data/maps/RustboroCity/scripts.pory"
 	walk_right
-# 687 "data/maps/RustboroCity/scripts.pory"
+# 688 "data/maps/RustboroCity/scripts.pory"
 	walk_right
-# 687 "data/maps/RustboroCity/scripts.pory"
+# 688 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 	step_end
 
-# 690 "data/maps/RustboroCity/scripts.pory"
+# 691 "data/maps/RustboroCity/scripts.pory"
 RustboroCity_Movement_PlayerExplain:
-# 691 "data/maps/RustboroCity/scripts.pory"
-	walk_in_place_left
-# 691 "data/maps/RustboroCity/scripts.pory"
-	walk_in_place_left
-# 691 "data/maps/RustboroCity/scripts.pory"
+# 692 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_left
 # 692 "data/maps/RustboroCity/scripts.pory"
+	walk_in_place_left
+# 692 "data/maps/RustboroCity/scripts.pory"
+	walk_in_place_left
+# 693 "data/maps/RustboroCity/scripts.pory"
 	delay_16
 	step_end
 
-# 695 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_Rival1ApproachDevonEmployee0:
 # 696 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Movement_Rival1ApproachDevonEmployee0:
+# 697 "data/maps/RustboroCity/scripts.pory"
 	walk_down
-# 697 "data/maps/RustboroCity/scripts.pory"
+# 698 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_right
-# 697 "data/maps/RustboroCity/scripts.pory"
+# 698 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_right
 	step_end
 
-# 700 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_Rival1ApproachDevonEmployee1:
 # 701 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Movement_Rival1ApproachDevonEmployee1:
+# 702 "data/maps/RustboroCity/scripts.pory"
 	walk_down
-# 702 "data/maps/RustboroCity/scripts.pory"
-	walk_right
-# 702 "data/maps/RustboroCity/scripts.pory"
+# 703 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 # 703 "data/maps/RustboroCity/scripts.pory"
+	walk_right
+# 704 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_up
-# 703 "data/maps/RustboroCity/scripts.pory"
+# 704 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_up
 	step_end
 
-# 706 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_Rival1ApproachDevonEmployee2and3:
 # 707 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Movement_Rival1ApproachDevonEmployee2and3:
+# 708 "data/maps/RustboroCity/scripts.pory"
 	walk_up
-# 708 "data/maps/RustboroCity/scripts.pory"
+# 709 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_right
-# 708 "data/maps/RustboroCity/scripts.pory"
+# 709 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_right
 	step_end
 
-# 711 "data/maps/RustboroCity/scripts.pory"
+# 712 "data/maps/RustboroCity/scripts.pory"
 RustboroCity_Movement_SpeakUp:
-# 712 "data/maps/RustboroCity/scripts.pory"
+# 713 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_up
-# 712 "data/maps/RustboroCity/scripts.pory"
+# 713 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_up
 	step_end
 
-# 715 "data/maps/RustboroCity/scripts.pory"
+# 716 "data/maps/RustboroCity/scripts.pory"
 RustboroCity_Movement_SpeakDown:
-# 716 "data/maps/RustboroCity/scripts.pory"
+# 717 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_down
-# 716 "data/maps/RustboroCity/scripts.pory"
+# 717 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_down
 	step_end
 
-# 719 "data/maps/RustboroCity/scripts.pory"
+# 720 "data/maps/RustboroCity/scripts.pory"
 RustboroCity_Movement_SpeakRight:
-# 720 "data/maps/RustboroCity/scripts.pory"
+# 721 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_right
-# 720 "data/maps/RustboroCity/scripts.pory"
+# 721 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_right
 	step_end
 
-# 723 "data/maps/RustboroCity/scripts.pory"
+# 724 "data/maps/RustboroCity/scripts.pory"
 RustboroCity_Movement_SpeakLeft:
-# 724 "data/maps/RustboroCity/scripts.pory"
+# 725 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_left
-# 724 "data/maps/RustboroCity/scripts.pory"
+# 725 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_left
 	step_end
 
-# 727 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_Rival1ReturnToPlayer1:
 # 728 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Movement_Rival1ReturnToPlayer1:
+# 729 "data/maps/RustboroCity/scripts.pory"
 	walk_left
-# 729 "data/maps/RustboroCity/scripts.pory"
+# 730 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_up
-# 729 "data/maps/RustboroCity/scripts.pory"
+# 730 "data/maps/RustboroCity/scripts.pory"
 	walk_in_place_up
 	step_end
 
-# 732 "data/maps/RustboroCity/scripts.pory"
+# 733 "data/maps/RustboroCity/scripts.pory"
 RustboroCity_Movement_Rival1ChaseMugger0:
-# 733 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_down
-# 733 "data/maps/RustboroCity/scripts.pory"
+# 734 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_down
 # 734 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 734 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 734 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 734 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 734 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 734 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 734 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 734 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 734 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_down
+# 735 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_right
 # 735 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 735 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 735 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 735 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 735 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 735 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 735 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 735 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 736 "data/maps/RustboroCity/scripts.pory"
 	set_invisible
 	step_end
 
-# 738 "data/maps/RustboroCity/scripts.pory"
+# 739 "data/maps/RustboroCity/scripts.pory"
 RustboroCity_Movement_Rival1ChaseMugger1:
-# 739 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 739 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 739 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 739 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 739 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 739 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 739 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 739 "data/maps/RustboroCity/scripts.pory"
+# 740 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_right
 # 740 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 740 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 740 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 740 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 740 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 740 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 740 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 741 "data/maps/RustboroCity/scripts.pory"
 	set_invisible
 	step_end
 
-# 743 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_Rival1ChaseMugger2:
 # 744 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Movement_Rival1ChaseMugger2:
+# 745 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_down
-# 745 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 745 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 745 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 745 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 745 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 745 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 745 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 745 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 745 "data/maps/RustboroCity/scripts.pory"
+# 746 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_right
 # 746 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 746 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 746 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 746 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 746 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 746 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 746 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 746 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 747 "data/maps/RustboroCity/scripts.pory"
 	set_invisible
 	step_end
 
-# 749 "data/maps/RustboroCity/scripts.pory"
+# 750 "data/maps/RustboroCity/scripts.pory"
 RustboroCity_Movement_Rival1ChaseMugger3:
-# 750 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_up
-# 750 "data/maps/RustboroCity/scripts.pory"
+# 751 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_up
 # 751 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 751 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 751 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 751 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 751 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 751 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 751 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 751 "data/maps/RustboroCity/scripts.pory"
-	walk_fast_right
-# 751 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_up
+# 752 "data/maps/RustboroCity/scripts.pory"
 	walk_fast_right
 # 752 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 752 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 752 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 752 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 752 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 752 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 752 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 752 "data/maps/RustboroCity/scripts.pory"
+	walk_fast_right
+# 753 "data/maps/RustboroCity/scripts.pory"
 	set_invisible
 	step_end
 
-# 782 "data/maps/RustboroCity/scripts.pory"
-
 # 783 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_ReturnGoodsTrigger0::
+
 # 784 "data/maps/RustboroCity/scripts.pory"
-	lockall
+RustboroCity_EventScript_ReturnGoodsTrigger0::
 # 785 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_TEMP_1, 0
+	lockall
 # 786 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_ReturnGoods
+	setvar VAR_TEMP_1, 0
 # 787 "data/maps/RustboroCity/scripts.pory"
-	end
+	goto RustboroCity_EventScript_ReturnGoods
 # 788 "data/maps/RustboroCity/scripts.pory"
-
+	end
 # 789 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_ReturnGoodsTrigger1::
+
 # 790 "data/maps/RustboroCity/scripts.pory"
-	lockall
+RustboroCity_EventScript_ReturnGoodsTrigger1::
 # 791 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_TEMP_1, 1
+	lockall
 # 792 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_ReturnGoods
+	setvar VAR_TEMP_1, 1
 # 793 "data/maps/RustboroCity/scripts.pory"
-	end
+	goto RustboroCity_EventScript_ReturnGoods
 # 794 "data/maps/RustboroCity/scripts.pory"
-
+	end
 # 795 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_ReturnGoodsTrigger2::
+
 # 796 "data/maps/RustboroCity/scripts.pory"
-	lockall
+RustboroCity_EventScript_ReturnGoodsTrigger2::
 # 797 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_TEMP_1, 2
+	lockall
 # 798 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_ReturnGoods
+	setvar VAR_TEMP_1, 2
 # 799 "data/maps/RustboroCity/scripts.pory"
-	end
-# 800 "data/maps/RustboroCity/scripts.pory"
-
-# 801 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_ReturnGoodsTrigger3::
-# 802 "data/maps/RustboroCity/scripts.pory"
-	lockall
-# 803 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_TEMP_1, 3
-# 804 "data/maps/RustboroCity/scripts.pory"
 	goto RustboroCity_EventScript_ReturnGoods
+# 800 "data/maps/RustboroCity/scripts.pory"
+	end
+# 801 "data/maps/RustboroCity/scripts.pory"
+
+# 802 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_ReturnGoodsTrigger3::
+# 803 "data/maps/RustboroCity/scripts.pory"
+	lockall
+# 804 "data/maps/RustboroCity/scripts.pory"
+	setvar VAR_TEMP_1, 3
 # 805 "data/maps/RustboroCity/scripts.pory"
-	end
+	goto RustboroCity_EventScript_ReturnGoods
 # 806 "data/maps/RustboroCity/scripts.pory"
-
+	end
 # 807 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_ReturnGoods::
+
 # 808 "data/maps/RustboroCity/scripts.pory"
-	call_if_eq VAR_TEMP_1, 0, RustboroCity_EventScript_EmployeeFacePlayerUp2
+RustboroCity_EventScript_ReturnGoods::
 # 809 "data/maps/RustboroCity/scripts.pory"
-	call_if_eq VAR_TEMP_1, 1, RustboroCity_EventScript_EmployeeFacePlayerLeft2
+	call_if_eq VAR_TEMP_1, 0, RustboroCity_EventScript_EmployeeFacePlayerUp2
 # 810 "data/maps/RustboroCity/scripts.pory"
-	call_if_eq VAR_TEMP_1, 2, RustboroCity_EventScript_EmployeeFacePlayerDown2
+	call_if_eq VAR_TEMP_1, 1, RustboroCity_EventScript_EmployeeFacePlayerLeft2
 # 811 "data/maps/RustboroCity/scripts.pory"
-	call_if_eq VAR_TEMP_1, 3, RustboroCity_EventScript_EmployeeApproachPlayerDown2
+	call_if_eq VAR_TEMP_1, 2, RustboroCity_EventScript_EmployeeFacePlayerDown2
 # 812 "data/maps/RustboroCity/scripts.pory"
-	call_if_eq VAR_TEMP_1, 4, RustboroCity_EventScript_EmployeeFacePlayerRight
+	call_if_eq VAR_TEMP_1, 3, RustboroCity_EventScript_EmployeeApproachPlayerDown2
 # 813 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_YouGotItThankYou, MSGBOX_DEFAULT
+	call_if_eq VAR_TEMP_1, 4, RustboroCity_EventScript_EmployeeFacePlayerRight
 # 814 "data/maps/RustboroCity/scripts.pory"
-	giveitem ITEM_GREAT_BALL
+	msgbox RustboroCity_Text_YouGotItThankYou, MSGBOX_DEFAULT
 # 815 "data/maps/RustboroCity/scripts.pory"
-	call_if_eq VAR_RESULT, FALSE, RustboroCity_EventScript_BagFull
+	giveitem ITEM_GREAT_BALL
 # 816 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_PleaseComeWithMe, MSGBOX_DEFAULT
+	call_if_eq VAR_RESULT, FALSE, RustboroCity_EventScript_BagFull
 # 817 "data/maps/RustboroCity/scripts.pory"
-	closemessage
+	msgbox RustboroCity_Text_PleaseComeWithMe, MSGBOX_DEFAULT
 # 818 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_RETURNED_DEVON_GOODS
+	closemessage
 # 819 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_HIDE_RUSTBORO_CITY_DEVON_EMPLOYEE_1
+	setflag FLAG_RETURNED_DEVON_GOODS
 # 820 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_RUSTBORO_CITY_STATE, 5
+	setflag FLAG_HIDE_RUSTBORO_CITY_DEVON_EMPLOYEE_1
 # 821 "data/maps/RustboroCity/scripts.pory"
-	delay 30
+	setvar VAR_RUSTBORO_CITY_STATE, 5
 # 822 "data/maps/RustboroCity/scripts.pory"
-	warp MAP_RUSTBORO_CITY_DEVON_CORP_3F, 2, 2
+	delay 30
 # 823 "data/maps/RustboroCity/scripts.pory"
-	waitstate
+	warp MAP_RUSTBORO_CITY_DEVON_CORP_3F, 2, 2
 # 824 "data/maps/RustboroCity/scripts.pory"
-	releaseall
+	waitstate
 # 825 "data/maps/RustboroCity/scripts.pory"
-	end
+	releaseall
 # 826 "data/maps/RustboroCity/scripts.pory"
-
+	end
 # 827 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_BagFull::
+
 # 828 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_YoureLoadedWithItems, MSGBOX_DEFAULT
+RustboroCity_EventScript_BagFull::
 # 829 "data/maps/RustboroCity/scripts.pory"
-	return
+	msgbox RustboroCity_Text_YoureLoadedWithItems, MSGBOX_DEFAULT
 # 830 "data/maps/RustboroCity/scripts.pory"
-
+	return
 # 831 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_EmployeeFacePlayerUp2::
+
 # 832 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterUp
+RustboroCity_EventScript_EmployeeFacePlayerUp2::
 # 833 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterUp
 # 834 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
+	waitmovement 0
 # 835 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
+	playse SE_PIN
 # 836 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
 # 837 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
+	waitmovement 0
 # 838 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
 # 839 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown
+	waitmovement 0
 # 840 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown
 # 841 "data/maps/RustboroCity/scripts.pory"
-	return
+	waitmovement 0
 # 842 "data/maps/RustboroCity/scripts.pory"
-
+	return
 # 843 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_EmployeeFacePlayerLeft2::
+
 # 844 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterRight
+RustboroCity_EventScript_EmployeeFacePlayerLeft2::
 # 845 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterRight
 # 846 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
+	waitmovement 0
 # 847 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
+	playse SE_PIN
 # 848 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
 # 849 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
+	waitmovement 0
 # 850 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
 # 851 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
+	waitmovement 0
 # 852 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
 # 853 "data/maps/RustboroCity/scripts.pory"
-	return
+	waitmovement 0
 # 854 "data/maps/RustboroCity/scripts.pory"
-
+	return
 # 855 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_EmployeeFacePlayerDown2::
+
 # 856 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterDown
+RustboroCity_EventScript_EmployeeFacePlayerDown2::
 # 857 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 858 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
-# 859 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
-# 860 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 861 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
-# 862 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 863 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 864 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 865 "data/maps/RustboroCity/scripts.pory"
-	return
-# 866 "data/maps/RustboroCity/scripts.pory"
-
-# 867 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_EmployeeApproachPlayerDown2::
-# 868 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterDown
+# 858 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 859 "data/maps/RustboroCity/scripts.pory"
+	playse SE_PIN
+# 860 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
+# 861 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 862 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
+# 863 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 864 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+# 865 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 866 "data/maps/RustboroCity/scripts.pory"
+	return
+# 867 "data/maps/RustboroCity/scripts.pory"
+
+# 868 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_EmployeeApproachPlayerDown2::
 # 869 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterDown
 # 870 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
+	waitmovement 0
 # 871 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
+	playse SE_PIN
 # 872 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 873 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
-# 874 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 875 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachPlayerDown
-# 876 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 877 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 878 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 879 "data/maps/RustboroCity/scripts.pory"
-	return
-# 880 "data/maps/RustboroCity/scripts.pory"
-
-# 881 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_EmployeeFacePlayerRight::
-# 882 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterLeft
-# 883 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 884 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
-# 885 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
-# 886 "data/maps/RustboroCity/scripts.pory"
+# 873 "data/maps/RustboroCity/scripts.pory"
 	waitmovement 0
-# 887 "data/maps/RustboroCity/scripts.pory"
+# 874 "data/maps/RustboroCity/scripts.pory"
 	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
+# 875 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 876 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachPlayerDown
+# 877 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 878 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+# 879 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 880 "data/maps/RustboroCity/scripts.pory"
+	return
+# 881 "data/maps/RustboroCity/scripts.pory"
+
+# 882 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_EmployeeFacePlayerRight::
+# 883 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterLeft
+# 884 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 885 "data/maps/RustboroCity/scripts.pory"
+	playse SE_PIN
+# 886 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
+# 887 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
 # 888 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
 # 889 "data/maps/RustboroCity/scripts.pory"
-	return
+	waitmovement 0
 # 890 "data/maps/RustboroCity/scripts.pory"
-
+	return
 # 891 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_Rival::
+
 # 892 "data/maps/RustboroCity/scripts.pory"
-	lockall
+RustboroCity_EventScript_Rival::
 # 893 "data/maps/RustboroCity/scripts.pory"
-	call_if_unset FLAG_MET_RIVAL_RUSTBORO, RustboroCity_EventScript_PlayRivalMusic
+	lockall
 # 894 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_FacePlayer
+	call_if_unset FLAG_MET_RIVAL_RUSTBORO, RustboroCity_EventScript_PlayRivalMusic
 # 895 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
+	applymovement LOCALID_RIVAL, Common_Movement_FacePlayer
 # 896 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_RivalEncounter
+	waitmovement 0
 # 897 "data/maps/RustboroCity/scripts.pory"
-
+	goto RustboroCity_EventScript_RivalEncounter
 # 898 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_PlayRivalMusic::
+
 # 899 "data/maps/RustboroCity/scripts.pory"
-	checkplayergender
+RustboroCity_EventScript_PlayRivalMusic::
 # 900 "data/maps/RustboroCity/scripts.pory"
-	goto_if_eq VAR_RESULT, MALE, RustboroCity_EventScript_PlayMayMusic
-# 901 "data/maps/RustboroCity/scripts.pory"
-	goto_if_eq VAR_RESULT, FEMALE, RustboroCity_EventScript_PlayBrendanMusic
-# 902 "data/maps/RustboroCity/scripts.pory"
-	return
-# 903 "data/maps/RustboroCity/scripts.pory"
-
-# 904 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_PlayMayMusic::
-# 905 "data/maps/RustboroCity/scripts.pory"
-	playbgm MUS_ENCOUNTER_MAY, TRUE
-# 906 "data/maps/RustboroCity/scripts.pory"
-	return
-# 907 "data/maps/RustboroCity/scripts.pory"
-
-# 908 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_PlayBrendanMusic::
-# 909 "data/maps/RustboroCity/scripts.pory"
-	playbgm MUS_ENCOUNTER_BRENDAN, TRUE
-# 910 "data/maps/RustboroCity/scripts.pory"
-	return
-# 911 "data/maps/RustboroCity/scripts.pory"
-
-# 912 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_RivalTrigger0::
-# 913 "data/maps/RustboroCity/scripts.pory"
-	lockall
-# 914 "data/maps/RustboroCity/scripts.pory"
-	call RustboroCity_EventScript_PlayRivalMusic
-# 915 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-# 916 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 917 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
-# 918 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-# 919 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 920 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-# 921 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 922 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer0
-# 923 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 924 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 925 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 926 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_RivalEncounter
-# 927 "data/maps/RustboroCity/scripts.pory"
-
-# 928 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_RivalTrigger1::
-# 929 "data/maps/RustboroCity/scripts.pory"
-	lockall
-# 930 "data/maps/RustboroCity/scripts.pory"
-	call RustboroCity_EventScript_PlayRivalMusic
-# 931 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-# 932 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 933 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
-# 934 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-# 935 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 936 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-# 937 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 938 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer1
-# 939 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 940 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 941 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 942 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_RivalEncounter
-# 943 "data/maps/RustboroCity/scripts.pory"
-
-# 944 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_RivalTrigger2::
-# 945 "data/maps/RustboroCity/scripts.pory"
-	lockall
-# 946 "data/maps/RustboroCity/scripts.pory"
-	call RustboroCity_EventScript_PlayRivalMusic
-# 947 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-# 948 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 949 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
-# 950 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-# 951 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 952 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-# 953 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 954 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer2
-# 955 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 956 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 957 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 958 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_RivalEncounter
-# 959 "data/maps/RustboroCity/scripts.pory"
-
-# 960 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_RivalTrigger3::
-# 961 "data/maps/RustboroCity/scripts.pory"
-	lockall
-# 962 "data/maps/RustboroCity/scripts.pory"
-	call RustboroCity_EventScript_PlayRivalMusic
-# 963 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-# 964 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 965 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
-# 966 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-# 967 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 968 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-# 969 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 970 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer3
-# 971 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 972 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 973 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 974 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_RivalEncounter
-# 975 "data/maps/RustboroCity/scripts.pory"
-
-# 976 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_RivalTrigger4::
-# 977 "data/maps/RustboroCity/scripts.pory"
-	lockall
-# 978 "data/maps/RustboroCity/scripts.pory"
-	call RustboroCity_EventScript_PlayRivalMusic
-# 979 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-# 980 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 981 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
-# 982 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-# 983 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 984 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-# 985 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 986 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer4
-# 987 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 988 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 989 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 990 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_RivalEncounter
-# 991 "data/maps/RustboroCity/scripts.pory"
-
-# 992 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_RivalTrigger5::
-# 993 "data/maps/RustboroCity/scripts.pory"
-	lockall
-# 994 "data/maps/RustboroCity/scripts.pory"
-	call RustboroCity_EventScript_PlayRivalMusic
-# 995 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-# 996 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 997 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
-# 998 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-# 999 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1000 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-# 1001 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1002 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer5
-# 1003 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1004 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 1005 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1006 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_RivalEncounter
-# 1007 "data/maps/RustboroCity/scripts.pory"
-
-# 1008 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_RivalTrigger6::
-# 1009 "data/maps/RustboroCity/scripts.pory"
-	lockall
-# 1010 "data/maps/RustboroCity/scripts.pory"
-	call RustboroCity_EventScript_PlayRivalMusic
-# 1011 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-# 1012 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1013 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
-# 1014 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-# 1015 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1016 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-# 1017 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1018 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer6
-# 1019 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1020 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 1021 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1022 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_RivalEncounter
-# 1023 "data/maps/RustboroCity/scripts.pory"
-
-# 1024 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_RivalTrigger7::
-# 1025 "data/maps/RustboroCity/scripts.pory"
-	lockall
-# 1026 "data/maps/RustboroCity/scripts.pory"
-	call RustboroCity_EventScript_PlayRivalMusic
-# 1027 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-# 1028 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1029 "data/maps/RustboroCity/scripts.pory"
-	playse SE_PIN
-# 1030 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-# 1031 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1032 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-# 1033 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1034 "data/maps/RustboroCity/scripts.pory"
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer7
-# 1035 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1036 "data/maps/RustboroCity/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-# 1037 "data/maps/RustboroCity/scripts.pory"
-	waitmovement 0
-# 1038 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_RivalEncounter
-# 1039 "data/maps/RustboroCity/scripts.pory"
-
-# 1040 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_RivalEncounter::
-# 1041 "data/maps/RustboroCity/scripts.pory"
 	checkplayergender
-# 1042 "data/maps/RustboroCity/scripts.pory"
-	goto_if_eq VAR_RESULT, MALE, RustboroCity_EventScript_MayEncounter
-# 1043 "data/maps/RustboroCity/scripts.pory"
-	goto_if_eq VAR_RESULT, FEMALE, RustboroCity_EventScript_BrendanEncounter
-# 1044 "data/maps/RustboroCity/scripts.pory"
-	end
-# 1045 "data/maps/RustboroCity/scripts.pory"
-
-# 1046 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_MayEncounter::
-# 1047 "data/maps/RustboroCity/scripts.pory"
-	goto_if_set FLAG_DEFEATED_RIVAL_RUSTBORO, RustboroCity_EventScript_MayBrineyHint
-# 1048 "data/maps/RustboroCity/scripts.pory"
-	goto_if_set FLAG_MET_RIVAL_RUSTBORO, RustboroCity_EventScript_MayAskToBattle
-# 1049 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_MET_RIVAL_RUSTBORO
-# 1050 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_MayHiLetsRegister, MSGBOX_DEFAULT
-# 1051 "data/maps/RustboroCity/scripts.pory"
-	closemessage
-# 1052 "data/maps/RustboroCity/scripts.pory"
-	delay 30
-# 1053 "data/maps/RustboroCity/scripts.pory"
-	playfanfare MUS_REGISTER_MATCH_CALL
-# 1054 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_RegisteredMay, MSGBOX_DEFAULT
-# 1055 "data/maps/RustboroCity/scripts.pory"
-	waitfanfare
-# 1056 "data/maps/RustboroCity/scripts.pory"
-	closemessage
-# 1057 "data/maps/RustboroCity/scripts.pory"
-	delay 30
-# 1058 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_ENABLE_RIVAL_MATCH_CALL
-# 1059 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_RUSTBORO_CITY_STATE, 8
-# 1060 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_ROUTE104_STATE, 2
-# 1061 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_0x8008, 0
-# 1062 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_MayPassedBrineyWantToBattle, MSGBOX_YESNO
-# 1063 "data/maps/RustboroCity/scripts.pory"
-	goto_if_eq VAR_RESULT, YES, RustboroCity_EventScript_BattleMay
-# 1064 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_MayOhHaventRaisedPokemonEnough, MSGBOX_DEFAULT
-# 1065 "data/maps/RustboroCity/scripts.pory"
-	call RustboroCity_EventScript_RestoreBgm
-# 1066 "data/maps/RustboroCity/scripts.pory"
-	releaseall
-# 1067 "data/maps/RustboroCity/scripts.pory"
-	end
-# 1068 "data/maps/RustboroCity/scripts.pory"
-
-# 1069 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_MayAskToBattle::
-# 1070 "data/maps/RustboroCity/scripts.pory"
-	setvar VAR_0x8008, 1
-# 1071 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_MayWantToBattle, MSGBOX_YESNO
-# 1072 "data/maps/RustboroCity/scripts.pory"
-	goto_if_eq VAR_RESULT, YES, RustboroCity_EventScript_BattleMay
-# 1073 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_MayOhHaventRaisedPokemonEnough, MSGBOX_DEFAULT
-# 1074 "data/maps/RustboroCity/scripts.pory"
-	releaseall
-# 1075 "data/maps/RustboroCity/scripts.pory"
-	end
-# 1076 "data/maps/RustboroCity/scripts.pory"
-
-# 1077 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_BattleMay::
-# 1078 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_MayImNotGoingToLose, MSGBOX_DEFAULT
-# 1079 "data/maps/RustboroCity/scripts.pory"
-	switch VAR_STARTER_MON
-# 1080 "data/maps/RustboroCity/scripts.pory"
-	case 0, RustboroCity_EventScript_BattleMayTreecko
-# 1081 "data/maps/RustboroCity/scripts.pory"
-	case 1, RustboroCity_EventScript_BattleMayTorchic
-# 1082 "data/maps/RustboroCity/scripts.pory"
-	case 2, RustboroCity_EventScript_BattleMayMudkip
-# 1083 "data/maps/RustboroCity/scripts.pory"
-	end
-# 1084 "data/maps/RustboroCity/scripts.pory"
-
-# 1085 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_MayBrineyHint::
-# 1086 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_MayMrBrineyHint, MSGBOX_DEFAULT
-# 1087 "data/maps/RustboroCity/scripts.pory"
-	call_if_eq VAR_0x8008, 0, RustboroCity_EventScript_RestoreBgm
-# 1088 "data/maps/RustboroCity/scripts.pory"
-	releaseall
-# 1089 "data/maps/RustboroCity/scripts.pory"
-	end
-# 1090 "data/maps/RustboroCity/scripts.pory"
-
-# 1091 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_RestoreBgm::
-# 1092 "data/maps/RustboroCity/scripts.pory"
-	savebgm MUS_DUMMY
-# 1093 "data/maps/RustboroCity/scripts.pory"
-	fadedefaultbgm
-# 1094 "data/maps/RustboroCity/scripts.pory"
+# 901 "data/maps/RustboroCity/scripts.pory"
+	goto_if_eq VAR_RESULT, MALE, RustboroCity_EventScript_PlayMayMusic
+# 902 "data/maps/RustboroCity/scripts.pory"
+	goto_if_eq VAR_RESULT, FEMALE, RustboroCity_EventScript_PlayBrendanMusic
+# 903 "data/maps/RustboroCity/scripts.pory"
 	return
-# 1095 "data/maps/RustboroCity/scripts.pory"
+# 904 "data/maps/RustboroCity/scripts.pory"
 
-# 1096 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_BattleMayTreecko::
-# 1097 "data/maps/RustboroCity/scripts.pory"
-	trainerbattle_no_intro TRAINER_MAY_RUSTBORO_TREECKO, RustboroCity_Text_MayDefeat
-# 1098 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_DEFEATED_RIVAL_RUSTBORO
-# 1099 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_MayBrineyHint
-# 1100 "data/maps/RustboroCity/scripts.pory"
+# 905 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_PlayMayMusic::
+# 906 "data/maps/RustboroCity/scripts.pory"
+	playbgm MUS_ENCOUNTER_MAY, TRUE
+# 907 "data/maps/RustboroCity/scripts.pory"
+	return
+# 908 "data/maps/RustboroCity/scripts.pory"
+
+# 909 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_PlayBrendanMusic::
+# 910 "data/maps/RustboroCity/scripts.pory"
+	playbgm MUS_ENCOUNTER_BRENDAN, TRUE
+# 911 "data/maps/RustboroCity/scripts.pory"
+	return
+# 912 "data/maps/RustboroCity/scripts.pory"
+
+# 913 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_RivalTrigger0::
+# 914 "data/maps/RustboroCity/scripts.pory"
+	lockall
+# 915 "data/maps/RustboroCity/scripts.pory"
+	call RustboroCity_EventScript_PlayRivalMusic
+# 916 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
+# 917 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 918 "data/maps/RustboroCity/scripts.pory"
+	playse SE_PIN
+# 919 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
+# 920 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 921 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_Delay48
+# 922 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 923 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer0
+# 924 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 925 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+# 926 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 927 "data/maps/RustboroCity/scripts.pory"
+	goto RustboroCity_EventScript_RivalEncounter
+# 928 "data/maps/RustboroCity/scripts.pory"
+
+# 929 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_RivalTrigger1::
+# 930 "data/maps/RustboroCity/scripts.pory"
+	lockall
+# 931 "data/maps/RustboroCity/scripts.pory"
+	call RustboroCity_EventScript_PlayRivalMusic
+# 932 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
+# 933 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 934 "data/maps/RustboroCity/scripts.pory"
+	playse SE_PIN
+# 935 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
+# 936 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 937 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_Delay48
+# 938 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 939 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer1
+# 940 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 941 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+# 942 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 943 "data/maps/RustboroCity/scripts.pory"
+	goto RustboroCity_EventScript_RivalEncounter
+# 944 "data/maps/RustboroCity/scripts.pory"
+
+# 945 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_RivalTrigger2::
+# 946 "data/maps/RustboroCity/scripts.pory"
+	lockall
+# 947 "data/maps/RustboroCity/scripts.pory"
+	call RustboroCity_EventScript_PlayRivalMusic
+# 948 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
+# 949 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 950 "data/maps/RustboroCity/scripts.pory"
+	playse SE_PIN
+# 951 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
+# 952 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 953 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_Delay48
+# 954 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 955 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer2
+# 956 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 957 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+# 958 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 959 "data/maps/RustboroCity/scripts.pory"
+	goto RustboroCity_EventScript_RivalEncounter
+# 960 "data/maps/RustboroCity/scripts.pory"
+
+# 961 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_RivalTrigger3::
+# 962 "data/maps/RustboroCity/scripts.pory"
+	lockall
+# 963 "data/maps/RustboroCity/scripts.pory"
+	call RustboroCity_EventScript_PlayRivalMusic
+# 964 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
+# 965 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 966 "data/maps/RustboroCity/scripts.pory"
+	playse SE_PIN
+# 967 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
+# 968 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 969 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_Delay48
+# 970 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 971 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer3
+# 972 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 973 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+# 974 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 975 "data/maps/RustboroCity/scripts.pory"
+	goto RustboroCity_EventScript_RivalEncounter
+# 976 "data/maps/RustboroCity/scripts.pory"
+
+# 977 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_RivalTrigger4::
+# 978 "data/maps/RustboroCity/scripts.pory"
+	lockall
+# 979 "data/maps/RustboroCity/scripts.pory"
+	call RustboroCity_EventScript_PlayRivalMusic
+# 980 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
+# 981 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 982 "data/maps/RustboroCity/scripts.pory"
+	playse SE_PIN
+# 983 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
+# 984 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 985 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_Delay48
+# 986 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 987 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer4
+# 988 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 989 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+# 990 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 991 "data/maps/RustboroCity/scripts.pory"
+	goto RustboroCity_EventScript_RivalEncounter
+# 992 "data/maps/RustboroCity/scripts.pory"
+
+# 993 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_RivalTrigger5::
+# 994 "data/maps/RustboroCity/scripts.pory"
+	lockall
+# 995 "data/maps/RustboroCity/scripts.pory"
+	call RustboroCity_EventScript_PlayRivalMusic
+# 996 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
+# 997 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 998 "data/maps/RustboroCity/scripts.pory"
+	playse SE_PIN
+# 999 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
+# 1000 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1001 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_Delay48
+# 1002 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1003 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer5
+# 1004 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1005 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+# 1006 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1007 "data/maps/RustboroCity/scripts.pory"
+	goto RustboroCity_EventScript_RivalEncounter
+# 1008 "data/maps/RustboroCity/scripts.pory"
+
+# 1009 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_RivalTrigger6::
+# 1010 "data/maps/RustboroCity/scripts.pory"
+	lockall
+# 1011 "data/maps/RustboroCity/scripts.pory"
+	call RustboroCity_EventScript_PlayRivalMusic
+# 1012 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
+# 1013 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1014 "data/maps/RustboroCity/scripts.pory"
+	playse SE_PIN
+# 1015 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
+# 1016 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1017 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_Delay48
+# 1018 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1019 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer6
+# 1020 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1021 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+# 1022 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1023 "data/maps/RustboroCity/scripts.pory"
+	goto RustboroCity_EventScript_RivalEncounter
+# 1024 "data/maps/RustboroCity/scripts.pory"
+
+# 1025 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_RivalTrigger7::
+# 1026 "data/maps/RustboroCity/scripts.pory"
+	lockall
+# 1027 "data/maps/RustboroCity/scripts.pory"
+	call RustboroCity_EventScript_PlayRivalMusic
+# 1028 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
+# 1029 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1030 "data/maps/RustboroCity/scripts.pory"
+	playse SE_PIN
+# 1031 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
+# 1032 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1033 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, Common_Movement_Delay48
+# 1034 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1035 "data/maps/RustboroCity/scripts.pory"
+	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer7
+# 1036 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1037 "data/maps/RustboroCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+# 1038 "data/maps/RustboroCity/scripts.pory"
+	waitmovement 0
+# 1039 "data/maps/RustboroCity/scripts.pory"
+	goto RustboroCity_EventScript_RivalEncounter
+# 1040 "data/maps/RustboroCity/scripts.pory"
+
+# 1041 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_RivalEncounter::
+# 1042 "data/maps/RustboroCity/scripts.pory"
+	checkplayergender
+# 1043 "data/maps/RustboroCity/scripts.pory"
+	goto_if_eq VAR_RESULT, MALE, RustboroCity_EventScript_MayEncounter
+# 1044 "data/maps/RustboroCity/scripts.pory"
+	goto_if_eq VAR_RESULT, FEMALE, RustboroCity_EventScript_BrendanEncounter
+# 1045 "data/maps/RustboroCity/scripts.pory"
 	end
-# 1101 "data/maps/RustboroCity/scripts.pory"
+# 1046 "data/maps/RustboroCity/scripts.pory"
 
-# 1102 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_BattleMayTorchic::
-# 1103 "data/maps/RustboroCity/scripts.pory"
-	trainerbattle_no_intro TRAINER_MAY_RUSTBORO_TORCHIC, RustboroCity_Text_MayDefeat
-# 1104 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_DEFEATED_RIVAL_RUSTBORO
-# 1105 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_MayBrineyHint
-# 1106 "data/maps/RustboroCity/scripts.pory"
-	end
-# 1107 "data/maps/RustboroCity/scripts.pory"
-
-# 1108 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_BattleMayMudkip::
-# 1109 "data/maps/RustboroCity/scripts.pory"
-	trainerbattle_no_intro TRAINER_MAY_RUSTBORO_MUDKIP, RustboroCity_Text_MayDefeat
-# 1110 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_DEFEATED_RIVAL_RUSTBORO
-# 1111 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_MayBrineyHint
-# 1112 "data/maps/RustboroCity/scripts.pory"
-	end
-# 1113 "data/maps/RustboroCity/scripts.pory"
-
-# 1114 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_BrendanEncounter::
-# 1115 "data/maps/RustboroCity/scripts.pory"
-	goto_if_set FLAG_DEFEATED_RIVAL_RUSTBORO, RustboroCity_EventScript_BrendanBrineyHint
-# 1116 "data/maps/RustboroCity/scripts.pory"
-	goto_if_set FLAG_MET_RIVAL_RUSTBORO, RustboroCity_EventScript_BrendanAskToBattle
-# 1117 "data/maps/RustboroCity/scripts.pory"
+# 1047 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_MayEncounter::
+# 1048 "data/maps/RustboroCity/scripts.pory"
+	goto_if_set FLAG_DEFEATED_RIVAL_RUSTBORO, RustboroCity_EventScript_MayBrineyHint
+# 1049 "data/maps/RustboroCity/scripts.pory"
+	goto_if_set FLAG_MET_RIVAL_RUSTBORO, RustboroCity_EventScript_MayAskToBattle
+# 1050 "data/maps/RustboroCity/scripts.pory"
 	setflag FLAG_MET_RIVAL_RUSTBORO
-# 1118 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_BrendanHiLetsRegister, MSGBOX_DEFAULT
-# 1119 "data/maps/RustboroCity/scripts.pory"
+# 1051 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_MayHiLetsRegister, MSGBOX_DEFAULT
+# 1052 "data/maps/RustboroCity/scripts.pory"
 	closemessage
-# 1120 "data/maps/RustboroCity/scripts.pory"
+# 1053 "data/maps/RustboroCity/scripts.pory"
 	delay 30
-# 1121 "data/maps/RustboroCity/scripts.pory"
+# 1054 "data/maps/RustboroCity/scripts.pory"
 	playfanfare MUS_REGISTER_MATCH_CALL
-# 1122 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_RegisteredBrendan, MSGBOX_DEFAULT
-# 1123 "data/maps/RustboroCity/scripts.pory"
+# 1055 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_RegisteredMay, MSGBOX_DEFAULT
+# 1056 "data/maps/RustboroCity/scripts.pory"
 	waitfanfare
-# 1124 "data/maps/RustboroCity/scripts.pory"
+# 1057 "data/maps/RustboroCity/scripts.pory"
 	closemessage
-# 1125 "data/maps/RustboroCity/scripts.pory"
+# 1058 "data/maps/RustboroCity/scripts.pory"
 	delay 30
-# 1126 "data/maps/RustboroCity/scripts.pory"
+# 1059 "data/maps/RustboroCity/scripts.pory"
 	setflag FLAG_ENABLE_RIVAL_MATCH_CALL
-# 1127 "data/maps/RustboroCity/scripts.pory"
+# 1060 "data/maps/RustboroCity/scripts.pory"
 	setvar VAR_RUSTBORO_CITY_STATE, 8
-# 1128 "data/maps/RustboroCity/scripts.pory"
+# 1061 "data/maps/RustboroCity/scripts.pory"
 	setvar VAR_ROUTE104_STATE, 2
-# 1129 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_BrendanPassedBrineyWantToBattle, MSGBOX_YESNO
-# 1130 "data/maps/RustboroCity/scripts.pory"
-	goto_if_eq VAR_RESULT, YES, RustboroCity_EventScript_BattleBrendan
-# 1131 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_BrendanNoConfidenceInPokemon, MSGBOX_DEFAULT
-# 1132 "data/maps/RustboroCity/scripts.pory"
+# 1062 "data/maps/RustboroCity/scripts.pory"
+	setvar VAR_0x8008, 0
+# 1063 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_MayPassedBrineyWantToBattle, MSGBOX_YESNO
+# 1064 "data/maps/RustboroCity/scripts.pory"
+	goto_if_eq VAR_RESULT, YES, RustboroCity_EventScript_BattleMay
+# 1065 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_MayOhHaventRaisedPokemonEnough, MSGBOX_DEFAULT
+# 1066 "data/maps/RustboroCity/scripts.pory"
 	call RustboroCity_EventScript_RestoreBgm
-# 1133 "data/maps/RustboroCity/scripts.pory"
+# 1067 "data/maps/RustboroCity/scripts.pory"
 	releaseall
-# 1134 "data/maps/RustboroCity/scripts.pory"
+# 1068 "data/maps/RustboroCity/scripts.pory"
 	end
-# 1135 "data/maps/RustboroCity/scripts.pory"
+# 1069 "data/maps/RustboroCity/scripts.pory"
 
-# 1136 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_BrendanAskToBattle::
-# 1137 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_BrendanWantToBattle, MSGBOX_YESNO
-# 1138 "data/maps/RustboroCity/scripts.pory"
-	goto_if_eq VAR_RESULT, YES, RustboroCity_EventScript_BattleBrendan
-# 1139 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_BrendanNoConfidenceInPokemon, MSGBOX_DEFAULT
-# 1140 "data/maps/RustboroCity/scripts.pory"
+# 1070 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_MayAskToBattle::
+# 1071 "data/maps/RustboroCity/scripts.pory"
+	setvar VAR_0x8008, 1
+# 1072 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_MayWantToBattle, MSGBOX_YESNO
+# 1073 "data/maps/RustboroCity/scripts.pory"
+	goto_if_eq VAR_RESULT, YES, RustboroCity_EventScript_BattleMay
+# 1074 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_MayOhHaventRaisedPokemonEnough, MSGBOX_DEFAULT
+# 1075 "data/maps/RustboroCity/scripts.pory"
 	releaseall
-# 1141 "data/maps/RustboroCity/scripts.pory"
+# 1076 "data/maps/RustboroCity/scripts.pory"
 	end
-# 1142 "data/maps/RustboroCity/scripts.pory"
+# 1077 "data/maps/RustboroCity/scripts.pory"
 
-# 1143 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_BattleBrendan::
-# 1144 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_BrendanIWontGoEasy, MSGBOX_DEFAULT
-# 1145 "data/maps/RustboroCity/scripts.pory"
+# 1078 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_BattleMay::
+# 1079 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_MayImNotGoingToLose, MSGBOX_DEFAULT
+# 1080 "data/maps/RustboroCity/scripts.pory"
 	switch VAR_STARTER_MON
-# 1146 "data/maps/RustboroCity/scripts.pory"
-	case 0, RustboroCity_EventScript_BattleBrendanTreecko
-# 1147 "data/maps/RustboroCity/scripts.pory"
-	case 1, RustboroCity_EventScript_BattleBrendanTorchic
-# 1148 "data/maps/RustboroCity/scripts.pory"
-	case 2, RustboroCity_EventScript_BattleBrendanMudkip
-# 1149 "data/maps/RustboroCity/scripts.pory"
+# 1081 "data/maps/RustboroCity/scripts.pory"
+	case 0, RustboroCity_EventScript_BattleMayTreecko
+# 1082 "data/maps/RustboroCity/scripts.pory"
+	case 1, RustboroCity_EventScript_BattleMayTorchic
+# 1083 "data/maps/RustboroCity/scripts.pory"
+	case 2, RustboroCity_EventScript_BattleMayMudkip
+# 1084 "data/maps/RustboroCity/scripts.pory"
 	end
-# 1150 "data/maps/RustboroCity/scripts.pory"
+# 1085 "data/maps/RustboroCity/scripts.pory"
 
-# 1151 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_BrendanBrineyHint::
-# 1152 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_BrendanMrBrineyHint, MSGBOX_DEFAULT
-# 1153 "data/maps/RustboroCity/scripts.pory"
+# 1086 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_MayBrineyHint::
+# 1087 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_MayMrBrineyHint, MSGBOX_DEFAULT
+# 1088 "data/maps/RustboroCity/scripts.pory"
 	call_if_eq VAR_0x8008, 0, RustboroCity_EventScript_RestoreBgm
-# 1154 "data/maps/RustboroCity/scripts.pory"
+# 1089 "data/maps/RustboroCity/scripts.pory"
 	releaseall
+# 1090 "data/maps/RustboroCity/scripts.pory"
+	end
+# 1091 "data/maps/RustboroCity/scripts.pory"
+
+# 1092 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_RestoreBgm::
+# 1093 "data/maps/RustboroCity/scripts.pory"
+	savebgm MUS_DUMMY
+# 1094 "data/maps/RustboroCity/scripts.pory"
+	fadedefaultbgm
+# 1095 "data/maps/RustboroCity/scripts.pory"
+	return
+# 1096 "data/maps/RustboroCity/scripts.pory"
+
+# 1097 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_BattleMayTreecko::
+# 1098 "data/maps/RustboroCity/scripts.pory"
+	@trainerbattle_no_intro TRAINER_MAY_RUSTBORO_TREECKO, RustboroCity_Text_MayDefeat
+# 1099 "data/maps/RustboroCity/scripts.pory"
+	setflag FLAG_DEFEATED_RIVAL_RUSTBORO
+# 1100 "data/maps/RustboroCity/scripts.pory"
+	goto RustboroCity_EventScript_MayBrineyHint
+# 1101 "data/maps/RustboroCity/scripts.pory"
+	end
+# 1102 "data/maps/RustboroCity/scripts.pory"
+
+# 1103 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_BattleMayTorchic::
+# 1104 "data/maps/RustboroCity/scripts.pory"
+	trainerbattle_no_intro TRAINER_MAY_RUSTBORO_TORCHIC, RustboroCity_Text_MayDefeat
+# 1105 "data/maps/RustboroCity/scripts.pory"
+	setflag FLAG_DEFEATED_RIVAL_RUSTBORO
+# 1106 "data/maps/RustboroCity/scripts.pory"
+	goto RustboroCity_EventScript_MayBrineyHint
+# 1107 "data/maps/RustboroCity/scripts.pory"
+	end
+# 1108 "data/maps/RustboroCity/scripts.pory"
+
+# 1109 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_BattleMayMudkip::
+# 1110 "data/maps/RustboroCity/scripts.pory"
+	@trainerbattle_no_intro TRAINER_MAY_RUSTBORO_MUDKIP, RustboroCity_Text_MayDefeat
+# 1111 "data/maps/RustboroCity/scripts.pory"
+	setflag FLAG_DEFEATED_RIVAL_RUSTBORO
+# 1112 "data/maps/RustboroCity/scripts.pory"
+	goto RustboroCity_EventScript_MayBrineyHint
+# 1113 "data/maps/RustboroCity/scripts.pory"
+	end
+# 1114 "data/maps/RustboroCity/scripts.pory"
+
+# 1115 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_BrendanEncounter::
+# 1116 "data/maps/RustboroCity/scripts.pory"
+	goto_if_set FLAG_DEFEATED_RIVAL_RUSTBORO, RustboroCity_EventScript_BrendanBrineyHint
+# 1117 "data/maps/RustboroCity/scripts.pory"
+	goto_if_set FLAG_MET_RIVAL_RUSTBORO, RustboroCity_EventScript_BrendanAskToBattle
+# 1118 "data/maps/RustboroCity/scripts.pory"
+	setflag FLAG_MET_RIVAL_RUSTBORO
+# 1119 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_BrendanHiLetsRegister, MSGBOX_DEFAULT
+# 1120 "data/maps/RustboroCity/scripts.pory"
+	closemessage
+# 1121 "data/maps/RustboroCity/scripts.pory"
+	delay 30
+# 1122 "data/maps/RustboroCity/scripts.pory"
+	playfanfare MUS_REGISTER_MATCH_CALL
+# 1123 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_RegisteredBrendan, MSGBOX_DEFAULT
+# 1124 "data/maps/RustboroCity/scripts.pory"
+	waitfanfare
+# 1125 "data/maps/RustboroCity/scripts.pory"
+	closemessage
+# 1126 "data/maps/RustboroCity/scripts.pory"
+	delay 30
+# 1127 "data/maps/RustboroCity/scripts.pory"
+	setflag FLAG_ENABLE_RIVAL_MATCH_CALL
+# 1128 "data/maps/RustboroCity/scripts.pory"
+	setvar VAR_RUSTBORO_CITY_STATE, 8
+# 1129 "data/maps/RustboroCity/scripts.pory"
+	setvar VAR_ROUTE104_STATE, 2
+# 1130 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_BrendanPassedBrineyWantToBattle, MSGBOX_YESNO
+# 1131 "data/maps/RustboroCity/scripts.pory"
+	goto_if_eq VAR_RESULT, YES, RustboroCity_EventScript_BattleBrendan
+# 1132 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_BrendanNoConfidenceInPokemon, MSGBOX_DEFAULT
+# 1133 "data/maps/RustboroCity/scripts.pory"
+	call RustboroCity_EventScript_RestoreBgm
+# 1134 "data/maps/RustboroCity/scripts.pory"
+	releaseall
+# 1135 "data/maps/RustboroCity/scripts.pory"
+	end
+# 1136 "data/maps/RustboroCity/scripts.pory"
+
+# 1137 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_BrendanAskToBattle::
+# 1138 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_BrendanWantToBattle, MSGBOX_YESNO
+# 1139 "data/maps/RustboroCity/scripts.pory"
+	goto_if_eq VAR_RESULT, YES, RustboroCity_EventScript_BattleBrendan
+# 1140 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_BrendanNoConfidenceInPokemon, MSGBOX_DEFAULT
+# 1141 "data/maps/RustboroCity/scripts.pory"
+	releaseall
+# 1142 "data/maps/RustboroCity/scripts.pory"
+	end
+# 1143 "data/maps/RustboroCity/scripts.pory"
+
+# 1144 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_BattleBrendan::
+# 1145 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_BrendanIWontGoEasy, MSGBOX_DEFAULT
+# 1146 "data/maps/RustboroCity/scripts.pory"
+	switch VAR_STARTER_MON
+# 1147 "data/maps/RustboroCity/scripts.pory"
+	case 0, RustboroCity_EventScript_BattleBrendanTreecko
+# 1148 "data/maps/RustboroCity/scripts.pory"
+	case 1, RustboroCity_EventScript_BattleBrendanTorchic
+# 1149 "data/maps/RustboroCity/scripts.pory"
+	case 2, RustboroCity_EventScript_BattleBrendanMudkip
+# 1150 "data/maps/RustboroCity/scripts.pory"
+	end
+# 1151 "data/maps/RustboroCity/scripts.pory"
+
+# 1152 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_BrendanBrineyHint::
+# 1153 "data/maps/RustboroCity/scripts.pory"
+	msgbox RustboroCity_Text_BrendanMrBrineyHint, MSGBOX_DEFAULT
+# 1154 "data/maps/RustboroCity/scripts.pory"
+	call_if_eq VAR_0x8008, 0, RustboroCity_EventScript_RestoreBgm
 # 1155 "data/maps/RustboroCity/scripts.pory"
-	end
+	releaseall
 # 1156 "data/maps/RustboroCity/scripts.pory"
-
+	end
 # 1157 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_BattleBrendanTreecko::
+
 # 1158 "data/maps/RustboroCity/scripts.pory"
-	trainerbattle_no_intro TRAINER_BRENDAN_RUSTBORO_TREECKO, RustboroCity_Text_BrendanDefeat
+RustboroCity_EventScript_BattleBrendanTreecko::
 # 1159 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_DEFEATED_RIVAL_RUSTBORO
+	trainerbattle_no_intro TRAINER_BRENDAN_RUSTBORO_TREECKO, RustboroCity_Text_BrendanDefeat
 # 1160 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_BrendanBrineyHint
+	setflag FLAG_DEFEATED_RIVAL_RUSTBORO
 # 1161 "data/maps/RustboroCity/scripts.pory"
-	end
+	goto RustboroCity_EventScript_BrendanBrineyHint
 # 1162 "data/maps/RustboroCity/scripts.pory"
-
+	end
 # 1163 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_BattleBrendanTorchic::
+
 # 1164 "data/maps/RustboroCity/scripts.pory"
-	trainerbattle_no_intro TRAINER_BRENDAN_RUSTBORO_TORCHIC, RustboroCity_Text_BrendanDefeat
+RustboroCity_EventScript_BattleBrendanTorchic::
 # 1165 "data/maps/RustboroCity/scripts.pory"
-	setflag FLAG_DEFEATED_RIVAL_RUSTBORO
+	@trainerbattle_no_intro TRAINER_BRENDAN_RUSTBORO_TORCHIC, RustboroCity_Text_BrendanDefeat
 # 1166 "data/maps/RustboroCity/scripts.pory"
-	goto RustboroCity_EventScript_BrendanBrineyHint
-# 1167 "data/maps/RustboroCity/scripts.pory"
-	end
-# 1168 "data/maps/RustboroCity/scripts.pory"
-
-# 1169 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_BattleBrendanMudkip::
-# 1170 "data/maps/RustboroCity/scripts.pory"
-	trainerbattle_no_intro TRAINER_BRENDAN_RUSTBORO_MUDKIP, RustboroCity_Text_BrendanDefeat
-# 1171 "data/maps/RustboroCity/scripts.pory"
 	setflag FLAG_DEFEATED_RIVAL_RUSTBORO
-# 1172 "data/maps/RustboroCity/scripts.pory"
+# 1167 "data/maps/RustboroCity/scripts.pory"
 	goto RustboroCity_EventScript_BrendanBrineyHint
-# 1173 "data/maps/RustboroCity/scripts.pory"
+# 1168 "data/maps/RustboroCity/scripts.pory"
 	end
-# 1174 "data/maps/RustboroCity/scripts.pory"
+# 1169 "data/maps/RustboroCity/scripts.pory"
 
+# 1170 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_EventScript_BattleBrendanMudkip::
+# 1171 "data/maps/RustboroCity/scripts.pory"
+	trainerbattle_no_intro TRAINER_BRENDAN_RUSTBORO_MUDKIP, RustboroCity_Text_BrendanDefeat
+# 1172 "data/maps/RustboroCity/scripts.pory"
+	setflag FLAG_DEFEATED_RIVAL_RUSTBORO
+# 1173 "data/maps/RustboroCity/scripts.pory"
+	goto RustboroCity_EventScript_BrendanBrineyHint
+# 1174 "data/maps/RustboroCity/scripts.pory"
+	end
 # 1175 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_RivalApproachPlayer0:
+
 # 1176 "data/maps/RustboroCity/scripts.pory"
-	walk_down
+RustboroCity_Movement_RivalApproachPlayer0:
 # 1177 "data/maps/RustboroCity/scripts.pory"
-	walk_left
+	walk_down
 # 1178 "data/maps/RustboroCity/scripts.pory"
 	walk_left
 # 1179 "data/maps/RustboroCity/scripts.pory"
@@ -2322,693 +2322,695 @@ RustboroCity_Movement_RivalApproachPlayer0:
 # 1180 "data/maps/RustboroCity/scripts.pory"
 	walk_left
 # 1181 "data/maps/RustboroCity/scripts.pory"
-	walk_down
-# 1182 "data/maps/RustboroCity/scripts.pory"
-	step_end
-# 1183 "data/maps/RustboroCity/scripts.pory"
-
-# 1184 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_RivalApproachPlayer1:
-# 1185 "data/maps/RustboroCity/scripts.pory"
-	walk_down
-# 1186 "data/maps/RustboroCity/scripts.pory"
 	walk_left
+# 1182 "data/maps/RustboroCity/scripts.pory"
+	walk_down
+# 1183 "data/maps/RustboroCity/scripts.pory"
+	step_end
+# 1184 "data/maps/RustboroCity/scripts.pory"
+
+# 1185 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Movement_RivalApproachPlayer1:
+# 1186 "data/maps/RustboroCity/scripts.pory"
+	walk_down
 # 1187 "data/maps/RustboroCity/scripts.pory"
 	walk_left
 # 1188 "data/maps/RustboroCity/scripts.pory"
 	walk_left
 # 1189 "data/maps/RustboroCity/scripts.pory"
-	walk_down
-# 1190 "data/maps/RustboroCity/scripts.pory"
-	step_end
-# 1191 "data/maps/RustboroCity/scripts.pory"
-
-# 1192 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_RivalApproachPlayer2:
-# 1193 "data/maps/RustboroCity/scripts.pory"
-	walk_down
-# 1194 "data/maps/RustboroCity/scripts.pory"
 	walk_left
+# 1190 "data/maps/RustboroCity/scripts.pory"
+	walk_down
+# 1191 "data/maps/RustboroCity/scripts.pory"
+	step_end
+# 1192 "data/maps/RustboroCity/scripts.pory"
+
+# 1193 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Movement_RivalApproachPlayer2:
+# 1194 "data/maps/RustboroCity/scripts.pory"
+	walk_down
 # 1195 "data/maps/RustboroCity/scripts.pory"
 	walk_left
 # 1196 "data/maps/RustboroCity/scripts.pory"
-	walk_down
-# 1197 "data/maps/RustboroCity/scripts.pory"
-	step_end
-# 1198 "data/maps/RustboroCity/scripts.pory"
-
-# 1199 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_RivalApproachPlayer3:
-# 1200 "data/maps/RustboroCity/scripts.pory"
-	walk_down
-# 1201 "data/maps/RustboroCity/scripts.pory"
 	walk_left
-# 1202 "data/maps/RustboroCity/scripts.pory"
+# 1197 "data/maps/RustboroCity/scripts.pory"
 	walk_down
-# 1203 "data/maps/RustboroCity/scripts.pory"
+# 1198 "data/maps/RustboroCity/scripts.pory"
 	step_end
-# 1204 "data/maps/RustboroCity/scripts.pory"
+# 1199 "data/maps/RustboroCity/scripts.pory"
 
-# 1205 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_RivalApproachPlayer4:
-# 1206 "data/maps/RustboroCity/scripts.pory"
+# 1200 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Movement_RivalApproachPlayer3:
+# 1201 "data/maps/RustboroCity/scripts.pory"
 	walk_down
+# 1202 "data/maps/RustboroCity/scripts.pory"
+	walk_left
+# 1203 "data/maps/RustboroCity/scripts.pory"
+	walk_down
+# 1204 "data/maps/RustboroCity/scripts.pory"
+	step_end
+# 1205 "data/maps/RustboroCity/scripts.pory"
+
+# 1206 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Movement_RivalApproachPlayer4:
 # 1207 "data/maps/RustboroCity/scripts.pory"
 	walk_down
 # 1208 "data/maps/RustboroCity/scripts.pory"
-	step_end
+	walk_down
 # 1209 "data/maps/RustboroCity/scripts.pory"
-
-# 1210 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_RivalApproachPlayer5:
-# 1211 "data/maps/RustboroCity/scripts.pory"
-	walk_down
-# 1212 "data/maps/RustboroCity/scripts.pory"
-	walk_right
-# 1213 "data/maps/RustboroCity/scripts.pory"
-	walk_down
-# 1214 "data/maps/RustboroCity/scripts.pory"
 	step_end
-# 1215 "data/maps/RustboroCity/scripts.pory"
+# 1210 "data/maps/RustboroCity/scripts.pory"
 
-# 1216 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_RivalApproachPlayer6:
-# 1217 "data/maps/RustboroCity/scripts.pory"
+# 1211 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Movement_RivalApproachPlayer5:
+# 1212 "data/maps/RustboroCity/scripts.pory"
 	walk_down
-# 1218 "data/maps/RustboroCity/scripts.pory"
+# 1213 "data/maps/RustboroCity/scripts.pory"
 	walk_right
+# 1214 "data/maps/RustboroCity/scripts.pory"
+	walk_down
+# 1215 "data/maps/RustboroCity/scripts.pory"
+	step_end
+# 1216 "data/maps/RustboroCity/scripts.pory"
+
+# 1217 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Movement_RivalApproachPlayer6:
+# 1218 "data/maps/RustboroCity/scripts.pory"
+	walk_down
 # 1219 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 # 1220 "data/maps/RustboroCity/scripts.pory"
-	walk_down
-# 1221 "data/maps/RustboroCity/scripts.pory"
-	step_end
-# 1222 "data/maps/RustboroCity/scripts.pory"
-
-# 1223 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Movement_RivalApproachPlayer7:
-# 1224 "data/maps/RustboroCity/scripts.pory"
-	walk_down
-# 1225 "data/maps/RustboroCity/scripts.pory"
 	walk_right
+# 1221 "data/maps/RustboroCity/scripts.pory"
+	walk_down
+# 1222 "data/maps/RustboroCity/scripts.pory"
+	step_end
+# 1223 "data/maps/RustboroCity/scripts.pory"
+
+# 1224 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Movement_RivalApproachPlayer7:
+# 1225 "data/maps/RustboroCity/scripts.pory"
+	walk_down
 # 1226 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 # 1227 "data/maps/RustboroCity/scripts.pory"
 	walk_right
 # 1228 "data/maps/RustboroCity/scripts.pory"
-	walk_down
+	walk_right
 # 1229 "data/maps/RustboroCity/scripts.pory"
-	step_end
+	walk_down
 # 1230 "data/maps/RustboroCity/scripts.pory"
-
+	step_end
 # 1231 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_EventScript_Boy1::
+
 # 1232 "data/maps/RustboroCity/scripts.pory"
-	msgbox RustboroCity_Text_YouCanHave2On2Battle, MSGBOX_NPC
+RustboroCity_EventScript_Boy1::
 # 1233 "data/maps/RustboroCity/scripts.pory"
-	end
+	msgbox RustboroCity_Text_YouCanHave2On2Battle, MSGBOX_NPC
 # 1234 "data/maps/RustboroCity/scripts.pory"
-
+	end
 # 1235 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_WeShortenItToDevon:
+
 # 1236 "data/maps/RustboroCity/scripts.pory"
-	.string "The DEVON CORPORATION…\n"
+RustboroCity_Text_WeShortenItToDevon:
 # 1237 "data/maps/RustboroCity/scripts.pory"
-	.string "We all just shorten it to DEVON.\p"
+	.string "The DEVON CORPORATION…\n"
 # 1238 "data/maps/RustboroCity/scripts.pory"
-	.string "That company makes all sorts of\n"
+	.string "We all just shorten it to DEVON.\p"
 # 1239 "data/maps/RustboroCity/scripts.pory"
-	.string "convenient products.$"
+	.string "That company makes all sorts of\n"
 # 1240 "data/maps/RustboroCity/scripts.pory"
-
+	.string "convenient products.$"
 # 1241 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_SneakyLookingManWentAroundCorner:
+
 # 1242 "data/maps/RustboroCity/scripts.pory"
-	.string "Hm? A sneaky-looking man?\p"
+RustboroCity_Text_SneakyLookingManWentAroundCorner:
 # 1243 "data/maps/RustboroCity/scripts.pory"
-	.string "Come to think of it, yes, a shady-\n"
+	.string "Hm? A sneaky-looking man?\p"
 # 1244 "data/maps/RustboroCity/scripts.pory"
-	.string "looking guy went around the corner.$"
+	.string "Come to think of it, yes, a shady-\n"
 # 1245 "data/maps/RustboroCity/scripts.pory"
-
+	.string "looking guy went around the corner.$"
 # 1246 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_HaveYouChallengedGym:
+
 # 1247 "data/maps/RustboroCity/scripts.pory"
-	.string "Have you taken the POKéMON GYM\n"
+RustboroCity_Text_HaveYouChallengedGym:
 # 1248 "data/maps/RustboroCity/scripts.pory"
-	.string "challenge?\p"
+	.string "Have you taken the POKéMON GYM\n"
 # 1249 "data/maps/RustboroCity/scripts.pory"
-	.string "When you get that shiny GYM BADGE\n"
+	.string "challenge?\p"
 # 1250 "data/maps/RustboroCity/scripts.pory"
-	.string "in hand, I guess TRAINERS begin to\l"
+	.string "When you get that shiny GYM BADGE\n"
 # 1251 "data/maps/RustboroCity/scripts.pory"
-	.string "realize what is required of them.$"
+	.string "in hand, I guess TRAINERS begin to\l"
 # 1252 "data/maps/RustboroCity/scripts.pory"
-
+	.string "realize what is required of them.$"
 # 1253 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_HeyThatsRustborosGymBadge:
+
 # 1254 "data/maps/RustboroCity/scripts.pory"
-	.string "Hey, that's RUSTBORO's GYM BADGE!\p"
+RustboroCity_Text_HeyThatsRustborosGymBadge:
 # 1255 "data/maps/RustboroCity/scripts.pory"
-	.string "Out of all the POKéMON GYM BADGES,\n"
+	.string "Hey, that's RUSTBORO's GYM BADGE!\p"
 # 1256 "data/maps/RustboroCity/scripts.pory"
-	.string "RUSTBORO's is the coolest, I'd say.$"
+	.string "Out of all the POKéMON GYM BADGES,\n"
 # 1257 "data/maps/RustboroCity/scripts.pory"
-
+	.string "RUSTBORO's is the coolest, I'd say.$"
 # 1258 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_YoureNewAroundHere:
+
 # 1259 "data/maps/RustboroCity/scripts.pory"
-	.string "Oh? Who might you be?\n"
+RustboroCity_Text_YoureNewAroundHere:
 # 1260 "data/maps/RustboroCity/scripts.pory"
-	.string "You're a new face around these parts.\p"
+	.string "Oh? Who might you be?\n"
 # 1261 "data/maps/RustboroCity/scripts.pory"
-	.string "Have you just transferred into the\n"
+	.string "You're a new face around these parts.\p"
 # 1262 "data/maps/RustboroCity/scripts.pory"
-	.string "POKéMON TRAINER'S SCHOOL?$"
+	.string "Have you just transferred into the\n"
 # 1263 "data/maps/RustboroCity/scripts.pory"
-
+	.string "POKéMON TRAINER'S SCHOOL?$"
 # 1264 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_GymLeaderIsntEasyWithFire:
+
 # 1265 "data/maps/RustboroCity/scripts.pory"
-	.string "I challenged the GYM LEADER, but…\p"
+RustboroCity_Text_GymLeaderIsntEasyWithFire:
 # 1266 "data/maps/RustboroCity/scripts.pory"
-	.string "It's not going to be easy winning with\n"
+	.string "I challenged the GYM LEADER, but…\p"
 # 1267 "data/maps/RustboroCity/scripts.pory"
-	.string "my FIRE-type POKéMON…\p"
+	.string "It's not going to be easy winning with\n"
 # 1268 "data/maps/RustboroCity/scripts.pory"
-	.string "FIRE-type POKéMON don't match up\n"
+	.string "my FIRE-type POKéMON…\p"
 # 1269 "data/maps/RustboroCity/scripts.pory"
-	.string "well against ROCK-type POKéMON…$"
+	.string "FIRE-type POKéMON don't match up\n"
 # 1270 "data/maps/RustboroCity/scripts.pory"
-
+	.string "well against ROCK-type POKéMON…$"
 # 1271 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_MrBrineyWalksInTheTunnel:
+
 # 1272 "data/maps/RustboroCity/scripts.pory"
-	.string "The old sailor MR. BRINEY lives in\n"
+RustboroCity_Text_MrBrineyWalksInTheTunnel:
 # 1273 "data/maps/RustboroCity/scripts.pory"
-	.string "a cottage by the sea.\p"
-# 1274 "data/maps/RustboroCity/scripts.pory"
-	.string "He goes for walks in the tunnel every\n"
-# 1275 "data/maps/RustboroCity/scripts.pory"
-	.string "so often.$"
-# 1276 "data/maps/RustboroCity/scripts.pory"
-
-# 1277 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_MrBrineyLovesPeeko:
-# 1278 "data/maps/RustboroCity/scripts.pory"
 	.string "The old sailor MR. BRINEY lives in\n"
-# 1279 "data/maps/RustboroCity/scripts.pory"
+# 1274 "data/maps/RustboroCity/scripts.pory"
 	.string "a cottage by the sea.\p"
+# 1275 "data/maps/RustboroCity/scripts.pory"
+	.string "He goes for walks in the tunnel every\n"
+# 1276 "data/maps/RustboroCity/scripts.pory"
+	.string "so often.$"
+# 1277 "data/maps/RustboroCity/scripts.pory"
+
+# 1278 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Text_MrBrineyLovesPeeko:
+# 1279 "data/maps/RustboroCity/scripts.pory"
+	.string "The old sailor MR. BRINEY lives in\n"
 # 1280 "data/maps/RustboroCity/scripts.pory"
-	.string "He said he was going shopping in\n"
+	.string "a cottage by the sea.\p"
 # 1281 "data/maps/RustboroCity/scripts.pory"
-	.string "SLATEPORT for his pet, PEEKO.\p"
+	.string "He said he was going shopping in\n"
 # 1282 "data/maps/RustboroCity/scripts.pory"
-	.string "That old sea dog, he must really love\n"
+	.string "SLATEPORT for his pet, PEEKO.\p"
 # 1283 "data/maps/RustboroCity/scripts.pory"
-	.string "that PEEKO.$"
+	.string "That old sea dog, he must really love\n"
 # 1284 "data/maps/RustboroCity/scripts.pory"
-
+	.string "that PEEKO.$"
 # 1285 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_WowYouHavePokemon:
+
 # 1286 "data/maps/RustboroCity/scripts.pory"
-	.string "Wow, you have POKéMON with you, too.\p"
+RustboroCity_Text_WowYouHavePokemon:
 # 1287 "data/maps/RustboroCity/scripts.pory"
-	.string "When I get bigger, I'm going to go\n"
+	.string "Wow, you have POKéMON with you, too.\p"
 # 1288 "data/maps/RustboroCity/scripts.pory"
-	.string "places with POKéMON, too.$"
+	.string "When I get bigger, I'm going to go\n"
 # 1289 "data/maps/RustboroCity/scripts.pory"
-
+	.string "places with POKéMON, too.$"
 # 1290 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_CatchRarePokemonIfIGoToSchool:
+
 # 1291 "data/maps/RustboroCity/scripts.pory"
-	.string "POKéMON TRAINER'S SCHOOL!\p"
+RustboroCity_Text_CatchRarePokemonIfIGoToSchool:
 # 1292 "data/maps/RustboroCity/scripts.pory"
-	.string "If I go to this school, will I be able\n"
+	.string "POKéMON TRAINER'S SCHOOL!\p"
 # 1293 "data/maps/RustboroCity/scripts.pory"
-	.string "to catch rare POKéMON easily?$"
+	.string "If I go to this school, will I be able\n"
 # 1294 "data/maps/RustboroCity/scripts.pory"
-
+	.string "to catch rare POKéMON easily?$"
 # 1295 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_PokemonCanChangeLookFromExp:
+
 # 1296 "data/maps/RustboroCity/scripts.pory"
-	.string "If a POKéMON gains experience in\n"
+RustboroCity_Text_PokemonCanChangeLookFromExp:
 # 1297 "data/maps/RustboroCity/scripts.pory"
-	.string "battles, it can sometimes change in\l"
+	.string "If a POKéMON gains experience in\n"
 # 1298 "data/maps/RustboroCity/scripts.pory"
-	.string "the way it looks.$"
+	.string "battles, it can sometimes change in\l"
 # 1299 "data/maps/RustboroCity/scripts.pory"
-
+	.string "the way it looks.$"
 # 1300 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_PokemonChangeShape:
+
 # 1301 "data/maps/RustboroCity/scripts.pory"
-	.string "A POKéMON changes shape?\n"
+RustboroCity_Text_PokemonChangeShape:
 # 1302 "data/maps/RustboroCity/scripts.pory"
-	.string "If one did that, I would be shocked!$"
+	.string "A POKéMON changes shape?\n"
 # 1303 "data/maps/RustboroCity/scripts.pory"
-
+	.string "If one did that, I would be shocked!$"
 # 1304 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_TradePokemonGrowFast:
+
 # 1305 "data/maps/RustboroCity/scripts.pory"
-	.string "A POKéMON you get in a trade from\n"
+RustboroCity_Text_TradePokemonGrowFast:
 # 1306 "data/maps/RustboroCity/scripts.pory"
-	.string "someone grows fast.\p"
+	.string "A POKéMON you get in a trade from\n"
 # 1307 "data/maps/RustboroCity/scripts.pory"
-	.string "But if you don't have certain GYM\n"
+	.string "someone grows fast.\p"
 # 1308 "data/maps/RustboroCity/scripts.pory"
-	.string "BADGES, it may not obey you…$"
+	.string "But if you don't have certain GYM\n"
 # 1309 "data/maps/RustboroCity/scripts.pory"
-
+	.string "BADGES, it may not obey you…$"
 # 1310 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_OutOfTheWay:
+
 # 1311 "data/maps/RustboroCity/scripts.pory"
-	.string "Get out!\n"
+RustboroCity_Text_OutOfTheWay:
 # 1312 "data/maps/RustboroCity/scripts.pory"
-	.string "Out of the way!$"
+	.string "Get out!\n"
 # 1313 "data/maps/RustboroCity/scripts.pory"
-
+	.string "Out of the way!$"
 # 1314 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_WaitDontTakeMyGoods:
+
 # 1315 "data/maps/RustboroCity/scripts.pory"
-	.string "Wait! Pleeeaaase!\p"
+RustboroCity_Text_WaitDontTakeMyGoods:
 # 1316 "data/maps/RustboroCity/scripts.pory"
-	.string "Don't take my GOODS!$"
+	.string "Wait! Pleeeaaase!\p"
 # 1317 "data/maps/RustboroCity/scripts.pory"
-
+	.string "Don't take my GOODS!$"
 # 1318 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_HelpMeIWasRobbed:
+
 # 1319 "data/maps/RustboroCity/scripts.pory"
-	.string "Oh, it's you!\p"
+RustboroCity_Text_HelpMeIWasRobbed:
 # 1320 "data/maps/RustboroCity/scripts.pory"
-	.string "You're one of those fantastic\n"
+	.string "Oh, it's you!\p"
 # 1321 "data/maps/RustboroCity/scripts.pory"
-	.string "TRAINERS who helped me in\l"
+	.string "You're one of those fantastic\n"
 # 1322 "data/maps/RustboroCity/scripts.pory"
-	.string "PETALBURG WOODS!\p"
+	.string "TRAINERS who helped me in\l"
 # 1323 "data/maps/RustboroCity/scripts.pory"
-	.string "Help me! I was robbed by TEAM AQUA!\n"
+	.string "PETALBURG WOODS!\p"
 # 1324 "data/maps/RustboroCity/scripts.pory"
-	.string "I have to get the DEVON GOODS back!\p"
+	.string "Help me! I was robbed by TEAM AQUA!\n"
 # 1325 "data/maps/RustboroCity/scripts.pory"
-	.string "If I don't…\n"
+	.string "I have to get the DEVON GOODS back!\p"
 # 1326 "data/maps/RustboroCity/scripts.pory"
-	.string "I'm going to be in serious trouble.$"
+	.string "If I don't…\n"
 # 1327 "data/maps/RustboroCity/scripts.pory"
-
+	.string "I'm going to be in serious trouble.$"
 # 1328 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_ShadyCharacterTookOffTowardsTunnel:
+
 # 1329 "data/maps/RustboroCity/scripts.pory"
-	.string "That shady character, I think he took\n"
+RustboroCity_Text_ShadyCharacterTookOffTowardsTunnel:
 # 1330 "data/maps/RustboroCity/scripts.pory"
-	.string "off towards the tunnel over there.$"
+	.string "That shady character, I think he took\n"
 # 1331 "data/maps/RustboroCity/scripts.pory"
-
+	.string "off towards the tunnel over there.$"
 # 1332 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_YouGotItThankYou:
+
 # 1333 "data/maps/RustboroCity/scripts.pory"
-	.string "Oh! How did it go?\n"
+RustboroCity_Text_YouGotItThankYou:
 # 1334 "data/maps/RustboroCity/scripts.pory"
-	.string "The DEVON GOODS?\p"
+	.string "Oh! How did it go?\n"
 # 1335 "data/maps/RustboroCity/scripts.pory"
-	.string "You did!\n"
+	.string "The DEVON GOODS?\p"
 # 1336 "data/maps/RustboroCity/scripts.pory"
-	.string "You got them back!\p"
+	.string "You did!\n"
 # 1337 "data/maps/RustboroCity/scripts.pory"
-	.string "You really are a great TRAINER!\p"
+	.string "You got them back!\p"
 # 1338 "data/maps/RustboroCity/scripts.pory"
-	.string "I know! As my thanks, I'll give you\n"
+	.string "You really are a great TRAINER!\p"
 # 1339 "data/maps/RustboroCity/scripts.pory"
-	.string "another GREAT BALL!$"
+	.string "I know! As my thanks, I'll give you\n"
 # 1340 "data/maps/RustboroCity/scripts.pory"
-
+	.string "another GREAT BALL!$"
 # 1341 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_YoureLoadedWithItems:
+
 # 1342 "data/maps/RustboroCity/scripts.pory"
-	.string "You're loaded with items.\n"
+RustboroCity_Text_YoureLoadedWithItems:
 # 1343 "data/maps/RustboroCity/scripts.pory"
-	.string "I can't give you this GREAT BALL.$"
+	.string "You're loaded with items.\n"
 # 1344 "data/maps/RustboroCity/scripts.pory"
-
+	.string "I can't give you this GREAT BALL.$"
 # 1345 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_PleaseComeWithMe:
+
 # 1346 "data/maps/RustboroCity/scripts.pory"
-	.string "Excuse me, please!\n"
+RustboroCity_Text_PleaseComeWithMe:
 # 1347 "data/maps/RustboroCity/scripts.pory"
-	.string "Please come with me!$"
+	.string "Excuse me, please!\n"
 # 1348 "data/maps/RustboroCity/scripts.pory"
-
+	.string "Please come with me!$"
 # 1349 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_MayHiLetsRegister:
+
 # 1350 "data/maps/RustboroCity/scripts.pory"
-	.string "MAY: Oh, hi, {PLAYER}{KUN}!\p"
+RustboroCity_Text_MayHiLetsRegister:
 # 1351 "data/maps/RustboroCity/scripts.pory"
-	.string "You had a MATCH CALL feature put\n"
+	.string "MAY: Oh, hi, {PLAYER}{KUN}!\p"
 # 1352 "data/maps/RustboroCity/scripts.pory"
-	.string "on your POKéNAV!\p"
-# 1353 "data/maps/RustboroCity/scripts.pory"
-	.string "Let's register each other so we can\n"
-# 1354 "data/maps/RustboroCity/scripts.pory"
-	.string "contact one another anytime!\p"
-# 1355 "data/maps/RustboroCity/scripts.pory"
-	.string "… … … … … …$"
-# 1356 "data/maps/RustboroCity/scripts.pory"
-
-# 1357 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_RegisteredMay:
-# 1358 "data/maps/RustboroCity/scripts.pory"
-	.string "Registered MAY\n"
-# 1359 "data/maps/RustboroCity/scripts.pory"
-	.string "in the POKéNAV.$"
-# 1360 "data/maps/RustboroCity/scripts.pory"
-
-# 1361 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_MayPassedBrineyWantToBattle:
-# 1362 "data/maps/RustboroCity/scripts.pory"
-	.string "MAY: Oh, by the way, I passed\n"
-# 1363 "data/maps/RustboroCity/scripts.pory"
-	.string "MR. BRINEY in PETALBURG WOODS.\p"
-# 1364 "data/maps/RustboroCity/scripts.pory"
-	.string "I guess he's on his way home to his\n"
-# 1365 "data/maps/RustboroCity/scripts.pory"
-	.string "cottage by the sea.\p"
-# 1366 "data/maps/RustboroCity/scripts.pory"
-	.string "How's your POKéDEX coming along,\n"
-# 1367 "data/maps/RustboroCity/scripts.pory"
-	.string "{PLAYER}{KUN}? Mine's looking pretty decent!\p"
-# 1368 "data/maps/RustboroCity/scripts.pory"
-	.string "So…\n"
-# 1369 "data/maps/RustboroCity/scripts.pory"
-	.string "How about a little battle?$"
-# 1370 "data/maps/RustboroCity/scripts.pory"
-
-# 1371 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_MayOhHaventRaisedPokemonEnough:
-# 1372 "data/maps/RustboroCity/scripts.pory"
-	.string "MAY: Oh, what's the matter?\p"
-# 1373 "data/maps/RustboroCity/scripts.pory"
-	.string "Haven't you caught or raised your\n"
-# 1374 "data/maps/RustboroCity/scripts.pory"
-	.string "POKéMON very much?\p"
-# 1375 "data/maps/RustboroCity/scripts.pory"
-	.string "That's not very good for a TRAINER!$"
-# 1376 "data/maps/RustboroCity/scripts.pory"
-
-# 1377 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_MayWantToBattle:
-# 1378 "data/maps/RustboroCity/scripts.pory"
-	.string "MAY: So, what do you think?\n"
-# 1379 "data/maps/RustboroCity/scripts.pory"
-	.string "How about a little battle here?$"
-# 1380 "data/maps/RustboroCity/scripts.pory"
-
-# 1381 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_MayImNotGoingToLose:
-# 1382 "data/maps/RustboroCity/scripts.pory"
-	.string "MAY: You just became a TRAINER,\n"
-# 1383 "data/maps/RustboroCity/scripts.pory"
-	.string "{PLAYER}{KUN}. I'm not going to lose!$"
-# 1384 "data/maps/RustboroCity/scripts.pory"
-
-# 1385 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_MayDefeat:
-# 1386 "data/maps/RustboroCity/scripts.pory"
-	.string "Yikes!\n"
-# 1387 "data/maps/RustboroCity/scripts.pory"
-	.string "You're better than I expected!$"
-# 1388 "data/maps/RustboroCity/scripts.pory"
-
-# 1389 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_MayMrBrineyHint:
-# 1390 "data/maps/RustboroCity/scripts.pory"
-	.string "MAY: Oh, by the way, MR. BRINEY, who\n"
-# 1391 "data/maps/RustboroCity/scripts.pory"
-	.string "I just passed…\p"
-# 1392 "data/maps/RustboroCity/scripts.pory"
-	.string "{PLAYER}{KUN}, you just moved here so you\n"
-# 1393 "data/maps/RustboroCity/scripts.pory"
-	.string "might not know this, but MR. BRINEY\l"
-# 1394 "data/maps/RustboroCity/scripts.pory"
-	.string "was once a revered seafarer.$"
-# 1395 "data/maps/RustboroCity/scripts.pory"
-
-# 1396 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_BrendanHiLetsRegister:
-# 1397 "data/maps/RustboroCity/scripts.pory"
-	.string "BRENDAN: Oh, hey, {PLAYER}!\p"
-# 1398 "data/maps/RustboroCity/scripts.pory"
 	.string "You had a MATCH CALL feature put\n"
-# 1399 "data/maps/RustboroCity/scripts.pory"
-	.string "on your POKéNAV! Cool!\p"
-# 1400 "data/maps/RustboroCity/scripts.pory"
+# 1353 "data/maps/RustboroCity/scripts.pory"
+	.string "on your POKéNAV!\p"
+# 1354 "data/maps/RustboroCity/scripts.pory"
 	.string "Let's register each other so we can\n"
-# 1401 "data/maps/RustboroCity/scripts.pory"
-	.string "get in touch anytime!\p"
-# 1402 "data/maps/RustboroCity/scripts.pory"
+# 1355 "data/maps/RustboroCity/scripts.pory"
+	.string "contact one another anytime!\p"
+# 1356 "data/maps/RustboroCity/scripts.pory"
 	.string "… … … … … …$"
-# 1403 "data/maps/RustboroCity/scripts.pory"
+# 1357 "data/maps/RustboroCity/scripts.pory"
 
-# 1404 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_RegisteredBrendan:
-# 1405 "data/maps/RustboroCity/scripts.pory"
-	.string "Registered BRENDAN\n"
-# 1406 "data/maps/RustboroCity/scripts.pory"
+# 1358 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Text_RegisteredMay:
+# 1359 "data/maps/RustboroCity/scripts.pory"
+	.string "Registered MAY\n"
+# 1360 "data/maps/RustboroCity/scripts.pory"
 	.string "in the POKéNAV.$"
-# 1407 "data/maps/RustboroCity/scripts.pory"
+# 1361 "data/maps/RustboroCity/scripts.pory"
 
-# 1408 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_BrendanPassedBrineyWantToBattle:
-# 1409 "data/maps/RustboroCity/scripts.pory"
-	.string "BRENDAN: By the way, {PLAYER}, I walked\n"
-# 1410 "data/maps/RustboroCity/scripts.pory"
-	.string "by MR. BRINEY in PETALBURG WOODS.\p"
-# 1411 "data/maps/RustboroCity/scripts.pory"
-	.string "I bet he was on his way home to his\n"
-# 1412 "data/maps/RustboroCity/scripts.pory"
+# 1362 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Text_MayPassedBrineyWantToBattle:
+# 1363 "data/maps/RustboroCity/scripts.pory"
+	.string "MAY: Oh, by the way, I passed\n"
+# 1364 "data/maps/RustboroCity/scripts.pory"
+	.string "MR. BRINEY in PETALBURG WOODS.\p"
+# 1365 "data/maps/RustboroCity/scripts.pory"
+	.string "I guess he's on his way home to his\n"
+# 1366 "data/maps/RustboroCity/scripts.pory"
 	.string "cottage by the sea.\p"
+# 1367 "data/maps/RustboroCity/scripts.pory"
+	.string "How's your POKéDEX coming along,\n"
+# 1368 "data/maps/RustboroCity/scripts.pory"
+	.string "{PLAYER}{KUN}? Mine's looking pretty decent!\p"
+# 1369 "data/maps/RustboroCity/scripts.pory"
+	.string "So…\n"
+# 1370 "data/maps/RustboroCity/scripts.pory"
+	.string "How about a little battle?$"
+# 1371 "data/maps/RustboroCity/scripts.pory"
+
+# 1372 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Text_MayOhHaventRaisedPokemonEnough:
+# 1373 "data/maps/RustboroCity/scripts.pory"
+	.string "MAY: Oh, what's the matter?\p"
+# 1374 "data/maps/RustboroCity/scripts.pory"
+	.string "Haven't you caught or raised your\n"
+# 1375 "data/maps/RustboroCity/scripts.pory"
+	.string "POKéMON very much?\p"
+# 1376 "data/maps/RustboroCity/scripts.pory"
+	.string "That's not very good for a TRAINER!$"
+# 1377 "data/maps/RustboroCity/scripts.pory"
+
+# 1378 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Text_MayWantToBattle:
+# 1379 "data/maps/RustboroCity/scripts.pory"
+	.string "MAY: So, what do you think?\n"
+# 1380 "data/maps/RustboroCity/scripts.pory"
+	.string "How about a little battle here?$"
+# 1381 "data/maps/RustboroCity/scripts.pory"
+
+# 1382 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Text_MayImNotGoingToLose:
+# 1383 "data/maps/RustboroCity/scripts.pory"
+	.string "MAY: You just became a TRAINER,\n"
+# 1384 "data/maps/RustboroCity/scripts.pory"
+	.string "{PLAYER}{KUN}. I'm not going to lose!$"
+# 1385 "data/maps/RustboroCity/scripts.pory"
+
+# 1386 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Text_MayDefeat:
+# 1387 "data/maps/RustboroCity/scripts.pory"
+	.string "Yikes!\n"
+# 1388 "data/maps/RustboroCity/scripts.pory"
+	.string "You're better than I expected!$"
+# 1389 "data/maps/RustboroCity/scripts.pory"
+
+# 1390 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Text_MayMrBrineyHint:
+# 1391 "data/maps/RustboroCity/scripts.pory"
+	.string "MAY: Oh, by the way, MR. BRINEY, who\n"
+# 1392 "data/maps/RustboroCity/scripts.pory"
+	.string "I just passed…\p"
+# 1393 "data/maps/RustboroCity/scripts.pory"
+	.string "{PLAYER}{KUN}, you just moved here so you\n"
+# 1394 "data/maps/RustboroCity/scripts.pory"
+	.string "might not know this, but MR. BRINEY\l"
+# 1395 "data/maps/RustboroCity/scripts.pory"
+	.string "was once a revered seafarer.$"
+# 1396 "data/maps/RustboroCity/scripts.pory"
+
+# 1397 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Text_BrendanHiLetsRegister:
+# 1398 "data/maps/RustboroCity/scripts.pory"
+	.string "BRENDAN: Oh, hey, {PLAYER}!\p"
+# 1399 "data/maps/RustboroCity/scripts.pory"
+	.string "You had a MATCH CALL feature put\n"
+# 1400 "data/maps/RustboroCity/scripts.pory"
+	.string "on your POKéNAV! Cool!\p"
+# 1401 "data/maps/RustboroCity/scripts.pory"
+	.string "Let's register each other so we can\n"
+# 1402 "data/maps/RustboroCity/scripts.pory"
+	.string "get in touch anytime!\p"
+# 1403 "data/maps/RustboroCity/scripts.pory"
+	.string "… … … … … …$"
+# 1404 "data/maps/RustboroCity/scripts.pory"
+
+# 1405 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Text_RegisteredBrendan:
+# 1406 "data/maps/RustboroCity/scripts.pory"
+	.string "Registered BRENDAN\n"
+# 1407 "data/maps/RustboroCity/scripts.pory"
+	.string "in the POKéNAV.$"
+# 1408 "data/maps/RustboroCity/scripts.pory"
+
+# 1409 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Text_BrendanPassedBrineyWantToBattle:
+# 1410 "data/maps/RustboroCity/scripts.pory"
+	.string "BRENDAN: By the way, {PLAYER}, I walked\n"
+# 1411 "data/maps/RustboroCity/scripts.pory"
+	.string "by MR. BRINEY in PETALBURG WOODS.\p"
+# 1412 "data/maps/RustboroCity/scripts.pory"
+	.string "I bet he was on his way home to his\n"
 # 1413 "data/maps/RustboroCity/scripts.pory"
-	.string "{PLAYER}, how's your POKéDEX?\n"
+	.string "cottage by the sea.\p"
 # 1414 "data/maps/RustboroCity/scripts.pory"
-	.string "Have you filled in any pages yet?\p"
+	.string "{PLAYER}, how's your POKéDEX?\n"
 # 1415 "data/maps/RustboroCity/scripts.pory"
-	.string "Mine rules.\p"
+	.string "Have you filled in any pages yet?\p"
 # 1416 "data/maps/RustboroCity/scripts.pory"
-	.string "Want to have a battle to test how\n"
+	.string "Mine rules.\p"
 # 1417 "data/maps/RustboroCity/scripts.pory"
-	.string "far you've progressed?$"
+	.string "Want to have a battle to test how\n"
 # 1418 "data/maps/RustboroCity/scripts.pory"
-
+	.string "far you've progressed?$"
 # 1419 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_BrendanNoConfidenceInPokemon:
+
 # 1420 "data/maps/RustboroCity/scripts.pory"
-	.string "BRENDAN: What's the matter? Don't have\n"
+RustboroCity_Text_BrendanNoConfidenceInPokemon:
 # 1421 "data/maps/RustboroCity/scripts.pory"
-	.string "any confidence in your POKéMON?$"
+	.string "BRENDAN: What's the matter? Don't have\n"
 # 1422 "data/maps/RustboroCity/scripts.pory"
-
+	.string "any confidence in your POKéMON?$"
 # 1423 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_BrendanWantToBattle:
+
 # 1424 "data/maps/RustboroCity/scripts.pory"
-	.string "BRENDAN: What's up?\n"
+RustboroCity_Text_BrendanWantToBattle:
 # 1425 "data/maps/RustboroCity/scripts.pory"
-	.string "Want to have a battle with me?$"
+	.string "BRENDAN: What's up?\n"
 # 1426 "data/maps/RustboroCity/scripts.pory"
-
+	.string "Want to have a battle with me?$"
 # 1427 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_BrendanIWontGoEasy:
+
 # 1428 "data/maps/RustboroCity/scripts.pory"
-	.string "BRENDAN: I know you just became\n"
+RustboroCity_Text_BrendanIWontGoEasy:
 # 1429 "data/maps/RustboroCity/scripts.pory"
-	.string "a TRAINER, but I won't go easy!$"
+	.string "BRENDAN: I know you just became\n"
 # 1430 "data/maps/RustboroCity/scripts.pory"
-
+	.string "a TRAINER, but I won't go easy!$"
 # 1431 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_BrendanDefeat:
+
 # 1432 "data/maps/RustboroCity/scripts.pory"
-	.string "Hmm…\n"
+RustboroCity_Text_BrendanDefeat:
 # 1433 "data/maps/RustboroCity/scripts.pory"
-	.string "You're pretty good.$"
+	.string "Hmm…\n"
 # 1434 "data/maps/RustboroCity/scripts.pory"
-
+	.string "You're pretty good.$"
 # 1435 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_BrendanMrBrineyHint:
+
 # 1436 "data/maps/RustboroCity/scripts.pory"
-	.string "BRENDAN: By the way, you know\n"
+RustboroCity_Text_BrendanMrBrineyHint:
 # 1437 "data/maps/RustboroCity/scripts.pory"
-	.string "MR. BRINEY? The guy I just passed?\p"
+	.string "BRENDAN: By the way, you know\n"
 # 1438 "data/maps/RustboroCity/scripts.pory"
-	.string "I bet you didn't know this, since you\n"
+	.string "MR. BRINEY? The guy I just passed?\p"
 # 1439 "data/maps/RustboroCity/scripts.pory"
-	.string "just moved here, {PLAYER}, but\l"
+	.string "I bet you didn't know this, since you\n"
 # 1440 "data/maps/RustboroCity/scripts.pory"
-	.string "MR. BRINEY was once a great sailor.$"
+	.string "just moved here, {PLAYER}, but\l"
 # 1441 "data/maps/RustboroCity/scripts.pory"
-
+	.string "MR. BRINEY was once a great sailor.$"
 # 1442 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_TunnelNearingCompletion:
+
 # 1443 "data/maps/RustboroCity/scripts.pory"
-	.string "“Timesaving tunnel nearing\n"
+RustboroCity_Text_TunnelNearingCompletion:
 # 1444 "data/maps/RustboroCity/scripts.pory"
-	.string "completion!”\p"
+	.string "“Timesaving tunnel nearing\n"
 # 1445 "data/maps/RustboroCity/scripts.pory"
-	.string "…Is what it says on the sign, but\n"
+	.string "completion!”\p"
 # 1446 "data/maps/RustboroCity/scripts.pory"
-	.string "there's also a big “X” splashed\l"
+	.string "…Is what it says on the sign, but\n"
 # 1447 "data/maps/RustboroCity/scripts.pory"
-	.string "across it in red paint…$"
+	.string "there's also a big “X” splashed\l"
 # 1448 "data/maps/RustboroCity/scripts.pory"
-
+	.string "across it in red paint…$"
 # 1449 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_DevonCorpSign:
+
 # 1450 "data/maps/RustboroCity/scripts.pory"
-	.string "DEVON CORPORATION\p"
+RustboroCity_Text_DevonCorpSign:
 # 1451 "data/maps/RustboroCity/scripts.pory"
-	.string "“For all your living needs, we make\n"
+	.string "DEVON CORPORATION\p"
 # 1452 "data/maps/RustboroCity/scripts.pory"
-	.string "it all.”$"
+	.string "“For all your living needs, we make\n"
 # 1453 "data/maps/RustboroCity/scripts.pory"
-
+	.string "it all.”$"
 # 1454 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_GymSign:
+
 # 1455 "data/maps/RustboroCity/scripts.pory"
-	.string "RUSTBORO CITY POKéMON GYM\n"
+RustboroCity_Text_GymSign:
 # 1456 "data/maps/RustboroCity/scripts.pory"
-	.string "LEADER: ROXANNE\p"
+	.string "RUSTBORO CITY POKéMON GYM\n"
 # 1457 "data/maps/RustboroCity/scripts.pory"
-	.string "“The ROCK-loving honors student!”$"
+	.string "LEADER: ROXANNE\p"
 # 1458 "data/maps/RustboroCity/scripts.pory"
-
+	.string "“The ROCK-loving honors student!”$"
 # 1459 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_DevonCorpBranchOfficeSign:
+
 # 1460 "data/maps/RustboroCity/scripts.pory"
-	.string "DEVON CORP. BRANCH OFFICE\p"
+RustboroCity_Text_DevonCorpBranchOfficeSign:
 # 1461 "data/maps/RustboroCity/scripts.pory"
-	.string "“Access limited to DEVON employees\n"
+	.string "DEVON CORP. BRANCH OFFICE\p"
 # 1462 "data/maps/RustboroCity/scripts.pory"
-	.string "and authorized personnel.”$"
+	.string "“Access limited to DEVON employees\n"
 # 1463 "data/maps/RustboroCity/scripts.pory"
-
+	.string "and authorized personnel.”$"
 # 1464 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_CitySign:
+
 # 1465 "data/maps/RustboroCity/scripts.pory"
-	.string "RUSTBORO CITY\p"
+RustboroCity_Text_CitySign:
 # 1466 "data/maps/RustboroCity/scripts.pory"
-	.string "“The city probing the integration of\n"
+	.string "RUSTBORO CITY\p"
 # 1467 "data/maps/RustboroCity/scripts.pory"
-	.string "nature and science.”$"
+	.string "“The city probing the integration of\n"
 # 1468 "data/maps/RustboroCity/scripts.pory"
-
+	.string "nature and science.”$"
 # 1469 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_TrainersSchoolSign:
+
 # 1470 "data/maps/RustboroCity/scripts.pory"
-	.string "POKéMON TRAINER'S SCHOOL\p"
+RustboroCity_Text_TrainersSchoolSign:
 # 1471 "data/maps/RustboroCity/scripts.pory"
-	.string "“We'll teach you anything about\n"
+	.string "POKéMON TRAINER'S SCHOOL\p"
 # 1472 "data/maps/RustboroCity/scripts.pory"
-	.string "POKéMON!”$"
+	.string "“We'll teach you anything about\n"
 # 1473 "data/maps/RustboroCity/scripts.pory"
-
+	.string "POKéMON!”$"
 # 1474 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_CuttersHouse:
+
 # 1475 "data/maps/RustboroCity/scripts.pory"
-	.string "CUTTER'S HOUSE$"
+RustboroCity_Text_CuttersHouse:
 # 1476 "data/maps/RustboroCity/scripts.pory"
-
+	.string "CUTTER'S HOUSE$"
 # 1477 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_DevelopedNewPokenavFeature:
+
 # 1478 "data/maps/RustboroCity/scripts.pory"
-	.string "I've been developing an added feature\n"
+RustboroCity_Text_DevelopedNewPokenavFeature:
 # 1479 "data/maps/RustboroCity/scripts.pory"
-	.string "for the POKéNAV…\p"
+	.string "I've been developing an added feature\n"
 # 1480 "data/maps/RustboroCity/scripts.pory"
-	.string "And it turned out great!\p"
+	.string "for the POKéNAV…\p"
 # 1481 "data/maps/RustboroCity/scripts.pory"
-	.string "{PLAYER}, may I see that POKéNAV?\n"
+	.string "And it turned out great!\p"
 # 1482 "data/maps/RustboroCity/scripts.pory"
-	.string "The one our PRESIDENT gave you?$"
+	.string "{PLAYER}, may I see that POKéNAV?\n"
 # 1483 "data/maps/RustboroCity/scripts.pory"
-
+	.string "The one our PRESIDENT gave you?$"
 # 1484 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_AddedMatchCallPleaseCallMrStone:
+
 # 1485 "data/maps/RustboroCity/scripts.pory"
-	.string "There you go, {PLAYER}!\p"
+RustboroCity_Text_AddedMatchCallPleaseCallMrStone:
 # 1486 "data/maps/RustboroCity/scripts.pory"
-	.string "I added a new feature named\n"
+	.string "There you go, {PLAYER}!\p"
 # 1487 "data/maps/RustboroCity/scripts.pory"
-	.string "MATCH CALL to your POKéNAV.\p"
+	.string "I added a new feature named\n"
 # 1488 "data/maps/RustboroCity/scripts.pory"
-	.string "Using the MATCH CALL feature,\n"
+	.string "MATCH CALL to your POKéNAV.\p"
 # 1489 "data/maps/RustboroCity/scripts.pory"
-	.string "you can chat with people who have\l"
+	.string "Using the MATCH CALL feature,\n"
 # 1490 "data/maps/RustboroCity/scripts.pory"
-	.string "been registered in your POKéNAV.\p"
+	.string "you can chat with people who have\l"
 # 1491 "data/maps/RustboroCity/scripts.pory"
-	.string "{PLAYER}, our PRESIDENT STONE should\n"
+	.string "been registered in your POKéNAV.\p"
 # 1492 "data/maps/RustboroCity/scripts.pory"
-	.string "be registered in your POKéNAV.\p"
+	.string "{PLAYER}, our PRESIDENT STONE should\n"
 # 1493 "data/maps/RustboroCity/scripts.pory"
-	.string "Test it out.\n"
+	.string "be registered in your POKéNAV.\p"
 # 1494 "data/maps/RustboroCity/scripts.pory"
-	.string "Please give our PRESIDENT a call.$"
+	.string "Test it out.\n"
 # 1495 "data/maps/RustboroCity/scripts.pory"
-
+	.string "Please give our PRESIDENT a call.$"
 # 1496 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_PleaseSelectPokenav:
+
 # 1497 "data/maps/RustboroCity/scripts.pory"
-	.string "Please select the POKéNAV.$"
+RustboroCity_Text_PleaseSelectPokenav:
 # 1498 "data/maps/RustboroCity/scripts.pory"
-
+	.string "Please select the POKéNAV.$"
 # 1499 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_IdBetterGetBackToWork:
-# 1500 "data/maps/RustboroCity/scripts.pory"
-	.string "Okay, I'd better get back to work.\n"
-# 1501 "data/maps/RustboroCity/scripts.pory"
-	.string "Please take care, {PLAYER}!$"
-# 1502 "data/maps/RustboroCity/scripts.pory"
 
+# 1500 "data/maps/RustboroCity/scripts.pory"
+RustboroCity_Text_IdBetterGetBackToWork:
+# 1501 "data/maps/RustboroCity/scripts.pory"
+	.string "Okay, I'd better get back to work.\n"
+# 1502 "data/maps/RustboroCity/scripts.pory"
+	.string "Please take care, {PLAYER}!$"
 # 1503 "data/maps/RustboroCity/scripts.pory"
-RustboroCity_Text_YouCanHave2On2Battle:
+
 # 1504 "data/maps/RustboroCity/scripts.pory"
-	.string "Did you know this?\p"
+RustboroCity_Text_YouCanHave2On2Battle:
 # 1505 "data/maps/RustboroCity/scripts.pory"
-	.string "You can have a 2-on-2 battle even\n"
+	.string "Did you know this?\p"
 # 1506 "data/maps/RustboroCity/scripts.pory"
-	.string "if you're not with another TRAINER.\p"
+	.string "You can have a 2-on-2 battle even\n"
 # 1507 "data/maps/RustboroCity/scripts.pory"
-	.string "If you catch the eyes of two TRAINERS\n"
+	.string "if you're not with another TRAINER.\p"
 # 1508 "data/maps/RustboroCity/scripts.pory"
-	.string "when you have two or more POKéMON,\l"
+	.string "If you catch the eyes of two TRAINERS\n"
 # 1509 "data/maps/RustboroCity/scripts.pory"
-	.string "they'll both challenge you.\p"
+	.string "when you have two or more POKéMON,\l"
 # 1510 "data/maps/RustboroCity/scripts.pory"
-	.string "Don't you think it'd be cool if you\n"
+	.string "they'll both challenge you.\p"
 # 1511 "data/maps/RustboroCity/scripts.pory"
+	.string "Don't you think it'd be cool if you\n"
+# 1512 "data/maps/RustboroCity/scripts.pory"
 	.string "could beat two TRAINERS by yourself?$"
 
 RustboroCity_Text_YoPlayer::
-# 755 "data/maps/RustboroCity/scripts.pory"
+# 756 "data/maps/RustboroCity/scripts.pory"
 	.string "Yo! {PLAYER}!$"
 
 RustboroCity_Text_WhatsGoingOn::
-# 759 "data/maps/RustboroCity/scripts.pory"
+# 760 "data/maps/RustboroCity/scripts.pory"
 	.string "I heard there was a commotion going on\n"
 	.string "here. What's going on?$"
 
 RustboroCity_Text_GuyGotMugged::
-# 764 "data/maps/RustboroCity/scripts.pory"
+# 765 "data/maps/RustboroCity/scripts.pory"
 	.string "So this guy got mugged? That's\n"
 	.string "absolutely despicable!$"
 
 RustboroCity_Text_DontWorrySir::
-# 768 "data/maps/RustboroCity/scripts.pory"
+# 769 "data/maps/RustboroCity/scripts.pory"
 	.string "Don't worry, sir. {PLAYER} and I will\n"
 	.string "get your GOODS back.$"
 
 RustboroCity_Text_ThankBothOfYou::
-# 772 "data/maps/RustboroCity/scripts.pory"
+# 773 "data/maps/RustboroCity/scripts.pory"
 	.string "Oh, thank you! Both of you!\n"
 	.string "I do hope you can get them back.$"
 
 RustboroCity_Text_LetsGoCatchMugger::
-# 777 "data/maps/RustboroCity/scripts.pory"
+# 778 "data/maps/RustboroCity/scripts.pory"
 	.string "C'mon, {PLAYER}!\n"
 	.string "Let's go catch that mugger!$"

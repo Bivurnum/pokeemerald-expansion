@@ -283,5 +283,6 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_PETALBURG_RIVAL2
 	setflag FLAG_HIDE_PETALBURG_WOODS_RIVAL2
 	setflag FLAG_HIDE_RUSTBORO_RIVAL1
+	setflag FLAG_HIDE_ROUTE_116_RIVAL1
 	call EventScript_ResetAllBerries
 	end
