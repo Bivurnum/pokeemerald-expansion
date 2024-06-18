@@ -353,14 +353,15 @@ script RusturfTunnel_EventScript_Grunt {
 	waitmovement (0)
 	msgbox (RusturfTunnel_Text_LetMeHealYourTeam, MSGBOX_DEFAULT)
 	closemessage
-	call (Common_EventScript_OutOfCenterPartyHeal)
+	call (Common_EventScript_FieldPartyHeal)
 	msgbox (RusturfTunnel_Text_LetsGetOutOfTunnel, MSGBOX_DEFAULT)
 	closemessage
 	special (SpawnCameraObject)
 	applymovement (OBJ_EVENT_ID_PLAYER, RusturfTunnel_Movement_LeaveTunnel)
 	applymovement (LOCALID_RIVAL1, RusturfTunnel_Movement_LeaveTunnel)
 	fadescreenspeed (FADE_TO_BLACK, 8)
-	waitstate
+	waitmovement (0)
+	special (RemoveCameraObject)
 	clearflag (FLAG_DEVON_GOODS_STOLEN)
 	setflag (FLAG_RECOVERED_DEVON_GOODS)
 	setvar (VAR_RUSTBORO_CITY_STATE, 4)
@@ -375,14 +376,15 @@ script RusturfTunnel_EventScript_Grunt {
 }
 
 movement RusturfTunnel_Movement_RivalApproachPeeko1 {
-	delay_16
+	delay_16 * 3
+	delay_8
 	walk_right * 4
 }
 
 movement RusturfTunnel_Movement_RivalWatchBrineyLeave {
 	delay_16
 	face_up
-	delay_16
+	delay_16 * 3
 	face_left
 }
 

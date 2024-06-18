@@ -728,6 +728,14 @@ Common_EventScript_OutOfCenterPartyHeal::
 	fadescreen FADE_FROM_BLACK
 	return
 
+Common_EventScript_FieldPartyHeal::
+	fadescreen FADE_TO_BLACK
+	playse SE_USE_ITEM
+	waitse
+	special HealPlayerParty
+	fadescreen FADE_FROM_BLACK
+	return
+
 EventScript_RegionMap::
 	lockall
 	msgbox Common_Text_LookCloserAtMap, MSGBOX_DEFAULT

@@ -96,7 +96,9 @@ typedef union {
     const struct MatchCallStructTrainer *trainer;
     const struct MatchCallWally *wally;
     const struct MatchCallBirch *birch;
-    const struct MatchCallRival *rival;
+    const struct MatchCallRival *rivalspencer;
+    const struct MatchCallRival *rivalbren;
+    const struct MatchCallRival *rivalkyle;
     const struct MatchCallStructTrainer *leader;
 } match_call_t;
 
@@ -280,7 +282,7 @@ static const struct MatchCallRival sMayMatchCallHeader =
     .playerGender = MALE,
     .flag = FLAG_ENABLE_RIVAL_MATCH_CALL,
     .desc = gText_MayBrendanMatchCallDesc,
-    .name = gText_ExpandedPlaceholder_May,
+    .name = gText_BirchSpencer,
     .textData = sMayTextScripts
 };
 
@@ -306,11 +308,40 @@ static const match_call_text_data_t sBrendanTextScripts[] = {
 static const struct MatchCallRival sBrendanMatchCallHeader =
 {
     .type = MC_TYPE_RIVAL,
-    .playerGender = FEMALE,
+    .playerGender = MALE,
     .flag = FLAG_ENABLE_RIVAL_MATCH_CALL,
     .desc = gText_MayBrendanMatchCallDesc,
     .name = gText_ExpandedPlaceholder_Brendan,
     .textData = sBrendanTextScripts
+};
+
+static const match_call_text_data_t sKyleTextScripts[] = {
+    { MatchCall_Text_Brendan1,  0xFFFF,                              0xFFFF },
+    { MatchCall_Text_Brendan2,  FLAG_DEFEATED_DEWFORD_GYM,           0xFFFF },
+    { MatchCall_Text_Brendan3,  FLAG_DELIVERED_DEVON_GOODS,          0xFFFF },
+    { MatchCall_Text_Brendan4,  FLAG_HIDE_MAUVILLE_CITY_WALLY,       0xFFFF },
+    { MatchCall_Text_Brendan5,  FLAG_RECEIVED_HM_STRENGTH,           0xFFFF },
+    { MatchCall_Text_Brendan6,  FLAG_DEFEATED_LAVARIDGE_GYM,         0xFFFF },
+    { MatchCall_Text_Brendan7,  FLAG_DEFEATED_PETALBURG_GYM,         0xFFFF },
+    { MatchCall_Text_Brendan8,  FLAG_RECEIVED_CASTFORM,              0xFFFF },
+    { MatchCall_Text_Brendan9,  FLAG_RECEIVED_RED_OR_BLUE_ORB,       0xFFFF },
+    { MatchCall_Text_Brendan10, FLAG_GROUDON_AWAKENED_MAGMA_HIDEOUT, 0xFFFF },
+    { MatchCall_Text_Brendan11, FLAG_MET_TEAM_AQUA_HARBOR,           0xFFFF },
+    { MatchCall_Text_Brendan12, FLAG_TEAM_AQUA_ESCAPED_IN_SUBMARINE, 0xFFFF },
+    { MatchCall_Text_Brendan13, FLAG_KYOGRE_ESCAPED_SEAFLOOR_CAVERN, 0xFFFF },
+    { MatchCall_Text_Brendan14, FLAG_DEFEATED_SOOTOPOLIS_GYM,        0xFFFF },
+    { MatchCall_Text_Brendan15, FLAG_SYS_GAME_CLEAR,                 0xFFFF },
+    { NULL,                     0xFFFF,                              0xFFFF }
+};
+
+static const struct MatchCallRival sKyleMatchCallHeader =
+{
+    .type = MC_TYPE_RIVAL,
+    .playerGender = MALE,
+    .flag = FLAG_ENABLE_RIVAL_MATCH_CALL,
+    .desc = gText_MayBrendanMatchCallDesc,
+    .name = gText_BirchKyle,
+    .textData = sKyleTextScripts
 };
 
 static const match_call_text_data_t sWallyTextScripts[] = {
@@ -580,8 +611,9 @@ static const struct MatchCallStructTrainer sWallaceMatchCallHeader =
 static const match_call_t sMatchCallHeaders[] = {
     [MC_HEADER_MR_STONE]   = {.npc    = &sMrStoneMatchCallHeader},
     [MC_HEADER_PROF_BIRCH] = {.birch  = &sProfBirchMatchCallHeader},
-    [MC_HEADER_BRENDAN]    = {.rival  = &sBrendanMatchCallHeader},
-    [MC_HEADER_MAY]        = {.rival  = &sMayMatchCallHeader},
+    [MC_HEADER_SPENCER]    = {.rival  = &sBrendanMatchCallHeader},
+    [MC_HEADER_BREN]       = {.rival  = &sMayMatchCallHeader},
+    [MC_HEADER_KYLE]       = {.rival  = &sKyleMatchCallHeader},
     [MC_HEADER_WALLY]      = {.wally  = &sWallyMatchCallHeader},
     [MC_HEADER_NORMAN]     = {.leader = &sNormanMatchCallHeader},
     [MC_HEADER_MOM]        = {.npc    = &sMomMatchCallHeader},
@@ -681,16 +713,22 @@ static const struct MatchCallCheckPageOverride sCheckPageOverrides[] = {
         }
     },
     {
-        .idx = MC_HEADER_BRENDAN,
-        .facilityClass = FACILITY_CLASS_BRENDAN,
+        .idx = MC_HEADER_SPENCER,
+        .facilityClass = FACILITY_CLASS_FRIEND_SPENCER,
         .flag = 0xFFFF,
         .flavorTexts = MCFLAVOR(Brendan)
     },
     {
-        .idx = MC_HEADER_MAY,
-        .facilityClass = FACILITY_CLASS_MAY,
+        .idx = MC_HEADER_BREN,
+        .facilityClass = FACILITY_CLASS_FRIEND_BREN,
         .flag = 0xFFFF,
         .flavorTexts = MCFLAVOR(May)
+    },
+    {
+        .idx = MC_HEADER_KYLE,
+        .facilityClass = FACILITY_CLASS_FRIEND_KYLE,
+        .flag = 0xFFFF,
+        .flavorTexts = MCFLAVOR(Kyle)
     }
 };
 

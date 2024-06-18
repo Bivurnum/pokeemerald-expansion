@@ -41,10 +41,10 @@ Route116_EventScript_SetWandasBoyfriendPos::
 # 28 "data/maps/Route116/scripts.pory"
 	setobjectxyperm 21, 38, 10
 # 29 "data/maps/Route116/scripts.pory"
-	compare VAR_RUSTBORO_CITY_STATE, 3
+	compare VAR_RUSTBORO_CITY_STATE, 4
 	goto_if_eq Route116_EventScript_SetWandasBoyfriendPos_2
 # 29 "data/maps/Route116/scripts.pory"
-	compare VAR_RUSTBORO_CITY_STATE, 4
+	compare VAR_RUSTBORO_CITY_STATE, 5
 	goto_if_eq Route116_EventScript_SetWandasBoyfriendPos_2
 Route116_EventScript_SetWandasBoyfriendPos_1:
 	return
@@ -52,934 +52,929 @@ Route116_EventScript_SetWandasBoyfriendPos_1:
 Route116_EventScript_SetWandasBoyfriendPos_2:
 # 30 "data/maps/Route116/scripts.pory"
 	setobjectxyperm 30, 46, 9
+# 31 "data/maps/Route116/scripts.pory"
+	setobjectmovementtype 30, MOVEMENT_TYPE_FACE_DOWN
 	goto Route116_EventScript_SetWandasBoyfriendPos_1
 
 
-# 35 "data/maps/Route116/scripts.pory"
-
 # 36 "data/maps/Route116/scripts.pory"
-Route116_OnLoad:
-# 37 "data/maps/Route116/scripts.pory"
-	call_if_eq VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_ROUTE_116_NORTH, AbnormalWeather_EventScript_PlaceTilesRoute116North
-# 38 "data/maps/Route116/scripts.pory"
-	call_if_eq VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_ROUTE_116_SOUTH, AbnormalWeather_EventScript_PlaceTilesRoute116South
-# 39 "data/maps/Route116/scripts.pory"
-	end
-# 40 "data/maps/Route116/scripts.pory"
 
+# 37 "data/maps/Route116/scripts.pory"
+Route116_OnLoad:
+# 38 "data/maps/Route116/scripts.pory"
+	call_if_eq VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_ROUTE_116_NORTH, AbnormalWeather_EventScript_PlaceTilesRoute116North
+# 39 "data/maps/Route116/scripts.pory"
+	call_if_eq VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_ROUTE_116_SOUTH, AbnormalWeather_EventScript_PlaceTilesRoute116South
+# 40 "data/maps/Route116/scripts.pory"
+	end
 # 41 "data/maps/Route116/scripts.pory"
-Route116_OnFrame:
+
 # 42 "data/maps/Route116/scripts.pory"
-	map_script_2 VAR_SHOULD_END_ABNORMAL_WEATHER, 1, AbnormalWeather_EventScript_EndEventAndCleanup_1
+Route116_OnFrame:
 # 43 "data/maps/Route116/scripts.pory"
-	map_script_2 VAR_RUSTURF_TUNNEL_STATE, 4, Route116_EventScript_TalkToRivalAfterAquaBattle
+	map_script_2 VAR_SHOULD_END_ABNORMAL_WEATHER, 1, AbnormalWeather_EventScript_EndEventAndCleanup_1
 # 44 "data/maps/Route116/scripts.pory"
+	map_script_2 VAR_RUSTURF_TUNNEL_STATE, 4, Route116_EventScript_TalkToRivalAfterAquaBattle
+# 45 "data/maps/Route116/scripts.pory"
 	.2byte 0
 
 Route116_EventScript_TalkToRivalAfterAquaBattle::
-# 48 "data/maps/Route116/scripts.pory"
-	goto_if_unset FLAG_HIDE_ROUTE_116_MR_BRINEY, Route116_EventScript_TalkToRivalAfterAquaBattle_2
-# 51 "data/maps/Route116/scripts.pory"
+# 49 "data/maps/Route116/scripts.pory"
 	lockall
-# 52 "data/maps/Route116/scripts.pory"
+# 50 "data/maps/Route116/scripts.pory"
 	setvar VAR_RUSTURF_TUNNEL_STATE, 5
-# 53 "data/maps/Route116/scripts.pory"
+# 51 "data/maps/Route116/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
-# 54 "data/maps/Route116/scripts.pory"
+# 52 "data/maps/Route116/scripts.pory"
 	applymovement 30, Common_Movement_BeginTalkRight
-# 55 "data/maps/Route116/scripts.pory"
+# 53 "data/maps/Route116/scripts.pory"
 	waitmovement 0
-# 56 "data/maps/Route116/scripts.pory"
+# 54 "data/maps/Route116/scripts.pory"
 	msgbox Route116_Text_WouldYouLikeToBattle, MSGBOX_YESNO
-# 57 "data/maps/Route116/scripts.pory"
+# 55 "data/maps/Route116/scripts.pory"
 	goto_if_eq VAR_RESULT, YES, Route116_EventScript_RivalBattle
-# 58 "data/maps/Route116/scripts.pory"
-	goto Route116_EventScript_DeclineRivalBattle
+# 56 "data/maps/Route116/scripts.pory"
+	goto Route116_EventScript_DeclineRivalBattleInitial
 	end
 
-Route116_EventScript_TalkToRivalAfterAquaBattle_2:
+
+Route116_EventScript_Rival1::
+# 61 "data/maps/Route116/scripts.pory"
+	lockall
+# 62 "data/maps/Route116/scripts.pory"
+	getplayerxy VAR_0x8001, VAR_0x8002
+# 63 "data/maps/Route116/scripts.pory"
+	switch VAR_0x8001
+# 64 "data/maps/Route116/scripts.pory"
+	case 45, Route116_EventScript_Rival1_3
+# 66 "data/maps/Route116/scripts.pory"
+	case 46, Route116_EventScript_Rival1_4
+# 68 "data/maps/Route116/scripts.pory"
+	case 47, Route116_EventScript_Rival1_5
+Route116_EventScript_Rival1_1:
+# 71 "data/maps/Route116/scripts.pory"
+	compare VAR_RUSTURF_TUNNEL_STATE, 5
+	goto_if_eq Route116_EventScript_Rival1_7
+Route116_EventScript_Rival1_6:
+# 76 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_Rival1, MSGBOX_DEFAULT
+# 77 "data/maps/Route116/scripts.pory"
+	closemessage
+# 78 "data/maps/Route116/scripts.pory"
+	turnobject 30, DIR_EAST
+# 79 "data/maps/Route116/scripts.pory"
+	releaseall
 	end
+
+Route116_EventScript_Rival1_3:
+# 65 "data/maps/Route116/scripts.pory"
+	turnobject 30, DIR_WEST
+	goto Route116_EventScript_Rival1_1
+
+Route116_EventScript_Rival1_4:
+# 67 "data/maps/Route116/scripts.pory"
+	turnobject 30, DIR_SOUTH
+	goto Route116_EventScript_Rival1_1
+
+Route116_EventScript_Rival1_5:
+# 69 "data/maps/Route116/scripts.pory"
+	turnobject 30, DIR_EAST
+	goto Route116_EventScript_Rival1_1
+
+Route116_EventScript_Rival1_7:
+# 72 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_BattleAfterAll, MSGBOX_YESNO
+# 73 "data/maps/Route116/scripts.pory"
+	goto_if_eq VAR_RESULT, YES, Route116_EventScript_RivalBattle
+# 74 "data/maps/Route116/scripts.pory"
+	goto_if_eq VAR_RESULT, NO, Route116_EventScript_DeclineRivalBattle
+	goto Route116_EventScript_Rival1_6
 
 
 Route116_EventScript_RivalBattle::
-# 63 "data/maps/Route116/scripts.pory"
+# 84 "data/maps/Route116/scripts.pory"
 	msgbox Route116_Text_WontHoldAnythingBack
-# 64 "data/maps/Route116/scripts.pory"
+# 85 "data/maps/Route116/scripts.pory"
 	checkfriendchoice
-# 65 "data/maps/Route116/scripts.pory"
+# 86 "data/maps/Route116/scripts.pory"
 	switch VAR_RESULT
-# 66 "data/maps/Route116/scripts.pory"
+# 87 "data/maps/Route116/scripts.pory"
 	case SPENCER, Route116_EventScript_RivalBattle_3
-# 68 "data/maps/Route116/scripts.pory"
+# 89 "data/maps/Route116/scripts.pory"
 	case BREN, Route116_EventScript_RivalBattle_4
-# 70 "data/maps/Route116/scripts.pory"
+# 91 "data/maps/Route116/scripts.pory"
 	case KYLE, Route116_EventScript_RivalBattle_5
 Route116_EventScript_RivalBattle_1:
-# 73 "data/maps/Route116/scripts.pory"
+# 94 "data/maps/Route116/scripts.pory"
 	msgbox Route116_Text_MeetYouAtBrineysCottage, MSGBOX_DEFAULT
-# 74 "data/maps/Route116/scripts.pory"
+# 95 "data/maps/Route116/scripts.pory"
+	closemessage
+# 96 "data/maps/Route116/scripts.pory"
 	getplayerxy VAR_0x8001, VAR_0x8002
-# 75 "data/maps/Route116/scripts.pory"
+# 97 "data/maps/Route116/scripts.pory"
 	compare VAR_0x8001, 46
 	goto_if_eq Route116_EventScript_RivalBattle_7
-# 79 "data/maps/Route116/scripts.pory"
+# 101 "data/maps/Route116/scripts.pory"
 	applymovement 30, Route116_Movement_RivalLeaveAfterBattle
 Route116_EventScript_RivalBattle_6:
-# 81 "data/maps/Route116/scripts.pory"
+# 103 "data/maps/Route116/scripts.pory"
 	waitmovement 0
-# 82 "data/maps/Route116/scripts.pory"
+# 104 "data/maps/Route116/scripts.pory"
 	removeobject 30
-# 83 "data/maps/Route116/scripts.pory"
+# 105 "data/maps/Route116/scripts.pory"
 	setflag FLAG_HIDE_ROUTE_116_RIVAL1
-# 84 "data/maps/Route116/scripts.pory"
+# 106 "data/maps/Route116/scripts.pory"
 	setvar VAR_RUSTURF_TUNNEL_STATE, 6
-# 85 "data/maps/Route116/scripts.pory"
+# 107 "data/maps/Route116/scripts.pory"
 	releaseall
 	end
 
 Route116_EventScript_RivalBattle_3:
-# 67 "data/maps/Route116/scripts.pory"
+# 88 "data/maps/Route116/scripts.pory"
 	trainerbattle_no_intro TRAINER_BREN_ROUTE_116, Route116_Text_RivalDefeated
 	goto Route116_EventScript_RivalBattle_1
 
 Route116_EventScript_RivalBattle_4:
-# 69 "data/maps/Route116/scripts.pory"
+# 90 "data/maps/Route116/scripts.pory"
 	trainerbattle_no_intro TRAINER_KYLE_ROUTE_116, Route116_Text_RivalDefeated
 	goto Route116_EventScript_RivalBattle_1
 
 Route116_EventScript_RivalBattle_5:
-# 71 "data/maps/Route116/scripts.pory"
+# 92 "data/maps/Route116/scripts.pory"
 	trainerbattle_no_intro TRAINER_SPENCER_ROUTE_116, Route116_Text_RivalDefeated
 	goto Route116_EventScript_RivalBattle_1
 
 Route116_EventScript_RivalBattle_7:
-# 76 "data/maps/Route116/scripts.pory"
+# 98 "data/maps/Route116/scripts.pory"
 	applymovement 30, Route116_Movement_RivalLeaveAfterBattle2
 	goto Route116_EventScript_RivalBattle_6
 
 
-Route116_EventScript_DeclineRivalBattle::
-# 90 "data/maps/Route116/scripts.pory"
+Route116_EventScript_DeclineRivalBattleInitial::
+# 112 "data/maps/Route116/scripts.pory"
 	msgbox Route116_Text_HangingAroundForABit, MSGBOX_DEFAULT
-# 91 "data/maps/Route116/scripts.pory"
-	closemessage
-# 92 "data/maps/Route116/scripts.pory"
+# 113 "data/maps/Route116/scripts.pory"
+	releaseall
+	end
+
+
+Route116_EventScript_DeclineRivalBattle::
+# 118 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_HangingAroundForABit2, MSGBOX_DEFAULT
+# 119 "data/maps/Route116/scripts.pory"
 	releaseall
 	end
 
 
 Route116_EventScript_Rival2::
-# 97 "data/maps/Route116/scripts.pory"
+# 124 "data/maps/Route116/scripts.pory"
 	lock
-# 98 "data/maps/Route116/scripts.pory"
+# 125 "data/maps/Route116/scripts.pory"
 	faceplayer
-# 99 "data/maps/Route116/scripts.pory"
+# 126 "data/maps/Route116/scripts.pory"
 	compare VAR_TEMP_5, 5
 	goto_if_ne Route116_EventScript_Rival2_2
-# 104 "data/maps/Route116/scripts.pory"
+# 131 "data/maps/Route116/scripts.pory"
 	msgbox Route116_Text_ElusiveSkitty, MSGBOX_DEFAULT
 Route116_EventScript_Rival2_1:
-# 106 "data/maps/Route116/scripts.pory"
+# 133 "data/maps/Route116/scripts.pory"
 	release
 	end
 
 Route116_EventScript_Rival2_2:
-# 100 "data/maps/Route116/scripts.pory"
+# 127 "data/maps/Route116/scripts.pory"
 	msgbox Route116_Text_TakingABreak, MSGBOX_DEFAULT
-# 101 "data/maps/Route116/scripts.pory"
+# 128 "data/maps/Route116/scripts.pory"
 	setvar VAR_TEMP_5, 5
 	goto Route116_EventScript_Rival2_1
 
 
-# 110 "data/maps/Route116/scripts.pory"
+# 137 "data/maps/Route116/scripts.pory"
 Route116_Movement_RivalLeaveAfterBattle:
-# 111 "data/maps/Route116/scripts.pory"
+# 138 "data/maps/Route116/scripts.pory"
 	walk_fast_down
-# 111 "data/maps/Route116/scripts.pory"
+# 138 "data/maps/Route116/scripts.pory"
 	walk_fast_down
-# 112 "data/maps/Route116/scripts.pory"
+# 139 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 112 "data/maps/Route116/scripts.pory"
+# 139 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 112 "data/maps/Route116/scripts.pory"
+# 139 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 112 "data/maps/Route116/scripts.pory"
+# 139 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 112 "data/maps/Route116/scripts.pory"
+# 139 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 112 "data/maps/Route116/scripts.pory"
+# 139 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 112 "data/maps/Route116/scripts.pory"
+# 139 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 112 "data/maps/Route116/scripts.pory"
+# 139 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 112 "data/maps/Route116/scripts.pory"
+# 139 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 112 "data/maps/Route116/scripts.pory"
+# 139 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 113 "data/maps/Route116/scripts.pory"
+# 140 "data/maps/Route116/scripts.pory"
 	set_invisible
 	step_end
 
-# 116 "data/maps/Route116/scripts.pory"
+# 143 "data/maps/Route116/scripts.pory"
 Route116_Movement_RivalLeaveAfterBattle2:
-# 117 "data/maps/Route116/scripts.pory"
+# 144 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 118 "data/maps/Route116/scripts.pory"
+# 145 "data/maps/Route116/scripts.pory"
 	walk_fast_down
-# 118 "data/maps/Route116/scripts.pory"
+# 145 "data/maps/Route116/scripts.pory"
 	walk_fast_down
-# 119 "data/maps/Route116/scripts.pory"
+# 146 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 119 "data/maps/Route116/scripts.pory"
+# 146 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 119 "data/maps/Route116/scripts.pory"
+# 146 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 119 "data/maps/Route116/scripts.pory"
+# 146 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 119 "data/maps/Route116/scripts.pory"
+# 146 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 119 "data/maps/Route116/scripts.pory"
+# 146 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 119 "data/maps/Route116/scripts.pory"
+# 146 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 119 "data/maps/Route116/scripts.pory"
+# 146 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 119 "data/maps/Route116/scripts.pory"
+# 146 "data/maps/Route116/scripts.pory"
 	walk_fast_left
-# 120 "data/maps/Route116/scripts.pory"
+# 147 "data/maps/Route116/scripts.pory"
 	set_invisible
 	step_end
 
-# 168 "data/maps/Route116/scripts.pory"
-
-# 169 "data/maps/Route116/scripts.pory"
-Route116_EventScript_WandasBoyfriend::
-# 170 "data/maps/Route116/scripts.pory"
-	lock
-# 171 "data/maps/Route116/scripts.pory"
-	faceplayer
-# 172 "data/maps/Route116/scripts.pory"
-	goto_if_set FLAG_RECOVERED_DEVON_GOODS, Route116_EventScript_BoyfriendGruntLeftTunnel
-# 173 "data/maps/Route116/scripts.pory"
-	goto_if_set FLAG_DEVON_GOODS_STOLEN, Route116_EventScript_BoyfriendGruntInTunnel
-# 174 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_WantToDigTunnel, MSGBOX_DEFAULT
-# 175 "data/maps/Route116/scripts.pory"
-	release
-# 176 "data/maps/Route116/scripts.pory"
-	end
-# 177 "data/maps/Route116/scripts.pory"
-
-# 178 "data/maps/Route116/scripts.pory"
-Route116_EventScript_BoyfriendGruntLeftTunnel::
-# 179 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_GoonHightailedItOutOfTunnel, MSGBOX_DEFAULT
-# 180 "data/maps/Route116/scripts.pory"
-	release
-# 181 "data/maps/Route116/scripts.pory"
-	end
-# 182 "data/maps/Route116/scripts.pory"
-
-# 183 "data/maps/Route116/scripts.pory"
-Route116_EventScript_BoyfriendGruntInTunnel::
-# 184 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_DiggingTunnelWhenGoonOrderedMeOut, MSGBOX_DEFAULT
-# 185 "data/maps/Route116/scripts.pory"
-	release
-# 186 "data/maps/Route116/scripts.pory"
-	end
-# 187 "data/maps/Route116/scripts.pory"
-
-# 188 "data/maps/Route116/scripts.pory"
-Route116_EventScript_DevonEmployee::
-# 189 "data/maps/Route116/scripts.pory"
-	lock
-# 190 "data/maps/Route116/scripts.pory"
-	faceplayer
-# 191 "data/maps/Route116/scripts.pory"
-	goto_if_set FLAG_MET_DEVON_EMPLOYEE, Route116_EventScript_TryGiveRepeatBallAgain
-# 192 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_ThankYouTokenOfAppreciation, MSGBOX_DEFAULT
-# 193 "data/maps/Route116/scripts.pory"
-	goto Route116_EventScript_GiveRepeatBall
-# 194 "data/maps/Route116/scripts.pory"
-	end
-# 195 "data/maps/Route116/scripts.pory"
-
-# 196 "data/maps/Route116/scripts.pory"
-Route116_EventScript_GiveRepeatBall::
-# 197 "data/maps/Route116/scripts.pory"
-	setflag FLAG_MET_DEVON_EMPLOYEE
-# 198 "data/maps/Route116/scripts.pory"
-	giveitem ITEM_REPEAT_BALL
-# 199 "data/maps/Route116/scripts.pory"
-	goto_if_eq VAR_RESULT, FALSE, Route116_EventScript_NoRoomForRepeatBall
 # 200 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_NewBallAvailableAtMart, MSGBOX_DEFAULT
+
 # 201 "data/maps/Route116/scripts.pory"
-	closemessage
+Route116_EventScript_WandasBoyfriend::
 # 202 "data/maps/Route116/scripts.pory"
-	call_if_eq VAR_FACING, DIR_NORTH, Route116_EventScript_DevonEmployeeExit
+	lock
 # 203 "data/maps/Route116/scripts.pory"
-	call_if_eq VAR_FACING, DIR_SOUTH, Route116_EventScript_DevonEmployeeExit
+	faceplayer
 # 204 "data/maps/Route116/scripts.pory"
-	call_if_eq VAR_FACING, DIR_WEST, Route116_EventScript_DevonEmployeeExit
+	goto_if_set FLAG_RECOVERED_DEVON_GOODS, Route116_EventScript_BoyfriendGruntLeftTunnel
 # 205 "data/maps/Route116/scripts.pory"
-	call_if_eq VAR_FACING, DIR_EAST, Route116_EventScript_DevonEmployeeExitEast
+	goto_if_set FLAG_DEVON_GOODS_STOLEN, Route116_EventScript_BoyfriendGruntInTunnel
 # 206 "data/maps/Route116/scripts.pory"
-	removeobject VAR_LAST_TALKED
+	msgbox Route116_Text_WantToDigTunnel, MSGBOX_DEFAULT
 # 207 "data/maps/Route116/scripts.pory"
-	clearflag FLAG_HIDE_RUSTBORO_CITY_DEVON_CORP_3F_EMPLOYEE
+	release
 # 208 "data/maps/Route116/scripts.pory"
-	setflag FLAG_RECEIVED_REPEAT_BALL
+	end
 # 209 "data/maps/Route116/scripts.pory"
-	release
+
 # 210 "data/maps/Route116/scripts.pory"
-	end
+Route116_EventScript_BoyfriendGruntLeftTunnel::
 # 211 "data/maps/Route116/scripts.pory"
-
+	msgbox Route116_Text_GoonHightailedItOutOfTunnel, MSGBOX_DEFAULT
 # 212 "data/maps/Route116/scripts.pory"
-Route116_EventScript_DevonEmployeeExit::
-# 213 "data/maps/Route116/scripts.pory"
-	applymovement VAR_LAST_TALKED, Route116_Movement_DevonEmployeeExit
-# 214 "data/maps/Route116/scripts.pory"
-	waitmovement 0
-# 215 "data/maps/Route116/scripts.pory"
-	return
-# 216 "data/maps/Route116/scripts.pory"
-
-# 217 "data/maps/Route116/scripts.pory"
-Route116_EventScript_DevonEmployeeExitEast::
-# 218 "data/maps/Route116/scripts.pory"
-	applymovement VAR_LAST_TALKED, Route116_Movement_DevonEmployeeExitEast
-# 219 "data/maps/Route116/scripts.pory"
-	waitmovement 0
-# 220 "data/maps/Route116/scripts.pory"
-	return
-# 221 "data/maps/Route116/scripts.pory"
-
-# 222 "data/maps/Route116/scripts.pory"
-Route116_EventScript_TryGiveRepeatBallAgain::
-# 223 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_TokenOfAppreciation, MSGBOX_DEFAULT
-# 224 "data/maps/Route116/scripts.pory"
-	goto Route116_EventScript_GiveRepeatBall
-# 225 "data/maps/Route116/scripts.pory"
-	end
-# 226 "data/maps/Route116/scripts.pory"
-
-# 227 "data/maps/Route116/scripts.pory"
-Route116_EventScript_NoRoomForRepeatBall::
-# 228 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_BagIsJamPacked, MSGBOX_DEFAULT
-# 229 "data/maps/Route116/scripts.pory"
 	release
+# 213 "data/maps/Route116/scripts.pory"
+	end
+# 214 "data/maps/Route116/scripts.pory"
+
+# 215 "data/maps/Route116/scripts.pory"
+Route116_EventScript_BoyfriendGruntInTunnel::
+# 216 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_DiggingTunnelWhenGoonOrderedMeOut, MSGBOX_DEFAULT
+# 217 "data/maps/Route116/scripts.pory"
+	release
+# 218 "data/maps/Route116/scripts.pory"
+	end
+# 219 "data/maps/Route116/scripts.pory"
+
+# 220 "data/maps/Route116/scripts.pory"
+Route116_EventScript_DevonEmployee::
+# 221 "data/maps/Route116/scripts.pory"
+	lock
+# 222 "data/maps/Route116/scripts.pory"
+	faceplayer
+# 223 "data/maps/Route116/scripts.pory"
+	goto_if_set FLAG_MET_DEVON_EMPLOYEE, Route116_EventScript_TryGiveRepeatBallAgain
+# 224 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_ThankYouTokenOfAppreciation, MSGBOX_DEFAULT
+# 225 "data/maps/Route116/scripts.pory"
+	goto Route116_EventScript_GiveRepeatBall
+# 226 "data/maps/Route116/scripts.pory"
+	end
+# 227 "data/maps/Route116/scripts.pory"
+
+# 228 "data/maps/Route116/scripts.pory"
+Route116_EventScript_GiveRepeatBall::
+# 229 "data/maps/Route116/scripts.pory"
+	setflag FLAG_MET_DEVON_EMPLOYEE
 # 230 "data/maps/Route116/scripts.pory"
-	end
+	giveitem ITEM_REPEAT_BALL
 # 231 "data/maps/Route116/scripts.pory"
-
+	goto_if_eq VAR_RESULT, FALSE, Route116_EventScript_NoRoomForRepeatBall
 # 232 "data/maps/Route116/scripts.pory"
-Route116_Movement_DevonEmployeeExit:
+	msgbox Route116_Text_NewBallAvailableAtMart, MSGBOX_DEFAULT
 # 233 "data/maps/Route116/scripts.pory"
-	walk_left
+	closemessage
 # 234 "data/maps/Route116/scripts.pory"
-	walk_left
+	call_if_eq VAR_FACING, DIR_NORTH, Route116_EventScript_DevonEmployeeExit
 # 235 "data/maps/Route116/scripts.pory"
-	walk_left
+	call_if_eq VAR_FACING, DIR_SOUTH, Route116_EventScript_DevonEmployeeExit
 # 236 "data/maps/Route116/scripts.pory"
-	walk_left
+	call_if_eq VAR_FACING, DIR_WEST, Route116_EventScript_DevonEmployeeExit
 # 237 "data/maps/Route116/scripts.pory"
-	walk_left
+	call_if_eq VAR_FACING, DIR_EAST, Route116_EventScript_DevonEmployeeExitEast
 # 238 "data/maps/Route116/scripts.pory"
-	walk_left
+	removeobject VAR_LAST_TALKED
 # 239 "data/maps/Route116/scripts.pory"
-	walk_left
+	clearflag FLAG_HIDE_RUSTBORO_CITY_DEVON_CORP_3F_EMPLOYEE
 # 240 "data/maps/Route116/scripts.pory"
-	walk_left
+	setflag FLAG_RECEIVED_REPEAT_BALL
 # 241 "data/maps/Route116/scripts.pory"
-	step_end
+	release
 # 242 "data/maps/Route116/scripts.pory"
-
-# 243 "data/maps/Route116/scripts.pory"
-Route116_Movement_DevonEmployeeExitEast:
-# 244 "data/maps/Route116/scripts.pory"
-	walk_down
-# 245 "data/maps/Route116/scripts.pory"
-	walk_left
-# 246 "data/maps/Route116/scripts.pory"
-	walk_left
-# 247 "data/maps/Route116/scripts.pory"
-	walk_left
-# 248 "data/maps/Route116/scripts.pory"
-	walk_left
-# 249 "data/maps/Route116/scripts.pory"
-	walk_left
-# 250 "data/maps/Route116/scripts.pory"
-	walk_left
-# 251 "data/maps/Route116/scripts.pory"
-	walk_left
-# 252 "data/maps/Route116/scripts.pory"
-	walk_left
-# 253 "data/maps/Route116/scripts.pory"
-	walk_left
-# 254 "data/maps/Route116/scripts.pory"
-	step_end
-# 255 "data/maps/Route116/scripts.pory"
-
-# 256 "data/maps/Route116/scripts.pory"
-Route116_EventScript_RouteSignRustboro::
-# 257 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_RouteSignRustboro, MSGBOX_SIGN
-# 258 "data/maps/Route116/scripts.pory"
 	end
-# 259 "data/maps/Route116/scripts.pory"
+# 243 "data/maps/Route116/scripts.pory"
 
+# 244 "data/maps/Route116/scripts.pory"
+Route116_EventScript_DevonEmployeeExit::
+# 245 "data/maps/Route116/scripts.pory"
+	applymovement VAR_LAST_TALKED, Route116_Movement_DevonEmployeeExit
+# 246 "data/maps/Route116/scripts.pory"
+	waitmovement 0
+# 247 "data/maps/Route116/scripts.pory"
+	return
+# 248 "data/maps/Route116/scripts.pory"
+
+# 249 "data/maps/Route116/scripts.pory"
+Route116_EventScript_DevonEmployeeExitEast::
+# 250 "data/maps/Route116/scripts.pory"
+	applymovement VAR_LAST_TALKED, Route116_Movement_DevonEmployeeExitEast
+# 251 "data/maps/Route116/scripts.pory"
+	waitmovement 0
+# 252 "data/maps/Route116/scripts.pory"
+	return
+# 253 "data/maps/Route116/scripts.pory"
+
+# 254 "data/maps/Route116/scripts.pory"
+Route116_EventScript_TryGiveRepeatBallAgain::
+# 255 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_TokenOfAppreciation, MSGBOX_DEFAULT
+# 256 "data/maps/Route116/scripts.pory"
+	goto Route116_EventScript_GiveRepeatBall
+# 257 "data/maps/Route116/scripts.pory"
+	end
+# 258 "data/maps/Route116/scripts.pory"
+
+# 259 "data/maps/Route116/scripts.pory"
+Route116_EventScript_NoRoomForRepeatBall::
 # 260 "data/maps/Route116/scripts.pory"
-Route116_EventScript_RusturfTunnelSign::
+	msgbox Route116_Text_BagIsJamPacked, MSGBOX_DEFAULT
 # 261 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_RusturfTunnelSign, MSGBOX_SIGN
+	release
 # 262 "data/maps/Route116/scripts.pory"
 	end
 # 263 "data/maps/Route116/scripts.pory"
 
 # 264 "data/maps/Route116/scripts.pory"
-Route116_EventScript_TunnelersRestHouseSign::
+Route116_Movement_DevonEmployeeExit:
 # 265 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_TunnelersRestHouse, MSGBOX_SIGN
+	walk_left
 # 266 "data/maps/Route116/scripts.pory"
-	end
+	walk_left
 # 267 "data/maps/Route116/scripts.pory"
-
+	walk_left
 # 268 "data/maps/Route116/scripts.pory"
-Route116_EventScript_TrainerTipsBToStopEvolution::
+	walk_left
 # 269 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_TrainerTipsBToStopEvolution, MSGBOX_SIGN
+	walk_left
 # 270 "data/maps/Route116/scripts.pory"
-	end
+	walk_left
 # 271 "data/maps/Route116/scripts.pory"
-
+	walk_left
 # 272 "data/maps/Route116/scripts.pory"
-Route116_EventScript_TrainerTipsBagHasPockets::
+	walk_left
 # 273 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_TrainerTipsBagHasPockets, MSGBOX_SIGN
+	step_end
 # 274 "data/maps/Route116/scripts.pory"
+
+# 275 "data/maps/Route116/scripts.pory"
+Route116_Movement_DevonEmployeeExitEast:
+# 276 "data/maps/Route116/scripts.pory"
+	walk_down
+# 277 "data/maps/Route116/scripts.pory"
+	walk_left
+# 278 "data/maps/Route116/scripts.pory"
+	walk_left
+# 279 "data/maps/Route116/scripts.pory"
+	walk_left
+# 280 "data/maps/Route116/scripts.pory"
+	walk_left
+# 281 "data/maps/Route116/scripts.pory"
+	walk_left
+# 282 "data/maps/Route116/scripts.pory"
+	walk_left
+# 283 "data/maps/Route116/scripts.pory"
+	walk_left
+# 284 "data/maps/Route116/scripts.pory"
+	walk_left
+# 285 "data/maps/Route116/scripts.pory"
+	walk_left
+# 286 "data/maps/Route116/scripts.pory"
+	step_end
+# 287 "data/maps/Route116/scripts.pory"
+
+# 288 "data/maps/Route116/scripts.pory"
+Route116_EventScript_RouteSignRustboro::
+# 289 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_RouteSignRustboro, MSGBOX_SIGN
+# 290 "data/maps/Route116/scripts.pory"
+	end
+# 291 "data/maps/Route116/scripts.pory"
+
+# 292 "data/maps/Route116/scripts.pory"
+Route116_EventScript_RusturfTunnelSign::
+# 293 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_RusturfTunnelSign, MSGBOX_SIGN
+# 294 "data/maps/Route116/scripts.pory"
+	end
+# 295 "data/maps/Route116/scripts.pory"
+
+# 296 "data/maps/Route116/scripts.pory"
+Route116_EventScript_TunnelersRestHouseSign::
+# 297 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_TunnelersRestHouse, MSGBOX_SIGN
+# 298 "data/maps/Route116/scripts.pory"
+	end
+# 299 "data/maps/Route116/scripts.pory"
+
+# 300 "data/maps/Route116/scripts.pory"
+Route116_EventScript_TrainerTipsBToStopEvolution::
+# 301 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_TrainerTipsBToStopEvolution, MSGBOX_SIGN
+# 302 "data/maps/Route116/scripts.pory"
+	end
+# 303 "data/maps/Route116/scripts.pory"
+
+# 304 "data/maps/Route116/scripts.pory"
+Route116_EventScript_TrainerTipsBagHasPockets::
+# 305 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_TrainerTipsBagHasPockets, MSGBOX_SIGN
+# 306 "data/maps/Route116/scripts.pory"
 	end
 
 Route116_EventScript_Briney::
-# 278 "data/maps/Route116/scripts.pory"
+# 310 "data/maps/Route116/scripts.pory"
 	lock
-# 279 "data/maps/Route116/scripts.pory"
+# 311 "data/maps/Route116/scripts.pory"
 	faceplayer
-# 280 "data/maps/Route116/scripts.pory"
+# 312 "data/maps/Route116/scripts.pory"
 	msgbox Route116_Text_BrineyStillMad, MSGBOX_DEFAULT
-# 281 "data/maps/Route116/scripts.pory"
+# 313 "data/maps/Route116/scripts.pory"
 	closemessage
-# 282 "data/maps/Route116/scripts.pory"
+# 314 "data/maps/Route116/scripts.pory"
 	getplayerxy VAR_0x8001, VAR_0x8002
-# 283 "data/maps/Route116/scripts.pory"
+# 315 "data/maps/Route116/scripts.pory"
 	switch VAR_0x8001
-# 284 "data/maps/Route116/scripts.pory"
+# 316 "data/maps/Route116/scripts.pory"
 	case 44, Route116_EventScript_Briney_3
-# 288 "data/maps/Route116/scripts.pory"
+# 320 "data/maps/Route116/scripts.pory"
 	case 45, Route116_EventScript_Briney_4
 Route116_EventScript_Briney_1:
-# 293 "data/maps/Route116/scripts.pory"
+# 325 "data/maps/Route116/scripts.pory"
 	release
 	end
 
 Route116_EventScript_Briney_3:
-# 285 "data/maps/Route116/scripts.pory"
+# 317 "data/maps/Route116/scripts.pory"
 	applymovement 11, Route116_Movement_BrineyRunToCave1
-# 286 "data/maps/Route116/scripts.pory"
+# 318 "data/maps/Route116/scripts.pory"
 	applymovement 30, Route116_Movement_RivalChaseBriney
-# 287 "data/maps/Route116/scripts.pory"
+# 319 "data/maps/Route116/scripts.pory"
 	waitmovement 0
 	goto Route116_EventScript_Briney_1
 
 Route116_EventScript_Briney_4:
-# 289 "data/maps/Route116/scripts.pory"
+# 321 "data/maps/Route116/scripts.pory"
 	applymovement 11, Route116_Movement_BrineyRunToCave2
-# 290 "data/maps/Route116/scripts.pory"
+# 322 "data/maps/Route116/scripts.pory"
 	applymovement 30, Route116_Movement_RivalChaseBriney2
-# 291 "data/maps/Route116/scripts.pory"
+# 323 "data/maps/Route116/scripts.pory"
 	waitmovement 0
 	goto Route116_EventScript_Briney_1
 
 
-Route116_EventScript_Rival1::
-# 298 "data/maps/Route116/scripts.pory"
-	lockall
-# 299 "data/maps/Route116/scripts.pory"
-	faceplayer
-# 300 "data/maps/Route116/scripts.pory"
-	compare VAR_RUSTURF_TUNNEL_STATE, 5
-	goto_if_eq Route116_EventScript_Rival1_2
-Route116_EventScript_Rival1_1:
-# 305 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_Rival1, MSGBOX_DEFAULT
-# 306 "data/maps/Route116/scripts.pory"
-	closemessage
-# 307 "data/maps/Route116/scripts.pory"
-	turnobject 30, DIR_EAST
-# 308 "data/maps/Route116/scripts.pory"
-	releaseall
-	end
-
-Route116_EventScript_Rival1_2:
-# 301 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_BattleAfterAll, MSGBOX_YESNO
-# 302 "data/maps/Route116/scripts.pory"
-	goto_if_eq VAR_RESULT, YES, Route116_EventScript_RivalBattle
-# 303 "data/maps/Route116/scripts.pory"
-	goto_if_eq VAR_RESULT, NO, Route116_EventScript_DeclineRivalBattle
-	goto Route116_EventScript_Rival1_1
-
-
 Route116_EventScript_BrineyTrigger0::
-# 313 "data/maps/Route116/scripts.pory"
+# 330 "data/maps/Route116/scripts.pory"
 	lockall
-# 314 "data/maps/Route116/scripts.pory"
+# 331 "data/maps/Route116/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Route116_Movement_PlayerApproachRival0
-# 315 "data/maps/Route116/scripts.pory"
+# 332 "data/maps/Route116/scripts.pory"
 	waitmovement 0
-# 316 "data/maps/Route116/scripts.pory"
+# 333 "data/maps/Route116/scripts.pory"
 	goto Route116_EventScript_BrineyEvent
 	end
 
 
 Route116_EventScript_BrineyTrigger1::
-# 321 "data/maps/Route116/scripts.pory"
+# 338 "data/maps/Route116/scripts.pory"
 	lockall
-# 322 "data/maps/Route116/scripts.pory"
+# 339 "data/maps/Route116/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Route116_Movement_PlayerApproachRival1
-# 323 "data/maps/Route116/scripts.pory"
+# 340 "data/maps/Route116/scripts.pory"
 	waitmovement 0
-# 324 "data/maps/Route116/scripts.pory"
+# 341 "data/maps/Route116/scripts.pory"
 	goto Route116_EventScript_BrineyEvent
 	end
 
 
 Route116_EventScript_BrineyTrigger2::
-# 329 "data/maps/Route116/scripts.pory"
+# 346 "data/maps/Route116/scripts.pory"
 	lockall
-# 330 "data/maps/Route116/scripts.pory"
+# 347 "data/maps/Route116/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, Route116_Movement_PlayerApproachRival2
-# 331 "data/maps/Route116/scripts.pory"
+# 348 "data/maps/Route116/scripts.pory"
 	waitmovement 0
-# 332 "data/maps/Route116/scripts.pory"
+# 349 "data/maps/Route116/scripts.pory"
 	goto Route116_EventScript_BrineyEvent
 	end
 
 
 Route116_EventScript_BrineyEvent::
-# 337 "data/maps/Route116/scripts.pory"
-	delay 10
-# 338 "data/maps/Route116/scripts.pory"
-	applymovement 30, Common_Movement_BeginTalkDown
-# 339 "data/maps/Route116/scripts.pory"
-	waitmovement 0
-# 340 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_ThisOldManIsUpset, MSGBOX_DEFAULT
-# 341 "data/maps/Route116/scripts.pory"
-	closemessage
-# 342 "data/maps/Route116/scripts.pory"
-	applymovement 30, Common_Movement_FaceRight
-# 343 "data/maps/Route116/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
-# 344 "data/maps/Route116/scripts.pory"
-	applymovement 11, Route116_Movement_BrineyWalkToPlayer
-# 345 "data/maps/Route116/scripts.pory"
-	waitmovement 0
-# 346 "data/maps/Route116/scripts.pory"
-	applymovement 11, Common_Movement_BeginTalkLeft
-# 347 "data/maps/Route116/scripts.pory"
-	waitmovement 0
-# 348 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_ScoundrelMadeOffWithPeeko, MSGBOX_DEFAULT
-# 349 "data/maps/Route116/scripts.pory"
-	closemessage
-# 350 "data/maps/Route116/scripts.pory"
-	applymovement 11, Route116_Movement_BrineyRunToCave
-# 351 "data/maps/Route116/scripts.pory"
-	applymovement 30, Route116_Movement_RivalChaseBriney
-# 352 "data/maps/Route116/scripts.pory"
-	waitmovement 0
-# 353 "data/maps/Route116/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
 # 354 "data/maps/Route116/scripts.pory"
-	waitmovement 0
+	delay 10
 # 355 "data/maps/Route116/scripts.pory"
 	applymovement 30, Common_Movement_BeginTalkDown
 # 356 "data/maps/Route116/scripts.pory"
 	waitmovement 0
 # 357 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_GoCheckOutTunnel, MSGBOX_DEFAULT
+	msgbox Route116_Text_ThisOldManIsUpset, MSGBOX_DEFAULT
 # 358 "data/maps/Route116/scripts.pory"
 	closemessage
 # 359 "data/maps/Route116/scripts.pory"
-	turnobject 30, DIR_EAST
+	applymovement 30, Common_Movement_FaceRight
 # 360 "data/maps/Route116/scripts.pory"
-	setvar VAR_ROUTE116_STATE, 2
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
 # 361 "data/maps/Route116/scripts.pory"
+	applymovement 11, Route116_Movement_BrineyWalkToPlayer
+# 362 "data/maps/Route116/scripts.pory"
+	waitmovement 0
+# 363 "data/maps/Route116/scripts.pory"
+	applymovement 11, Common_Movement_BeginTalkLeft
+# 364 "data/maps/Route116/scripts.pory"
+	waitmovement 0
+# 365 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_ScoundrelMadeOffWithPeeko, MSGBOX_DEFAULT
+# 366 "data/maps/Route116/scripts.pory"
+	closemessage
+# 367 "data/maps/Route116/scripts.pory"
+	applymovement 11, Route116_Movement_BrineyRunToCave
+# 368 "data/maps/Route116/scripts.pory"
+	applymovement 30, Route116_Movement_RivalChaseBriney
+# 369 "data/maps/Route116/scripts.pory"
+	waitmovement 0
+# 370 "data/maps/Route116/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
+# 371 "data/maps/Route116/scripts.pory"
+	waitmovement 0
+# 372 "data/maps/Route116/scripts.pory"
+	applymovement 30, Common_Movement_BeginTalkDown
+# 373 "data/maps/Route116/scripts.pory"
+	waitmovement 0
+# 374 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_GoCheckOutTunnel, MSGBOX_DEFAULT
+# 375 "data/maps/Route116/scripts.pory"
+	closemessage
+# 376 "data/maps/Route116/scripts.pory"
+	turnobject 30, DIR_EAST
+# 377 "data/maps/Route116/scripts.pory"
+	setvar VAR_ROUTE116_STATE, 2
+# 378 "data/maps/Route116/scripts.pory"
 	releaseall
 	return
 
 
-# 364 "data/maps/Route116/scripts.pory"
-Route116_Movement_PlayerApproachRival0:
-# 365 "data/maps/Route116/scripts.pory"
-	walk_right
-# 365 "data/maps/Route116/scripts.pory"
-	walk_right
-# 366 "data/maps/Route116/scripts.pory"
-	face_up
-	step_end
-
-# 369 "data/maps/Route116/scripts.pory"
-Route116_Movement_PlayerApproachRival1:
-# 370 "data/maps/Route116/scripts.pory"
-	walk_right
-# 370 "data/maps/Route116/scripts.pory"
-	walk_right
-# 371 "data/maps/Route116/scripts.pory"
-	walk_up
-	step_end
-
-# 374 "data/maps/Route116/scripts.pory"
-Route116_Movement_PlayerApproachRival2:
-# 375 "data/maps/Route116/scripts.pory"
-	walk_right
-# 375 "data/maps/Route116/scripts.pory"
-	walk_right
-# 376 "data/maps/Route116/scripts.pory"
-	walk_up
-# 376 "data/maps/Route116/scripts.pory"
-	walk_up
-# 377 "data/maps/Route116/scripts.pory"
-	face_up
-	step_end
-
-# 380 "data/maps/Route116/scripts.pory"
-Route116_Movement_BrineyWalkToPlayer:
 # 381 "data/maps/Route116/scripts.pory"
-	walk_fast_down
+Route116_Movement_PlayerApproachRival0:
+# 382 "data/maps/Route116/scripts.pory"
+	walk_right
+# 382 "data/maps/Route116/scripts.pory"
+	walk_right
+# 383 "data/maps/Route116/scripts.pory"
+	face_up
 	step_end
 
-# 384 "data/maps/Route116/scripts.pory"
-Route116_Movement_BrineyRunToCave:
-# 385 "data/maps/Route116/scripts.pory"
-	walk_fast_up
 # 386 "data/maps/Route116/scripts.pory"
-	walk_fast_right
-# 386 "data/maps/Route116/scripts.pory"
-	walk_fast_right
-# 386 "data/maps/Route116/scripts.pory"
-	walk_fast_right
+Route116_Movement_PlayerApproachRival1:
 # 387 "data/maps/Route116/scripts.pory"
-	walk_in_place_faster_up
+	walk_right
+# 387 "data/maps/Route116/scripts.pory"
+	walk_right
 # 388 "data/maps/Route116/scripts.pory"
-	face_right
-# 389 "data/maps/Route116/scripts.pory"
-	lock_facing_direction
-# 390 "data/maps/Route116/scripts.pory"
-	walk_slow_left
-# 390 "data/maps/Route116/scripts.pory"
-	walk_slow_left
-# 390 "data/maps/Route116/scripts.pory"
-	walk_slow_left
+	walk_up
+	step_end
+
 # 391 "data/maps/Route116/scripts.pory"
-	unlock_facing_direction
+Route116_Movement_PlayerApproachRival2:
 # 392 "data/maps/Route116/scripts.pory"
-	face_left
+	walk_right
+# 392 "data/maps/Route116/scripts.pory"
+	walk_right
+# 393 "data/maps/Route116/scripts.pory"
+	walk_up
+# 393 "data/maps/Route116/scripts.pory"
+	walk_up
+# 394 "data/maps/Route116/scripts.pory"
+	face_up
 	step_end
 
-# 395 "data/maps/Route116/scripts.pory"
-Route116_Movement_RivalChaseBriney:
-# 396 "data/maps/Route116/scripts.pory"
-	delay_4
-# 396 "data/maps/Route116/scripts.pory"
-	delay_4
-# 396 "data/maps/Route116/scripts.pory"
-	delay_4
 # 397 "data/maps/Route116/scripts.pory"
-	jump_in_place_right
+Route116_Movement_BrineyWalkToPlayer:
 # 398 "data/maps/Route116/scripts.pory"
-	walk_faster_right
-# 398 "data/maps/Route116/scripts.pory"
-	walk_faster_right
-# 398 "data/maps/Route116/scripts.pory"
-	walk_faster_right
-# 399 "data/maps/Route116/scripts.pory"
-	lock_facing_direction
-# 400 "data/maps/Route116/scripts.pory"
-	walk_slow_left
-# 400 "data/maps/Route116/scripts.pory"
-	walk_slow_left
-# 400 "data/maps/Route116/scripts.pory"
-	walk_slow_left
+	walk_fast_down
+	step_end
+
 # 401 "data/maps/Route116/scripts.pory"
-	unlock_facing_direction
+Route116_Movement_BrineyRunToCave:
 # 402 "data/maps/Route116/scripts.pory"
-	delay_16
-	step_end
-
+	walk_fast_up
+# 403 "data/maps/Route116/scripts.pory"
+	walk_fast_right
+# 403 "data/maps/Route116/scripts.pory"
+	walk_fast_right
+# 403 "data/maps/Route116/scripts.pory"
+	walk_fast_right
+# 404 "data/maps/Route116/scripts.pory"
+	walk_in_place_faster_up
 # 405 "data/maps/Route116/scripts.pory"
-Route116_Movement_BrineyRunToCave1:
+	face_right
 # 406 "data/maps/Route116/scripts.pory"
-	walk_fast_right
-# 406 "data/maps/Route116/scripts.pory"
-	walk_fast_right
-# 406 "data/maps/Route116/scripts.pory"
-	walk_fast_right
+	lock_facing_direction
 # 407 "data/maps/Route116/scripts.pory"
-	walk_in_place_faster_up
+	walk_slow_left
+# 407 "data/maps/Route116/scripts.pory"
+	walk_slow_left
+# 407 "data/maps/Route116/scripts.pory"
+	walk_slow_left
 # 408 "data/maps/Route116/scripts.pory"
-	delay_8
+	unlock_facing_direction
 # 409 "data/maps/Route116/scripts.pory"
-	face_right
-# 410 "data/maps/Route116/scripts.pory"
-	lock_facing_direction
-# 411 "data/maps/Route116/scripts.pory"
-	walk_slow_left
-# 411 "data/maps/Route116/scripts.pory"
-	walk_slow_left
-# 411 "data/maps/Route116/scripts.pory"
-	walk_slow_left
+	face_left
+	step_end
+
 # 412 "data/maps/Route116/scripts.pory"
-	unlock_facing_direction
+Route116_Movement_RivalChaseBriney:
 # 413 "data/maps/Route116/scripts.pory"
-	face_left
-	step_end
-
-# 416 "data/maps/Route116/scripts.pory"
-Route116_Movement_BrineyRunToCave2:
-# 417 "data/maps/Route116/scripts.pory"
-	walk_fast_down
-# 418 "data/maps/Route116/scripts.pory"
-	walk_fast_right
-# 418 "data/maps/Route116/scripts.pory"
-	walk_fast_right
-# 418 "data/maps/Route116/scripts.pory"
-	walk_fast_right
-# 419 "data/maps/Route116/scripts.pory"
-	walk_in_place_faster_up
-# 420 "data/maps/Route116/scripts.pory"
-	delay_8
-# 421 "data/maps/Route116/scripts.pory"
-	face_right
-# 422 "data/maps/Route116/scripts.pory"
-	lock_facing_direction
-# 423 "data/maps/Route116/scripts.pory"
-	walk_slow_left
-# 423 "data/maps/Route116/scripts.pory"
-	walk_slow_left
-# 423 "data/maps/Route116/scripts.pory"
-	walk_slow_left
-# 424 "data/maps/Route116/scripts.pory"
-	unlock_facing_direction
-# 425 "data/maps/Route116/scripts.pory"
-	face_down
-# 426 "data/maps/Route116/scripts.pory"
-	lock_facing_direction
-# 427 "data/maps/Route116/scripts.pory"
-	walk_slow_up
-# 428 "data/maps/Route116/scripts.pory"
-	unlock_facing_direction
-# 429 "data/maps/Route116/scripts.pory"
-	face_left
-	step_end
-
-# 432 "data/maps/Route116/scripts.pory"
-Route116_Movement_RivalChaseBriney2:
-# 433 "data/maps/Route116/scripts.pory"
 	delay_4
-# 433 "data/maps/Route116/scripts.pory"
+# 413 "data/maps/Route116/scripts.pory"
 	delay_4
-# 433 "data/maps/Route116/scripts.pory"
+# 413 "data/maps/Route116/scripts.pory"
 	delay_4
-# 434 "data/maps/Route116/scripts.pory"
+# 414 "data/maps/Route116/scripts.pory"
 	jump_in_place_right
-# 435 "data/maps/Route116/scripts.pory"
-	walk_fast_down
-# 436 "data/maps/Route116/scripts.pory"
+# 415 "data/maps/Route116/scripts.pory"
 	walk_faster_right
-# 436 "data/maps/Route116/scripts.pory"
+# 415 "data/maps/Route116/scripts.pory"
 	walk_faster_right
-# 436 "data/maps/Route116/scripts.pory"
+# 415 "data/maps/Route116/scripts.pory"
 	walk_faster_right
-# 437 "data/maps/Route116/scripts.pory"
+# 416 "data/maps/Route116/scripts.pory"
 	lock_facing_direction
-# 438 "data/maps/Route116/scripts.pory"
+# 417 "data/maps/Route116/scripts.pory"
 	walk_slow_left
-# 438 "data/maps/Route116/scripts.pory"
+# 417 "data/maps/Route116/scripts.pory"
 	walk_slow_left
-# 439 "data/maps/Route116/scripts.pory"
-	unlock_facing_direction
-# 440 "data/maps/Route116/scripts.pory"
-	face_down
-# 441 "data/maps/Route116/scripts.pory"
-	lock_facing_direction
-# 442 "data/maps/Route116/scripts.pory"
-	walk_slow_up
-# 443 "data/maps/Route116/scripts.pory"
-	unlock_facing_direction
-# 444 "data/maps/Route116/scripts.pory"
-	face_right
-# 445 "data/maps/Route116/scripts.pory"
-	lock_facing_direction
-# 446 "data/maps/Route116/scripts.pory"
+# 417 "data/maps/Route116/scripts.pory"
 	walk_slow_left
-# 447 "data/maps/Route116/scripts.pory"
+# 418 "data/maps/Route116/scripts.pory"
 	unlock_facing_direction
-# 448 "data/maps/Route116/scripts.pory"
-	face_right
-# 449 "data/maps/Route116/scripts.pory"
+# 419 "data/maps/Route116/scripts.pory"
 	delay_16
 	step_end
 
-# 483 "data/maps/Route116/scripts.pory"
+# 422 "data/maps/Route116/scripts.pory"
+Route116_Movement_BrineyRunToCave1:
+# 423 "data/maps/Route116/scripts.pory"
+	walk_fast_right
+# 423 "data/maps/Route116/scripts.pory"
+	walk_fast_right
+# 423 "data/maps/Route116/scripts.pory"
+	walk_fast_right
+# 424 "data/maps/Route116/scripts.pory"
+	walk_in_place_faster_up
+# 425 "data/maps/Route116/scripts.pory"
+	delay_8
+# 426 "data/maps/Route116/scripts.pory"
+	face_right
+# 427 "data/maps/Route116/scripts.pory"
+	lock_facing_direction
+# 428 "data/maps/Route116/scripts.pory"
+	walk_slow_left
+# 428 "data/maps/Route116/scripts.pory"
+	walk_slow_left
+# 428 "data/maps/Route116/scripts.pory"
+	walk_slow_left
+# 429 "data/maps/Route116/scripts.pory"
+	unlock_facing_direction
+# 430 "data/maps/Route116/scripts.pory"
+	face_left
+	step_end
 
-# 484 "data/maps/Route116/scripts.pory"
-Route116_EventScript_GlassesMan::
-# 485 "data/maps/Route116/scripts.pory"
-	lock
-# 486 "data/maps/Route116/scripts.pory"
-	faceplayer
-# 487 "data/maps/Route116/scripts.pory"
-	checkitem ITEM_BLACK_GLASSES
-# 488 "data/maps/Route116/scripts.pory"
-	goto_if_eq VAR_RESULT, TRUE, Route116_EventScript_PlayerHasGlasses
-# 489 "data/maps/Route116/scripts.pory"
-	specialvar VAR_RESULT, FoundBlackGlasses
-# 490 "data/maps/Route116/scripts.pory"
-	goto_if_eq VAR_RESULT, TRUE, Route116_EventScript_FoundGlassesNotOnPlayer
-# 491 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_CanYouHelpMeFindGlasses, MSGBOX_DEFAULT
-# 492 "data/maps/Route116/scripts.pory"
-	release
-# 493 "data/maps/Route116/scripts.pory"
-	end
-# 494 "data/maps/Route116/scripts.pory"
+# 433 "data/maps/Route116/scripts.pory"
+Route116_Movement_BrineyRunToCave2:
+# 434 "data/maps/Route116/scripts.pory"
+	walk_fast_down
+# 435 "data/maps/Route116/scripts.pory"
+	walk_fast_right
+# 435 "data/maps/Route116/scripts.pory"
+	walk_fast_right
+# 435 "data/maps/Route116/scripts.pory"
+	walk_fast_right
+# 436 "data/maps/Route116/scripts.pory"
+	walk_in_place_faster_up
+# 437 "data/maps/Route116/scripts.pory"
+	delay_8
+# 438 "data/maps/Route116/scripts.pory"
+	face_right
+# 439 "data/maps/Route116/scripts.pory"
+	lock_facing_direction
+# 440 "data/maps/Route116/scripts.pory"
+	walk_slow_left
+# 440 "data/maps/Route116/scripts.pory"
+	walk_slow_left
+# 440 "data/maps/Route116/scripts.pory"
+	walk_slow_left
+# 441 "data/maps/Route116/scripts.pory"
+	unlock_facing_direction
+# 442 "data/maps/Route116/scripts.pory"
+	face_down
+# 443 "data/maps/Route116/scripts.pory"
+	lock_facing_direction
+# 444 "data/maps/Route116/scripts.pory"
+	walk_slow_up
+# 445 "data/maps/Route116/scripts.pory"
+	unlock_facing_direction
+# 446 "data/maps/Route116/scripts.pory"
+	face_left
+	step_end
 
-# 495 "data/maps/Route116/scripts.pory"
-Route116_EventScript_FoundGlassesNotOnPlayer::
-# 496 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_CantFindGlassesNotHere, MSGBOX_DEFAULT
-# 497 "data/maps/Route116/scripts.pory"
-	closemessage
-# 498 "data/maps/Route116/scripts.pory"
-	goto Route116_EventScript_GlassesManExit
-# 499 "data/maps/Route116/scripts.pory"
-	end
+# 449 "data/maps/Route116/scripts.pory"
+Route116_Movement_RivalChaseBriney2:
+# 450 "data/maps/Route116/scripts.pory"
+	delay_4
+# 450 "data/maps/Route116/scripts.pory"
+	delay_4
+# 450 "data/maps/Route116/scripts.pory"
+	delay_4
+# 451 "data/maps/Route116/scripts.pory"
+	jump_in_place_right
+# 452 "data/maps/Route116/scripts.pory"
+	walk_fast_down
+# 453 "data/maps/Route116/scripts.pory"
+	walk_faster_right
+# 453 "data/maps/Route116/scripts.pory"
+	walk_faster_right
+# 453 "data/maps/Route116/scripts.pory"
+	walk_faster_right
+# 454 "data/maps/Route116/scripts.pory"
+	lock_facing_direction
+# 455 "data/maps/Route116/scripts.pory"
+	walk_slow_left
+# 455 "data/maps/Route116/scripts.pory"
+	walk_slow_left
+# 456 "data/maps/Route116/scripts.pory"
+	unlock_facing_direction
+# 457 "data/maps/Route116/scripts.pory"
+	face_down
+# 458 "data/maps/Route116/scripts.pory"
+	lock_facing_direction
+# 459 "data/maps/Route116/scripts.pory"
+	walk_slow_up
+# 460 "data/maps/Route116/scripts.pory"
+	unlock_facing_direction
+# 461 "data/maps/Route116/scripts.pory"
+	face_right
+# 462 "data/maps/Route116/scripts.pory"
+	lock_facing_direction
+# 463 "data/maps/Route116/scripts.pory"
+	walk_slow_left
+# 464 "data/maps/Route116/scripts.pory"
+	unlock_facing_direction
+# 465 "data/maps/Route116/scripts.pory"
+	face_right
+# 466 "data/maps/Route116/scripts.pory"
+	delay_16
+	step_end
+
 # 500 "data/maps/Route116/scripts.pory"
 
 # 501 "data/maps/Route116/scripts.pory"
-Route116_EventScript_PlayerHasGlasses::
+Route116_EventScript_GlassesMan::
 # 502 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_CanYouHelpMeFindGlasses, MSGBOX_DEFAULT
+	lock
 # 503 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_MayISeeThoseGlasses, MSGBOX_DEFAULT
+	faceplayer
 # 504 "data/maps/Route116/scripts.pory"
-	specialvar VAR_RESULT, FoundBlackGlasses
+	checkitem ITEM_BLACK_GLASSES
 # 505 "data/maps/Route116/scripts.pory"
-	goto_if_eq VAR_RESULT, TRUE, Route116_EventScript_FoundGlassesOnPlayer
+	goto_if_eq VAR_RESULT, TRUE, Route116_EventScript_PlayerHasGlasses
 # 506 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_NotWhatImLookingFor, MSGBOX_DEFAULT
+	specialvar VAR_RESULT, FoundBlackGlasses
 # 507 "data/maps/Route116/scripts.pory"
-	release
+	goto_if_eq VAR_RESULT, TRUE, Route116_EventScript_FoundGlassesNotOnPlayer
 # 508 "data/maps/Route116/scripts.pory"
-	end
+	msgbox Route116_Text_CanYouHelpMeFindGlasses, MSGBOX_DEFAULT
 # 509 "data/maps/Route116/scripts.pory"
-
-# 510 "data/maps/Route116/scripts.pory"
-Route116_EventScript_FoundGlassesOnPlayer::
-# 511 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_NotWhatImLookingForMaybeTheyArentHere, MSGBOX_DEFAULT
-# 512 "data/maps/Route116/scripts.pory"
-	closemessage
-# 513 "data/maps/Route116/scripts.pory"
-	goto Route116_EventScript_GlassesManExit
-# 514 "data/maps/Route116/scripts.pory"
-	end
-# 515 "data/maps/Route116/scripts.pory"
-
-# 516 "data/maps/Route116/scripts.pory"
-Route116_EventScript_GlassesManExit::
-# 517 "data/maps/Route116/scripts.pory"
-	delay 20
-# 518 "data/maps/Route116/scripts.pory"
-	call_if_eq VAR_FACING, DIR_NORTH, Route116_EventScript_GlassesManExitNormal
-# 519 "data/maps/Route116/scripts.pory"
-	call_if_eq VAR_FACING, DIR_SOUTH, Route116_EventScript_GlassesManExitNormal
-# 520 "data/maps/Route116/scripts.pory"
-	call_if_eq VAR_FACING, DIR_WEST, Route116_EventScript_GlassesManExitNormal
-# 521 "data/maps/Route116/scripts.pory"
-	call_if_eq VAR_FACING, DIR_EAST, Route116_EventScript_GlassesManExitEast
-# 522 "data/maps/Route116/scripts.pory"
-	removeobject VAR_LAST_TALKED
-# 523 "data/maps/Route116/scripts.pory"
 	release
-# 524 "data/maps/Route116/scripts.pory"
+# 510 "data/maps/Route116/scripts.pory"
 	end
+# 511 "data/maps/Route116/scripts.pory"
+
+# 512 "data/maps/Route116/scripts.pory"
+Route116_EventScript_FoundGlassesNotOnPlayer::
+# 513 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_CantFindGlassesNotHere, MSGBOX_DEFAULT
+# 514 "data/maps/Route116/scripts.pory"
+	closemessage
+# 515 "data/maps/Route116/scripts.pory"
+	goto Route116_EventScript_GlassesManExit
+# 516 "data/maps/Route116/scripts.pory"
+	end
+# 517 "data/maps/Route116/scripts.pory"
+
+# 518 "data/maps/Route116/scripts.pory"
+Route116_EventScript_PlayerHasGlasses::
+# 519 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_CanYouHelpMeFindGlasses, MSGBOX_DEFAULT
+# 520 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_MayISeeThoseGlasses, MSGBOX_DEFAULT
+# 521 "data/maps/Route116/scripts.pory"
+	specialvar VAR_RESULT, FoundBlackGlasses
+# 522 "data/maps/Route116/scripts.pory"
+	goto_if_eq VAR_RESULT, TRUE, Route116_EventScript_FoundGlassesOnPlayer
+# 523 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_NotWhatImLookingFor, MSGBOX_DEFAULT
+# 524 "data/maps/Route116/scripts.pory"
+	release
 # 525 "data/maps/Route116/scripts.pory"
-
+	end
 # 526 "data/maps/Route116/scripts.pory"
-Route116_EventScript_GlassesManExitNormal::
+
 # 527 "data/maps/Route116/scripts.pory"
-	applymovement VAR_LAST_TALKED, Route116_Movement_GlassesManExit
+Route116_EventScript_FoundGlassesOnPlayer::
 # 528 "data/maps/Route116/scripts.pory"
-	waitmovement 0
+	msgbox Route116_Text_NotWhatImLookingForMaybeTheyArentHere, MSGBOX_DEFAULT
 # 529 "data/maps/Route116/scripts.pory"
-	return
+	closemessage
 # 530 "data/maps/Route116/scripts.pory"
-
+	goto Route116_EventScript_GlassesManExit
 # 531 "data/maps/Route116/scripts.pory"
-Route116_EventScript_GlassesManExitEast::
+	end
 # 532 "data/maps/Route116/scripts.pory"
-	applymovement VAR_LAST_TALKED, Route116_Movement_GlassesManExitEast
-# 533 "data/maps/Route116/scripts.pory"
-	waitmovement 0
-# 534 "data/maps/Route116/scripts.pory"
-	return
-# 535 "data/maps/Route116/scripts.pory"
 
+# 533 "data/maps/Route116/scripts.pory"
+Route116_EventScript_GlassesManExit::
+# 534 "data/maps/Route116/scripts.pory"
+	delay 20
+# 535 "data/maps/Route116/scripts.pory"
+	call_if_eq VAR_FACING, DIR_NORTH, Route116_EventScript_GlassesManExitNormal
 # 536 "data/maps/Route116/scripts.pory"
-Route116_Movement_GlassesManExit:
+	call_if_eq VAR_FACING, DIR_SOUTH, Route116_EventScript_GlassesManExitNormal
 # 537 "data/maps/Route116/scripts.pory"
-	walk_left
+	call_if_eq VAR_FACING, DIR_WEST, Route116_EventScript_GlassesManExitNormal
 # 538 "data/maps/Route116/scripts.pory"
-	walk_left
+	call_if_eq VAR_FACING, DIR_EAST, Route116_EventScript_GlassesManExitEast
 # 539 "data/maps/Route116/scripts.pory"
-	walk_left
+	removeobject VAR_LAST_TALKED
 # 540 "data/maps/Route116/scripts.pory"
-	walk_left
+	release
 # 541 "data/maps/Route116/scripts.pory"
-	walk_left
+	end
 # 542 "data/maps/Route116/scripts.pory"
-	walk_left
+
 # 543 "data/maps/Route116/scripts.pory"
-	walk_left
+Route116_EventScript_GlassesManExitNormal::
 # 544 "data/maps/Route116/scripts.pory"
-	walk_left
+	applymovement VAR_LAST_TALKED, Route116_Movement_GlassesManExit
 # 545 "data/maps/Route116/scripts.pory"
-	walk_left
+	waitmovement 0
 # 546 "data/maps/Route116/scripts.pory"
-	step_end
+	return
 # 547 "data/maps/Route116/scripts.pory"
 
 # 548 "data/maps/Route116/scripts.pory"
-Route116_Movement_GlassesManExitEast:
+Route116_EventScript_GlassesManExitEast::
 # 549 "data/maps/Route116/scripts.pory"
-	walk_up
+	applymovement VAR_LAST_TALKED, Route116_Movement_GlassesManExitEast
 # 550 "data/maps/Route116/scripts.pory"
-	walk_left
+	waitmovement 0
 # 551 "data/maps/Route116/scripts.pory"
-	walk_left
+	return
 # 552 "data/maps/Route116/scripts.pory"
-	walk_left
+
 # 553 "data/maps/Route116/scripts.pory"
-	walk_left
+Route116_Movement_GlassesManExit:
 # 554 "data/maps/Route116/scripts.pory"
 	walk_left
 # 555 "data/maps/Route116/scripts.pory"
@@ -991,503 +986,537 @@ Route116_Movement_GlassesManExitEast:
 # 558 "data/maps/Route116/scripts.pory"
 	walk_left
 # 559 "data/maps/Route116/scripts.pory"
-	step_end
+	walk_left
 # 560 "data/maps/Route116/scripts.pory"
-
+	walk_left
 # 561 "data/maps/Route116/scripts.pory"
-Route116_EventScript_Joey::
+	walk_left
 # 562 "data/maps/Route116/scripts.pory"
-	trainerbattle_single TRAINER_JOEY, Route116_Text_JoeyIntro, Route116_Text_JoeyDefeat
+	walk_left
 # 563 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_JoeyPostBattle, MSGBOX_AUTOCLOSE
+	step_end
 # 564 "data/maps/Route116/scripts.pory"
-	end
+
 # 565 "data/maps/Route116/scripts.pory"
-
+Route116_Movement_GlassesManExitEast:
 # 566 "data/maps/Route116/scripts.pory"
-Route116_EventScript_Jose::
+	walk_up
 # 567 "data/maps/Route116/scripts.pory"
-	trainerbattle_single TRAINER_JOSE, Route116_Text_JoseIntro, Route116_Text_JoseDefeat
+	walk_left
 # 568 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_JosePostBattle, MSGBOX_AUTOCLOSE
+	walk_left
 # 569 "data/maps/Route116/scripts.pory"
-	end
+	walk_left
 # 570 "data/maps/Route116/scripts.pory"
-
+	walk_left
 # 571 "data/maps/Route116/scripts.pory"
-Route116_EventScript_Jerry::
+	walk_left
 # 572 "data/maps/Route116/scripts.pory"
-	trainerbattle_single TRAINER_JERRY_1, Route116_Text_JerryIntro, Route116_Text_JerryDefeat, Route116_EventScript_TryRegisterJerryAfterBattle
+	walk_left
 # 573 "data/maps/Route116/scripts.pory"
-	specialvar VAR_RESULT, ShouldTryRematchBattle
+	walk_left
 # 574 "data/maps/Route116/scripts.pory"
-	goto_if_eq VAR_RESULT, TRUE, Route116_EventScript_RematchJerry
+	walk_left
 # 575 "data/maps/Route116/scripts.pory"
-	setvar VAR_0x8004, TRAINER_JERRY_1
+	walk_left
 # 576 "data/maps/Route116/scripts.pory"
-	specialvar VAR_RESULT, IsTrainerRegistered
+	step_end
 # 577 "data/maps/Route116/scripts.pory"
-	goto_if_eq VAR_RESULT, FALSE, Route116_EventScript_TryRegisterJerry
+
 # 578 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_JerryPostBattle, MSGBOX_DEFAULT
+Route116_EventScript_Joey::
 # 579 "data/maps/Route116/scripts.pory"
-	release
+	trainerbattle_single TRAINER_JOEY, Route116_Text_JoeyIntro, Route116_Text_JoeyDefeat
 # 580 "data/maps/Route116/scripts.pory"
-	end
+	msgbox Route116_Text_JoeyPostBattle, MSGBOX_AUTOCLOSE
 # 581 "data/maps/Route116/scripts.pory"
-
+	end
 # 582 "data/maps/Route116/scripts.pory"
-Route116_EventScript_TryRegisterJerryAfterBattle::
+
 # 583 "data/maps/Route116/scripts.pory"
-	goto_if_set FLAG_HAS_MATCH_CALL, Route116_EventScript_RegisterJerryAfterBattle
+Route116_EventScript_Jose::
 # 584 "data/maps/Route116/scripts.pory"
-	release
+	trainerbattle_single TRAINER_JOSE, Route116_Text_JoseIntro, Route116_Text_JoseDefeat
 # 585 "data/maps/Route116/scripts.pory"
-	end
+	msgbox Route116_Text_JosePostBattle, MSGBOX_AUTOCLOSE
 # 586 "data/maps/Route116/scripts.pory"
-
+	end
 # 587 "data/maps/Route116/scripts.pory"
-Route116_EventScript_RegisterJerryAfterBattle::
+
 # 588 "data/maps/Route116/scripts.pory"
-	special PlayerFaceTrainerAfterBattle
+Route116_EventScript_Jerry::
 # 589 "data/maps/Route116/scripts.pory"
-	waitmovement 0
+	trainerbattle_single TRAINER_JERRY_1, Route116_Text_JerryIntro, Route116_Text_JerryDefeat, Route116_EventScript_TryRegisterJerryAfterBattle
 # 590 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_JerryRegister2, MSGBOX_DEFAULT
+	specialvar VAR_RESULT, ShouldTryRematchBattle
 # 591 "data/maps/Route116/scripts.pory"
-	register_matchcall TRAINER_JERRY_1
+	goto_if_eq VAR_RESULT, TRUE, Route116_EventScript_RematchJerry
 # 592 "data/maps/Route116/scripts.pory"
-	release
+	setvar VAR_0x8004, TRAINER_JERRY_1
 # 593 "data/maps/Route116/scripts.pory"
-	end
+	specialvar VAR_RESULT, IsTrainerRegistered
 # 594 "data/maps/Route116/scripts.pory"
-
+	goto_if_eq VAR_RESULT, FALSE, Route116_EventScript_TryRegisterJerry
 # 595 "data/maps/Route116/scripts.pory"
-Route116_EventScript_TryRegisterJerry::
-# 596 "data/maps/Route116/scripts.pory"
-	goto_if_set FLAG_HAS_MATCH_CALL, Route116_EventScript_RegisterJerry
-# 597 "data/maps/Route116/scripts.pory"
 	msgbox Route116_Text_JerryPostBattle, MSGBOX_DEFAULT
+# 596 "data/maps/Route116/scripts.pory"
+	release
+# 597 "data/maps/Route116/scripts.pory"
+	end
 # 598 "data/maps/Route116/scripts.pory"
-	release
+
 # 599 "data/maps/Route116/scripts.pory"
-	end
+Route116_EventScript_TryRegisterJerryAfterBattle::
 # 600 "data/maps/Route116/scripts.pory"
-
+	goto_if_set FLAG_HAS_MATCH_CALL, Route116_EventScript_RegisterJerryAfterBattle
 # 601 "data/maps/Route116/scripts.pory"
-Route116_EventScript_RegisterJerry::
-# 602 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_JerryRegister1, MSGBOX_DEFAULT
-# 603 "data/maps/Route116/scripts.pory"
-	register_matchcall TRAINER_JERRY_1
-# 604 "data/maps/Route116/scripts.pory"
 	release
-# 605 "data/maps/Route116/scripts.pory"
+# 602 "data/maps/Route116/scripts.pory"
 	end
-# 606 "data/maps/Route116/scripts.pory"
+# 603 "data/maps/Route116/scripts.pory"
 
+# 604 "data/maps/Route116/scripts.pory"
+Route116_EventScript_RegisterJerryAfterBattle::
+# 605 "data/maps/Route116/scripts.pory"
+	special PlayerFaceTrainerAfterBattle
+# 606 "data/maps/Route116/scripts.pory"
+	waitmovement 0
 # 607 "data/maps/Route116/scripts.pory"
-Route116_EventScript_RematchJerry::
+	msgbox Route116_Text_JerryRegister2, MSGBOX_DEFAULT
 # 608 "data/maps/Route116/scripts.pory"
-	trainerbattle_rematch TRAINER_JERRY_1, Route116_Text_JerryRematchIntro, Route116_Text_JerryRematchDefeat
+	register_matchcall TRAINER_JERRY_1
 # 609 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_JerryPostRematch, MSGBOX_AUTOCLOSE
+	release
 # 610 "data/maps/Route116/scripts.pory"
 	end
 # 611 "data/maps/Route116/scripts.pory"
 
 # 612 "data/maps/Route116/scripts.pory"
-Route116_EventScript_Clark::
+Route116_EventScript_TryRegisterJerry::
 # 613 "data/maps/Route116/scripts.pory"
-	trainerbattle_single TRAINER_CLARK, Route116_Text_ClarkIntro, Route116_Text_ClarkDefeat
+	goto_if_set FLAG_HAS_MATCH_CALL, Route116_EventScript_RegisterJerry
 # 614 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_ClarkPostBattle, MSGBOX_AUTOCLOSE
+	msgbox Route116_Text_JerryPostBattle, MSGBOX_DEFAULT
 # 615 "data/maps/Route116/scripts.pory"
-	end
+	release
 # 616 "data/maps/Route116/scripts.pory"
-
+	end
 # 617 "data/maps/Route116/scripts.pory"
-Route116_EventScript_Janice::
+
 # 618 "data/maps/Route116/scripts.pory"
-	trainerbattle_single TRAINER_JANICE, Route116_Text_JaniceIntro, Route116_Text_JaniceDefeat
+Route116_EventScript_RegisterJerry::
 # 619 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_JanicePostBattle, MSGBOX_AUTOCLOSE
+	msgbox Route116_Text_JerryRegister1, MSGBOX_DEFAULT
 # 620 "data/maps/Route116/scripts.pory"
-	end
+	register_matchcall TRAINER_JERRY_1
 # 621 "data/maps/Route116/scripts.pory"
-
+	release
 # 622 "data/maps/Route116/scripts.pory"
-Route116_EventScript_Karen::
+	end
 # 623 "data/maps/Route116/scripts.pory"
-	trainerbattle_single TRAINER_KAREN_1, Route116_Text_KarenIntro, Route116_Text_KarenDefeat, Route116_EventScript_TryRegisterKarenAfterBattle
+
 # 624 "data/maps/Route116/scripts.pory"
-	specialvar VAR_RESULT, ShouldTryRematchBattle
+Route116_EventScript_RematchJerry::
 # 625 "data/maps/Route116/scripts.pory"
-	goto_if_eq VAR_RESULT, TRUE, Route116_EventScript_RematchKaren
+	trainerbattle_rematch TRAINER_JERRY_1, Route116_Text_JerryRematchIntro, Route116_Text_JerryRematchDefeat
 # 626 "data/maps/Route116/scripts.pory"
-	setvar VAR_0x8004, TRAINER_KAREN_1
+	msgbox Route116_Text_JerryPostRematch, MSGBOX_AUTOCLOSE
 # 627 "data/maps/Route116/scripts.pory"
-	specialvar VAR_RESULT, IsTrainerRegistered
+	end
 # 628 "data/maps/Route116/scripts.pory"
-	goto_if_eq VAR_RESULT, FALSE, Route116_EventScript_TryRegisterKaren
+
 # 629 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_KarenPostBattle, MSGBOX_DEFAULT
+Route116_EventScript_Clark::
 # 630 "data/maps/Route116/scripts.pory"
-	release
+	trainerbattle_single TRAINER_CLARK, Route116_Text_ClarkIntro, Route116_Text_ClarkDefeat
 # 631 "data/maps/Route116/scripts.pory"
-	end
+	msgbox Route116_Text_ClarkPostBattle, MSGBOX_AUTOCLOSE
 # 632 "data/maps/Route116/scripts.pory"
-
+	end
 # 633 "data/maps/Route116/scripts.pory"
-Route116_EventScript_TryRegisterKarenAfterBattle::
+
 # 634 "data/maps/Route116/scripts.pory"
-	goto_if_set FLAG_HAS_MATCH_CALL, Route116_EventScript_RegisterKarenAfterBattle
+Route116_EventScript_Janice::
 # 635 "data/maps/Route116/scripts.pory"
-	release
+	trainerbattle_single TRAINER_JANICE, Route116_Text_JaniceIntro, Route116_Text_JaniceDefeat
 # 636 "data/maps/Route116/scripts.pory"
-	end
+	msgbox Route116_Text_JanicePostBattle, MSGBOX_AUTOCLOSE
 # 637 "data/maps/Route116/scripts.pory"
-
+	end
 # 638 "data/maps/Route116/scripts.pory"
-Route116_EventScript_RegisterKarenAfterBattle::
+
 # 639 "data/maps/Route116/scripts.pory"
-	special PlayerFaceTrainerAfterBattle
+Route116_EventScript_Karen::
 # 640 "data/maps/Route116/scripts.pory"
-	waitmovement 0
+	trainerbattle_single TRAINER_KAREN_1, Route116_Text_KarenIntro, Route116_Text_KarenDefeat, Route116_EventScript_TryRegisterKarenAfterBattle
 # 641 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_KarenRegister2, MSGBOX_DEFAULT
+	specialvar VAR_RESULT, ShouldTryRematchBattle
 # 642 "data/maps/Route116/scripts.pory"
-	register_matchcall TRAINER_KAREN_1
+	goto_if_eq VAR_RESULT, TRUE, Route116_EventScript_RematchKaren
 # 643 "data/maps/Route116/scripts.pory"
-	release
+	setvar VAR_0x8004, TRAINER_KAREN_1
 # 644 "data/maps/Route116/scripts.pory"
-	end
+	specialvar VAR_RESULT, IsTrainerRegistered
 # 645 "data/maps/Route116/scripts.pory"
-
+	goto_if_eq VAR_RESULT, FALSE, Route116_EventScript_TryRegisterKaren
 # 646 "data/maps/Route116/scripts.pory"
-Route116_EventScript_TryRegisterKaren::
-# 647 "data/maps/Route116/scripts.pory"
-	goto_if_set FLAG_HAS_MATCH_CALL, Route116_EventScript_RegisterKaren
-# 648 "data/maps/Route116/scripts.pory"
 	msgbox Route116_Text_KarenPostBattle, MSGBOX_DEFAULT
+# 647 "data/maps/Route116/scripts.pory"
+	release
+# 648 "data/maps/Route116/scripts.pory"
+	end
 # 649 "data/maps/Route116/scripts.pory"
-	release
+
 # 650 "data/maps/Route116/scripts.pory"
-	end
+Route116_EventScript_TryRegisterKarenAfterBattle::
 # 651 "data/maps/Route116/scripts.pory"
-
+	goto_if_set FLAG_HAS_MATCH_CALL, Route116_EventScript_RegisterKarenAfterBattle
 # 652 "data/maps/Route116/scripts.pory"
-Route116_EventScript_RegisterKaren::
-# 653 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_KarenRegister1, MSGBOX_DEFAULT
-# 654 "data/maps/Route116/scripts.pory"
-	register_matchcall TRAINER_KAREN_1
-# 655 "data/maps/Route116/scripts.pory"
 	release
-# 656 "data/maps/Route116/scripts.pory"
+# 653 "data/maps/Route116/scripts.pory"
 	end
-# 657 "data/maps/Route116/scripts.pory"
+# 654 "data/maps/Route116/scripts.pory"
 
+# 655 "data/maps/Route116/scripts.pory"
+Route116_EventScript_RegisterKarenAfterBattle::
+# 656 "data/maps/Route116/scripts.pory"
+	special PlayerFaceTrainerAfterBattle
+# 657 "data/maps/Route116/scripts.pory"
+	waitmovement 0
 # 658 "data/maps/Route116/scripts.pory"
-Route116_EventScript_RematchKaren::
+	msgbox Route116_Text_KarenRegister2, MSGBOX_DEFAULT
 # 659 "data/maps/Route116/scripts.pory"
-	trainerbattle_rematch TRAINER_KAREN_1, Route116_Text_KarenRematchIntro, Route116_Text_KarenRematchDefeat
+	register_matchcall TRAINER_KAREN_1
 # 660 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_KarenPostRematch, MSGBOX_AUTOCLOSE
+	release
 # 661 "data/maps/Route116/scripts.pory"
 	end
 # 662 "data/maps/Route116/scripts.pory"
 
 # 663 "data/maps/Route116/scripts.pory"
-Route116_EventScript_Sarah::
+Route116_EventScript_TryRegisterKaren::
 # 664 "data/maps/Route116/scripts.pory"
-	trainerbattle_single TRAINER_SARAH, Route116_Text_SarahIntro, Route116_Text_SarahDefeat
+	goto_if_set FLAG_HAS_MATCH_CALL, Route116_EventScript_RegisterKaren
 # 665 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_SarahPostBattle, MSGBOX_AUTOCLOSE
+	msgbox Route116_Text_KarenPostBattle, MSGBOX_DEFAULT
 # 666 "data/maps/Route116/scripts.pory"
-	end
+	release
 # 667 "data/maps/Route116/scripts.pory"
-
+	end
 # 668 "data/maps/Route116/scripts.pory"
-Route116_EventScript_Dawson::
+
 # 669 "data/maps/Route116/scripts.pory"
-	trainerbattle_single TRAINER_DAWSON, Route116_Text_DawsonIntro, Route116_Text_DawsonDefeat
+Route116_EventScript_RegisterKaren::
 # 670 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_DawsonPostBattle, MSGBOX_AUTOCLOSE
+	msgbox Route116_Text_KarenRegister1, MSGBOX_DEFAULT
 # 671 "data/maps/Route116/scripts.pory"
-	end
+	register_matchcall TRAINER_KAREN_1
 # 672 "data/maps/Route116/scripts.pory"
-
+	release
 # 673 "data/maps/Route116/scripts.pory"
-Route116_EventScript_Devan::
+	end
 # 674 "data/maps/Route116/scripts.pory"
-	trainerbattle_single TRAINER_DEVAN, Route116_Text_DevanIntro, Route116_Text_DevanDefeat
+
 # 675 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_DevanPostBattle, MSGBOX_AUTOCLOSE
+Route116_EventScript_RematchKaren::
 # 676 "data/maps/Route116/scripts.pory"
-	end
+	trainerbattle_rematch TRAINER_KAREN_1, Route116_Text_KarenRematchIntro, Route116_Text_KarenRematchDefeat
 # 677 "data/maps/Route116/scripts.pory"
-
+	msgbox Route116_Text_KarenPostRematch, MSGBOX_AUTOCLOSE
 # 678 "data/maps/Route116/scripts.pory"
-Route116_EventScript_Johnson::
-# 679 "data/maps/Route116/scripts.pory"
-	trainerbattle_single TRAINER_JOHNSON, Route116_Text_JohnsonIntro, Route116_Text_JohnsonDefeat
-# 680 "data/maps/Route116/scripts.pory"
-	msgbox Route116_Text_JohnsonPostBattle, MSGBOX_AUTOCLOSE
-# 681 "data/maps/Route116/scripts.pory"
 	end
+# 679 "data/maps/Route116/scripts.pory"
+
+# 680 "data/maps/Route116/scripts.pory"
+Route116_EventScript_Sarah::
+# 681 "data/maps/Route116/scripts.pory"
+	trainerbattle_single TRAINER_SARAH, Route116_Text_SarahIntro, Route116_Text_SarahDefeat
 # 682 "data/maps/Route116/scripts.pory"
-
+	msgbox Route116_Text_SarahPostBattle, MSGBOX_AUTOCLOSE
 # 683 "data/maps/Route116/scripts.pory"
-Route116_Text_ScoundrelMadeOffWithPeeko:
+	end
 # 684 "data/maps/Route116/scripts.pory"
-	.string "Ohhh, what am I to do?\p"
-# 685 "data/maps/Route116/scripts.pory"
-	.string "We were on our walk, PEEKO and I, when\n"
-# 686 "data/maps/Route116/scripts.pory"
-	.string "we were jumped by an odd thug…\p"
-# 687 "data/maps/Route116/scripts.pory"
-	.string "The scoundrel made off with my\n"
-# 688 "data/maps/Route116/scripts.pory"
-	.string "darling PEEKO!\p"
-# 689 "data/maps/Route116/scripts.pory"
-	.string "Wrrrooooooaaaar! PEEKO!$"
-# 690 "data/maps/Route116/scripts.pory"
 
+# 685 "data/maps/Route116/scripts.pory"
+Route116_EventScript_Dawson::
+# 686 "data/maps/Route116/scripts.pory"
+	trainerbattle_single TRAINER_DAWSON, Route116_Text_DawsonIntro, Route116_Text_DawsonDefeat
+# 687 "data/maps/Route116/scripts.pory"
+	msgbox Route116_Text_DawsonPostBattle, MSGBOX_AUTOCLOSE
+# 688 "data/maps/Route116/scripts.pory"
+	end
+# 689 "data/maps/Route116/scripts.pory"
+
+# 690 "data/maps/Route116/scripts.pory"
+Route116_EventScript_Devan::
 # 691 "data/maps/Route116/scripts.pory"
-Route116_Text_WantToDigTunnel:
+	trainerbattle_single TRAINER_DEVAN, Route116_Text_DevanIntro, Route116_Text_DevanDefeat
 # 692 "data/maps/Route116/scripts.pory"
-	.string "Nnn… Roar!\p"
+	msgbox Route116_Text_DevanPostBattle, MSGBOX_AUTOCLOSE
 # 693 "data/maps/Route116/scripts.pory"
-	.string "I want to dig that tunnel!$"
+	end
 # 694 "data/maps/Route116/scripts.pory"
 
 # 695 "data/maps/Route116/scripts.pory"
-Route116_Text_DiggingTunnelWhenGoonOrderedMeOut:
+Route116_EventScript_Johnson::
 # 696 "data/maps/Route116/scripts.pory"
-	.string "Nnn… Roar!\n"
+	trainerbattle_single TRAINER_JOHNSON, Route116_Text_JohnsonIntro, Route116_Text_JohnsonDefeat
 # 697 "data/maps/Route116/scripts.pory"
-	.string "What's going on?\p"
+	msgbox Route116_Text_JohnsonPostBattle, MSGBOX_AUTOCLOSE
 # 698 "data/maps/Route116/scripts.pory"
-	.string "I was digging the tunnel without any\n"
+	end
 # 699 "data/maps/Route116/scripts.pory"
-	.string "tools when some goon ordered me out!\p"
+
 # 700 "data/maps/Route116/scripts.pory"
-	.string "That tunnel's filled with POKéMON\n"
+Route116_Text_ScoundrelMadeOffWithPeeko:
 # 701 "data/maps/Route116/scripts.pory"
-	.string "that react badly to loud noises.\l"
+	.string "Ohhh, what am I to do?\p"
 # 702 "data/maps/Route116/scripts.pory"
-	.string "They could cause an uproar.\p"
+	.string "We were on our walk, PEEKO and I, when\n"
 # 703 "data/maps/Route116/scripts.pory"
-	.string "That's why we stopped using heavy\n"
+	.string "we were jumped by an odd thug…\p"
 # 704 "data/maps/Route116/scripts.pory"
-	.string "equipment for tunneling…\p"
+	.string "The scoundrel made off with my\n"
 # 705 "data/maps/Route116/scripts.pory"
-	.string "I'm worried that the goon will do\n"
+	.string "darling PEEKO!\p"
 # 706 "data/maps/Route116/scripts.pory"
-	.string "something stupid and startle the\l"
+	.string "Wrrrooooooaaaar! PEEKO!$"
 # 707 "data/maps/Route116/scripts.pory"
-	.string "POKéMON into an uproar.$"
+
 # 708 "data/maps/Route116/scripts.pory"
-
+Route116_Text_WantToDigTunnel:
 # 709 "data/maps/Route116/scripts.pory"
-Route116_Text_GoonHightailedItOutOfTunnel:
-# 710 "data/maps/Route116/scripts.pory"
 	.string "Nnn… Roar!\p"
+# 710 "data/maps/Route116/scripts.pory"
+	.string "I want to dig that tunnel!$"
 # 711 "data/maps/Route116/scripts.pory"
-	.string "That goofy goon hightailed it out of\n"
+
 # 712 "data/maps/Route116/scripts.pory"
-	.string "the tunnel! I can go back to digging!$"
+Route116_Text_DiggingTunnelWhenGoonOrderedMeOut:
 # 713 "data/maps/Route116/scripts.pory"
-
+	.string "Nnn… Roar!\n"
 # 714 "data/maps/Route116/scripts.pory"
-Route116_Text_ThankYouTokenOfAppreciation:
+	.string "What's going on?\p"
 # 715 "data/maps/Route116/scripts.pory"
-	.string "Oh! It's you!\p"
+	.string "I was digging the tunnel without any\n"
 # 716 "data/maps/Route116/scripts.pory"
-	.string "You're that person who not only helped\n"
+	.string "tools when some goon ordered me out!\p"
 # 717 "data/maps/Route116/scripts.pory"
-	.string "me in PETALBURG WOODS, but also got\l"
+	.string "That tunnel's filled with POKéMON\n"
 # 718 "data/maps/Route116/scripts.pory"
-	.string "back my stolen package and then even\l"
+	.string "that react badly to loud noises.\l"
 # 719 "data/maps/Route116/scripts.pory"
-	.string "graciously delivered it to SLATEPORT!\p"
+	.string "They could cause an uproar.\p"
 # 720 "data/maps/Route116/scripts.pory"
-	.string "CAPT. STERN informed us that the\n"
+	.string "That's why we stopped using heavy\n"
 # 721 "data/maps/Route116/scripts.pory"
-	.string "package arrived, too!\p"
+	.string "equipment for tunneling…\p"
 # 722 "data/maps/Route116/scripts.pory"
-	.string "I thank you very, very much!\p"
+	.string "I'm worried that the goon will do\n"
 # 723 "data/maps/Route116/scripts.pory"
-	.string "Why, if I were a rain cloud, I would\n"
+	.string "something stupid and startle the\l"
 # 724 "data/maps/Route116/scripts.pory"
-	.string "shower you with gratitude and hail\l"
+	.string "POKéMON into an uproar.$"
 # 725 "data/maps/Route116/scripts.pory"
-	.string "you as a hero!\p"
+
 # 726 "data/maps/Route116/scripts.pory"
-	.string "For you, the most wonderful TRAINER,\n"
+Route116_Text_GoonHightailedItOutOfTunnel:
 # 727 "data/maps/Route116/scripts.pory"
-	.string "I bear good news!\p"
+	.string "Nnn… Roar!\p"
 # 728 "data/maps/Route116/scripts.pory"
-	.string "Recently, our company developed\n"
+	.string "That goofy goon hightailed it out of\n"
 # 729 "data/maps/Route116/scripts.pory"
-	.string "a new kind of POKé BALL.\p"
+	.string "the tunnel! I can go back to digging!$"
 # 730 "data/maps/Route116/scripts.pory"
-	.string "As a token of our appreciation, this\n"
+
 # 731 "data/maps/Route116/scripts.pory"
-	.string "is our gift to our wonderful TRAINER!$"
+Route116_Text_ThankYouTokenOfAppreciation:
 # 732 "data/maps/Route116/scripts.pory"
-
+	.string "Oh! It's you!\p"
 # 733 "data/maps/Route116/scripts.pory"
-Route116_Text_NewBallAvailableAtMart:
+	.string "You're that person who not only helped\n"
 # 734 "data/maps/Route116/scripts.pory"
-	.string "Our new POKé BALL will be available\n"
+	.string "me in PETALBURG WOODS, but also got\l"
 # 735 "data/maps/Route116/scripts.pory"
-	.string "at the POKéMON MART in RUSTBORO.\p"
+	.string "back my stolen package and then even\l"
 # 736 "data/maps/Route116/scripts.pory"
-	.string "Please do try it out!\n"
+	.string "graciously delivered it to SLATEPORT!\p"
 # 737 "data/maps/Route116/scripts.pory"
-	.string "Thank you and bye-bye!$"
+	.string "CAPT. STERN informed us that the\n"
 # 738 "data/maps/Route116/scripts.pory"
-
+	.string "package arrived, too!\p"
 # 739 "data/maps/Route116/scripts.pory"
-Route116_Text_BagIsJamPacked:
+	.string "I thank you very, very much!\p"
 # 740 "data/maps/Route116/scripts.pory"
-	.string "Your BAG is jam-packed.\n"
+	.string "Why, if I were a rain cloud, I would\n"
 # 741 "data/maps/Route116/scripts.pory"
-	.string "I can't give you this REPEAT BALL.$"
+	.string "shower you with gratitude and hail\l"
 # 742 "data/maps/Route116/scripts.pory"
-
+	.string "you as a hero!\p"
 # 743 "data/maps/Route116/scripts.pory"
-Route116_Text_TokenOfAppreciation:
+	.string "For you, the most wonderful TRAINER,\n"
 # 744 "data/maps/Route116/scripts.pory"
-	.string "As a token of our appreciation for\n"
+	.string "I bear good news!\p"
 # 745 "data/maps/Route116/scripts.pory"
-	.string "your delivering our package, I have\l"
+	.string "Recently, our company developed\n"
 # 746 "data/maps/Route116/scripts.pory"
-	.string "a gift of a new kind of POKé BALL\l"
+	.string "a new kind of POKé BALL.\p"
 # 747 "data/maps/Route116/scripts.pory"
-	.string "for our most wonderful TRAINER!$"
+	.string "As a token of our appreciation, this\n"
 # 748 "data/maps/Route116/scripts.pory"
-
+	.string "is our gift to our wonderful TRAINER!$"
 # 749 "data/maps/Route116/scripts.pory"
-Route116_Text_CanYouHelpMeFindGlasses:
+
 # 750 "data/maps/Route116/scripts.pory"
-	.string "I dropped my glasses…\n"
+Route116_Text_NewBallAvailableAtMart:
 # 751 "data/maps/Route116/scripts.pory"
-	.string "Can you help me find them?$"
+	.string "Our new POKé BALL will be available\n"
 # 752 "data/maps/Route116/scripts.pory"
-
+	.string "at the POKéMON MART in RUSTBORO.\p"
 # 753 "data/maps/Route116/scripts.pory"
-Route116_Text_MayISeeThoseGlasses:
+	.string "Please do try it out!\n"
 # 754 "data/maps/Route116/scripts.pory"
-	.string "Those glasses!\n"
+	.string "Thank you and bye-bye!$"
 # 755 "data/maps/Route116/scripts.pory"
-	.string "May I see them for a second?$"
+
 # 756 "data/maps/Route116/scripts.pory"
-
+Route116_Text_BagIsJamPacked:
 # 757 "data/maps/Route116/scripts.pory"
-Route116_Text_NotWhatImLookingForMaybeTheyArentHere:
+	.string "Your BAG is jam-packed.\n"
 # 758 "data/maps/Route116/scripts.pory"
-	.string "Hmm…\n"
+	.string "I can't give you this REPEAT BALL.$"
 # 759 "data/maps/Route116/scripts.pory"
-	.string "These are BLACKGLASSES.\l"
+
 # 760 "data/maps/Route116/scripts.pory"
-	.string "They're not what I'm looking for…\p"
+Route116_Text_TokenOfAppreciation:
 # 761 "data/maps/Route116/scripts.pory"
-	.string "Maybe my glasses aren't around\n"
+	.string "As a token of our appreciation for\n"
 # 762 "data/maps/Route116/scripts.pory"
-	.string "here…$"
+	.string "your delivering our package, I have\l"
 # 763 "data/maps/Route116/scripts.pory"
-
+	.string "a gift of a new kind of POKé BALL\l"
 # 764 "data/maps/Route116/scripts.pory"
-Route116_Text_CantFindGlassesNotHere:
+	.string "for our most wonderful TRAINER!$"
 # 765 "data/maps/Route116/scripts.pory"
-	.string "Hmm…\n"
-# 766 "data/maps/Route116/scripts.pory"
-	.string "I can't find my glasses anywhere…\l"
-# 767 "data/maps/Route116/scripts.pory"
-	.string "Maybe they're not around here…$"
-# 768 "data/maps/Route116/scripts.pory"
 
+# 766 "data/maps/Route116/scripts.pory"
+Route116_Text_CanYouHelpMeFindGlasses:
+# 767 "data/maps/Route116/scripts.pory"
+	.string "I dropped my glasses…\n"
+# 768 "data/maps/Route116/scripts.pory"
+	.string "Can you help me find them?$"
 # 769 "data/maps/Route116/scripts.pory"
-Route116_Text_NotWhatImLookingFor:
+
 # 770 "data/maps/Route116/scripts.pory"
-	.string "Hmm…\n"
+Route116_Text_MayISeeThoseGlasses:
 # 771 "data/maps/Route116/scripts.pory"
-	.string "These are BLACKGLASSES.\l"
+	.string "Those glasses!\n"
 # 772 "data/maps/Route116/scripts.pory"
-	.string "They're not what I'm looking for…$"
+	.string "May I see them for a second?$"
 # 773 "data/maps/Route116/scripts.pory"
 
 # 774 "data/maps/Route116/scripts.pory"
-Route116_Text_RouteSignRustboro:
+Route116_Text_NotWhatImLookingForMaybeTheyArentHere:
 # 775 "data/maps/Route116/scripts.pory"
-	.string "ROUTE 116\n"
+	.string "Hmm…\n"
 # 776 "data/maps/Route116/scripts.pory"
-	.string "{LEFT_ARROW} RUSTBORO CITY$"
+	.string "These are BLACKGLASSES.\l"
 # 777 "data/maps/Route116/scripts.pory"
-
+	.string "They're not what I'm looking for…\p"
 # 778 "data/maps/Route116/scripts.pory"
-Route116_Text_RusturfTunnelSign:
+	.string "Maybe my glasses aren't around\n"
 # 779 "data/maps/Route116/scripts.pory"
-	.string "RUSTURF TUNNEL\n"
+	.string "here…$"
 # 780 "data/maps/Route116/scripts.pory"
-	.string "“Linking RUSTBORO and VERDANTURF\p"
+
 # 781 "data/maps/Route116/scripts.pory"
-	.string "“The tunnel project has been\n"
+Route116_Text_CantFindGlassesNotHere:
 # 782 "data/maps/Route116/scripts.pory"
-	.string "canceled.”$"
+	.string "Hmm…\n"
 # 783 "data/maps/Route116/scripts.pory"
-
+	.string "I can't find my glasses anywhere…\l"
 # 784 "data/maps/Route116/scripts.pory"
-Route116_Text_TunnelersRestHouse:
+	.string "Maybe they're not around here…$"
 # 785 "data/maps/Route116/scripts.pory"
-	.string "TUNNELER'S REST HOUSE$"
-# 786 "data/maps/Route116/scripts.pory"
 
+# 786 "data/maps/Route116/scripts.pory"
+Route116_Text_NotWhatImLookingFor:
 # 787 "data/maps/Route116/scripts.pory"
-Route116_Text_TrainerTipsBToStopEvolution:
+	.string "Hmm…\n"
 # 788 "data/maps/Route116/scripts.pory"
-	.string "TRAINER TIPS\p"
+	.string "These are BLACKGLASSES.\l"
 # 789 "data/maps/Route116/scripts.pory"
-	.string "If you want to stop a POKéMON from\n"
+	.string "They're not what I'm looking for…$"
 # 790 "data/maps/Route116/scripts.pory"
-	.string "evolving, press the B Button while it\l"
+
 # 791 "data/maps/Route116/scripts.pory"
-	.string "is trying to evolve.\l"
+Route116_Text_RouteSignRustboro:
 # 792 "data/maps/Route116/scripts.pory"
-	.string "The startled POKéMON will stop.\p"
+	.string "ROUTE 116\n"
 # 793 "data/maps/Route116/scripts.pory"
-	.string "This is called an evolution cancel.$"
+	.string "{LEFT_ARROW} RUSTBORO CITY$"
 # 794 "data/maps/Route116/scripts.pory"
 
 # 795 "data/maps/Route116/scripts.pory"
-Route116_Text_TrainerTipsBagHasPockets:
+Route116_Text_RusturfTunnelSign:
 # 796 "data/maps/Route116/scripts.pory"
-	.string "TRAINER TIPS\p"
+	.string "RUSTURF TUNNEL\n"
 # 797 "data/maps/Route116/scripts.pory"
-	.string "Your BAG has several POCKETS.\p"
+	.string "“Linking RUSTBORO and VERDANTURF\p"
 # 798 "data/maps/Route116/scripts.pory"
-	.string "Items you obtain are automatically\n"
+	.string "“The tunnel project has been\n"
 # 799 "data/maps/Route116/scripts.pory"
-	.string "placed in the appropriate POCKETS.\p"
+	.string "canceled.”$"
 # 800 "data/maps/Route116/scripts.pory"
-	.string "No TRAINER can afford to be without\n"
+
 # 801 "data/maps/Route116/scripts.pory"
+Route116_Text_TunnelersRestHouse:
+# 802 "data/maps/Route116/scripts.pory"
+	.string "TUNNELER'S REST HOUSE$"
+# 803 "data/maps/Route116/scripts.pory"
+
+# 804 "data/maps/Route116/scripts.pory"
+Route116_Text_TrainerTipsBToStopEvolution:
+# 805 "data/maps/Route116/scripts.pory"
+	.string "TRAINER TIPS\p"
+# 806 "data/maps/Route116/scripts.pory"
+	.string "If you want to stop a POKéMON from\n"
+# 807 "data/maps/Route116/scripts.pory"
+	.string "evolving, press the B Button while it\l"
+# 808 "data/maps/Route116/scripts.pory"
+	.string "is trying to evolve.\l"
+# 809 "data/maps/Route116/scripts.pory"
+	.string "The startled POKéMON will stop.\p"
+# 810 "data/maps/Route116/scripts.pory"
+	.string "This is called an evolution cancel.$"
+# 811 "data/maps/Route116/scripts.pory"
+
+# 812 "data/maps/Route116/scripts.pory"
+Route116_Text_TrainerTipsBagHasPockets:
+# 813 "data/maps/Route116/scripts.pory"
+	.string "TRAINER TIPS\p"
+# 814 "data/maps/Route116/scripts.pory"
+	.string "Your BAG has several POCKETS.\p"
+# 815 "data/maps/Route116/scripts.pory"
+	.string "Items you obtain are automatically\n"
+# 816 "data/maps/Route116/scripts.pory"
+	.string "placed in the appropriate POCKETS.\p"
+# 817 "data/maps/Route116/scripts.pory"
+	.string "No TRAINER can afford to be without\n"
+# 818 "data/maps/Route116/scripts.pory"
 	.string "a BAG of their own.$"
 
 Route116_Text_TakingABreak::
-# 123 "data/maps/Route116/scripts.pory"
+# 150 "data/maps/Route116/scripts.pory"
 	.string "I'm taking a break from hunting rare\n"
 	.string "POKéMON.$"
 
 Route116_Text_ElusiveSkitty::
-# 127 "data/maps/Route116/scripts.pory"
+# 154 "data/maps/Route116/scripts.pory"
 	.string "Why does SKITTY have to be so elusive?$"
 
 Route116_Text_WouldYouLikeToBattle::
-# 131 "data/maps/Route116/scripts.pory"
+# 158 "data/maps/Route116/scripts.pory"
 	.string "Ah! Fresh air!\n"
 	.string "Feels good to be in the sun again.\p"
 	.string "All that excitement has me energized!\n"
@@ -1500,16 +1529,16 @@ Route116_Text_WouldYouLikeToBattle::
 	.string "Would you like to battle?$"
 
 Route116_Text_WontHoldAnythingBack::
-# 141 "data/maps/Route116/scripts.pory"
+# 168 "data/maps/Route116/scripts.pory"
 	.string "Excellent!\n"
 	.string "I won't hold anything back!$"
 
 Route116_Text_RivalDefeated::
-# 146 "data/maps/Route116/scripts.pory"
+# 173 "data/maps/Route116/scripts.pory"
 	.string "You really are the real deal, huh?$"
 
 Route116_Text_MeetYouAtBrineysCottage::
-# 150 "data/maps/Route116/scripts.pory"
+# 177 "data/maps/Route116/scripts.pory"
 	.string "You've certainly gotten stronger, but I\n"
 	.string "got some licks in!\l"
 	.string "I thought since I beat ROXANNE that I\l"
@@ -1518,8 +1547,8 @@ Route116_Text_MeetYouAtBrineysCottage::
 	.string "But I suppose I should've expected it,\l"
 	.string "since you've obviously beaten her too.\p"
 	.string "Well, I suppose we should make our way\n"
-	.string "to the next GYM. I hear it's in an island\l"
-	.string "town called DEWFORD, but I don't have\l"
+	.string "to the next GYM. I hear it's on an island\l"
+	.string "in town called DEWFORD, but I don't have\l"
 	.string "the slightest idea how we are going to\l"
 	.string "get there.\l"
 	.string "Maybe MR. BRINEY can help us.\l"
@@ -1527,7 +1556,7 @@ Route116_Text_MeetYouAtBrineysCottage::
 	.string "I'll meet you at his cottage!$"
 
 Route116_Text_HangingAroundForABit::
-# 161 "data/maps/Route116/scripts.pory"
+# 188 "data/maps/Route116/scripts.pory"
 	.string "No big deal.\n"
 	.string "If you change your mind, I'll be hanging\l"
 	.string "around here for a bit.\l"
@@ -1535,13 +1564,19 @@ Route116_Text_HangingAroundForABit::
 	.string "SKITTY for his POKéDEX already.\l"
 	.string "I can't let him beat me!$"
 
+Route116_Text_HangingAroundForABit2::
+# 195 "data/maps/Route116/scripts.pory"
+	.string "No big deal.\n"
+	.string "If you change your mind, I'll be hanging\l"
+	.string "around here for a bit.$"
+
 Route116_Text_ThisOldManIsUpset::
-# 452 "data/maps/Route116/scripts.pory"
+# 469 "data/maps/Route116/scripts.pory"
 	.string "Hey. This old man is super upset!\n"
 	.string "I'm trying to calm him down, but…$"
 
 Route116_Text_GoCheckOutTunnel::
-# 457 "data/maps/Route116/scripts.pory"
+# 474 "data/maps/Route116/scripts.pory"
 	.string "This guy wants to go save his POKéMON,\n"
 	.string "but I'm afraid he's going to hurt\l"
 	.string "himself.\l"
@@ -1550,23 +1585,23 @@ Route116_Text_GoCheckOutTunnel::
 	.string "the old man calm.$"
 
 Route116_Text_StayPutOldMan::
-# 463 "data/maps/Route116/scripts.pory"
+# 480 "data/maps/Route116/scripts.pory"
 	.string "Stay put, old man!\n"
 	.string "{PLAYER} has got this.$"
 
 Route116_Text_Rival1::
-# 468 "data/maps/Route116/scripts.pory"
+# 485 "data/maps/Route116/scripts.pory"
 	.string "Would you go check out the tunnel?\n"
 	.string "I'm going to stay here and try to keep\l"
 	.string "the old man calm.$"
 
 Route116_Text_BrineyStillMad::
-# 473 "data/maps/Route116/scripts.pory"
+# 490 "data/maps/Route116/scripts.pory"
 	.string "The scoundrel made off with my\n"
 	.string "darling PEEKO!\p"
 	.string "Wrrrooooooaaaar! PEEKO!$"
 
 Route116_Text_BattleAfterAll::
-# 479 "data/maps/Route116/scripts.pory"
+# 496 "data/maps/Route116/scripts.pory"
 	.string "Are you ready to have that battle after\n"
 	.string "all?$"

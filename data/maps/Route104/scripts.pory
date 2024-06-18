@@ -132,7 +132,7 @@ Route104_EventScript_MayEncounter::
 	waitfanfare
 	closemessage
 	delay 30
-	setflag FLAG_ENABLE_RIVAL_MATCH_CALL
+	setflag FLAG_ENABLE_SPENCER_MATCH_CALL
 	applymovement OBJ_EVENT_ID_PLAYER, Route104_Movement_PlayerFaceRival
 	applymovement LOCALID_RIVAL, Route104_Movement_RivalWalkSlowLeft
 	msgbox Route104_Text_MayHowsYourPokedex, MSGBOX_DEFAULT
@@ -218,7 +218,7 @@ Route104_EventScript_BrendanEncounter::
 	waitfanfare
 	closemessage
 	delay 30
-	setflag FLAG_ENABLE_RIVAL_MATCH_CALL
+	setflag FLAG_ENABLE_SPENCER_MATCH_CALL
 	applymovement OBJ_EVENT_ID_PLAYER, Route104_Movement_PlayerFaceRival
 	applymovement LOCALID_RIVAL, Route104_Movement_RivalWalkSlowLeft
 	msgbox Route104_Text_BrendanHowsYourPokedex, MSGBOX_DEFAULT

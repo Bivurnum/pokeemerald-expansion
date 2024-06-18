@@ -2540,6 +2540,10 @@ extern const u8 gText_MatchCallMay_Strategy[];
 extern const u8 gText_MatchCallMay_Pokemon[];
 extern const u8 gText_MatchCallMay_Intro1[];
 extern const u8 gText_MatchCallMay_Intro2[];
+extern const u8 gText_MatchCallKyle_Strategy[];
+extern const u8 gText_MatchCallKyle_Pokemon[];
+extern const u8 gText_MatchCallKyle_Intro1[];
+extern const u8 gText_MatchCallKyle_Intro2[];
 
 // Contest Link
 extern const u8 gText_ColorDarkGray[];

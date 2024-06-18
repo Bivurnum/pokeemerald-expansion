@@ -709,120 +709,128 @@ RusturfTunnel_EventScript_Grunt::
 # 362 "data/maps/RusturfTunnel/scripts.pory"
 	fadescreenspeed FADE_TO_BLACK, 8
 # 363 "data/maps/RusturfTunnel/scripts.pory"
-	waitstate
+	waitmovement 0
 # 364 "data/maps/RusturfTunnel/scripts.pory"
-	clearflag FLAG_DEVON_GOODS_STOLEN
+	special RemoveCameraObject
 # 365 "data/maps/RusturfTunnel/scripts.pory"
-	setflag FLAG_RECOVERED_DEVON_GOODS
+	clearflag FLAG_DEVON_GOODS_STOLEN
 # 366 "data/maps/RusturfTunnel/scripts.pory"
-	setvar VAR_RUSTBORO_CITY_STATE, 4
+	setflag FLAG_RECOVERED_DEVON_GOODS
 # 367 "data/maps/RusturfTunnel/scripts.pory"
-	setvar VAR_BRINEY_HOUSE_STATE, 1
+	setvar VAR_RUSTBORO_CITY_STATE, 4
 # 368 "data/maps/RusturfTunnel/scripts.pory"
-	setvar VAR_RUSTURF_TUNNEL_STATE, 4
+	setvar VAR_BRINEY_HOUSE_STATE, 1
 # 369 "data/maps/RusturfTunnel/scripts.pory"
-	setflag FLAG_HIDE_ROUTE_116_MR_BRINEY
+	setvar VAR_RUSTURF_TUNNEL_STATE, 4
 # 370 "data/maps/RusturfTunnel/scripts.pory"
-	clearflag FLAG_HIDE_ROUTE_116_RIVAL1
+	setflag FLAG_HIDE_ROUTE_116_MR_BRINEY
 # 371 "data/maps/RusturfTunnel/scripts.pory"
-	warp MAP_ROUTE116, 47, 9
+	clearflag FLAG_HIDE_ROUTE_116_RIVAL1
 # 372 "data/maps/RusturfTunnel/scripts.pory"
-	waitstate
+	warp MAP_ROUTE116, 47, 9
 # 373 "data/maps/RusturfTunnel/scripts.pory"
+	waitstate
+# 374 "data/maps/RusturfTunnel/scripts.pory"
 	release
 	end
 
 
-# 377 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Movement_RivalApproachPeeko1:
 # 378 "data/maps/RusturfTunnel/scripts.pory"
+RusturfTunnel_Movement_RivalApproachPeeko1:
+# 379 "data/maps/RusturfTunnel/scripts.pory"
 	delay_16
 # 379 "data/maps/RusturfTunnel/scripts.pory"
-	walk_right
+	delay_16
 # 379 "data/maps/RusturfTunnel/scripts.pory"
+	delay_16
+# 380 "data/maps/RusturfTunnel/scripts.pory"
+	delay_8
+# 381 "data/maps/RusturfTunnel/scripts.pory"
 	walk_right
-# 379 "data/maps/RusturfTunnel/scripts.pory"
+# 381 "data/maps/RusturfTunnel/scripts.pory"
 	walk_right
-# 379 "data/maps/RusturfTunnel/scripts.pory"
+# 381 "data/maps/RusturfTunnel/scripts.pory"
+	walk_right
+# 381 "data/maps/RusturfTunnel/scripts.pory"
 	walk_right
 	step_end
 
-# 382 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Movement_RivalWatchBrineyLeave:
-# 383 "data/maps/RusturfTunnel/scripts.pory"
-	delay_16
 # 384 "data/maps/RusturfTunnel/scripts.pory"
-	face_up
+RusturfTunnel_Movement_RivalWatchBrineyLeave:
 # 385 "data/maps/RusturfTunnel/scripts.pory"
 	delay_16
 # 386 "data/maps/RusturfTunnel/scripts.pory"
+	face_up
+# 387 "data/maps/RusturfTunnel/scripts.pory"
+	delay_16
+# 387 "data/maps/RusturfTunnel/scripts.pory"
+	delay_16
+# 387 "data/maps/RusturfTunnel/scripts.pory"
+	delay_16
+# 388 "data/maps/RusturfTunnel/scripts.pory"
 	face_left
 	step_end
 
-# 389 "data/maps/RusturfTunnel/scripts.pory"
+# 391 "data/maps/RusturfTunnel/scripts.pory"
 RusturfTunnel_Movement_RivalApproachPlayer:
-# 390 "data/maps/RusturfTunnel/scripts.pory"
+# 392 "data/maps/RusturfTunnel/scripts.pory"
 	delay_16
-# 391 "data/maps/RusturfTunnel/scripts.pory"
+# 393 "data/maps/RusturfTunnel/scripts.pory"
 	walk_right
-# 391 "data/maps/RusturfTunnel/scripts.pory"
+# 393 "data/maps/RusturfTunnel/scripts.pory"
 	walk_right
-# 391 "data/maps/RusturfTunnel/scripts.pory"
+# 393 "data/maps/RusturfTunnel/scripts.pory"
 	walk_right
 	step_end
 
-# 394 "data/maps/RusturfTunnel/scripts.pory"
+# 396 "data/maps/RusturfTunnel/scripts.pory"
 RusturfTunnel_Movement_LeaveTunnel:
-# 395 "data/maps/RusturfTunnel/scripts.pory"
+# 397 "data/maps/RusturfTunnel/scripts.pory"
 	walk_left
-# 395 "data/maps/RusturfTunnel/scripts.pory"
+# 397 "data/maps/RusturfTunnel/scripts.pory"
 	walk_left
-# 395 "data/maps/RusturfTunnel/scripts.pory"
+# 397 "data/maps/RusturfTunnel/scripts.pory"
 	walk_left
-# 395 "data/maps/RusturfTunnel/scripts.pory"
+# 397 "data/maps/RusturfTunnel/scripts.pory"
 	walk_left
-# 395 "data/maps/RusturfTunnel/scripts.pory"
+# 397 "data/maps/RusturfTunnel/scripts.pory"
 	walk_left
-# 395 "data/maps/RusturfTunnel/scripts.pory"
+# 397 "data/maps/RusturfTunnel/scripts.pory"
 	walk_left
-# 395 "data/maps/RusturfTunnel/scripts.pory"
+# 397 "data/maps/RusturfTunnel/scripts.pory"
 	walk_left
 	step_end
 
-# 409 "data/maps/RusturfTunnel/scripts.pory"
-
-# 410 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Movement_PushPlayerAsideForGrunt:
 # 411 "data/maps/RusturfTunnel/scripts.pory"
-	face_down
+
 # 412 "data/maps/RusturfTunnel/scripts.pory"
-	lock_facing_direction
+RusturfTunnel_Movement_PushPlayerAsideForGrunt:
 # 413 "data/maps/RusturfTunnel/scripts.pory"
-	walk_up
+	face_down
 # 414 "data/maps/RusturfTunnel/scripts.pory"
-	unlock_facing_direction
+	lock_facing_direction
 # 415 "data/maps/RusturfTunnel/scripts.pory"
-	walk_in_place_faster_left
+	walk_up
 # 416 "data/maps/RusturfTunnel/scripts.pory"
-	step_end
+	unlock_facing_direction
 # 417 "data/maps/RusturfTunnel/scripts.pory"
-
+	walk_in_place_faster_left
 # 418 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Movement_PlayerMoveAsideForBriney:
-# 419 "data/maps/RusturfTunnel/scripts.pory"
-	walk_down
-# 420 "data/maps/RusturfTunnel/scripts.pory"
-	walk_in_place_faster_up
-# 421 "data/maps/RusturfTunnel/scripts.pory"
 	step_end
-# 422 "data/maps/RusturfTunnel/scripts.pory"
+# 419 "data/maps/RusturfTunnel/scripts.pory"
 
+# 420 "data/maps/RusturfTunnel/scripts.pory"
+RusturfTunnel_Movement_PlayerMoveAsideForBriney:
+# 421 "data/maps/RusturfTunnel/scripts.pory"
+	walk_down
+# 422 "data/maps/RusturfTunnel/scripts.pory"
+	walk_in_place_faster_up
 # 423 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Movement_GruntEscape:
+	step_end
 # 424 "data/maps/RusturfTunnel/scripts.pory"
-	walk_fast_left
+
 # 425 "data/maps/RusturfTunnel/scripts.pory"
-	walk_fast_left
+RusturfTunnel_Movement_GruntEscape:
 # 426 "data/maps/RusturfTunnel/scripts.pory"
 	walk_fast_left
 # 427 "data/maps/RusturfTunnel/scripts.pory"
@@ -838,15 +846,15 @@ RusturfTunnel_Movement_GruntEscape:
 # 432 "data/maps/RusturfTunnel/scripts.pory"
 	walk_fast_left
 # 433 "data/maps/RusturfTunnel/scripts.pory"
-	step_end
+	walk_fast_left
 # 434 "data/maps/RusturfTunnel/scripts.pory"
-
+	walk_fast_left
 # 435 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Movement_BrineyApproachPeeko1:
+	step_end
 # 436 "data/maps/RusturfTunnel/scripts.pory"
-	walk_right
+
 # 437 "data/maps/RusturfTunnel/scripts.pory"
-	walk_right
+RusturfTunnel_Movement_BrineyApproachPeeko1:
 # 438 "data/maps/RusturfTunnel/scripts.pory"
 	walk_right
 # 439 "data/maps/RusturfTunnel/scripts.pory"
@@ -858,15 +866,15 @@ RusturfTunnel_Movement_BrineyApproachPeeko1:
 # 442 "data/maps/RusturfTunnel/scripts.pory"
 	walk_right
 # 443 "data/maps/RusturfTunnel/scripts.pory"
-	step_end
+	walk_right
 # 444 "data/maps/RusturfTunnel/scripts.pory"
-
+	walk_right
 # 445 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Movement_BrineyExit:
+	step_end
 # 446 "data/maps/RusturfTunnel/scripts.pory"
-	walk_left
+
 # 447 "data/maps/RusturfTunnel/scripts.pory"
-	walk_left
+RusturfTunnel_Movement_BrineyExit:
 # 448 "data/maps/RusturfTunnel/scripts.pory"
 	walk_left
 # 449 "data/maps/RusturfTunnel/scripts.pory"
@@ -886,39 +894,39 @@ RusturfTunnel_Movement_BrineyExit:
 # 456 "data/maps/RusturfTunnel/scripts.pory"
 	walk_left
 # 457 "data/maps/RusturfTunnel/scripts.pory"
-	step_end
+	walk_left
 # 458 "data/maps/RusturfTunnel/scripts.pory"
-
+	walk_left
 # 459 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Movement_PlayerWatchBrineyExit:
+	step_end
 # 460 "data/maps/RusturfTunnel/scripts.pory"
-	delay_16
+
 # 461 "data/maps/RusturfTunnel/scripts.pory"
-	delay_8
+RusturfTunnel_Movement_PlayerWatchBrineyExit:
 # 462 "data/maps/RusturfTunnel/scripts.pory"
-	delay_4
-# 463 "data/maps/RusturfTunnel/scripts.pory"
-	walk_in_place_faster_left
-# 464 "data/maps/RusturfTunnel/scripts.pory"
-	step_end
-# 465 "data/maps/RusturfTunnel/scripts.pory"
-
-# 466 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Movement_BrineyApproachPeeko2:
-# 467 "data/maps/RusturfTunnel/scripts.pory"
 	delay_16
-# 468 "data/maps/RusturfTunnel/scripts.pory"
-	walk_right
-# 469 "data/maps/RusturfTunnel/scripts.pory"
+# 463 "data/maps/RusturfTunnel/scripts.pory"
+	delay_8
+# 464 "data/maps/RusturfTunnel/scripts.pory"
+	delay_4
+# 465 "data/maps/RusturfTunnel/scripts.pory"
+	walk_in_place_faster_left
+# 466 "data/maps/RusturfTunnel/scripts.pory"
 	step_end
-# 470 "data/maps/RusturfTunnel/scripts.pory"
+# 467 "data/maps/RusturfTunnel/scripts.pory"
 
+# 468 "data/maps/RusturfTunnel/scripts.pory"
+RusturfTunnel_Movement_BrineyApproachPeeko2:
+# 469 "data/maps/RusturfTunnel/scripts.pory"
+	delay_16
+# 470 "data/maps/RusturfTunnel/scripts.pory"
+	walk_right
 # 471 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Movement_PeekoExit:
+	step_end
 # 472 "data/maps/RusturfTunnel/scripts.pory"
-	walk_left
+
 # 473 "data/maps/RusturfTunnel/scripts.pory"
-	walk_left
+RusturfTunnel_Movement_PeekoExit:
 # 474 "data/maps/RusturfTunnel/scripts.pory"
 	walk_left
 # 475 "data/maps/RusturfTunnel/scripts.pory"
@@ -934,240 +942,244 @@ RusturfTunnel_Movement_PeekoExit:
 # 480 "data/maps/RusturfTunnel/scripts.pory"
 	walk_left
 # 481 "data/maps/RusturfTunnel/scripts.pory"
-	step_end
+	walk_left
 # 482 "data/maps/RusturfTunnel/scripts.pory"
-
+	walk_left
 # 483 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_EventScript_Mike::
+	step_end
 # 484 "data/maps/RusturfTunnel/scripts.pory"
-	trainerbattle_single TRAINER_MIKE_2, RusturfTunnel_Text_MikeIntro, RusturfTunnel_Text_MikeDefeat
+
 # 485 "data/maps/RusturfTunnel/scripts.pory"
-	msgbox RusturfTunnel_Text_MikePostBattle, MSGBOX_AUTOCLOSE
+RusturfTunnel_EventScript_Mike::
 # 486 "data/maps/RusturfTunnel/scripts.pory"
-	end
+	trainerbattle_single TRAINER_MIKE_2, RusturfTunnel_Text_MikeIntro, RusturfTunnel_Text_MikeDefeat
 # 487 "data/maps/RusturfTunnel/scripts.pory"
-
+	msgbox RusturfTunnel_Text_MikePostBattle, MSGBOX_AUTOCLOSE
 # 488 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_ComeAndGetSome:
+	end
 # 489 "data/maps/RusturfTunnel/scripts.pory"
-	.string "What, are you coming?\n"
+
 # 490 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Come and get some, then!$"
+RusturfTunnel_Text_ComeAndGetSome:
 # 491 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "What, are you coming?\n"
 # 492 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_Peeko:
+	.string "Come and get some, then!$"
 # 493 "data/maps/RusturfTunnel/scripts.pory"
-	.string "PEEKO: Pii pihyoh!$"
+
 # 494 "data/maps/RusturfTunnel/scripts.pory"
-
+RusturfTunnel_Text_Peeko:
 # 495 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_GruntIntro:
+	.string "PEEKO: Pii pihyoh!$"
 # 496 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Grah, keelhaul it all!\p"
+
 # 497 "data/maps/RusturfTunnel/scripts.pory"
-	.string "That hostage POKéMON turned out to\n"
+RusturfTunnel_Text_GruntIntro:
 # 498 "data/maps/RusturfTunnel/scripts.pory"
-	.string "be worthless!\p"
+	.string "Grah, keelhaul it all!\p"
 # 499 "data/maps/RusturfTunnel/scripts.pory"
-	.string "And to think I made a getaway…\n"
+	.string "That hostage POKéMON turned out to\n"
 # 500 "data/maps/RusturfTunnel/scripts.pory"
-	.string "In this tunnel to nowhere!\p"
+	.string "be worthless!\p"
 # 501 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Hey! You!\n"
+	.string "And to think I made a getaway…\n"
 # 502 "data/maps/RusturfTunnel/scripts.pory"
-	.string "So you want to battle me?$"
+	.string "In this tunnel to nowhere!\p"
 # 503 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "Hey! You!\n"
 # 504 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_GruntDefeat:
+	.string "So you want to battle me?$"
 # 505 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Urrrggh! My career in crime comes to\n"
+
 # 506 "data/maps/RusturfTunnel/scripts.pory"
-	.string "a dead end!$"
+RusturfTunnel_Text_GruntDefeat:
 # 507 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "Urrrggh! My career in crime comes to\n"
 # 508 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_GruntTakePackage:
+	.string "a dead end!$"
 # 509 "data/maps/RusturfTunnel/scripts.pory"
-	.string "This is plain not right…\p"
+
 # 510 "data/maps/RusturfTunnel/scripts.pory"
-	.string "The BOSS told me this would be a\n"
+RusturfTunnel_Text_GruntTakePackage:
 # 511 "data/maps/RusturfTunnel/scripts.pory"
-	.string "slick-and-easy job to pull.\p"
+	.string "This is plain not right…\p"
 # 512 "data/maps/RusturfTunnel/scripts.pory"
-	.string "All I had to do was steal some package\n"
+	.string "The BOSS told me this would be a\n"
 # 513 "data/maps/RusturfTunnel/scripts.pory"
-	.string "from DEVON.\p"
+	.string "slick-and-easy job to pull.\p"
 # 514 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Tch!\n"
+	.string "All I had to do was steal some package\n"
 # 515 "data/maps/RusturfTunnel/scripts.pory"
-	.string "You want it back that badly, take it!$"
+	.string "from DEVON.\p"
 # 516 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "Tch!\n"
 # 517 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_PeekoGladToSeeYouSafe:
+	.string "You want it back that badly, take it!$"
 # 518 "data/maps/RusturfTunnel/scripts.pory"
-	.string "PEEKO!\n"
+
 # 519 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Am I glad to see you're safe!$"
+RusturfTunnel_Text_PeekoGladToSeeYouSafe:
 # 520 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "PEEKO!\n"
 # 521 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_ThankYouLetsGoHomePeeko:
+	.string "Am I glad to see you're safe!$"
 # 522 "data/maps/RusturfTunnel/scripts.pory"
-	.string "PEEKO owes her life to you!\p"
+
 # 523 "data/maps/RusturfTunnel/scripts.pory"
-	.string "They call me MR. BRINEY.\n"
+RusturfTunnel_Text_ThankYouLetsGoHomePeeko:
 # 524 "data/maps/RusturfTunnel/scripts.pory"
-	.string "And, you are?\p"
+	.string "PEEKO owes her life to you!\p"
 # 525 "data/maps/RusturfTunnel/scripts.pory"
-	.string "… … … … … … … …\n"
+	.string "They call me MR. BRINEY.\n"
 # 526 "data/maps/RusturfTunnel/scripts.pory"
-	.string "… … … … … … … …\p"
+	.string "And, you are?\p"
 # 527 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Ah, so you are {PLAYER}{KUN}!\n"
+	.string "… … … … … … … …\n"
 # 528 "data/maps/RusturfTunnel/scripts.pory"
-	.string "I sincerely thank you!\p"
+	.string "… … … … … … … …\p"
 # 529 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Now, if there's anything that troubles\n"
+	.string "Ah, so you are {PLAYER}{KUN}!\n"
 # 530 "data/maps/RusturfTunnel/scripts.pory"
-	.string "you, don't hesitate to tell me!\p"
+	.string "I sincerely thank you!\p"
 # 531 "data/maps/RusturfTunnel/scripts.pory"
-	.string "You can usually find me in my cottage\n"
+	.string "Now, if there's anything that troubles\n"
 # 532 "data/maps/RusturfTunnel/scripts.pory"
-	.string "by the sea near PETALBURG WOODS.\p"
+	.string "you, don't hesitate to tell me!\p"
 # 533 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Come, PEEKO, we should make our way\n"
+	.string "You can usually find me in my cottage\n"
 # 534 "data/maps/RusturfTunnel/scripts.pory"
-	.string "home.\p"
+	.string "by the sea near PETALBURG WOODS.\p"
 # 535 "data/maps/RusturfTunnel/scripts.pory"
-	.string "PEEKO: Pihyoh!$"
+	.string "Come, PEEKO, we should make our way\n"
 # 536 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "home.\p"
 # 537 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_WhyCantTheyKeepDigging:
+	.string "PEEKO: Pihyoh!$"
 # 538 "data/maps/RusturfTunnel/scripts.pory"
-	.string "… …\p"
+
 # 539 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Why can't they keep digging?\n"
+RusturfTunnel_Text_WhyCantTheyKeepDigging:
 # 540 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Is the bedrock too hard?\p"
+	.string "… …\p"
 # 541 "data/maps/RusturfTunnel/scripts.pory"
-	.string "My beloved awaits me in VERDANTURF\n"
+	.string "Why can't they keep digging?\n"
 # 542 "data/maps/RusturfTunnel/scripts.pory"
-	.string "TOWN just beyond here…\p"
+	.string "Is the bedrock too hard?\p"
 # 543 "data/maps/RusturfTunnel/scripts.pory"
-	.string "If RUSTBORO and VERDANTURF were\n"
+	.string "My beloved awaits me in VERDANTURF\n"
 # 544 "data/maps/RusturfTunnel/scripts.pory"
-	.string "joined by this tunnel, I could visit\l"
+	.string "TOWN just beyond here…\p"
 # 545 "data/maps/RusturfTunnel/scripts.pory"
-	.string "her every day…\p"
+	.string "If RUSTBORO and VERDANTURF were\n"
 # 546 "data/maps/RusturfTunnel/scripts.pory"
-	.string "But this…\n"
+	.string "joined by this tunnel, I could visit\l"
 # 547 "data/maps/RusturfTunnel/scripts.pory"
-	.string "What am I to do?$"
+	.string "her every day…\p"
 # 548 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "But this…\n"
 # 549 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_ToGetToVerdanturf:
+	.string "What am I to do?$"
 # 550 "data/maps/RusturfTunnel/scripts.pory"
-	.string "To get from RUSTBORO to VERDANTURF,\n"
+
 # 551 "data/maps/RusturfTunnel/scripts.pory"
-	.string "you need to go to DEWFORD, then pass\l"
+RusturfTunnel_Text_ToGetToVerdanturf:
 # 552 "data/maps/RusturfTunnel/scripts.pory"
-	.string "through SLATEPORT and MAUVILLE…$"
+	.string "To get from RUSTBORO to VERDANTURF,\n"
 # 553 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "you need to go to DEWFORD, then pass\l"
 # 554 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_YouShatteredBoulderTakeHM:
+	.string "through SLATEPORT and MAUVILLE…$"
 # 555 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Wow! You shattered that boulder\n"
+
 # 556 "data/maps/RusturfTunnel/scripts.pory"
-	.string "blocking the way.\p"
+RusturfTunnel_Text_YouShatteredBoulderTakeHM:
 # 557 "data/maps/RusturfTunnel/scripts.pory"
-	.string "To show you how much I appreciate it,\n"
+	.string "Wow! You shattered that boulder\n"
 # 558 "data/maps/RusturfTunnel/scripts.pory"
-	.string "I'd like you to have this HM.$"
+	.string "blocking the way.\p"
 # 559 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "To show you how much I appreciate it,\n"
 # 560 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_ExplainStrength:
+	.string "I'd like you to have this HM.$"
 # 561 "data/maps/RusturfTunnel/scripts.pory"
-	.string "That HM contains STRENGTH.\p"
+
 # 562 "data/maps/RusturfTunnel/scripts.pory"
-	.string "If a muscular POKéMON were to learn\n"
+RusturfTunnel_Text_ExplainStrength:
 # 563 "data/maps/RusturfTunnel/scripts.pory"
-	.string "that, it would be able to move even\l"
+	.string "That HM contains STRENGTH.\p"
 # 564 "data/maps/RusturfTunnel/scripts.pory"
-	.string "large boulders.$"
+	.string "If a muscular POKéMON were to learn\n"
 # 565 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "that, it would be able to move even\l"
 # 566 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_WandaReunion:
+	.string "large boulders.$"
 # 567 "data/maps/RusturfTunnel/scripts.pory"
-	.string "WANDA!\n"
+
 # 568 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Now I can see you anytime!\p"
+RusturfTunnel_Text_WandaReunion:
 # 569 "data/maps/RusturfTunnel/scripts.pory"
-	.string "WANDA: That's…wonderful.\p"
+	.string "WANDA!\n"
 # 570 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Please, take some rest at my home.$"
+	.string "Now I can see you anytime!\p"
 # 571 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "WANDA: That's…wonderful.\p"
 # 572 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_BoyfriendOnOtherSideOfRock:
+	.string "Please, take some rest at my home.$"
 # 573 "data/maps/RusturfTunnel/scripts.pory"
-	.string "On the other side of this rock…\n"
+
 # 574 "data/maps/RusturfTunnel/scripts.pory"
-	.string "My boyfriend is there.\p"
+RusturfTunnel_Text_BoyfriendOnOtherSideOfRock:
 # 575 "data/maps/RusturfTunnel/scripts.pory"
-	.string "He… He's not just digging the tunnel\n"
+	.string "On the other side of this rock…\n"
 # 576 "data/maps/RusturfTunnel/scripts.pory"
-	.string "to come see me.\p"
+	.string "My boyfriend is there.\p"
 # 577 "data/maps/RusturfTunnel/scripts.pory"
-	.string "He works his hands raw and rough\n"
+	.string "He… He's not just digging the tunnel\n"
 # 578 "data/maps/RusturfTunnel/scripts.pory"
-	.string "for the benefit of everyone.$"
+	.string "to come see me.\p"
 # 579 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "He works his hands raw and rough\n"
 # 580 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_MikeIntro:
+	.string "for the benefit of everyone.$"
 # 581 "data/maps/RusturfTunnel/scripts.pory"
-	.string "What do you call a wild man up in the\n"
+
 # 582 "data/maps/RusturfTunnel/scripts.pory"
-	.string "mountains? A mountain man, right?\p"
+RusturfTunnel_Text_MikeIntro:
 # 583 "data/maps/RusturfTunnel/scripts.pory"
-	.string "So why don't they call a POKéMON in\n"
+	.string "What do you call a wild man up in the\n"
 # 584 "data/maps/RusturfTunnel/scripts.pory"
-	.string "the mountains a mountain POKéMON?$"
+	.string "mountains? A mountain man, right?\p"
 # 585 "data/maps/RusturfTunnel/scripts.pory"
-
+	.string "So why don't they call a POKéMON in\n"
 # 586 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_MikeDefeat:
+	.string "the mountains a mountain POKéMON?$"
 # 587 "data/maps/RusturfTunnel/scripts.pory"
-	.string "My POKéMON…\n"
-# 588 "data/maps/RusturfTunnel/scripts.pory"
-	.string "Ran out of power…$"
-# 589 "data/maps/RusturfTunnel/scripts.pory"
 
+# 588 "data/maps/RusturfTunnel/scripts.pory"
+RusturfTunnel_Text_MikeDefeat:
+# 589 "data/maps/RusturfTunnel/scripts.pory"
+	.string "My POKéMON…\n"
 # 590 "data/maps/RusturfTunnel/scripts.pory"
-RusturfTunnel_Text_MikePostBattle:
+	.string "Ran out of power…$"
 # 591 "data/maps/RusturfTunnel/scripts.pory"
-	.string "They halted development here to\n"
+
 # 592 "data/maps/RusturfTunnel/scripts.pory"
-	.string "protect POKéMON, right?\l"
+RusturfTunnel_Text_MikePostBattle:
 # 593 "data/maps/RusturfTunnel/scripts.pory"
+	.string "They halted development here to\n"
+# 594 "data/maps/RusturfTunnel/scripts.pory"
+	.string "protect POKéMON, right?\l"
+# 595 "data/maps/RusturfTunnel/scripts.pory"
 	.string "There's a feel-good story!$"
 
 RusturfTunnel_Text_LetMeHealYourTeam::
-# 398 "data/maps/RusturfTunnel/scripts.pory"
+# 400 "data/maps/RusturfTunnel/scripts.pory"
 	.string "Man, you sent that grunt packing! I'll\n"
 	.string "bet your POKéMON are tired after that\l"
 	.string "battle, though.\l"
 	.string "Here. Let me heal your team.$"
 
 RusturfTunnel_Text_LetsGetOutOfTunnel::
-# 404 "data/maps/RusturfTunnel/scripts.pory"
+# 406 "data/maps/RusturfTunnel/scripts.pory"
 	.string "Let's get out of this dark tunnel. It\n"
 	.string "echoes so much in here!$"

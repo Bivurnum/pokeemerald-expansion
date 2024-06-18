@@ -197,54 +197,62 @@ RustboroCity_DevonCorp_3F_EventScript_EmployeeBalls::
 RustboroCity_DevonCorp_3F_EventScript_RareRocksDisplay::
 	msgbox RustboroCity_DevonCorp_3F_Text_RareRocksDisplay, MSGBOX_SIGN
 	end
+`
 
-RustboroCity_DevonCorp_3F_Text_MrStoneIHaveFavor:
-	.string "I'm MR. STONE, the PRESIDENT of\n"
-	.string "the DEVON CORPORATION.\p"
-	.string "I'd just got word about you!\p"
-	.string "You saved our staff not just once,\n"
-	.string "but twice!\p"
-	.string "I have a favor to ask of an amazing\n"
-	.string "person like you.\p"
-	.string "I understand that you're delivering\n"
-	.string "a package to SLATEPORT's SHIPYARD.\p"
-	.string "Well, on the way, could you stop off in\n"
-	.string "DEWFORD TOWN?\p"
-	.string "I was hoping that you'd deliver a\n"
-	.string "LETTER to STEVEN in DEWFORD.$"
+text RustboroCity_DevonCorp_3F_Text_MrStoneIHaveFavor {
+	format ("I'm MR. STONE, the PRESIDENT of\n"
+	    "the DEVON CORPORATION.\p"
+	    "I'd just got word about you and your friends!\p"
+	    "You saved our staff not just once,\n"
+        "but twice!\p"
+	    "I have a favor to ask of an amazing\n"
+	    "group like you.\p"
+	    "I understand that you're delivering\n"
+	    "a package to SLATEPORT's SHIPYARD.\p"
+	    "Well, on the way, could you stop off in\n"
+	    "DEWFORD TOWN?\p"
+	    "I was hoping that you'd deliver a\n"
+	    "LETTER to STEVEN in DEWFORD.")
+}
 
-RustboroCity_DevonCorp_3F_Text_MrStoneWantYouToHaveThis:
-	.string "MR. STONE: Now, you should know that\n"
-	.string "I am a great PRESIDENT.\p"
-	.string "So, I'd never be so cheap as to ask\n"
-	.string "a favor for nothing in return.\p"
-	.string "That's why I want you to have this!$"
+text RustboroCity_DevonCorp_3F_Text_MrStoneWantYouToHaveThis {
+	format ("MR. STONE: Now, you should know that\n"
+	    "I am a great PRESIDENT.\p"
+	    "So, I'd never be so cheap as to ask\n"
+	    "a favor for nothing in return.\p"
+	    "That's why I want you to have this!")
+}
 
-RustboroCity_DevonCorp_3F_Text_ReceivedPokenav:
-	.string "{PLAYER} received a POKéNAV.$"
+text RustboroCity_DevonCorp_3F_Text_ReceivedPokenav {
+	format ("{PLAYER} received a POKéNAV.")
+}
 
-RustboroCity_DevonCorp_3F_Text_MrStoneExplainPokenavRestUp:
-	.string "MR. STONE: That device…\p"
-	.string "It's a POKéMON NAVIGATOR, or POKéNAV\n"
-	.string "for short.\p"
-	.string "It's an indispensable tool for any\n"
-	.string "TRAINER on an adventure.\p"
-	.string "It has a map of the HOENN region.\p"
-	.string "You can check the locations of\n"
-	.string "DEWFORD and SLATEPORT easily!\p"
-	.string "By the way, I've heard that sinister\n"
-	.string "criminals--MAGMA and AQUA, I believe--\l"
-	.string "have been making trouble far and wide.\p"
-	.string "I think it would be best if you rested\n"
-	.string "up before you go on your way.$"
+text RustboroCity_DevonCorp_3F_Text_MrStoneExplainPokenavRestUp {
+	format ("MR. STONE: That device…\p"
+	    "It's a POKéMON NAVIGATOR, or POKéNAV\n"
+	    "for short.\p"
+	    "It's an indispensable tool for any\n"
+	    "TRAINER on an adventure.\p"
+	    "It has a map of the HOENN region.\p"
+	    "You can check the locations of\n"
+	    "DEWFORD and SLATEPORT easily!\p"
+	    "By the way, I've heard that sinister\n"
+	    "criminals--MAGMA and AQUA, I believe--\l"
+	    "have been making trouble far and wide.\p"
+	    "I think it would be best if you rested\n"
+	    "up before you go on your way.")
+}
 
-RustboroCity_DevonCorp_3F_Text_MrStoneGoWithCautionAndCare:
-	.string "MR. STONE: Well, then, {PLAYER}{KUN},\n"
-	.string "go with caution and care!$"
+text RustboroCity_DevonCorp_3F_Text_MrStoneGoWithCautionAndCare {
+	format ("MR. STONE: Well, then, {PLAYER}{KUN},\n"
+	    "go with caution and care!")
+}
 
-RustboroCity_DevonCorp_3F_Text_CountingOnYou:
-	.string "MR. STONE: I'm counting on you!$"
+text RustboroCity_DevonCorp_3F_Text_CountingOnYou {
+	format ("MR. STONE: I'm counting on you!")
+}
 
+raw `
 RustboroCity_DevonCorp_3F_Text_ThankYouForDeliveringLetter:
 	.string "MR. STONE: You delivered my LETTER?\n"
 	.string "Thank you kindly!\p"

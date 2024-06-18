@@ -275,7 +275,7 @@
 #define FLAG_RECEIVED_WATMEL_BERRY           0xFA
 #define FLAG_RECEIVED_DURIN_BERRY            0xFB
 #define FLAG_RECEIVED_BELUE_BERRY            0xFC
-#define FLAG_ENABLE_RIVAL_MATCH_CALL         0xFD
+#define FLAG_ENABLE_SPENCER_MATCH_CALL       0xFD
 #define FLAG_RECEIVED_CHARCOAL               0xFE
 #define FLAG_LATIOS_OR_LATIAS_ROAMING        0xFF
 #define FLAG_RECEIVED_REPEAT_BALL            0x100
@@ -666,8 +666,8 @@
 #define FLAG_HIDE_ROUTE_104_RIVAL1              0x26F
 #define FLAG_HIDE_PETALBURG_WOODS_RIVAL2        0x270
 #define FLAG_HIDE_ROUTE_116_RIVAL1              0x271
-#define FLAG_UNUSED_0x272  0x272 // Unused Flag
-#define FLAG_UNUSED_0x273  0x273 // Unused Flag
+#define FLAG_ENABLE_BREN_MATCH_CALL             0x272
+#define FLAG_ENABLE_KYLE_MATCH_CALL             0x273
 #define FLAG_UNUSED_0x274  0x274 // Unused Flag
 #define FLAG_UNUSED_0x275  0x275 // Unused Flag
 #define FLAG_UNUSED_0x276  0x276 // Unused Flag
