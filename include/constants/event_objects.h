@@ -293,6 +293,7 @@
 
 // Special object event local ids
 #define OBJ_EVENT_ID_PLAYER 0xFF
+#define OBJ_EVENT_ID_FOLLOWER 0xFE
 #define OBJ_EVENT_ID_CAMERA 0x7F
 
 // Object event local ids referenced in C files
