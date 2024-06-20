@@ -1,11 +1,11 @@
-# Pokémon Emerald
+# Follow Me
 
-This is a decompilation of Pokémon Emerald.
+This is originally created by [ghoulslash](https://github.com/ghoulslash/pokeemerald/tree/follow_me). All credit goes to them. I only made a small adjustment to make it compatible with the updated version of pokeemerald (as of 6/19/2024). I also have a [follow-me-expansion](https://github.com/Bivurnum/pokeemerald/tree/follow-me-expansion) branch that is compatible with the latest version of rh-hideout's pokeemerald-expansion.
 
-It builds the following ROM:
+Please let me know if this ever gets outdated again.
 
-* [**pokeemerald.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=1961) `sha1: f3ae088181bf583e55daf962a92bb46f4f1d07b7`
 
-To set up the repository, see [INSTALL.md](INSTALL.md).
-
-For contacts and other pret projects, see [pret.github.io](https://pret.github.io/).
+From [ghoulslash's pokecommunity post](https://www.pokecommunity.com/threads/follow-me.432529/):
+"Credits:
+Skeli / Complete Fire Red Upgrade
+Touched for original source"
