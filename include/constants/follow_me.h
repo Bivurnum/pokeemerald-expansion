@@ -25,6 +25,7 @@
 #define CAN_ROCK_CLIMB                      0x40    // need rock climb implemented
 #define CLEAR_ON_WHITE_OUT                  0x80
 #define CUSTOM_SCRIPT                       0x100
+#define CUSTOM_SCRIPT_AND_RUN               FOLLOWER_FLAG_HAS_RUNNING_FRAMES | FOLLOWER_FLAG_CUSTOM_FOLLOW_SCRIPT
 #define ALL_WATER                           FOLLOWER_FLAG_ALL_WATER
 #define ALL_LAND                            FOLLOWER_FLAG_ALL_LAND
 #define FOLLOWER_ALL                        FOLLOWER_FLAG_ALL

@@ -42,7 +42,7 @@ script RustboroCity_DevonCorp_3F_EventScript_MeetPresident {
 	playbgm (MUS_FOLLOW_ME, FALSE)
 	applymovement (LOCALID_DEVON_EMPLOYEE, RustboroCity_DevonCorp_3F_Movement_LeadPlayerToPresident)
 	applymovement (OBJ_EVENT_ID_PLAYER, RustboroCity_DevonCorp_3F_Movement_PlayerFollowToPresident)
-	applymovement (LOCALID_RIVAL1, RustboroCity_DevonCorp_3F_Movement_PlayerFollowToPresident)
+	applymovement (LOCALID_RIVAL1, RustboroCity_DevonCorp_3F_Movement_RivalFollowToPresident)
 	waitmovement (0)
 	msgbox (RustboroCity_DevonCorp_3F_Text_PleaseGoAhead, MSGBOX_DEFAULT)
 	closemessage
@@ -65,9 +65,14 @@ script RustboroCity_DevonCorp_3F_EventScript_MeetPresident {
 	call (Common_EventScript_OutOfCenterPartyHeal)
 	msgbox (RustboroCity_DevonCorp_3F_Text_MrStoneGoWithCautionAndCare, MSGBOX_DEFAULT)
 	closemessage
+	delay (20)
 	applymovement (LOCALID_RIVAL1, Common_Movement_WalkInPlaceFasterDown)
 	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp)
 	waitmovement (0)
+	msgbox (RustboroCity_DevonCorp_3F_Text_MaybeBrineyCanHelp, MSGBOX_DEFAULT)
+	closemessage
+	loadword (0, RustboroCity_DevonCorp_3F_EventScript_RivalFollowing)
+	setfollower (LOCALID_RIVAL1, CUSTOM_SCRIPT_AND_RUN)
 	setflag (FLAG_HIDE_ROUTE_116_WANDAS_BOYFRIEND)
 	clearflag (FLAG_HIDE_RUSTURF_TUNNEL_WANDAS_BOYFRIEND)
 	clearflag (FLAG_HIDE_RUSTURF_TUNNEL_WANDA)
@@ -78,6 +83,15 @@ script RustboroCity_DevonCorp_3F_EventScript_MeetPresident {
 	setvar (VAR_DEVON_CORP_3F_STATE, 1)
 	setvar (VAR_RUSTBORO_CITY_STATE, 6)
 	releaseall
+	end
+}
+
+script RustboroCity_DevonCorp_3F_EventScript_RivalFollowing {
+	lock
+	facefollower
+	msgbox (RustboroCity_DevonCorp_3F_Text_RivalFollowing, MSGBOX_DEFAULT)
+	closemessage
+	release
 	end
 }
 
@@ -136,6 +150,12 @@ movement RustboroCity_DevonCorp_3F_Movement_PlayerFollowToPresident {
 	walk_right * 4
 	walk_down
 	walk_right * 8
+}
+
+movement RustboroCity_DevonCorp_3F_Movement_RivalFollowToPresident {
+	walk_right * 5
+	walk_down
+	walk_right * 7
 }
 
 movement RustboroCity_DevonCorp_3F_Movement_PlayerApproachDesk {
@@ -213,7 +233,7 @@ text RustboroCity_DevonCorp_3F_Text_MrStoneIHaveFavor {
 	    "I'd just got word about you, {PLAYER}!\p"
 	    "You saved our staff not just once,\n"
         "but twice!\l"
-		"With the help of your friends, of course.\p"
+		"With the help of your friends,\Nof course.\p"
 	    "I have a favor to ask of an amazing\n"
 	    "group like you.\p"
 	    "I understand that you're delivering\n"
@@ -253,7 +273,10 @@ text RustboroCity_DevonCorp_3F_Text_MrStoneExplainPokenavRestUp {
 }
 
 text RustboroCity_DevonCorp_3F_Text_MrStoneGoWithCautionAndCare {
-	format ("MR. STONE: Well, then, {PLAYER}, {RIVAL1},\n"
+	format ("MR. STONE: Oh, and I also heard that you have another friend who helped defend my staff member in PETALBURG WOODS.\N"
+		"If you see him, could you tell him to come see me?\N"
+		"I would like to reward him as well.\p"
+		"Alright, {PLAYER}, {RIVAL},"
 	    "go with caution and care!")
 }
 
@@ -330,4 +353,17 @@ text RustboroCity_DevonCorp_3F_Text_RepeatAndTimerHugelyPopular {
 text RustboroCity_DevonCorp_3F_Text_RareRocksDisplay {
 	format ("It's a collection of rare rocks and\n"
 	    "stones assembled by the PRESIDENT.")
+}
+
+text RustboroCity_DevonCorp_3F_Text_MaybeBrineyCanHelp {
+	format ("{RIVAL}: This is so cool!\N"
+		"With this map feature, we should have an easier time finding our way.\p"
+		"Looks like DEWFORD is on an island across the sea.\N"
+		"MR. BRINEY is an old seafarer.\N"
+		"Maybe he can help us.\N"
+		"Lead the way, {PLAYER}!")
+}
+
+text RustboroCity_DevonCorp_3F_Text_RivalFollowing {
+	format("Let's go to MR. BRINEY'S cottage on ROUTE 104!")
 }

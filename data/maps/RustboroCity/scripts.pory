@@ -26,36 +26,41 @@ raw `
 	// 7: Completed Match Call tutorial
 	// 8: Registered rival in Pokenav
 
-raw `
-RustboroCity_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, RustboroCity_OnTransition
-	map_script MAP_SCRIPT_ON_FRAME_TABLE, RustboroCity_OnFrame
-	.byte 0
+mapscripts RustboroCity_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION {
+		setflag (FLAG_VISITED_RUSTBORO_CITY)
+		call (Common_EventScript_SetupRivalGfxId)
+		call_if_eq (VAR_RUSTBORO_CITY_STATE, 1, RustboroCity_EventScript_SetRivalForRetrieveGoods)
+		call_if_eq (VAR_RUSTBORO_CITY_STATE, 2, RustboroCity_EventScript_SetRivalForRetrieveGoods)
+		call_if_eq (VAR_RUSTBORO_CITY_STATE, 4, RustboroCity_EventScript_SetForReturnGoods)
+		call_if_eq (VAR_RUSTBORO_CITY_STATE, 6, RustboroCity_EventScript_HideMapNamePopup)
+		getplayerxy (VAR_TEMP_0, VAR_TEMP_1)
+		goto_if_eq (VAR_RUSTBORO_CITY_STATE, 6, RustboroCity_EventScript_PositionScientistForExit)
+	}
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_RUSTBORO_CITY_STATE, 6: RustboroCity_EventScript_ScientistAddMatchCall
+	]
+}
 
-RustboroCity_OnTransition:
-	setflag FLAG_VISITED_RUSTBORO_CITY
-	call Common_EventScript_SetupRivalGfxId
-	call_if_eq VAR_RUSTBORO_CITY_STATE, 1, RustboroCity_EventScript_SetRivalForRetrieveGoods
-	call_if_eq VAR_RUSTBORO_CITY_STATE, 2, RustboroCity_EventScript_SetRivalForRetrieveGoods
-	call_if_eq VAR_RUSTBORO_CITY_STATE, 4, RustboroCity_EventScript_SetForReturnGoods
-	call_if_eq VAR_RUSTBORO_CITY_STATE, 6, RustboroCity_EventScript_HideMapNamePopup
-	getplayerxy VAR_TEMP_0, VAR_TEMP_1
-	goto_if_eq VAR_RUSTBORO_CITY_STATE, 6, RustboroCity_EventScript_PositionScientistForExit
+script RustboroCity_EventScript_PositionScientistForExit {
+	goto_if_eq (VAR_TEMP_0, 11, RustboroCity_EventScript_PositionScientistLeftExit)
+	setobjectxyperm (LOCALID_SCIENTIST, 11, 15)
+	setobjectxyperm (LOCALID_RIVAL1, 11, 15)
+	setobjectmovementtype (LOCALID_RIVAL1, MOVEMENT_TYPE_FACE_DOWN)
 	end
+}
 
-RustboroCity_EventScript_PositionScientistForExit::
-	goto_if_eq VAR_TEMP_0, 11, RustboroCity_EventScript_PositionScientistLeftExit
-	setobjectxyperm LOCALID_SCIENTIST, 12, 15
+script RustboroCity_EventScript_PositionScientistLeftExit {
+	setobjectxyperm (LOCALID_SCIENTIST, 12, 15)
+	setobjectxyperm (LOCALID_RIVAL1, 12, 15)
+	setobjectmovementtype (LOCALID_RIVAL1, MOVEMENT_TYPE_FACE_DOWN)
 	end
+}
 
-RustboroCity_EventScript_PositionScientistLeftExit::
-	setobjectxyperm LOCALID_SCIENTIST, 11, 15
-	end
-
-RustboroCity_EventScript_HideMapNamePopup::
-	setflag FLAG_HIDE_MAP_NAME_POPUP
+script RustboroCity_EventScript_HideMapNamePopup {
+	setflag (FLAG_HIDE_MAP_NAME_POPUP)
 	return
-`
+}
 
 script RustboroCity_EventScript_SetRivalForRetrieveGoods {
 	setobjectxyperm (LOCALID_RIVAL1, 21, 10)
@@ -65,99 +70,167 @@ script RustboroCity_EventScript_SetForReturnGoods {
 	setobjectmovementtype (LOCALID_DEVON_EMPLOYEE, MOVEMENT_TYPE_FACE_LEFT)
 }
 
-raw `
-RustboroCity_OnFrame:
-	map_script_2 VAR_RUSTBORO_CITY_STATE, 6, RustboroCity_EventScript_ScientistAddMatchCall
-	.2byte 0
-
-RustboroCity_EventScript_ScientistAddMatchCall::
+script RustboroCity_EventScript_ScientistAddMatchCall {
 	lockall
-	setvar VAR_ROUTE104_STATE, 1
-	applymovement OBJ_EVENT_ID_PLAYER, RustboroCity_Movement_PlayerWalkDown
-	waitmovement 0
-	playse SE_EXIT
-	delay 10
-	addobject LOCALID_SCIENTIST
-	applymovement LOCALID_SCIENTIST, RustboroCity_Movement_ScientistApproachPlayer
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_SCIENTIST, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_SCIENTIST, Common_Movement_Delay48
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	applymovement LOCALID_SCIENTIST, RustboroCity_Movement_ScientistWalkInPlaceDown
-	waitmovement 0
-	msgbox RustboroCity_Text_DevelopedNewPokenavFeature, MSGBOX_DEFAULT
+	setvar (VAR_ROUTE104_STATE, 1)
+	destroyfollower
+	playse (SE_EXIT)
+	delay (10)
+	addobject (LOCALID_RIVAL1)
+	applymovement (LOCALID_RIVAL1, Common_Movement_WalkDown)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, RustboroCity_Movement_PlayerWalkDown)
+	applymovement (LOCALID_RIVAL1, RustboroCity_Movement_PlayerWalkDown)
+	waitmovement (0)
+	playse (SE_EXIT)
+	delay (10)
+	addobject (LOCALID_SCIENTIST)
+	applymovement (LOCALID_SCIENTIST, RustboroCity_Movement_ScientistApproachPlayer)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_SCIENTIST, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_SCIENTIST, Common_Movement_Delay48)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp)
+	applymovement (LOCALID_RIVAL1, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
+	applymovement (LOCALID_SCIENTIST, RustboroCity_Movement_ScientistWalkInPlaceDown)
+	waitmovement (0)
+	msgbox (RustboroCity_Text_DevelopedNewPokenavFeature, MSGBOX_DEFAULT)
 	closemessage
-	setflag FLAG_HAS_MATCH_CALL
-	applymovement LOCALID_SCIENTIST, Common_Movement_WalkInPlaceFasterLeft
-	waitmovement 0
-	playse SE_CLICK
-	delay 10
-	playse SE_CLICK
-	delay 10
-	playse SE_CLICK
-	delay 10
-	playse SE_CLICK
-	delay 20
-	applymovement LOCALID_SCIENTIST, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	msgbox RustboroCity_Text_AddedMatchCallPleaseCallMrStone, MSGBOX_DEFAULT
+	setflag (FLAG_HAS_MATCH_CALL)
+	getplayerxy (VAR_TEMP_0, VAR_TEMP_1)
+	if (var(VAR_TEMP_0) == 11) {
+		applymovement (LOCALID_SCIENTIST, Common_Movement_WalkInPlaceFasterRight)
+		waitmovement (0)
+		call (RustboroCity_EventScript_UpdatePokenav)
+		applymovement (LOCALID_SCIENTIST, RustboroCity_Movement_GoToPlayerUpgradeLeft)
+		waitmovement (0)
+	}
+	else {
+		applymovement (LOCALID_SCIENTIST, Common_Movement_WalkInPlaceFasterLeft)
+		waitmovement (0)
+		call (RustboroCity_EventScript_UpdatePokenav)
+		applymovement (LOCALID_SCIENTIST, RustboroCity_Movement_GoToPlayerUpgradeRight)
+		waitmovement (0)
+	}
+	call (RustboroCity_EventScript_UpdatePokenav)
+	applymovement (LOCALID_SCIENTIST, Common_Movement_WalkInPlaceFasterDown)
+	waitmovement (0)
+	msgbox (RustboroCity_Text_AddedMatchCallPleaseCallMrStone, MSGBOX_DEFAULT)
 	closemessage
-	delay 20
-	goto RustboroCity_EventScript_MatchCallTutorial
+	delay (20)
+	goto (RustboroCity_EventScript_MatchCallTutorial)
+}
 
-RustboroCity_EventScript_PleaseSelectPokenav::
-	msgbox RustboroCity_Text_PleaseSelectPokenav, MSGBOX_DEFAULT
-	closemessage
-	delay 10
-	goto RustboroCity_EventScript_MatchCallTutorial
+script RustboroCity_EventScript_UpdatePokenav {
+	playse (SE_CLICK)
+	delay (10)
+	playse (SE_CLICK)
+	delay (10)
+	playse (SE_CLICK)
+	delay (10)
+	playse (SE_CLICK)
+	delay (20)
+	return
+}
 
-RustboroCity_EventScript_MatchCallTutorial::
-	setflag FLAG_ADDED_MATCH_CALL_TO_POKENAV
-	special ScriptMenu_CreateStartMenuForPokenavTutorial
-	waitstate
-	switch VAR_RESULT
-	case 0, RustboroCity_EventScript_PleaseSelectPokenav
-	case 1, RustboroCity_EventScript_PleaseSelectPokenav
-	case 2, RustboroCity_EventScript_PleaseSelectPokenav
-	case 4, RustboroCity_EventScript_PleaseSelectPokenav
-	case 5, RustboroCity_EventScript_PleaseSelectPokenav
-	case 6, RustboroCity_EventScript_PleaseSelectPokenav
-	case 7, RustboroCity_EventScript_PleaseSelectPokenav
-	case MULTI_B_PRESSED, RustboroCity_EventScript_PleaseSelectPokenav
-	special OpenPokenavForTutorial
-	waitstate
-	delay 20
-	msgbox RustboroCity_Text_IdBetterGetBackToWork, MSGBOX_DEFAULT
+script RustboroCity_EventScript_PleaseSelectPokenav {
+	msgbox (RustboroCity_Text_PleaseSelectPokenav, MSGBOX_DEFAULT)
 	closemessage
-	applymovement LOCALID_SCIENTIST, RustboroCity_Movement_ScientistLeave
-	waitmovement 0
-	playse SE_EXIT
-	removeobject LOCALID_SCIENTIST
-	setflag FLAG_HIDE_RUSTBORO_CITY_SCIENTIST
-	setvar VAR_RUSTBORO_CITY_STATE, 7
-	clearflag FLAG_HIDE_MAP_NAME_POPUP
+	delay (10)
+	goto (RustboroCity_EventScript_MatchCallTutorial)
+}
+
+script RustboroCity_EventScript_MatchCallTutorial {
+	setflag (FLAG_ADDED_MATCH_CALL_TO_POKENAV)
+	special (ScriptMenu_CreateStartMenuForPokenavTutorial)
+	waitstate
+	switch (var(VAR_RESULT)) {
+		case 0:
+			goto (RustboroCity_EventScript_PleaseSelectPokenav)
+		case 1:
+			goto (RustboroCity_EventScript_PleaseSelectPokenav)
+		case 2:
+			goto (RustboroCity_EventScript_PleaseSelectPokenav)
+		case 4:
+			goto (RustboroCity_EventScript_PleaseSelectPokenav)
+		case 5:
+			goto (RustboroCity_EventScript_PleaseSelectPokenav)
+		case 6:
+			goto (RustboroCity_EventScript_PleaseSelectPokenav)
+		case 7:
+			goto (RustboroCity_EventScript_PleaseSelectPokenav)
+		case MULTI_B_PRESSED:
+			goto (RustboroCity_EventScript_PleaseSelectPokenav)
+	}
+	special (OpenPokenavForTutorial)
+	waitstate
+	delay (20)
+	msgbox (RustboroCity_Text_IdBetterGetBackToWork, MSGBOX_DEFAULT)
+	closemessage
+	applymovement (LOCALID_SCIENTIST, RustboroCity_Movement_ScientistLeave)
+	waitmovement (0)
+	playse (SE_EXIT)
+	removeobject (LOCALID_SCIENTIST)
+	waitse
+	delay (30)
+	getplayerxy (VAR_TEMP_0, VAR_TEMP_1)
+	if (var(VAR_TEMP_0) == 11) {
+		applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceRight)
+		applymovement (LOCALID_RIVAL1, Common_Movement_WalkInPlaceLeft)
+	}
+	else {
+		applymovement (LOCALID_RIVAL1, Common_Movement_WalkInPlaceRight)
+		applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceLeft)
+	}
+	waitmovement (0)
+	msgbox (RustboroCity_Text_Rival1LetsRegister, MSGBOX_DEFAULT)
+	closemessage
+	delay (30)
+	playfanfare (MUS_REGISTER_MATCH_CALL)
+	msgbox (RustboroCity_Text_RegisteredRival1, MSGBOX_DEFAULT)
+	waitfanfare
+	closemessage
+	delay (30)
+	checkfriendchoice
+	switch (var(VAR_RESULT)) {
+		case SPENCER:
+			setflag (FLAG_ENABLE_BREN_MATCH_CALL)
+		case BREN:
+			setflag (FLAG_ENABLE_KYLE_MATCH_CALL)
+		case KYLE:
+			setflag (FLAG_ENABLE_SPENCER_MATCH_CALL)
+	}
+	msgbox (RustboroCity_Text_SeeYouSoon, MSGBOX_DEFAULT)
+	closemessage
+	applymovement (LOCALID_RIVAL1, RustboroCity_Movement_Rival1LeaveAfterPokenav)
+	waitmovement (0)
+	removeobject (LOCALID_RIVAL1)
+	setflag (FLAG_HIDE_RUSTBORO_CITY_SCIENTIST)
+	setflag (FLAG_HIDE_DEVON_3F_RIVAL1)
+	setvar (VAR_RUSTBORO_CITY_STATE, 7)
+	clearflag (FLAG_HIDE_MAP_NAME_POPUP)
 	releaseall
 	end
+}
 
-RustboroCity_Movement_ScientistWalkInPlaceDown:
+movement RustboroCity_Movement_ScientistWalkInPlaceDown {
 	walk_in_place_down
-	step_end
+}
 
-RustboroCity_Movement_PlayerWalkDown:
+movement RustboroCity_Movement_PlayerWalkDown {
 	walk_down
-	step_end
+}
 
-RustboroCity_Movement_ScientistApproachPlayer:
+movement RustboroCity_Movement_ScientistApproachPlayer {
 	walk_down
 	delay_16
-	step_end
+}
 
-@ Unused
-RustboroCity_Movement_ScientistWalkAroundPlayer:
+// Unused
+movement RustboroCity_Movement_ScientistWalkAroundPlayer {
 	delay_16
 	walk_left
 	walk_down
@@ -165,12 +238,50 @@ RustboroCity_Movement_ScientistWalkAroundPlayer:
 	walk_right
 	walk_in_place_faster_up
 	delay_16
-	step_end
+}
 
-RustboroCity_Movement_ScientistLeave:
+movement RustboroCity_Movement_ScientistLeave {
 	walk_up
-	step_end
+}
 
+movement RustboroCity_Movement_GoToPlayerUpgradeLeft {
+	walk_left
+	walk_in_place_down
+	delay_16
+	walk_in_place_left
+}
+
+movement RustboroCity_Movement_GoToPlayerUpgradeRight {
+	walk_right
+	walk_in_place_down
+	delay_16
+	walk_in_place_right
+}
+
+movement RustboroCity_Movement_Rival1LeaveAfterPokenav {
+	walk_fast_down * 4
+	walk_fast_right * 9
+	set_invisible
+}
+
+text RustboroCity_Text_Rival1LetsRegister {
+	format ("This is great!\N"
+		"Let's register each other right now!")
+}
+
+text RustboroCity_Text_RegisteredRival1 {
+	format ("{PLAYER} registered {RIVAL}\N"
+		"in the POKéNAV.")
+}
+
+text RustboroCity_Text_SeeYouSoon {
+	format ("Now we can call each other whenever we want!\N"
+		"I'm going to try to catch a last minute SLAKOTH in PETALBURG WOODS.\N"
+		"You should find {RIVAL2} and meet me at\NMR. BRINEY'S cottage.\p"
+		"See you soon!")
+}
+
+raw `
 RustboroCity_EventScript_FatMan::
 	lock
 	faceplayer
@@ -954,162 +1065,175 @@ movement RustboroCity_Movement_RivalMoveForReturnGoodsRight {
 	walk_right
 }
 
-raw `
-RustboroCity_EventScript_Rival::
+script RustboroCity_EventScript_Rival {
 	lockall
-	call_if_unset FLAG_MET_RIVAL_RUSTBORO, RustboroCity_EventScript_PlayRivalMusic
-	applymovement LOCALID_RIVAL, Common_Movement_FacePlayer
-	waitmovement 0
-	goto RustboroCity_EventScript_RivalEncounter
+	call_if_unset (FLAG_MET_RIVAL_RUSTBORO, RustboroCity_EventScript_PlayRivalMusic)
+	applymovement (LOCALID_RIVAL, Common_Movement_FacePlayer)
+	waitmovement (0)
+	goto (RustboroCity_EventScript_RivalEncounter)
+}
 
-RustboroCity_EventScript_PlayRivalMusic::
+script RustboroCity_EventScript_PlayRivalMusic {
 	checkplayergender
-	goto_if_eq VAR_RESULT, MALE, RustboroCity_EventScript_PlayMayMusic
-	goto_if_eq VAR_RESULT, FEMALE, RustboroCity_EventScript_PlayBrendanMusic
+	goto_if_eq (VAR_RESULT, MALE, RustboroCity_EventScript_PlayMayMusic)
+	goto_if_eq (VAR_RESULT, FEMALE, RustboroCity_EventScript_PlayBrendanMusic)
 	return
+}
 
-RustboroCity_EventScript_PlayMayMusic::
-	playbgm MUS_ENCOUNTER_MAY, TRUE
+script RustboroCity_EventScript_PlayMayMusic {
+	playbgm (MUS_ENCOUNTER_MAY, TRUE)
 	return
+}
 
-RustboroCity_EventScript_PlayBrendanMusic::
-	playbgm MUS_ENCOUNTER_BRENDAN, TRUE
+script RustboroCity_EventScript_PlayBrendanMusic {
+	playbgm (MUS_ENCOUNTER_BRENDAN, TRUE)
 	return
+}
 
-RustboroCity_EventScript_RivalTrigger0::
+script RustboroCity_EventScript_RivalTrigger0 {
 	lockall
-	call RustboroCity_EventScript_PlayRivalMusic
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-	waitmovement 0
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer0
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	goto RustboroCity_EventScript_RivalEncounter
+	call (RustboroCity_EventScript_PlayRivalMusic)
+	applymovement (LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_RIVAL, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_Delay48)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer0)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
+	goto (RustboroCity_EventScript_RivalEncounter)
+}
 
-RustboroCity_EventScript_RivalTrigger1::
+script RustboroCity_EventScript_RivalTrigger1 {
 	lockall
-	call RustboroCity_EventScript_PlayRivalMusic
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-	waitmovement 0
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer1
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	goto RustboroCity_EventScript_RivalEncounter
+	call (RustboroCity_EventScript_PlayRivalMusic)
+	applymovement (LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_RIVAL, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_Delay48)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer1)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
+	goto (RustboroCity_EventScript_RivalEncounter)
+}
 
-RustboroCity_EventScript_RivalTrigger2::
+script RustboroCity_EventScript_RivalTrigger2 {
 	lockall
-	call RustboroCity_EventScript_PlayRivalMusic
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-	waitmovement 0
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer2
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	goto RustboroCity_EventScript_RivalEncounter
+	call (RustboroCity_EventScript_PlayRivalMusic)
+	applymovement (LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_RIVAL, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_Delay48)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer2)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
+	goto (RustboroCity_EventScript_RivalEncounter)
+}
 
-RustboroCity_EventScript_RivalTrigger3::
+script RustboroCity_EventScript_RivalTrigger3 {
 	lockall
-	call RustboroCity_EventScript_PlayRivalMusic
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-	waitmovement 0
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer3
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	goto RustboroCity_EventScript_RivalEncounter
+	call (RustboroCity_EventScript_PlayRivalMusic)
+	applymovement (LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_RIVAL, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_Delay48)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer3)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
+	goto (RustboroCity_EventScript_RivalEncounter)
+}
 
-RustboroCity_EventScript_RivalTrigger4::
+script RustboroCity_EventScript_RivalTrigger4 {
 	lockall
-	call RustboroCity_EventScript_PlayRivalMusic
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-	waitmovement 0
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer4
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	goto RustboroCity_EventScript_RivalEncounter
+	call (RustboroCity_EventScript_PlayRivalMusic)
+	applymovement (LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_RIVAL, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_Delay48)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer4)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
+	goto (RustboroCity_EventScript_RivalEncounter)
+}
 
-RustboroCity_EventScript_RivalTrigger5::
+script RustboroCity_EventScript_RivalTrigger5 {
 	lockall
-	call RustboroCity_EventScript_PlayRivalMusic
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-	waitmovement 0
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer5
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	goto RustboroCity_EventScript_RivalEncounter
+	call (RustboroCity_EventScript_PlayRivalMusic)
+	applymovement (LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_RIVAL, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_Delay48)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer5)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
+	goto (RustboroCity_EventScript_RivalEncounter)
+}
 
-RustboroCity_EventScript_RivalTrigger6::
+script RustboroCity_EventScript_RivalTrigger6 {
 	lockall
-	call RustboroCity_EventScript_PlayRivalMusic
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-	waitmovement 0
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer6
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	goto RustboroCity_EventScript_RivalEncounter
+	call (RustboroCity_EventScript_PlayRivalMusic)
+	applymovement (LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_RIVAL, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_Delay48)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer6)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
+	goto (RustboroCity_EventScript_RivalEncounter)
+}
 
-RustboroCity_EventScript_RivalTrigger7::
+script RustboroCity_EventScript_RivalTrigger7 {
 	lockall
-	call RustboroCity_EventScript_PlayRivalMusic
-	applymovement LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-	waitmovement 0
-	applymovement LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer7
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	goto RustboroCity_EventScript_RivalEncounter
+	call (RustboroCity_EventScript_PlayRivalMusic)
+	applymovement (LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterDown)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_RIVAL, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, Common_Movement_Delay48)
+	waitmovement (0)
+	applymovement (LOCALID_RIVAL, RustboroCity_Movement_RivalApproachPlayer7)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
+	goto (RustboroCity_EventScript_RivalEncounter)
+}
 
-RustboroCity_EventScript_RivalEncounter::
+script RustboroCity_EventScript_RivalEncounter {
 	checkplayergender
-	goto_if_eq VAR_RESULT, MALE, RustboroCity_EventScript_MayEncounter
-	goto_if_eq VAR_RESULT, FEMALE, RustboroCity_EventScript_BrendanEncounter
+	goto_if_eq (VAR_RESULT, MALE, RustboroCity_EventScript_MayEncounter)
+	goto_if_eq (VAR_RESULT, FEMALE, RustboroCity_EventScript_BrendanEncounter)
 	end
+}
 
+raw `
 RustboroCity_EventScript_MayEncounter::
 	goto_if_set FLAG_DEFEATED_RIVAL_RUSTBORO, RustboroCity_EventScript_MayBrineyHint
 	goto_if_set FLAG_MET_RIVAL_RUSTBORO, RustboroCity_EventScript_MayAskToBattle
@@ -1551,17 +1675,17 @@ RustboroCity_Text_DevelopedNewPokenavFeature:
 	.string "I've been developing an added feature\n"
 	.string "for the POKéNAV…\p"
 	.string "And it turned out great!\p"
-	.string "{PLAYER}, may I see that POKéNAV?\n"
-	.string "The one our PRESIDENT gave you?$"
+	.string "You two, may I see those POKéNAVS?\n"
+	.string "The ones our PRESIDENT gave you?$"
 
 RustboroCity_Text_AddedMatchCallPleaseCallMrStone:
-	.string "There you go, {PLAYER}!\p"
+	.string "There you go!\p"
 	.string "I added a new feature named\n"
 	.string "MATCH CALL to your POKéNAV.\p"
 	.string "Using the MATCH CALL feature,\n"
 	.string "you can chat with people who have\l"
 	.string "been registered in your POKéNAV.\p"
-	.string "{PLAYER}, our PRESIDENT STONE should\n"
+	.string "Our PRESIDENT STONE should\n"
 	.string "be registered in your POKéNAV.\p"
 	.string "Test it out.\n"
 	.string "Please give our PRESIDENT a call.$"
@@ -1571,7 +1695,7 @@ RustboroCity_Text_PleaseSelectPokenav:
 
 RustboroCity_Text_IdBetterGetBackToWork:
 	.string "Okay, I'd better get back to work.\n"
-	.string "Please take care, {PLAYER}!$"
+	.string "Please take care, {PLAYER}, {RIVAL}!$"
 
 RustboroCity_Text_YouCanHave2On2Battle:
 	.string "Did you know this?\p"

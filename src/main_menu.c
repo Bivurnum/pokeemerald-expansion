@@ -220,7 +220,7 @@ static s8 NewGameBirchSpeech_ProcessGenderMenuInput(void);
 static void NewGameBirchSpeech_ClearGenderWindow(u8, u8);
 static void Task_NewGameBirchSpeech_SlideOutOldGenderSprite(u8);
 static void Task_NewGameBirchSpeech_SlideInNewGenderSprite(u8);
-static void Task_NewGameBirchSpeech_WaitForWhatsYourNameToPrint(u8);
+//static void Task_NewGameBirchSpeech_WaitForWhatsYourNameToPrint(u8);
 static void Task_NewGameBirchSpeech_WaitPressBeforeNameChoice(u8);
 static void Task_NewGameBirchSpeech_StartNamingScreen(u8);
 static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void);
@@ -1562,11 +1562,11 @@ static void Task_NewGameBirchSpeech_SlideInNewGenderSprite(u8 taskId)
     }
 }
 
-static void Task_NewGameBirchSpeech_WaitForWhatsYourNameToPrint(u8 taskId)
-{
-    if (!RunTextPrintersAndIsPrinter0Active())
-        gTasks[taskId].func = Task_NewGameBirchSpeech_WaitPressBeforeNameChoice;
-}
+//static void Task_NewGameBirchSpeech_WaitForWhatsYourNameToPrint(u8 taskId)
+//{
+//    if (!RunTextPrintersAndIsPrinter0Active())
+//        gTasks[taskId].func = Task_NewGameBirchSpeech_WaitPressBeforeNameChoice;
+//}
 
 static void Task_NewGameBirchSpeech_WaitPressBeforeNameChoice(u8 taskId)
 {

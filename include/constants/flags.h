@@ -142,7 +142,7 @@
 #define FLAG_RECEIVED_TM_BRICK_BREAK         0x79
 #define FLAG_RECEIVED_HM_SURF                0x7A
 #define FLAG_RECEIVED_HM_DIVE                0x7B
-#define FLAG_REGISTER_RIVAL_POKENAV          0x7C
+#define FLAG_REGISTER_RIVAL_POKENAV          0x7C // Unused in this project
 #define FLAG_DEFEATED_RIVAL_ROUTE_104        0x7D
 #define FLAG_DEFEATED_WALLY_VICTORY_ROAD     0x7E
 #define FLAG_MET_PRETTY_PETAL_SHOP_OWNER     0x7F

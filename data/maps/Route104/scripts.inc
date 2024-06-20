@@ -77,7 +77,7 @@ Route104_EventScript_TrySetRivalPos::
 # 39 "data/maps/Route104/scripts.pory"
 	goto_if_set FLAG_MET_RIVAL_RUSTBORO, Route104_EventScript_DontSetRivalPos
 # 40 "data/maps/Route104/scripts.pory"
-	goto_if_unset FLAG_REGISTER_RIVAL_POKENAV, Route104_EventScript_DontSetRivalPos
+	goto_if_unset FLAG_ENABLE_SPENCER_MATCH_CALL, Route104_EventScript_DontSetRivalPos
 # 41 "data/maps/Route104/scripts.pory"
 	setobjectxyperm LOCALID_RIVAL, 17, 52
 # 42 "data/maps/Route104/scripts.pory"
@@ -221,11 +221,11 @@ Route104_EventScript_RivalEncounter::
 # 123 "data/maps/Route104/scripts.pory"
 Route104_EventScript_MayEncounter::
 # 124 "data/maps/Route104/scripts.pory"
-	goto_if_set FLAG_DEFEATED_RIVAL_ROUTE_104, Route104_EventScript_MayDefeated
+	goto_if_set FLAG_ENABLE_SPENCER_MATCH_CALL, Route104_EventScript_MayDefeated
 # 125 "data/maps/Route104/scripts.pory"
-	goto_if_set FLAG_REGISTER_RIVAL_POKENAV, Route104_EventScript_MayAskToBattle
+	goto_if_set FLAG_ENABLE_SPENCER_MATCH_CALL, Route104_EventScript_MayAskToBattle
 # 126 "data/maps/Route104/scripts.pory"
-	setflag FLAG_REGISTER_RIVAL_POKENAV
+	setflag FLAG_ENABLE_SPENCER_MATCH_CALL
 # 127 "data/maps/Route104/scripts.pory"
 	msgbox Route104_Text_MayWeShouldRegister, MSGBOX_DEFAULT
 # 128 "data/maps/Route104/scripts.pory"
@@ -395,9 +395,9 @@ Route104_EventScript_BrendanEncounter::
 # 210 "data/maps/Route104/scripts.pory"
 	goto_if_set FLAG_DEFEATED_RIVAL_ROUTE_104, Route104_EventScript_BrendanDefeated
 # 211 "data/maps/Route104/scripts.pory"
-	goto_if_set FLAG_REGISTER_RIVAL_POKENAV, Route104_EventScript_BrendanAskToBattle
+	goto_if_set FLAG_ENABLE_SPENCER_MATCH_CALL, Route104_EventScript_BrendanAskToBattle
 # 212 "data/maps/Route104/scripts.pory"
-	setflag FLAG_REGISTER_RIVAL_POKENAV
+	setflag FLAG_ENABLE_SPENCER_MATCH_CALL
 # 213 "data/maps/Route104/scripts.pory"
 	msgbox Route104_Text_BrendanWeShouldRegister, MSGBOX_DEFAULT
 # 214 "data/maps/Route104/scripts.pory"
