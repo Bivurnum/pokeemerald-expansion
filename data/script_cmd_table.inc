@@ -232,6 +232,10 @@ gScriptCmdTable::
 	.4byte ScrCmd_checkfriendchoice                 @ 0xe5
 	.4byte ScrCmd_updateobject		                @ 0xe6
 	.4byte ScrCmd_updateobjectat		            @ 0xe7
+	.4byte ScrCmd_setfollower						@ 0xe8
+    .4byte ScrCmd_destroyfollower					@ 0xe9
+    .4byte ScrCmd_facefollower						@ 0xea
+    .4byte ScrCmd_checkfollower						@ 0xeb
 
 gScriptCmdTableEnd::
 	.4byte ScrCmd_nop
