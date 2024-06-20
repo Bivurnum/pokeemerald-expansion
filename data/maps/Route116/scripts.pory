@@ -52,8 +52,22 @@ script Route116_EventScript_TalkToRivalAfterAquaBattle {
 	applymovement (LOCALID_RIVAL1, Common_Movement_BeginTalkRight)
 	waitmovement (0)
 	msgbox (Route116_Text_WouldYouLikeToBattle, MSGBOX_YESNO)
-	goto_if_eq (VAR_RESULT, YES, Route116_EventScript_RivalBattle)
-	goto (Route116_EventScript_DeclineRivalBattleInitial)
+	call_if_eq (VAR_RESULT, YES, Route116_EventScript_RivalBattle)
+	call_if_eq (VAR_RESULT, NO, Route116_EventScript_DeclineRivalBattleInitial)
+	//getplayerxy (VAR_0x8001, VAR_0x8002)
+	//if (var(VAR_0x8001) == 46) {
+	//	applymovement (LOCALID_RIVAL1, Route116_Movement_RivalLeaveAfterBattle2)
+	//}
+	//else {
+		applymovement (LOCALID_RIVAL1, Route116_Movement_RivalLeaveAfterBattle)
+	//}
+	waitmovement (0)
+	removeobject (LOCALID_RIVAL1)
+	clearflag (FLAG_HIDE_RUSTBORO_RIVAL1)
+	setflag (FLAG_HIDE_ROUTE_116_RIVAL1)
+	setvar (VAR_RUSTURF_TUNNEL_STATE, 6)
+	releaseall
+	end
 	end
 }
 
@@ -70,8 +84,8 @@ script Route116_EventScript_Rival1 {
 	}
 	if (var(VAR_RUSTURF_TUNNEL_STATE) == 5) {
 		msgbox (Route116_Text_BattleAfterAll, MSGBOX_YESNO)
-		goto_if_eq (VAR_RESULT, YES, Route116_EventScript_RivalBattle)
-		goto_if_eq (VAR_RESULT, NO, Route116_EventScript_DeclineRivalBattle)
+		call_if_eq (VAR_RESULT, YES, Route116_EventScript_RivalBattle)
+		call_if_eq (VAR_RESULT, NO, Route116_EventScript_DeclineRivalBattle)
 	}
 	msgbox (Route116_Text_Rival1, MSGBOX_DEFAULT)
 	closemessage
@@ -91,27 +105,16 @@ script Route116_EventScript_RivalBattle {
 		case KYLE:
 			trainerbattle_no_intro (TRAINER_SPENCER_ROUTE_116, Route116_Text_RivalDefeated)
 	}
-	msgbox (Route116_Text_MeetYouAtBrineysCottage, MSGBOX_DEFAULT)
+	msgbox (Route116_Text_WeShouldReturnGoods, MSGBOX_DEFAULT)
 	closemessage
-	getplayerxy (VAR_0x8001, VAR_0x8002)
-	if (var(VAR_0x8001) == 46) {
-		applymovement (LOCALID_RIVAL1, Route116_Movement_RivalLeaveAfterBattle2)
-	}
-	else {
-		applymovement (LOCALID_RIVAL1, Route116_Movement_RivalLeaveAfterBattle)
-	}
-	waitmovement (0)
-	removeobject (LOCALID_RIVAL1)
-	setflag (FLAG_HIDE_ROUTE_116_RIVAL1)
-	setvar (VAR_RUSTURF_TUNNEL_STATE, 6)
-	releaseall
-	end
+	setvar (VAR_RESULT, YES)
+	return
 }
 
 script Route116_EventScript_DeclineRivalBattleInitial {
-	msgbox (Route116_Text_HangingAroundForABit, MSGBOX_DEFAULT)
-	releaseall
-	end
+	msgbox (Route116_Text_NoBigDeal, MSGBOX_DEFAULT)
+	setvar (VAR_0x8007, 69)
+	return
 }
 
 script Route116_EventScript_DeclineRivalBattle {
@@ -174,7 +177,7 @@ text Route116_Text_RivalDefeated {
 	format("You really are the real deal, huh?")
 }
 
-text Route116_Text_MeetYouAtBrineysCottage {
+text Route116_Text_WeShouldReturnGoods {
 	format("You've certainly gotten stronger, but I got some licks in!\N"
 		"I thought since I beat ROXANNE that I would have an easier time against you, though.\N"
 		"But I suppose I should've expected it, since you've obviously beaten her too.\p"
@@ -182,11 +185,10 @@ text Route116_Text_MeetYouAtBrineysCottage {
 		"Come on!")
 }
 
-text Route116_Text_HangingAroundForABit {
+text Route116_Text_NoBigDeal {
 	format ("No big deal.\N"
-		"If you change your mind, I'll be hanging around here for a bit.\N"
-		"I'm sure {RIVAL2} has gotten his hands on a SKITTY for his POKéDEX already.\N"
-		"I can't let him beat me!")
+		"We should go return those GOODS anyway.\N"
+		"Come on!")
 }
 
 text Route116_Text_HangingAroundForABit2 {

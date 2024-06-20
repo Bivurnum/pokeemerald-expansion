@@ -1,3 +1,11 @@
+const LOCALID_LITTLE_BOY = 7
+const LOCALID_LITTLE_GIRL = 8
+const LOCALID_DEVON_EMPLOYEE = 9
+const LOCALID_GRUNT = 10
+const LOCALID_RIVAL2 = 14
+const LOCALID_SCIENTIST = 15
+const LOCALID_RIVAL1 = 17
+
 raw `
 .set LOCALID_LITTLE_BOY, 7
 .set LOCALID_LITTLE_GIRL, 8
@@ -27,6 +35,7 @@ RustboroCity_MapScripts::
 RustboroCity_OnTransition:
 	setflag FLAG_VISITED_RUSTBORO_CITY
 	call Common_EventScript_SetupRivalGfxId
+	call_if_eq VAR_RUSTBORO_CITY_STATE, 4, RustboroCity_EventScript_SetForReturnGoods
 	call_if_eq VAR_RUSTBORO_CITY_STATE, 6, RustboroCity_EventScript_HideMapNamePopup
 	getplayerxy VAR_TEMP_0, VAR_TEMP_1
 	goto_if_eq VAR_RUSTBORO_CITY_STATE, 6, RustboroCity_EventScript_PositionScientistForExit
@@ -44,7 +53,14 @@ RustboroCity_EventScript_PositionScientistLeftExit::
 RustboroCity_EventScript_HideMapNamePopup::
 	setflag FLAG_HIDE_MAP_NAME_POPUP
 	return
+`
 
+script RustboroCity_EventScript_SetForReturnGoods {
+	setobjectxyperm (LOCALID_RIVAL1, 29, 10)
+	turnobject (LOCALID_DEVON_EMPLOYEE, DIR_WEST)
+}
+
+raw `
 RustboroCity_OnFrame:
 	map_script_2 VAR_RUSTBORO_CITY_STATE, 6, RustboroCity_EventScript_ScientistAddMatchCall
 	.2byte 0
@@ -780,115 +796,153 @@ text RustboroCity_Text_LetsGoCatchMugger {
 		"Let's go catch that mugger!")
 }
 
-raw `
-RustboroCity_EventScript_ReturnGoodsTrigger0::
+script RustboroCity_EventScript_ReturnGoodsTrigger0 {
 	lockall
-	setvar VAR_TEMP_1, 0
-	goto RustboroCity_EventScript_ReturnGoods
+	setvar (VAR_TEMP_1, 0)
+	call (RustboroCity_EventScript_EmployeeFacePlayerUp2)
+	goto (RustboroCity_EventScript_ReturnGoods)
 	end
+}
 
-RustboroCity_EventScript_ReturnGoodsTrigger1::
+script RustboroCity_EventScript_ReturnGoodsTrigger1 {
 	lockall
-	setvar VAR_TEMP_1, 1
-	goto RustboroCity_EventScript_ReturnGoods
+	setvar (VAR_TEMP_1, 1)
+	call (RustboroCity_EventScript_EmployeeFacePlayerLeft2)
+	goto (RustboroCity_EventScript_ReturnGoods)
 	end
+}
 
-RustboroCity_EventScript_ReturnGoodsTrigger2::
+script RustboroCity_EventScript_ReturnGoodsTrigger2 {
 	lockall
-	setvar VAR_TEMP_1, 2
-	goto RustboroCity_EventScript_ReturnGoods
+	setvar (VAR_TEMP_1, 2)
+	call (RustboroCity_EventScript_EmployeeFacePlayerDown2)
+	goto (RustboroCity_EventScript_ReturnGoods)
 	end
+}
 
-RustboroCity_EventScript_ReturnGoodsTrigger3::
+script RustboroCity_EventScript_ReturnGoodsTrigger3 {
 	lockall
-	setvar VAR_TEMP_1, 3
-	goto RustboroCity_EventScript_ReturnGoods
+	setvar (VAR_TEMP_1, 3)
+	call (RustboroCity_EventScript_EmployeeApproachPlayerDown2)
+	goto (RustboroCity_EventScript_ReturnGoods)
 	end
+}
 
-RustboroCity_EventScript_ReturnGoods::
-	call_if_eq VAR_TEMP_1, 0, RustboroCity_EventScript_EmployeeFacePlayerUp2
-	call_if_eq VAR_TEMP_1, 1, RustboroCity_EventScript_EmployeeFacePlayerLeft2
-	call_if_eq VAR_TEMP_1, 2, RustboroCity_EventScript_EmployeeFacePlayerDown2
-	call_if_eq VAR_TEMP_1, 3, RustboroCity_EventScript_EmployeeApproachPlayerDown2
-	call_if_eq VAR_TEMP_1, 4, RustboroCity_EventScript_EmployeeFacePlayerRight
-	msgbox RustboroCity_Text_YouGotItThankYou, MSGBOX_DEFAULT
-	giveitem ITEM_GREAT_BALL
-	call_if_eq VAR_RESULT, FALSE, RustboroCity_EventScript_BagFull
-	msgbox RustboroCity_Text_PleaseComeWithMe, MSGBOX_DEFAULT
+script RustboroCity_EventScript_ReturnGoods {
+	msgbox (RustboroCity_Text_YouGotItThankYou, MSGBOX_DEFAULT)
+	giveitem (ITEM_GREAT_BALL)
+	call_if_eq (VAR_RESULT, FALSE, RustboroCity_EventScript_BagFull)
+	msgbox (RustboroCity_Text_PleaseComeWithMe, MSGBOX_DEFAULT)
 	closemessage
-	setflag FLAG_RETURNED_DEVON_GOODS
-	setflag FLAG_HIDE_RUSTBORO_CITY_DEVON_EMPLOYEE_1
-	setvar VAR_RUSTBORO_CITY_STATE, 5
-	delay 30
-	warp MAP_RUSTBORO_CITY_DEVON_CORP_3F, 2, 2
+	setflag (FLAG_RETURNED_DEVON_GOODS)
+	setflag (FLAG_HIDE_RUSTBORO_CITY_DEVON_EMPLOYEE_1)
+	setflag (FLAG_HIDE_RUSTBORO_RIVAL1)
+	setvar (VAR_RUSTBORO_CITY_STATE, 5)
+	delay (30)
+	warp (MAP_RUSTBORO_CITY_DEVON_CORP_3F, 2, 2)
 	waitstate
 	releaseall
 	end
+}
 
-RustboroCity_EventScript_BagFull::
-	msgbox RustboroCity_Text_YoureLoadedWithItems, MSGBOX_DEFAULT
+script RustboroCity_EventScript_BagFull {
+	msgbox (RustboroCity_Text_YoureLoadedWithItems, MSGBOX_DEFAULT)
 	return
+}
 
-RustboroCity_EventScript_EmployeeFacePlayerUp2::
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
+script RustboroCity_EventScript_EmployeeFacePlayerUp2 {
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterUp)
+	applymovement (LOCALID_RIVAL1, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark)
+	applymovement (LOCALID_RIVAL1, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown)
+	waitmovement (0)
 	return
+}
 
-RustboroCity_EventScript_EmployeeFacePlayerLeft2::
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterRight
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
-	waitmovement 0
+script RustboroCity_EventScript_EmployeeFacePlayerLeft2 {
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterRight)
+	applymovement (LOCALID_RIVAL1, Common_Movement_WalkInPlaceFasterRight)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark)
+	applymovement (LOCALID_RIVAL1, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48)
+	applymovement (LOCALID_RIVAL1, RustboroCity_Movement_RivalMoveForReturnGoodsRight)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft)
+	waitmovement (0)
 	return
+}
 
-RustboroCity_EventScript_EmployeeFacePlayerDown2::
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
+script RustboroCity_EventScript_EmployeeFacePlayerDown2 {
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterDown)
+	applymovement (LOCALID_RIVAL1, Common_Movement_WalkInPlaceFasterDown)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark)
+	applymovement (LOCALID_RIVAL1, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
 	return
+}
 
-RustboroCity_EventScript_EmployeeApproachPlayerDown2::
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
-	waitmovement 0
-	applymovement LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachPlayerDown
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
+script RustboroCity_EventScript_EmployeeApproachPlayerDown2 {
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterDown)
+	applymovement (LOCALID_RIVAL1, Common_Movement_WalkInPlaceFasterDown)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark)
+	applymovement (LOCALID_RIVAL1, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48)
+	waitmovement (0)
+	applymovement (LOCALID_DEVON_EMPLOYEE, RustboroCity_Movement_EmployeeApproachPlayerDown)
+	applymovement (LOCALID_RIVAL1, RustboroCity_Movement_EmployeeApproachPlayerDown)
+	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
 	return
+}
 
-RustboroCity_EventScript_EmployeeFacePlayerRight::
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterLeft
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48
-	waitmovement 0
+script RustboroCity_EventScript_EmployeeFacePlayerRight {
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_WalkInPlaceFasterLeft)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	applymovement (LOCALID_DEVON_EMPLOYEE, Common_Movement_Delay48)
+	waitmovement (0)
 	return
+}
 
+script RustboroCity_EventScript_Rival1 {
+	lock
+	faceplayer
+	if (var(VAR_RUSTBORO_CITY_STATE) == 4) {
+		msgbox ("Aren't you going to\nreturn the GOODS?", MSGBOX_DEFAULT)
+		closemessage
+	}
+	release
+	end
+}
+
+movement RustboroCity_Movement_RivalMoveForReturnGoodsRight {
+	delay_16 * 2
+	walk_down
+	walk_right
+}
+
+raw `
 RustboroCity_EventScript_Rival::
 	lockall
 	call_if_unset FLAG_MET_RIVAL_RUSTBORO, RustboroCity_EventScript_PlayRivalMusic
@@ -1329,24 +1383,30 @@ RustboroCity_Text_HelpMeIWasRobbed:
 RustboroCity_Text_ShadyCharacterTookOffTowardsTunnel:
 	.string "That shady character, I think he took\n"
 	.string "off towards the tunnel over there.$"
+`
 
-RustboroCity_Text_YouGotItThankYou:
-	.string "Oh! How did it go?\n"
-	.string "The DEVON GOODS?\p"
-	.string "You did!\n"
-	.string "You got them back!\p"
-	.string "You really are a great TRAINER!\p"
-	.string "I know! As my thanks, I'll give you\n"
-	.string "another GREAT BALL!$"
+text RustboroCity_Text_YouGotItThankYou {
+    format ("Oh! How did it go?\n"
+    "Your friend was telling me how you gave that thug a thrashing!\p"
+    "Did you really bring the GOODS back?\n"
+    "You did?\p"
+	"Wonderful!"
+    "You really are a great TRAINER!\p"
+    "I know! As my thanks, I'll give you\n"
+    "another GREAT BALL!")
+}
 
-RustboroCity_Text_YoureLoadedWithItems:
-	.string "You're loaded with items.\n"
-	.string "I can't give you this GREAT BALL.$"
+text RustboroCity_Text_YoureLoadedWithItems {
+    "You're loaded with items.\n"
+    "I can't give you this GREAT BALL.$"
+}
 
-RustboroCity_Text_PleaseComeWithMe:
-	.string "Excuse me, please!\n"
-	.string "Please come with me!$"
+text RustboroCity_Text_PleaseComeWithMe {
+    "Excuse me, please!\n"
+    "Both of you please come with me!"
+}
 
+raw `
 RustboroCity_Text_MayHiLetsRegister:
 	.string "MAY: Oh, hi, {PLAYER}{KUN}!\p"
 	.string "You had a MATCH CALL feature put\n"
