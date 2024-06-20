@@ -6,7 +6,7 @@ I also have a [follow-me](https://github.com/Bivurnum/pokeemerald/tree/follow-me
 
 Please let me know if this ever gets outdated again.
 
-From [ghoulslash's pokecommunity post](https://www.pokecommunity.com/threads/follow-me.432529/):
+From [ghoulslash's pokecommunity post](https://www.pokecommunity.com/threads/follow-me.432529/):  
 "Credits:
 Skeli / Complete Fire Red Upgrade  
 Touched for original source"
