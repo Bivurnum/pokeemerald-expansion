@@ -178,11 +178,8 @@ text Route116_Text_MeetYouAtBrineysCottage {
 	format("You've certainly gotten stronger, but I got some licks in!\N"
 		"I thought since I beat ROXANNE that I would have an easier time against you, though.\N"
 		"But I suppose I should've expected it, since you've obviously beaten her too.\p"
-		"Well, I suppose we should make our way to the next GYM. "
-		"I hear it's on an island in town called DEWFORD, but I don't have the slightest idea how we are going to get there.\N"
-		"Maybe MR. BRINEY can help us.\N"
-		"It can't hurt to ask.\p"
-		"I'll meet you at his cottage!")
+		"Well, I suppose we should go return those GOODS.\N"
+		"Come on!")
 }
 
 text Route116_Text_HangingAroundForABit {
