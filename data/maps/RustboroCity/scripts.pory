@@ -35,6 +35,8 @@ RustboroCity_MapScripts::
 RustboroCity_OnTransition:
 	setflag FLAG_VISITED_RUSTBORO_CITY
 	call Common_EventScript_SetupRivalGfxId
+	call_if_eq VAR_RUSTBORO_CITY_STATE, 1, RustboroCity_EventScript_SetRivalForRetrieveGoods
+	call_if_eq VAR_RUSTBORO_CITY_STATE, 2, RustboroCity_EventScript_SetRivalForRetrieveGoods
 	call_if_eq VAR_RUSTBORO_CITY_STATE, 4, RustboroCity_EventScript_SetForReturnGoods
 	call_if_eq VAR_RUSTBORO_CITY_STATE, 6, RustboroCity_EventScript_HideMapNamePopup
 	getplayerxy VAR_TEMP_0, VAR_TEMP_1
@@ -55,9 +57,12 @@ RustboroCity_EventScript_HideMapNamePopup::
 	return
 `
 
+script RustboroCity_EventScript_SetRivalForRetrieveGoods {
+	setobjectxyperm (LOCALID_RIVAL1, 21, 10)
+}
+
 script RustboroCity_EventScript_SetForReturnGoods {
-	setobjectxyperm (LOCALID_RIVAL1, 29, 10)
-	turnobject (LOCALID_DEVON_EMPLOYEE, DIR_WEST)
+	setobjectmovementtype (LOCALID_DEVON_EMPLOYEE, MOVEMENT_TYPE_FACE_LEFT)
 }
 
 raw `
@@ -629,6 +634,7 @@ script RustboroCity_EventScript_Rival1AfterAskToGetGoods {
 	waitmovement (0)
 	setflag (FLAG_HIDE_RUSTBORO_RIVAL1)
 	removeobject (LOCALID_RIVAL1)
+	setobjectxyperm (LOCALID_RIVAL1, 29, 10)
 	return
 }
 
@@ -832,6 +838,12 @@ script RustboroCity_EventScript_ReturnGoods {
 	msgbox (RustboroCity_Text_YouGotItThankYou, MSGBOX_DEFAULT)
 	giveitem (ITEM_GREAT_BALL)
 	call_if_eq (VAR_RESULT, FALSE, RustboroCity_EventScript_BagFull)
+	if (var(VAR_TEMP_1) == 1) {
+		turnobject (LOCALID_RIVAL1, DIR_NORTH)
+	}
+	else {
+		turnobject (LOCALID_RIVAL1, DIR_EAST)
+	}
 	msgbox (RustboroCity_Text_PleaseComeWithMe, MSGBOX_DEFAULT)
 	closemessage
 	setflag (FLAG_RETURNED_DEVON_GOODS)
