@@ -7114,28 +7114,28 @@ const struct Trainer gTrainers[] = {
         .party = TRAINER_PARTY(sParty_Macey),
     },
 
-    [TRAINER_BRENDAN_RUSTBORO_TREECKO] =
+    [TRAINER_SPENCER_RUSTBORO] =
     {
         .trainerClass = TRAINER_CLASS_RIVAL,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-        .trainerPic = TRAINER_PIC_BRENDAN,
-        .trainerName = _("BRENDAN"),
+        .trainerPic = TRAINER_PIC_FRIEND_SPENCER,
+        .trainerName = _("SPENCER"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_FLAG_CHECK_BAD_MOVE,
-        .party = TRAINER_PARTY(sParty_BrendanRustboroTreecko),
+        .aiFlags = AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_TRY_TO_FAINT | AI_FLAG_CHECK_VIABILITY,
+        .party = TRAINER_PARTY(sParty_SpencerRustboro),
     },
 
-    [TRAINER_BRENDAN_RUSTBORO_MUDKIP] =
+    [TRAINER_BREN_RUSTBORO] =
     {
         .trainerClass = TRAINER_CLASS_RIVAL,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-        .trainerPic = TRAINER_PIC_BRENDAN,
-        .trainerName = _("BRENDAN"),
+        .trainerPic = TRAINER_PIC_FRIEND_BREN,
+        .trainerName = _("BREN"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_FLAG_CHECK_BAD_MOVE,
-        .party = TRAINER_PARTY(sParty_BrendanRustboroMudkip),
+        .aiFlags = AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_TRY_TO_FAINT | AI_FLAG_CHECK_VIABILITY,
+        .party = TRAINER_PARTY(sParty_BrenRustboro),
     },
 
     [TRAINER_PAXTON] =
@@ -9238,16 +9238,16 @@ const struct Trainer gTrainers[] = {
         .party = TRAINER_PARTY(sParty_KyleRoute116),
     },
 
-    [TRAINER_MAY_RUSTBORO_TORCHIC] =
+    [TRAINER_KYLE_RUSTBORO] =
     {
         .trainerClass = TRAINER_CLASS_RIVAL,
-        .encounterMusic_gender = F_TRAINER_FEMALE | TRAINER_ENCOUNTER_MUSIC_FEMALE,
-        .trainerPic = TRAINER_PIC_MAY,
-        .trainerName = _("MAY"),
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
+        .trainerPic = TRAINER_PIC_FRIEND_KYLE,
+        .trainerName = _("KYLE"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_TRY_TO_FAINT | AI_FLAG_CHECK_VIABILITY,
-        .party = TRAINER_PARTY(sParty_MayRustboroTorchic),
+        .party = TRAINER_PARTY(sParty_KyleRustboro),
     },
 
     [TRAINER_ROXANNE_2] =

@@ -7429,24 +7429,24 @@ static const struct TrainerMon sParty_Macey[] = {
     }
 };
 
-static const struct TrainerMon sParty_BrendanRustboroTreecko[] = {
+static const struct TrainerMon sParty_BrenRustboro[] = {
     {
     .iv = TRAINER_PARTY_IVS(3, 3, 3, 3, 3, 3),
     .lvl = 13,
-    .species = SPECIES_LOTAD,
+    .species = SPECIES_ZUBAT,
     },
     {
     .iv = TRAINER_PARTY_IVS(6, 6, 6, 6, 6, 6),
     .lvl = 15,
-    .species = SPECIES_TORCHIC,
+    .species = SPECIES_PIPLUP,
     }
 };
 
-static const struct TrainerMon sParty_BrendanRustboroMudkip[] = {
+static const struct TrainerMon sParty_SpencerRustboro[] = {
     {
     .iv = TRAINER_PARTY_IVS(3, 3, 3, 3, 3, 3),
     .lvl = 13,
-    .species = SPECIES_WINGULL,
+    .species = SPECIES_MACHOP,
     },
     {
     .iv = TRAINER_PARTY_IVS(6, 6, 6, 6, 6, 6),
@@ -7522,7 +7522,7 @@ static const struct TrainerMon sParty_SpencerRoute116[] = {
     {
     .iv = TRAINER_PARTY_IVS(3, 3, 3, 3, 3, 3),
     .lvl = 13,
-    .species = SPECIES_WINGULL,
+    .species = SPECIES_NIDORAN_M,
     },
     {
     .iv = TRAINER_PARTY_IVS(6, 6, 6, 6, 6, 6),
@@ -7535,7 +7535,7 @@ static const struct TrainerMon sParty_BrenRoute116[] = {
     {
     .iv = TRAINER_PARTY_IVS(3, 3, 3, 3, 3, 3),
     .lvl = 13,
-    .species = SPECIES_NINCADA,
+    .species = SPECIES_ZUBAT,
     },
     {
     .iv = TRAINER_PARTY_IVS(6, 6, 6, 6, 6, 6),
@@ -9669,7 +9669,7 @@ static const struct TrainerMon sParty_KyleRoute116[] = {
     {
     .iv = TRAINER_PARTY_IVS(3, 3, 3, 3, 3, 3),
     .lvl = 13,
-    .species = SPECIES_LOTAD,
+    .species = SPECIES_NIDORAN_M,
     },
     {
     .iv = TRAINER_PARTY_IVS(6, 6, 6, 6, 6, 6),
@@ -9678,16 +9678,16 @@ static const struct TrainerMon sParty_KyleRoute116[] = {
     }
 };
 
-static const struct TrainerMon sParty_MayRustboroTorchic[] = {
+static const struct TrainerMon sParty_KyleRustboro[] = {
     {
     .iv = TRAINER_PARTY_IVS(3, 3, 3, 3, 3, 3),
     .lvl = 13,
-    .species = SPECIES_TORKOAL,
+    .species = SPECIES_NIDORAN_M,
     },
     {
     .iv = TRAINER_PARTY_IVS(6, 6, 6, 6, 6, 6),
     .lvl = 15,
-    .species = SPECIES_MUDKIP,
+    .species = SPECIES_CHARMANDER,
     }
 };
 

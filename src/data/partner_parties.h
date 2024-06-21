@@ -29,18 +29,10 @@ static const struct TrainerMon sParty_KylePetalburgWoods[] = {
     {
         .species = SPECIES_CHARMANDER,
         .lvl = 11,
-        .nature = NATURE_BRAVE,
-        .iv = TRAINER_PARTY_IVS(10, 10, 10, 10, 10, 10),
-        .ev = TRAINER_PARTY_EVS(32, 32, 32, 32, 32, 32),
-        .moves = {MOVE_EMBER, MOVE_SCRATCH, MOVE_GROWL, MOVE_NONE},
     },
     {
-        .species = SPECIES_LOTAD,
+        .species = SPECIES_NIDORAN_M,
         .lvl = 8,
-        .nature = NATURE_IMPISH,
-        .iv = TRAINER_PARTY_IVS(10, 10, 10, 10, 10, 10),
-        .ev = TRAINER_PARTY_EVS(32, 32, 32, 32, 32, 32),
-        .moves = {MOVE_ASTONISH, MOVE_GROWL, MOVE_ABSORB, MOVE_NONE},
     }
 };
 
@@ -48,18 +40,10 @@ static const struct TrainerMon sParty_BrenPetalburgWoods[] = {
     {
         .species = SPECIES_PIPLUP,
         .lvl = 11,
-        .nature = NATURE_MODEST,
-        .iv = TRAINER_PARTY_IVS(10, 10, 10, 10, 10, 10),
-        .ev = TRAINER_PARTY_EVS(32, 32, 32, 32, 32, 32),
-        .moves = {MOVE_POUND, MOVE_GROWL, MOVE_BUBBLE, MOVE_WATER_SPORT},
     },
     {
-        .species = SPECIES_NINCADA,
+        .species = SPECIES_ZUBAT,
         .lvl = 6,
-        .nature = NATURE_LAX,
-        .iv = TRAINER_PARTY_IVS(10, 10, 10, 10, 10, 10),
-        .ev = TRAINER_PARTY_EVS(32, 32, 32, 32, 32, 32),
-        .moves = {MOVE_SCRATCH, MOVE_HARDEN, MOVE_LEECH_LIFE, MOVE_NONE},
     }
 };
 
@@ -67,17 +51,9 @@ static const struct TrainerMon sParty_SpencerPetalburgWoods[] = {
     {
         .species = SPECIES_TREECKO,
         .lvl = 11,
-        .nature = NATURE_TIMID,
-        .iv = TRAINER_PARTY_IVS(10, 10, 10, 10, 10, 10),
-        .ev = TRAINER_PARTY_EVS(32, 32, 32, 32, 32, 32),
-        .moves = {MOVE_POUND, MOVE_LEER, MOVE_ABSORB, MOVE_QUICK_ATTACK},
     },
     {
-        .species = SPECIES_WINGULL,
+        .species = SPECIES_MACHOP,
         .lvl = 8,
-        .nature = NATURE_ADAMANT,
-        .iv = TRAINER_PARTY_IVS(10, 10, 10, 10, 10, 10),
-        .ev = TRAINER_PARTY_EVS(32, 32, 32, 32, 32, 32),
-        .moves = {MOVE_WATER_GUN, MOVE_GROWL, MOVE_SUPERSONIC, MOVE_NONE},
     }
 };

@@ -595,8 +595,8 @@
 #define TRAINER_GRUNT_SPACE_CENTER_6        589
 #define TRAINER_GRUNT_SPACE_CENTER_7        590
 #define TRAINER_MACEY                       591
-#define TRAINER_BRENDAN_RUSTBORO_TREECKO    592
-#define TRAINER_BRENDAN_RUSTBORO_MUDKIP     593
+#define TRAINER_SPENCER_RUSTBORO            592
+#define TRAINER_BREN_RUSTBORO               593
 #define TRAINER_PAXTON                      594
 #define TRAINER_ISABELLA                    595
 #define TRAINER_GRUNT_WEATHER_INST_5        596
@@ -772,7 +772,7 @@
 #define TRAINER_PAT                         766
 #define TRAINER_CRISTIN_1                   767
 #define TRAINER_SPENCER_ROUTE_116           768
-#define TRAINER_MAY_RUSTBORO_TORCHIC        769
+#define TRAINER_KYLE_RUSTBORO               769
 #define TRAINER_ROXANNE_2                   770
 #define TRAINER_ROXANNE_3                   771
 #define TRAINER_ROXANNE_4                   772
