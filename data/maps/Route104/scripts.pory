@@ -1,7 +1,9 @@
+const LOCALID_RIVAL1 = 34
+
 raw `
 @ NOTE: Route 104's sail to Dewford script references local IDs from Dewford's map.
 @  These are labeled in DewfordTown/scripts.inc
-.set LOCALID_RIVAL, 34
+.set LOCALID_RIVAL1, 34
 
 Route104_MapScripts::
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, Route104_OnFrame
@@ -38,7 +40,7 @@ Route104_EventScript_TrySetRivalPos::
 	goto_if_ge VAR_BOARD_BRINEY_BOAT_STATE, 1, Route104_EventScript_DontSetRivalPos
 	goto_if_set FLAG_MET_RIVAL_RUSTBORO, Route104_EventScript_DontSetRivalPos
 	goto_if_unset FLAG_ENABLE_SPENCER_MATCH_CALL, Route104_EventScript_DontSetRivalPos
-	setobjectxyperm LOCALID_RIVAL, 17, 52
+	setobjectxyperm LOCALID_RIVAL1, 17, 52
 	return
 
 Route104_EventScript_DontSetRivalPos::
@@ -71,7 +73,7 @@ raw `
 Route104_EventScript_Rival::
 	lockall
 	setvar VAR_0x8008, 1
-	applymovement LOCALID_RIVAL, Common_Movement_FacePlayer
+	applymovement LOCALID_RIVAL1, Common_Movement_FacePlayer
 	waitmovement 0
 	goto Route104_EventScript_RivalEncounter
 
@@ -83,36 +85,21 @@ Route104_EventScript_RivalTrigger::
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
 	waitmovement 0
 	delay 10
-	addobject LOCALID_RIVAL
-	clearflag FLAG_HIDE_ROUTE_104_RIVAL
+	addobject LOCALID_RIVAL1
+	clearflag FLAG_HIDE_ROUTE_104_RIVAL1
 	applymovement OBJ_EVENT_ID_PLAYER, Route104_Movement_PlayerBackUp
 	waitmovement 0
-	applymovement LOCALID_RIVAL, Route104_Movement_RivalExitBrineysCottage
+	applymovement LOCALID_RIVAL1, Route104_Movement_RivalExitBrineysCottage
 	waitmovement 0
 	delay 20
 	setvar VAR_0x8008, 0
 	@call RustboroCity_EventScript_PlayRivalMusic
 	playse SE_PIN
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
+	applymovement LOCALID_RIVAL1, Common_Movement_ExclamationMark
 	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
+	applymovement LOCALID_RIVAL1, Common_Movement_Delay48
 	waitmovement 0
 	goto Route104_EventScript_RivalEncounter
-
-@ Unused, shares script with Rustboro encounter instead
-Route104_EventScript_PlayRivalMusic::
-	checkplayergender
-	goto_if_eq VAR_RESULT, MALE, Route104_EventScript_PlayMayMusic
-	goto_if_eq VAR_RESULT, FEMALE, Route104_EventScript_PlayBrendanMusic
-	return
-
-Route104_EventScript_PlayMayMusic::
-	playbgm MUS_ENCOUNTER_MAY, TRUE
-	return
-
-Route104_EventScript_PlayBrendanMusic::
-	playbgm MUS_ENCOUNTER_BRENDAN, TRUE
-	return
 
 Route104_EventScript_RivalEncounter::
 	checkplayergender
@@ -134,13 +121,13 @@ Route104_EventScript_MayEncounter::
 	delay 30
 	setflag FLAG_ENABLE_SPENCER_MATCH_CALL
 	applymovement OBJ_EVENT_ID_PLAYER, Route104_Movement_PlayerFaceRival
-	applymovement LOCALID_RIVAL, Route104_Movement_RivalWalkSlowLeft
+	applymovement LOCALID_RIVAL1, Route104_Movement_RivalWalkSlowLeft
 	msgbox Route104_Text_MayHowsYourPokedex, MSGBOX_DEFAULT
 	closemessage
 	waitmovement 0
-	applymovement LOCALID_RIVAL, Route104_Movement_RivalApproachPlayer
+	applymovement LOCALID_RIVAL1, Route104_Movement_RivalApproachPlayer
 	waitmovement 0
-	copyobjectxytoperm LOCALID_RIVAL
+	copyobjectxytoperm LOCALID_RIVAL1
 	msgbox Route104_Text_MayMinesDecentLetsBattle, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, Route104_EventScript_BattleMay
 	msgbox Route104_Text_MayHaventRaisedPokemon, MSGBOX_DEFAULT
@@ -220,13 +207,13 @@ Route104_EventScript_BrendanEncounter::
 	delay 30
 	setflag FLAG_ENABLE_SPENCER_MATCH_CALL
 	applymovement OBJ_EVENT_ID_PLAYER, Route104_Movement_PlayerFaceRival
-	applymovement LOCALID_RIVAL, Route104_Movement_RivalWalkSlowLeft
+	applymovement LOCALID_RIVAL1, Route104_Movement_RivalWalkSlowLeft
 	msgbox Route104_Text_BrendanHowsYourPokedex, MSGBOX_DEFAULT
 	closemessage
 	waitmovement 0
-	applymovement LOCALID_RIVAL, Route104_Movement_RivalApproachPlayer
+	applymovement LOCALID_RIVAL1, Route104_Movement_RivalApproachPlayer
 	waitmovement 0
-	copyobjectxytoperm LOCALID_RIVAL
+	copyobjectxytoperm LOCALID_RIVAL1
 	msgbox Route104_Text_BrendanDoingGreatLetsBattle, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, Route104_EventScript_BattleBrendan
 	msgbox Route104_Text_BrendanNoConfidence, MSGBOX_DEFAULT
