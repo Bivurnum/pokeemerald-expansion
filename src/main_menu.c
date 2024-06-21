@@ -221,9 +221,9 @@ static void NewGameBirchSpeech_ClearGenderWindow(u8, u8);
 static void Task_NewGameBirchSpeech_SlideOutOldGenderSprite(u8);
 static void Task_NewGameBirchSpeech_SlideInNewGenderSprite(u8);
 //static void Task_NewGameBirchSpeech_WaitForWhatsYourNameToPrint(u8);
-static void Task_NewGameBirchSpeech_WaitPressBeforeNameChoice(u8);
-static void Task_NewGameBirchSpeech_StartNamingScreen(u8);
-static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void);
+//static void Task_NewGameBirchSpeech_WaitPressBeforeNameChoice(u8);
+//static void Task_NewGameBirchSpeech_StartNamingScreen(u8);
+//static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void);
 static void Task_NewGameBirchSpeech_CreateNameYesNo(u8);
 static void Task_NewGameBirchSpeech_ProcessNameYesNoMenu(u8);
 void CreateYesNoMenuParameterized(u8, u8, u16, u16, u8, u8);
@@ -237,7 +237,7 @@ static void Task_NewGameBirchSpeech_WaitForPlayerShrink(u8);
 static void Task_NewGameBirchSpeech_FadePlayerToWhite(u8);
 static void Task_NewGameBirchSpeech_Cleanup(u8);
 static void SpriteCB_Null();
-static void Task_NewGameBirchSpeech_ReturnFromNamingScreenShowTextbox(u8);
+//static void Task_NewGameBirchSpeech_ReturnFromNamingScreenShowTextbox(u8);
 static void MainMenu_FormatSavegamePlayer(void);
 static void MainMenu_FormatSavegamePokedex(void);
 static void MainMenu_FormatSavegameTime(void);
@@ -1568,15 +1568,16 @@ static void Task_NewGameBirchSpeech_SlideInNewGenderSprite(u8 taskId)
 //        gTasks[taskId].func = Task_NewGameBirchSpeech_WaitPressBeforeNameChoice;
 //}
 
-static void Task_NewGameBirchSpeech_WaitPressBeforeNameChoice(u8 taskId)
-{
+//static void Task_NewGameBirchSpeech_WaitPressBeforeNameChoice(u8 taskId)
+//{
 //    if ((JOY_NEW(A_BUTTON)) || (JOY_NEW(B_BUTTON)))
 //    {
 //        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
-        gTasks[taskId].func = Task_NewGameBirchSpeech_StartNamingScreen;
+//        gTasks[taskId].func = Task_NewGameBirchSpeech_StartNamingScreen;
 //    }
-}
+//}
 
+/*
 static void Task_NewGameBirchSpeech_StartNamingScreen(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -1597,7 +1598,7 @@ static void Task_NewGameBirchSpeech_SoItsPlayerName(u8 taskId)
     AddTextPrinterForMessage(TRUE);
     gTasks[taskId].func = Task_NewGameBirchSpeech_CreateNameYesNo;
 }
-
+*/
 static void Task_NewGameBirchSpeech_CreateNameYesNo(u8 taskId)
 {
     if (!RunTextPrintersAndIsPrinter0Active())
@@ -1771,7 +1772,7 @@ static void Task_NewGameBirchSpeech_Cleanup(u8 taskId)
         DestroyTask(taskId);
     }
 }
-
+/*
 static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void)
 {
     u8 taskId;
@@ -1852,6 +1853,7 @@ static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void)
     PutWindowTilemap(0);
     CopyWindowToVram(0, COPYWIN_FULL);
 }
+*/
 
 static void SpriteCB_Null(struct Sprite *sprite)
 {
@@ -2296,6 +2298,7 @@ static void NewGameBirchSpeech_CreateDialogueWindowBorder(u8 bg, u8 x, u8 y, u8 
     FillBgTilemapBufferRect(bg, BG_TILE_V_FLIP(0x102), x+width,   y+height, 1,       1, palNum);
 }
 
+/*
 static void Task_NewGameBirchSpeech_ReturnFromNamingScreenShowTextbox(u8 taskId)
 {
     if (gTasks[taskId].tTimer-- <= 0)
@@ -2304,5 +2307,6 @@ static void Task_NewGameBirchSpeech_ReturnFromNamingScreenShowTextbox(u8 taskId)
         gTasks[taskId].func = Task_NewGameBirchSpeech_SoItsPlayerName;
     }
 }
+*/
 
 #undef tTimer

@@ -91,6 +91,19 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "RustboroCity_DevonCorp_2F_EventScript_MatchCallScientist",
       "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_VAR_F",
+      "x": 13,
+      "y": 8,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "RustboroCity_DevonCorp_2F_EventScript_Rival2",
+      "flag": "FLAG_HIDE_RIVAL2_DEVON_2F"
     }
   ],
   "warp_events": [

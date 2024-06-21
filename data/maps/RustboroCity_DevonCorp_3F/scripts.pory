@@ -3,6 +3,7 @@ const LOCALID_RIVAL1 = 4
 
 mapscripts RustboroCity_DevonCorp_3F_MapScripts {
 	MAP_SCRIPT_ON_TRANSITION {
+		call (Common_EventScript_SetupRivalGfxId)
 		call_if_eq (VAR_DEVON_CORP_3F_STATE, 0, RustboroCity_DevonCorp_3F_EventScript_SetEmployeePos)
 	}
 	MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [

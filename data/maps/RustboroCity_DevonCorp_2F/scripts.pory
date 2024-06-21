@@ -1,3 +1,6 @@
+const LOCALID_FOSSIL_SCIENTIST = 5
+const LOCALID_RIVAL2 = 7
+
 raw `
 .set LOCALID_FOSSIL_SCIENTIST, 5
 
@@ -6,6 +9,7 @@ RustboroCity_DevonCorp_2F_MapScripts::
 	.byte 0
 
 RustboroCity_DevonCorp_2F_OnTransition:
+	call Common_EventScript_SetupRivalGfxId
 	call_if_eq VAR_FOSSIL_RESURRECTION_STATE, 1, RustboroCity_DevonCorp_2F_EventScript_SetFossilReady
 	end
 
@@ -69,7 +73,41 @@ RustboroCity_DevonCorp_2F_EventScript_FossilScientist::
 	goto_if_eq VAR_RESULT, TRUE, RustboroCity_DevonCorp_2F_EventScript_NoticeClawFossil
 	release
 	end
+`
 
+script RustboroCity_DevonCorp_2F_EventScript_Rival2 {
+	lock
+	applymovement (LOCALID_RIVAL2, Common_Movement_FacePlayer)
+	waitmovement (0)
+	if (var(VAR_TEMP_2) != 5) {
+		msgbox (RustboroCity_DevonCorp_2F_Text_IllGetToItSoon, MSGBOX_DEFAULT)
+		setvar (VAR_TEMP_2, 5)
+	}
+	else {
+		msgbox (RustboroCity_DevonCorp_2F_Text_StopAndSmellTheFlowers, MSGBOX_DEFAULT)
+	}
+	closemessage
+	applymovement (LOCALID_RIVAL2, Common_Movement_FaceRight)
+	waitmovement (0)
+	release
+	end
+}
+
+text RustboroCity_DevonCorp_2F_Text_IllGetToItSoon {
+	format ("Watching this scientist work is so fascinating!\N"
+		"He says he can ressurect fossils into living POKéMON.\N"
+		"… … …\N"
+		"No, I haven't seen the president yet.\p"
+		"Don't worry.\N"
+		"I'll get to it soon.")
+}
+
+text RustboroCity_DevonCorp_2F_Text_StopAndSmellTheFlowers {
+	format ("You seem to be taking your time too.\N"
+		"It's good to stop and smell the flowers every now and again.")
+}
+
+raw `
 @ This whole section has needless duplication and could be condensed considerably
 RustboroCity_DevonCorp_2F_EventScript_NoticeRootFossil::
 	closemessage
