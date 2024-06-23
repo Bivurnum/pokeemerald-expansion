@@ -109,7 +109,7 @@ script PetalburgCity_EventScript_RivalJealousOfWally {
 	//hideobjectat (LOCALID_RIVAL2, MAP_PETALBURG_CITY)
 	removeobject (LOCALID_RIVAL2)
 	setflag (FLAG_HIDE_PETALBURG_RIVAL2)
-	clearflag (FLAG_HIDE_ROUTE_101_RIVAL2)
+	clearflag (FLAG_HIDE_ROUTE_102_RIVAL2)
 	setvar (VAR_0x8005, 0)
 	releaseall
 	end

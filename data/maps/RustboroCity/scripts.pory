@@ -1231,11 +1231,11 @@ script RustboroCity_EventScript_RivalEncounter {
 	checkfriendchoice
 	switch (var(VAR_RESULT)) {
 		case SPENCER:
-			trainerbattle_no_intro (TRAINER_KYLE_RUSTBORO, RustboroCity_Text_RivalEndBattle)
+			trainerbattle_no_intro (TRAINER_KYLE_RUSTBORO, RustboroCity_Text_RivalEndBattleKyle)
 		case BREN:
-			trainerbattle_no_intro (TRAINER_SPENCER_RUSTBORO, RustboroCity_Text_RivalEndBattle)
+			trainerbattle_no_intro (TRAINER_SPENCER_RUSTBORO, RustboroCity_Text_RivalEndBattleSpencer)
 		case KYLE:
-			trainerbattle_no_intro (TRAINER_BREN_RUSTBORO, RustboroCity_Text_RivalEndBattle)
+			trainerbattle_no_intro (TRAINER_BREN_RUSTBORO, RustboroCity_Text_RivalEndBattleBren)
 	}
 	delay (20)
 	switch (var(VAR_FACING)) {
@@ -1382,9 +1382,18 @@ text RustboroCity_Text_YouThoughtYoudWalkBy {
 		"Time for a battle!")
 }
 
-text RustboroCity_Text_RivalEndBattle {
+text RustboroCity_Text_RivalEndBattleSpencer {
 	format ("Would you look at that!\N"
 		"I lost!")
+}
+
+text RustboroCity_Text_RivalEndBattleBren {
+	format ("You and your POKéMON have got some good teamwork!")
+}
+
+text RustboroCity_Text_RivalEndBattleKyle {
+	format ("Huh.\n"
+		"I lost again.")
 }
 
 text RustboroCity_Text_GoingToAnIslandTown {

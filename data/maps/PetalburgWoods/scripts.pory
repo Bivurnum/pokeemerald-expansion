@@ -202,7 +202,6 @@ script PetalburgWoods_EventScript_DevonResearcherFinish {
 script PetalburgWoods_EventScript_RemoveDevonResearcher {
 	removeobject (LOCALID_DEVON_EMPLOYEE)
 	setvar (VAR_PETALBURG_WOODS_STATE, 1)
-	setflag (FLAG_HIDE_ROUTE_104_RIVAL1)
 	return
 }
 
@@ -215,7 +214,7 @@ script PetalburgWoods_EventScript_RivalLeave {
 	removeobject (LOCALID_RIVAL2)
 	setflag (FLAG_HIDE_PETALBURG_WOODS_RIVAL2)
 	setflag (FLAG_HIDE_ROUTE_104_RIVAL1)
-	setflag (FLAG_HIDE_ROUTE_101_RIVAL2)
+	setflag (FLAG_HIDE_ROUTE_102_RIVAL2)
 	waitmovement(0)
 	releaseall
 	end

@@ -153,7 +153,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Route102_EventScript_Rival1",
-      "flag": "FLAG_HIDE_ROUTE_101_RIVAL1"
+      "flag": "FLAG_HIDE_ROUTE_102_RIVAL1"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_VAR_F",
@@ -166,7 +166,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Route102_EventScript_Rival2",
-      "flag": "FLAG_HIDE_ROUTE_101_RIVAL2"
+      "flag": "FLAG_HIDE_ROUTE_102_RIVAL2"
     }
   ],
   "warp_events": [

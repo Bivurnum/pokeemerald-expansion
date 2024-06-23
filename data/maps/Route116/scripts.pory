@@ -65,9 +65,10 @@ script Route116_EventScript_TalkToRivalAfterAquaBattle {
 	removeobject (LOCALID_RIVAL1)
 	clearflag (FLAG_HIDE_RUSTBORO_RIVAL1)
 	setflag (FLAG_HIDE_ROUTE_116_RIVAL1)
-	setvar (VAR_RUSTURF_TUNNEL_STATE, 6)
+	if (var(VAR_RUSTURF_TUNNEL_STATE) == 5) {
+		setvar (VAR_RUSTURF_TUNNEL_STATE, 6)
+	}
 	releaseall
-	end
 	end
 }
 
@@ -99,15 +100,16 @@ script Route116_EventScript_RivalBattle {
 	checkfriendchoice
 	switch (var(VAR_RESULT)) {
 		case SPENCER:
-			trainerbattle_no_intro (TRAINER_BREN_ROUTE_116, Route116_Text_RivalDefeated)
+			trainerbattle_no_intro (TRAINER_BREN_RUSTBORO, Route116_Text_RivalDefeated)
 		case BREN:
-			trainerbattle_no_intro (TRAINER_KYLE_ROUTE_116, Route116_Text_RivalDefeated)
+			trainerbattle_no_intro (TRAINER_KYLE_RUSTBORO, Route116_Text_RivalDefeated)
 		case KYLE:
-			trainerbattle_no_intro (TRAINER_SPENCER_ROUTE_116, Route116_Text_RivalDefeated)
+			trainerbattle_no_intro (TRAINER_SPENCER_RUSTBORO, Route116_Text_RivalDefeated)
 	}
 	msgbox (Route116_Text_WeShouldReturnGoods, MSGBOX_DEFAULT)
 	closemessage
 	setvar (VAR_RESULT, YES)
+	setvar (VAR_RUSTURF_TUNNEL_STATE, 7)
 	return
 }
 

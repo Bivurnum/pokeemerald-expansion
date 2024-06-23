@@ -3,6 +3,18 @@ const LOCALID_GRUNT = 6
 const LOCALID_PEEKO = 7
 const LOCALID_RIVAL1 = 11
 
+	// State descriptions for VAR_RUSTURF_TUNNEL_STATE
+	// 1: Never set
+	// 2: GOODS were stolen
+	// 3: Triggered Aqua grunt to back up in tunnel
+	// 4: Defeated grunt in tunnel
+	// 5: Spoke to Rival after PEEKO is rescued
+	// 6: Chose not to battle Rival outside tunnel
+	// 7: Defeated Rival (either at tunnel or at BRINEY's cottage)
+	// 8: Rock 1 is smashed
+	// 9: Rock 2 is smashed
+	// 10: Received Strength HM
+
 raw `
 .equ LOCALID_WANDAS_BF, 1
 .set LOCALID_BRINEY, 5
@@ -17,8 +29,8 @@ RusturfTunnel_MapScripts::
 	.byte 0
 
 RusturfTunnel_OnFrame:
-	map_script_2 VAR_RUSTURF_TUNNEL_STATE, 7, RusturfTunnel_EventScript_ClearTunnelScene
 	map_script_2 VAR_RUSTURF_TUNNEL_STATE, 8, RusturfTunnel_EventScript_ClearTunnelScene
+	map_script_2 VAR_RUSTURF_TUNNEL_STATE, 9, RusturfTunnel_EventScript_ClearTunnelScene
 	.2byte 0
 
 RusturfTunnel_OnTransition:

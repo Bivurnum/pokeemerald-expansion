@@ -98,7 +98,7 @@ script Route102_EventScript_Rival1 {
 		if (var(VAR_TEMP_4) != 5) {
 			msgbox (Route102_Text_RivalHowdYouGetThatItem, MSGBOX_DEFAULT)
 			setvar (VAR_TEMP_4, 5)
-			setflag (FLAG_HIDE_ROUTE_101_RIVAL1)
+			setflag (FLAG_HIDE_ROUTE_102_RIVAL1)
 			getplayerxy (VAR_0x8006, VAR_0x8007)
 				switch (var(VAR_0x8006)) {
 					case 16:

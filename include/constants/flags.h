@@ -310,7 +310,7 @@
 #define FLAG_RECEIVED_DEVON_SCOPE            0x11D
 #define FLAG_DECLINED_RIVAL_BATTLE_LILYCOVE  0x11E
 #define FLAG_MET_DEVON_EMPLOYEE              0x11F
-#define FLAG_MET_RIVAL_RUSTBORO              0x120
+#define FLAG_MET_RIVAL_RUSTBORO              0x120 // Unused in this project
 #define FLAG_RECEIVED_SILK_SCARF             0x121
 #define FLAG_NOT_READY_FOR_BATTLE_ROUTE_120  0x122
 #define FLAG_RECEIVED_SS_TICKET              0x123
@@ -660,8 +660,8 @@
 #define FLAG_HIDE_INTRO_2F_SPENCER              0x269
 #define FLAG_HIDE_INTRO_2F_BREN                 0x26A
 #define FLAG_HIDE_INTRO_2F_KYLE                 0x26B
-#define FLAG_HIDE_ROUTE_101_RIVAL1              0x26C
-#define FLAG_HIDE_ROUTE_101_RIVAL2              0x26D
+#define FLAG_HIDE_ROUTE_102_RIVAL1              0x26C
+#define FLAG_HIDE_ROUTE_102_RIVAL2              0x26D
 #define FLAG_HIDE_PETALBURG_RIVAL2              0x26E
 #define FLAG_HIDE_ROUTE_104_RIVAL1              0x26F
 #define FLAG_HIDE_PETALBURG_WOODS_RIVAL2        0x270

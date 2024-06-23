@@ -602,8 +602,8 @@
 #define TRAINER_GRUNT_WEATHER_INST_5        596
 #define TRAINER_TABITHA_MT_CHIMNEY          597
 #define TRAINER_JONATHAN                    598
-#define TRAINER_BREN_ROUTE_116              599
-#define TRAINER_KYLE_ROUTE_116              600
+#define TRAINER_BREN_DEWFORD                599
+#define TRAINER_KYLE_DEWFORD                600
 #define TRAINER_MAXIE_MAGMA_HIDEOUT         601
 #define TRAINER_MAXIE_MT_CHIMNEY            602
 #define TRAINER_TIANA                       603
@@ -771,7 +771,7 @@
 #define TRAINER_MYLES                       765
 #define TRAINER_PAT                         766
 #define TRAINER_CRISTIN_1                   767
-#define TRAINER_SPENCER_ROUTE_116           768
+#define TRAINER_SPENCER_DEWFORD             768
 #define TRAINER_KYLE_RUSTBORO               769
 #define TRAINER_ROXANNE_2                   770
 #define TRAINER_ROXANNE_3                   771
