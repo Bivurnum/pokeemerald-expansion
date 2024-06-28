@@ -10,6 +10,8 @@ raw `
 
 .equ LOCALID_BOAT_R104, 7
 .equ LOCALID_BRINEY_R104, 8
+.equ LOCALID_RIVAL1_R104, 34
+.equ LOCALID_RIVAL2_R104, 35
 
 DewfordTown_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, DewfordTown_OnTransition

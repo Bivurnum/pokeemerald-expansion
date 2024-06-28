@@ -1,10 +1,15 @@
-const LOCALID_RIVAL1 = 34
 const LOCALID_BRINEY = 8
+const LOCALID_RIVAL1 = 34
+const LOCALID_RIVAL2 = 35
+const LOCALID_PEEKO = 36
 
 raw `
 @ NOTE: Route 104's sail to Dewford script references local IDs from Dewford's map.
 @  These are labeled in DewfordTown/scripts.inc
+.set LOCALID_BRINEY, 8
 .set LOCALID_RIVAL1, 34
+.set LOCALID_RIVAL2, 35
+.set LOCALID_PEEKO, 36
 
 Route104_MapScripts::
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, Route104_OnFrame
@@ -127,12 +132,15 @@ script Route104_EventScript_Rival1Encounter {
 	//applymovement LOCALID_RIVAL1, Route104_Movement_RivalWalkSlowLeft
 	msgbox (Route104_Text_Rival1HowsYourPokedex, MSGBOX_DEFAULT)
 	closemessage
+	fadeoutbgm (4)
 	applymovement (OBJ_EVENT_ID_PLAYER, Route104_Movement_PlayerWaitForRival2)
 	applymovement (LOCALID_RIVAL1, Route104_Movement_WaitForRival2)
 	waitmovement (0)
 	msgbox (Route104_Text_TakingALongTime, MSGBOX_DEFAULT)
 	closemessage
 	delay (60)
+	savebgm (MUS_DUMMY)
+	fadedefaultbgm
 	setvar (VAR_0x8004, 17)
 	setvar (VAR_0x8005, 50)
 	opendoor (VAR_0x8004, VAR_0x8005)
@@ -145,11 +153,24 @@ script Route104_EventScript_Rival1Encounter {
 	waitmovement (0)
 	addobject (LOCALID_BRINEY)
 	applymovement (LOCALID_RIVAL1, Route104_Movement_StepOutOfBrineysWay)
-	applymovement (LOCALID_BRINEY, Route104_Movement_BrineyStepsOut)
+	applymovement (LOCALID_BRINEY, Route104_Movement_StepOutOfCottage)
 	waitmovement (0)
-
-	savebgm (MUS_DUMMY)
-	fadedefaultbgm
+	closedoor (VAR_0x8004, VAR_0x8005)
+	waitdooranim
+	msgbox (Route104_Text_AreYouReadyToGo, MSGBOX_DEFAULT)
+	closemessage
+	applymovement (OBJ_EVENT_ID_PLAYER, Route104_Movement_Player1ShallWeWait)
+	applymovement (LOCALID_RIVAL1, Route104_Movement_Rival1ShallWeWait)
+	waitmovement (0)
+	delay (10)
+	msgbox (Route104_Text_DoYouThinkWeShouldWait, MSGBOX_YESNO)
+	closemessage
+	switch (var(VAR_RESULT)) {
+		case NO:
+			goto (Route104_EventScript_DontWaitForRival)
+		case YES:
+			goto (Route104_EventScript_WaitForRival)
+	}
 	releaseall
 	end
 }
@@ -167,6 +188,175 @@ script Route104_EventScript_BattleRival1 {
 			trainerbattle_no_intro (TRAINER_SPENCER_RUSTBORO, RustboroCity_Text_RivalEndBattleSpencer)
 	}
 	return
+}
+
+script Route104_EventScript_WaitForRival {
+	setvar (VAR_RUSTBORO_CITY_STATE, 9)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp)
+	applymovement (LOCALID_RIVAL1, Common_Movement_FaceUp)
+	applymovement (LOCALID_BRINEY, Common_Movement_BeginTalkDown)
+	waitmovement (0)
+	msgbox (Route104_Text_LetMeKnowWhenReadyToSail, MSGBOX_DEFAULT)
+	closemessage
+	applymovement (LOCALID_BRINEY, Common_Movement_WalkInPlaceFasterUp)
+	waitmovement (0)
+	opendoor (VAR_0x8004, VAR_0x8005)
+	waitdooranim
+	applymovement (LOCALID_BRINEY, Route104_Movement_EnterCottage)
+	waitmovement (0)
+	removeobject (LOCALID_BRINEY)
+	closedoor (VAR_0x8004, VAR_0x8005)
+	waitdooranim
+	delay (10)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight)
+	applymovement (LOCALID_RIVAL1, Common_Movement_WalkInPlaceFasterLeft)
+	waitmovement (0)
+	msgbox (Route104_Text_SeeWhatsTakingSoLong, MSGBOX_DEFAULT)
+	closemessage
+	delay (5)
+	applymovement (LOCALID_RIVAL1, Route104_Movement_GoWaitForOtherRival)
+	waitmovement (0)
+	releaseall
+	end
+}
+
+script Route104_EventScript_GoFindRivalTrigger1 {
+	lock
+	setvar (VAR_0x8006, 1)
+	addobject (LOCALID_RIVAL2)
+	applymovement (LOCALID_RIVAL2, Route104_Movement_Rival2WalksIn)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_RIVAL2, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	delay (20)
+	applymovement (LOCALID_RIVAL2, Route104_Movement_Rival2ApproachPlayer1)
+	waitmovement (0)
+	goto (Route104_EventScript_Rival2ShowsUp)
+}
+
+script Route104_EventScript_GoFindRivalTrigger2 {
+	lock
+	setvar (VAR_0x8006, 2)
+	setobjectxyperm (LOCALID_RIVAL2, 23, 46)
+	addobject (LOCALID_RIVAL2)
+	applymovement (LOCALID_RIVAL2, Route104_Movement_Rival2WalksIn)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_RIVAL2, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	delay (20)
+	applymovement (OBJ_EVENT_ID_PLAYER, Route104_Movement_PlayerMoveForApproach2)
+	applymovement (LOCALID_RIVAL2, Route104_Movement_Rival2ApproachPlayer2)
+	waitmovement (0)
+	goto (Route104_EventScript_Rival2ShowsUp)
+}
+
+script Route104_EventScript_GoFindRivalTrigger3 {
+	lock
+	setvar (VAR_0x8006, 3)
+	setobjectxyperm (LOCALID_RIVAL2, 23, 47)
+	addobject (LOCALID_RIVAL2)
+	applymovement (LOCALID_RIVAL2, Route104_Movement_Rival2WalksIn)
+	waitmovement (0)
+	playse (SE_PIN)
+	applymovement (LOCALID_RIVAL2, Common_Movement_ExclamationMark)
+	waitmovement (0)
+	delay (20)
+	applymovement (OBJ_EVENT_ID_PLAYER, Route104_Movement_PlayerMoveForApproach3)
+	applymovement (LOCALID_RIVAL2, Route104_Movement_Rival2ApproachPlayer3)
+	waitmovement (0)
+	goto (Route104_EventScript_Rival2ShowsUp)
+}
+
+script Route104_EventScript_Rival2ShowsUp {
+	msgbox (Route104_Text_AfraidYouLeftWithoutMe)
+	waitmessage
+	applymovement (LOCALID_RIVAL1, Route104_Movement_Rival1Approach)
+	waitmovement (0)
+	waitbuttonpress
+	closemessage
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown)
+	applymovement (LOCALID_RIVAL2, Route104_Movement_ApproachRival1)
+	applymovement (LOCALID_RIVAL1, Common_Movement_BeginTalkRight)
+	waitmovement (0)
+	msgbox (Route104_Text_IllGoLetBrineyKnow, MSGBOX_DEFAULT)
+	closemessage
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft)
+	applymovement (LOCALID_RIVAL2, Common_Movement_Walk_Left)
+	applymovement (LOCALID_RIVAL1, Route104_Movement_GoTellBriney)
+	waitmovement (0)
+	setvar (VAR_0x8004, 17)
+	setvar (VAR_0x8005, 50)
+	opendoor (VAR_0x8004, VAR_0x8005)
+	waitdooranim
+	applymovement (LOCALID_RIVAL1, Route104_Movement_EnterCottage)
+	waitmovement (0)
+	closedoor (VAR_0x8004, VAR_0x8005)
+	waitdooranim
+	delay (5)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown)
+	applymovement (LOCALID_RIVAL1, Common_Movement_BeginTalkUp)
+	waitmovement (0)
+	msgbox (Route104_Text_WeShouldRegister)
+	closemessage
+	delay (30)
+	playfanfare (MUS_REGISTER_MATCH_CALL)
+	msgbox (RustboroCity_Text_RegisteredRival2, MSGBOX_DEFAULT)
+	waitfanfare
+	closemessage
+	delay (30)
+	setvar (VAR_0x8004, 17)
+	setvar (VAR_0x8005, 50)
+	opendoor (VAR_0x8004, VAR_0x8005)
+	waitdooranim
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft)
+	applymovement (LOCALID_RIVAL2, Common_Movement_FaceLeft)
+	applymovement (LOCALID_RIVAL1, Route104_Movement_Rival1ComesBackOutOfCottage)
+	waitmovement (0)
+	setobjectmovementtype (LOCALID_BRINEY, MOVEMENT_TYPE_FACE_DOWN)
+	addobject (LOCALID_BRINEY)
+	applymovement (LOCALID_BRINEY, Route104_Movement_StepOutOfCottage)
+	waitmovement (0)
+	applymovement (LOCALID_BRINEY, Common_Movement_BeginTalkRight)
+	waitmovement (0)
+	msgbox (RustboroCity_Text_AnchorsAweigh, MSGBOX_DEFAULT)
+	closemessage
+	applymovement (LOCALID_BRINEY, Common_Movement_BeginTalkUp)
+	waitmovement (0)
+	msgbox (RustboroCity_Text_PeekoSettingSail, MSGBOX_DEFAULT)
+	closemessage
+	applymovement (LOCALID_BRINEY, Common_Movement_Walk_Left)
+	waitmovement (0)
+	applymovement (LOCALID_BRINEY, Common_Movement_FaceRight)
+	waitmovement (0)
+	addobject (LOCALID_PEEKO)
+	applymovement (LOCALID_PEEKO, Route104_Movement_StepOutOfCottage)
+	applymovement (LOCALID_RIVAL2, Route104_Movement_JoinBoatCrew)
+	waitmovement (0)
+	closedoor (VAR_0x8004, VAR_0x8005)
+	waitdooranim
+	setflag (FLAG_HIDE_BRINEYS_HOUSE_MR_BRINEY)
+	setflag (FLAG_HIDE_BRINEYS_HOUSE_PEEKO)
+	setvar (VAR_RUSTBORO_CITY_STATE, 10)
+	setvar (VAR_ROUTE104_STATE, 2)
+	setobjectsubpriority (LOCALID_BRINEY_R104, MAP_ROUTE104, 0)
+	setobjectsubpriority (OBJ_EVENT_ID_PLAYER, MAP_ROUTE104, 0)
+	setobjectsubpriority (LOCALID_RIVAL1_R104, MAP_ROUTE104, 0)
+	setobjectsubpriority (LOCALID_RIVAL2_R104, MAP_ROUTE104, 0)
+	setobjectsubpriority (LOCALID_PEEKO, MAP_ROUTE104, 0)
+	applymovement (LOCALID_BRINEY, Route104_Movement_BrineyBoardShip)
+	applymovement (LOCALID_PEEKO, Route104_Movement_PeekoBoardShip)
+	applymovement (LOCALID_RIVAL1, Route104_Movement_Rival1BoardShip)
+	applymovement (LOCALID_RIVAL2, Route104_Movement_Rival2BoardShip)
+	applymovement (OBJ_EVENT_ID_PLAYER, Route104_Movement_PlayerBoardShip)
+	waitmovement (0)
+	removeobject (LOCALID_BRINEY_R104)
+	hideobjectat (OBJ_EVENT_ID_PLAYER, MAP_ROUTE104)
+}
+
+script Route104_EventScript_DontWaitForRival {
+	setvar (VAR_RUSTBORO_CITY_STATE, 10)
 }
 
 movement Route104_Movement_WaitForRival2 {
@@ -193,13 +383,174 @@ movement Route104_Movement_StepOutOfBrineysWay {
 	unlock_facing_direction
 }
 
-movement Route104_Movement_BrineyStepsOut {
+movement Route104_Movement_StepOutOfCottage {
 	delay_4
 	walk_down
 }
 
+movement Route104_Movement_Rival1ShallWeWait {
+	walk_down
+	walk_in_place_faster_left
+}
+
+movement Route104_Movement_Player1ShallWeWait {
+	delay_4
+	walk_in_place_faster_right
+}
+
+movement Route104_Movement_EnterCottage {
+	walk_up
+	set_invisible
+}
+
+movement Route104_Movement_GoWaitForOtherRival {
+	walk_up
+	face_down
+}
+
+movement Route104_Movement_Rival2WalksIn {
+	walk_down * 3
+}
+
+movement Route104_Movement_Rival2ApproachPlayer1 {
+	walk_down * 3
+	walk_left * 2
+}
+
+movement Route104_Movement_Rival2ApproachPlayer2 {
+	walk_down * 2
+	walk_left * 2
+}
+
+movement Route104_Movement_Rival2ApproachPlayer3 {
+	walk_down
+	walk_left * 2
+}
+
+movement Route104_Movement_PlayerMoveForApproach2 {
+	walk_up
+	face_right
+}
+
+movement Route104_Movement_PlayerMoveForApproach3 {
+	walk_up * 2
+	face_right
+}
+
+movement Route104_Movement_Rival1Approach {
+	walk_right
+	walk_down
+	walk_right
+}
+
+movement Route104_Movement_ApproachRival1 {
+	walk_down
+	face_left
+}
+
+movement Route104_Movement_GoTellBriney {
+	walk_left * 3
+	walk_up
+}
+
+movement Route104_Movement_Rival1ComesBackOutOfCottage {
+	face_down
+	set_visible
+	delay_4
+	walk_down
+	walk_right
+	face_left
+}
+
+movement Route104_Movement_JoinBoatCrew {
+	walk_left
+	walk_up
+	face_left
+}
+
+movement Route104_Movement_BrineyBoardShip {
+	walk_left * 4
+	walk_down * 2
+	set_invisible
+}
+
+movement Route104_Movement_PeekoBoardShip {
+	walk_left * 5
+	walk_down * 2
+	set_invisible
+}
+
+movement Route104_Movement_Rival1BoardShip {
+	walk_left * 6
+	walk_down * 2
+	set_invisible
+}
+
+movement Route104_Movement_Rival2BoardShip {
+	walk_left * 7
+	walk_down * 2
+	set_invisible
+}
+
+movement Route104_Movement_PlayerBoardShip {
+	walk_left * 8
+	walk_down * 2
+}
+
 text Route104_Text_TakingALongTime {
 	format ("{RIVAL}: {RIVAL2} sure is taking a long time…")
+}
+
+text Route104_Text_AreYouReadyToGo {
+	format ("MR. BRINEY: Well now, boys.\N"
+		"I'm all set to take a boat trip to DEWFORD.\N"
+		"Are you ready to go?")
+}
+
+text Route104_Text_DoYouThinkWeShouldWait {
+	format ("{RIVAL}: {RIVAL2} isn't here yet.\N"
+		"Do you think we should wait for him?")
+}
+
+text Route104_Text_LetMeKnowWhenReadyToSail {
+	format ("MR. BRINEY: I'm in no rush to shove off."
+		"You just let me know when you're ready to sail.")
+}
+
+text Route104_Text_SeeWhatsTakingSoLong {
+	format ("{RIVAL}: Will you go see what's taking {RIVAL2} so long?\N"
+		"I'll stay here in case he shows up.")
+}
+
+text Route104_Text_AfraidYouLeftWithoutMe {
+	format ("{RIVAL2}: Boy, am I glad you're still here."
+		"I was afraid you guys left without me!")
+}
+
+text Route104_Text_IllGoLetBrineyKnow {
+	format ("{RIVAL}: Good.\N"
+		"Now that we're all here, we can make our way to DEWFORD."
+		"I'll go let BRINEY know we are ready to set sail!")
+}
+
+text Route104_Text_WeShouldRegister {
+	format ("{RIVAL2}: Oh, hey look!\N"
+		"I got a POKéNAV, too!\N"
+		"We should register each other.")
+}
+
+text RustboroCity_Text_RegisteredRival2 {
+	format ("{PLAYER} registered {RIVAL}\N"
+		"in the POKéNAV.")
+}
+
+text RustboroCity_Text_AnchorsAweigh {
+	format ("MR. BRINEY: DEWFORD it is, then!\p"
+	"Anchors aweigh!")
+}
+
+text RustboroCity_Text_PeekoSettingSail {
+	format ("PEEKO, we're setting sail, my darling!")
 }
 
 raw `

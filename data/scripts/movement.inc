@@ -76,6 +76,22 @@ Common_Movement_BeginTalkLeft:
 	walk_in_place_left
 	step_end
 
+Common_Movement_Walk_Up:
+	walk_up
+	step_end
+
+Common_Movement_Walk_Down:
+	walk_down
+	step_end
+
+Common_Movement_Walk_Left:
+	walk_left
+	step_end
+
+Common_Movement_Walk_Right:
+	walk_right
+	step_end
+
 Common_Movement_WalkInPlaceDown:
 	walk_in_place_down
 	step_end

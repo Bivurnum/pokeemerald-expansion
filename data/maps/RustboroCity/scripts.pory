@@ -25,6 +25,8 @@ raw `
 	// 6: Received Pokenav
 	// 7: Completed Match Call tutorial
 	// 8: Defeated Rival2
+	// 9: Chose to wait for Rival2 at Briney's cottage
+	// 10: Boarded Briney's boat for the first time
 
 mapscripts RustboroCity_MapScripts {
 	MAP_SCRIPT_ON_TRANSITION {
