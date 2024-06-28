@@ -37,7 +37,7 @@ Route104_MrBrineysHouse_EventScript_SailingIntro::
 	msgbox Route104_MrBrineysHouse_Text_ItsYouLetsSailToDewford, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, Route104_MrBrineysHouse_EventScript_DeclineDeliverySailing
 	setflag FLAG_MR_BRINEY_SAILING_INTRO
-	goto Route104_MrBrineysHouse_EventScript_SailToDewford
+	goto Route104_MrBrineysHouse_EventScript_SailToDewford2
 	end
 
 Route104_MrBrineysHouse_EventScript_WhereAreWeBound::
@@ -84,14 +84,32 @@ Route104_MrBrineysHouse_EventScript_SailToDewford::
 	clearflag FLAG_HIDE_ROUTE_104_MR_BRINEY
 	setflag FLAG_HIDE_BRINEYS_HOUSE_MR_BRINEY
 	setflag FLAG_HIDE_BRINEYS_HOUSE_PEEKO
-	setvar VAR_RUSTBORO_CITY_STATE, 8
+	setvar VAR_RUSTBORO_CITY_STATE, 10
 	setvar VAR_ROUTE104_STATE, 2
 	setflag FLAG_HIDE_RUSTBORO_CITY_RIVAL
 	warp MAP_ROUTE104, 13, 51
 	waitstate
 	releaseall
 	end
+`
 
+script Route104_MrBrineysHouse_EventScript_SailToDewford2 {
+	msgbox (Route104_MrBrineysHouse_Text_SetSailForDewford, MSGBOX_DEFAULT)
+	call (EventScript_BackupMrBrineyLocation)
+	setvar (VAR_BOARD_BRINEY_BOAT_STATE, 10)
+	clearflag (FLAG_HIDE_ROUTE_104_MR_BRINEY)
+	setflag (FLAG_HIDE_BRINEYS_HOUSE_MR_BRINEY)
+	setflag (FLAG_HIDE_BRINEYS_HOUSE_PEEKO)
+	setvar (VAR_RUSTBORO_CITY_STATE, 10)
+	setvar (VAR_ROUTE104_STATE, 2)
+	setflag (FLAG_HIDE_RUSTBORO_CITY_RIVAL)
+	warp (MAP_ROUTE104, 17, 52)
+	waitstate
+	releaseall
+	end
+}
+
+raw `
 Route104_MrBrineysHouse_EventScript_Peeko::
 	lock
 	faceplayer
@@ -108,7 +126,7 @@ Route104_MrBrineysHouse_Text_WaitUpPeeko:
 
 Route104_MrBrineysHouse_Text_ItsYouLetsSailToDewford:
 	.string "Hm?\n"
-	.string "Are you boys ready to sail to DEWFORD?$"
+	.string "Are you ready to sail to DEWFORD?$"
 
 Route104_MrBrineysHouse_Text_SetSailForDewford:
 	.string "MR. BRINEY: DEWFORD it is, then!\p"

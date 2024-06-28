@@ -366,30 +366,30 @@ PetalburgWoods_EventScript_RemoveDevonResearcher::
 	removeobject LOCALID_DEVON_EMPLOYEE
 # 204 "data/maps/PetalburgWoods/scripts.pory"
 	setvar VAR_PETALBURG_WOODS_STATE, 1
-# 205 "data/maps/PetalburgWoods/scripts.pory"
-	setflag FLAG_HIDE_ROUTE_104_RIVAL1
 	return
 
 
 PetalburgWoods_EventScript_RivalLeave::
-# 210 "data/maps/PetalburgWoods/scripts.pory"
+# 209 "data/maps/PetalburgWoods/scripts.pory"
 	msgbox PetalburgWoods_Text_BattleWasFun, MSGBOX_DEFAULT
-# 211 "data/maps/PetalburgWoods/scripts.pory"
+# 210 "data/maps/PetalburgWoods/scripts.pory"
 	closemessage
-# 212 "data/maps/PetalburgWoods/scripts.pory"
+# 211 "data/maps/PetalburgWoods/scripts.pory"
 	turnobject OBJ_EVENT_ID_PLAYER, DIR_NORTH
-# 213 "data/maps/PetalburgWoods/scripts.pory"
+# 212 "data/maps/PetalburgWoods/scripts.pory"
 	applymovement LOCALID_RIVAL2, PetalburgWoods_Movement_Rival2Exit
-# 214 "data/maps/PetalburgWoods/scripts.pory"
+# 213 "data/maps/PetalburgWoods/scripts.pory"
 	waitmovement 0
-# 215 "data/maps/PetalburgWoods/scripts.pory"
+# 214 "data/maps/PetalburgWoods/scripts.pory"
 	removeobject LOCALID_RIVAL2
+# 215 "data/maps/PetalburgWoods/scripts.pory"
+	savebgm MUS_DUMMY
 # 216 "data/maps/PetalburgWoods/scripts.pory"
 	setflag FLAG_HIDE_PETALBURG_WOODS_RIVAL2
 # 217 "data/maps/PetalburgWoods/scripts.pory"
 	setflag FLAG_HIDE_ROUTE_104_RIVAL1
 # 218 "data/maps/PetalburgWoods/scripts.pory"
-	setflag FLAG_HIDE_ROUTE_101_RIVAL2
+	setflag FLAG_HIDE_ROUTE_102_RIVAL2
 # 219 "data/maps/PetalburgWoods/scripts.pory"
 	waitmovement 0
 # 220 "data/maps/PetalburgWoods/scripts.pory"

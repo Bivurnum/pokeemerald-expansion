@@ -593,6 +593,24 @@
       "var": "VAR_RUSTBORO_CITY_STATE",
       "var_value": "9",
       "script": "Route104_EventScript_GoFindRivalTrigger3"
+    },
+    {
+      "type": "trigger",
+      "x": 16,
+      "y": 54,
+      "elevation": 0,
+      "var": "VAR_RUSTBORO_CITY_STATE",
+      "var_value": "9",
+      "script": "Route104_EventScript_BeachTriggerLeft"
+    },
+    {
+      "type": "trigger",
+      "x": 17,
+      "y": 54,
+      "elevation": 0,
+      "var": "VAR_RUSTBORO_CITY_STATE",
+      "var_value": "9",
+      "script": "Route104_EventScript_BeachTriggerRight"
     }
   ],
   "bg_events": [

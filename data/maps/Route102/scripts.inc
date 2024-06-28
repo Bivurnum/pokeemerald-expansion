@@ -199,7 +199,7 @@ Route102_EventScript_Rival1_9:
 # 100 "data/maps/Route102/scripts.pory"
 	setvar VAR_TEMP_4, 5
 # 101 "data/maps/Route102/scripts.pory"
-	setflag FLAG_HIDE_ROUTE_101_RIVAL1
+	setflag FLAG_HIDE_ROUTE_102_RIVAL1
 # 102 "data/maps/Route102/scripts.pory"
 	getplayerxy VAR_0x8006, VAR_0x8007
 # 103 "data/maps/Route102/scripts.pory"

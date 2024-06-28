@@ -1,10 +1,15 @@
+const LOCALID_RIVAL1 = 9
+
 raw `
+.set LOCALID_RIVAL1, 9
+
 DewfordTown_Gym_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, DewfordTown_Gym_OnTransition
 	.byte 0
 
 DewfordTown_Gym_OnTransition:
 	call DewfordTown_Gym_EventScript_SetFlashLevel
+	call Common_EventScript_SetupRivalGfxId
 	end
 
 DewfordTown_Gym_EventScript_SetFlashLevel::
@@ -18,7 +23,23 @@ DewfordTown_Gym_EventScript_SetFlashLevel::
 	goto_if_eq VAR_0x8000, 4, DewfordTown_Gym_EventScript_SetFlashLevel3
 	goto_if_eq VAR_0x8000, 5, DewfordTown_Gym_EventScript_SetFlashLevel2
 	goto DewfordTown_Gym_EventScript_SetFlashLevel1
+`
 
+script DewfordTown_Gym_EventScript_Rival1 {
+	lock
+	applymovement (LOCALID_RIVAL1, Common_Movement_FacePlayer)
+	waitmovement (0)
+	msgbox (DewfordTown_Gym_Text_FindingDeadEnds, MSGBOX_DEFAULT)
+	release
+	end
+}
+
+text DewfordTown_Gym_Text_FindingDeadEnds {
+	format ("I don't know how I'm supposed to look for STEVEN in here.\N"
+		"I keep finding dead ends in the dark!")
+}
+
+raw `
 DewfordTown_Gym_EventScript_SetLightsOn::
 	setflashlevel 0
 	return

@@ -212,6 +212,7 @@ script PetalburgWoods_EventScript_RivalLeave {
 	applymovement (LOCALID_RIVAL2, PetalburgWoods_Movement_Rival2Exit)
 	waitmovement (0)
 	removeobject (LOCALID_RIVAL2)
+	savebgm (MUS_DUMMY)
 	setflag (FLAG_HIDE_PETALBURG_WOODS_RIVAL2)
 	setflag (FLAG_HIDE_ROUTE_104_RIVAL1)
 	setflag (FLAG_HIDE_ROUTE_102_RIVAL2)

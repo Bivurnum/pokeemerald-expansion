@@ -1,17 +1,20 @@
+const LOCALID_RIVAL1 = 7
+const LOCALID_RIVAL2 = 6
+
 raw `
 @ Sailing to and from Dewford uses local IDs from different maps
 @ e.g. Route 104's sail to Dewford script references local IDs from Dewford's map
 @ All of these local IDs are labeled here
 .equ LOCALID_BRINEY_DEWFORD, 2
 .equ LOCALID_BOAT_DEWFORD, 4
+.equ LOCALID_RIVAL1_DEWFORD, 7
+.equ LOCALID_RIVAL2_DEWFORD, 6
 
 .equ LOCALID_BOAT_R109, 1
 .equ LOCALID_BRINEY_R109, 2
 
 .equ LOCALID_BOAT_R104, 7
 .equ LOCALID_BRINEY_R104, 8
-.equ LOCALID_RIVAL1_R104, 34
-.equ LOCALID_RIVAL2_R104, 35
 
 DewfordTown_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, DewfordTown_OnTransition
@@ -19,6 +22,7 @@ DewfordTown_MapScripts::
 
 DewfordTown_OnTransition:
 	setflag FLAG_VISITED_DEWFORD_TOWN
+	call Common_EventScript_SetupRivalGfxId
 	end
 
 DewfordTown_EventScript_Briney::

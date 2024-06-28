@@ -225,7 +225,7 @@ PetalburgCity_EventScript_RivalJealousOfWally::
 # 111 "data/maps/PetalburgCity/scripts.pory"
 	setflag FLAG_HIDE_PETALBURG_RIVAL2
 # 112 "data/maps/PetalburgCity/scripts.pory"
-	clearflag FLAG_HIDE_ROUTE_101_RIVAL2
+	clearflag FLAG_HIDE_ROUTE_102_RIVAL2
 # 113 "data/maps/PetalburgCity/scripts.pory"
 	setvar VAR_0x8005, 0
 # 114 "data/maps/PetalburgCity/scripts.pory"

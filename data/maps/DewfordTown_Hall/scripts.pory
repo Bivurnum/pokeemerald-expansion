@@ -1,12 +1,37 @@
+const LOCALID_RIVAL2 = 10
+
 raw `
 .set LOCALID_EXPERT_M, 4
 .set LOCALID_TWIN, 5
 .set LOCALID_SCHOOL_KID_M, 7
 .set LOCALID_PSYCHIC_M, 8
+.set LOCALID_RIVAL2, 10
+`
 
-DewfordTown_Hall_MapScripts::
-	.byte 0
+mapscripts DewfordTown_Hall_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION {
+		call (Common_EventScript_SetupRivalGfxId)
+	}
+}
 
+script DewfordTown_Hall_EventScript_Rival2 {
+	lock
+	applymovement (LOCALID_RIVAL2, Common_Movement_FacePlayer)
+	waitmovement (0)
+	call (Common_EventScript_BufferTrendyPhrase)
+	msgbox (DewfordTown_Hall_Text_WhatTheHeck, MSGBOX_DEFAULT)
+	closemessage
+	release
+	end
+}
+
+text DewfordTown_Hall_Text_WhatTheHeck {
+	format ("I'm trying to ask these people if they've seen STEVEN, "
+		"but they just keep talking about\N“{STR_VAR_1}.”\p"
+		"What the heck is\N“{STR_VAR_1},” anyway?!")
+}
+
+raw `
 DewfordTown_Hall_EventScript_Girl::
 	lock
 	faceplayer
