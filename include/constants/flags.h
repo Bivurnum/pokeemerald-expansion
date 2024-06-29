@@ -669,7 +669,7 @@
 #define FLAG_ENABLE_BREN_MATCH_CALL             0x272
 #define FLAG_ENABLE_KYLE_MATCH_CALL             0x273
 #define FLAG_HIDE_DEVON_3F_RIVAL1               0x274
-#define FLAG_HIDE_INDOOR_DEWFORD_RIVALS         0x275
+#define FLAG_UNUSED_0x275                       0x275 // Unused Flag
 #define FLAG_HIDE_OUTDOOR_DEWFORD_RIVALS        0x276
 #define FLAG_UNUSED_0x277  0x277 // Unused Flag
 #define FLAG_UNUSED_0x278  0x278 // Unused Flag

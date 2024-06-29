@@ -19,7 +19,13 @@ script DewfordTown_Hall_EventScript_Rival2 {
 	applymovement (LOCALID_RIVAL2, Common_Movement_FacePlayer)
 	waitmovement (0)
 	call (Common_EventScript_BufferTrendyPhrase)
-	msgbox (DewfordTown_Hall_Text_WhatTheHeck, MSGBOX_DEFAULT)
+	if (var(VAR_TEMP_3) != 5) {
+		msgbox (DewfordTown_Hall_Text_StuckInMyHead, MSGBOX_DEFAULT)
+	}
+	else {
+		msgbox (DewfordTown_Hall_Text_WhatTheHeck, MSGBOX_DEFAULT)
+		setvar (VAR_TEMP_3, 5)
+	}
 	closemessage
 	release
 	end
@@ -29,6 +35,13 @@ text DewfordTown_Hall_Text_WhatTheHeck {
 	format ("I'm trying to ask these people if they've seen STEVEN, "
 		"but they just keep talking about\N“{STR_VAR_1}.”\p"
 		"What the heck is\N“{STR_VAR_1},” anyway?!")
+}
+
+text DewfordTown_Hall_Text_StuckInMyHead {
+	format ("“{STR_VAR_1}”…\N"
+		"“{STR_VAR_1}”…\p"
+		"Argh!\N"
+		"It's getting stuck in my head!")
 }
 
 raw `

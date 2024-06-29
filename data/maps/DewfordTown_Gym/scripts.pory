@@ -29,7 +29,17 @@ script DewfordTown_Gym_EventScript_Rival1 {
 	lock
 	applymovement (LOCALID_RIVAL1, Common_Movement_FacePlayer)
 	waitmovement (0)
-	msgbox (DewfordTown_Gym_Text_FindingDeadEnds, MSGBOX_DEFAULT)
+	if (var(VAR_TEMP_3) == 5) {
+		msgbox (DewfordTown_Gym_Text_HeHasToBeHereSomewhere, MSGBOX_DEFAULT)
+	}
+	elif (flag(FLAG_BADGE02_GET) == TRUE) {
+		msgbox (DewfordTown_Gym_Text_WhoaYouBeatTheGym, MSGBOX_DEFAULT)
+		setvar (VAR_TEMP_3, 5)
+	}
+	else {
+		msgbox (DewfordTown_Gym_Text_FindingDeadEnds, MSGBOX_DEFAULT)
+		setvar (VAR_TEMP_3, 5)
+	}
 	release
 	end
 }
@@ -37,6 +47,19 @@ script DewfordTown_Gym_EventScript_Rival1 {
 text DewfordTown_Gym_Text_FindingDeadEnds {
 	format ("I don't know how I'm supposed to look for STEVEN in here.\N"
 		"I keep finding dead ends in the dark!")
+}
+
+text DewfordTown_Gym_Text_WhoaYouBeatTheGym {
+	format ("Whoa! You beat the gym and turned all the lights on?\N"
+		"Nice!\p"
+		"You didn't happen to see STEVEN in there, did you?\N"
+		"No?\N"
+		"That's too bad.\N"
+		"I'll keep looking.")
+}
+
+text DewfordTown_Gym_Text_HeHasToBeHereSomewhere {
+	format ("He has to be around here SOMEWHERE!")
 }
 
 raw `
