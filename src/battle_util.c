@@ -8101,7 +8101,7 @@ u8 IsMonDisobedient(void)
             return 0;
         if (B_OBEDIENCE_MECHANICS < GEN_8 && !IsOtherTrainer(gBattleMons[gBattlerAttacker].otId, gBattleMons[gBattlerAttacker].otName))
             return 0;
-        if (FlagGet(FLAG_BADGE08_GET)) // Rain Badge, ignore obedience altogether
+        if (FlagGet(FLAG_BADGE08_GET) || FlagGet(FLAG_CHEAT_START)) // Rain Badge, ignore obedience altogether
             return 0;
 
         obedienceLevel = 10;

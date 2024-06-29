@@ -10,6 +10,7 @@ Debug_ShowFieldMessageStringVar4::
 	goto Debug_MessageEnd
 
 Debug_CheatStart::
+	setflag FLAG_CHEAT_START
 	setflag FLAG_SYS_POKEMON_GET
 	setflag FLAG_RESCUED_BIRCH
 	setflag FLAG_HIDE_ROUTE_101_BIRCH_ZIGZAGOON_BATTLE
