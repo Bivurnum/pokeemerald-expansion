@@ -181,11 +181,11 @@ static const match_call_text_data_t sMrStoneTextScripts[] = {
     { MatchCall_Text_MrStone3,  FLAG_DELIVERED_STEVEN_LETTER,        0xFFFF },
     { MatchCall_Text_MrStone4,  FLAG_RECEIVED_EXP_SHARE,             0xFFFF },
     { MatchCall_Text_MrStone5,  FLAG_RECEIVED_HM_STRENGTH,           0xFFFF },
-    { MatchCall_Text_MrStone6,  FLAG_DEFEATED_PETALBURG_GYM,         0xFFFF },
+    { MatchCall_Text_MrStone6,  FLAG_BADGE05_GET,                    0xFFFF },
     { MatchCall_Text_MrStone7,  FLAG_RECEIVED_CASTFORM,              0xFFFF },
     { MatchCall_Text_MrStone8,  FLAG_GROUDON_AWAKENED_MAGMA_HIDEOUT, 0xFFFF },
     { MatchCall_Text_MrStone9,  FLAG_TEAM_AQUA_ESCAPED_IN_SUBMARINE, 0xFFFF },
-    { MatchCall_Text_MrStone10, FLAG_DEFEATED_SOOTOPOLIS_GYM,        0xFFFF },
+    { MatchCall_Text_MrStone10, FLAG_BADGE08_GET,                    0xFFFF },
     { MatchCall_Text_MrStone11, FLAG_SYS_GAME_CLEAR,                 0xFFFF },
     { NULL,                     0xFFFF,                              0xFFFF }
 };
@@ -202,9 +202,9 @@ static const struct MatchCallStructNPC sMrStoneMatchCallHeader =
 
 static const match_call_text_data_t sNormanTextScripts[] = {
     { MatchCall_Text_Norman1, FLAG_ENABLE_NORMAN_MATCH_CALL, 0xFFFF },
-    { MatchCall_Text_Norman2, FLAG_DEFEATED_DEWFORD_GYM,     0xFFFF },
-    { MatchCall_Text_Norman3, FLAG_DEFEATED_LAVARIDGE_GYM,   0xFFFF },
-    { MatchCall_Text_Norman4, FLAG_DEFEATED_PETALBURG_GYM,   0xFFFF },
+    { MatchCall_Text_Norman2, FLAG_BADGE02_GET,              0xFFFF },
+    { MatchCall_Text_Norman3, FLAG_BADGE04_GET,              0xFFFF },
+    { MatchCall_Text_Norman4, FLAG_BADGE05_GET,              0xFFFF },
     { MatchCall_Text_Norman5, FLAG_RECEIVED_RED_OR_BLUE_ORB, 0xFFFF },
     { MatchCall_Text_Norman6, 0xFFFE,                        0xFFFF },
     { MatchCall_Text_Norman7, FLAG_SYS_GAME_CLEAR,           0xFFFF },
@@ -235,7 +235,7 @@ static const struct MatchCallBirch sProfBirchMatchCallHeader =
 
 static const match_call_text_data_t sMomTextScripts[] = {
     { MatchCall_Text_Mom1, 0xFFFF,                      0xFFFF },
-    { MatchCall_Text_Mom2, FLAG_DEFEATED_PETALBURG_GYM, 0xFFFF },
+    { MatchCall_Text_Mom2, FLAG_BADGE05_GET,            0xFFFF },
     { MatchCall_Text_Mom3, FLAG_SYS_GAME_CLEAR,         0xFFFF },
     { NULL,                0xFFFF,                      0xFFFF }
 };
@@ -255,7 +255,7 @@ static const match_call_text_data_t sStevenTextScripts[] = {
     { MatchCall_Text_Steven2, FLAG_RUSTURF_TUNNEL_OPENED,          0xFFFF },
     { MatchCall_Text_Steven3, FLAG_RECEIVED_RED_OR_BLUE_ORB,       0xFFFF },
     { MatchCall_Text_Steven4, FLAG_TEAM_AQUA_ESCAPED_IN_SUBMARINE, 0xFFFF },
-    { MatchCall_Text_Steven5, FLAG_DEFEATED_MOSSDEEP_GYM,          0xFFFF },
+    { MatchCall_Text_Steven5, FLAG_BADGE07_GET,                    0xFFFF },
     { MatchCall_Text_Steven6, FLAG_KYOGRE_ESCAPED_SEAFLOOR_CAVERN, 0xFFFF },
     { MatchCall_Text_Steven7, FLAG_SYS_GAME_CLEAR,                 0xFFFF },
     { NULL,                   0xFFFF,                              0xFFFF },
@@ -273,21 +273,21 @@ static const struct MatchCallStructNPC sStevenMatchCallHeader =
 
 static const match_call_text_data_t sBrenTextScripts[] = {
     { MatchCall_Text_Bren1,  0xFFFF,                              0xFFFF },
-    { MatchCall_Text_Bren2,  FLAG_DEFEATED_DEWFORD_GYM,           0xFFFF },
+    { MatchCall_Text_Bren2,  FLAG_BADGE02_GET,                    0xFFFF },
     { MatchCall_Text_Bren3,  FLAG_DELIVERED_DEVON_GOODS,          0xFFFF },
     { MatchCall_Text_Bren4,  FLAG_HIDE_MAUVILLE_CITY_WALLY,       0xFFFF },
     { MatchCall_Text_Bren5,  FLAG_RECEIVED_HM_STRENGTH,           0xFFFF },
-    { MatchCall_Text_Bren6,  FLAG_DEFEATED_LAVARIDGE_GYM,         0xFFFF },
-    { MatchCall_Text_Bren7,  FLAG_DEFEATED_PETALBURG_GYM,         0xFFFF },
+    { MatchCall_Text_Bren6,  FLAG_BADGE04_GET,                    0xFFFF },
+    { MatchCall_Text_Bren7,  FLAG_BADGE05_GET,                    0xFFFF },
     { MatchCall_Text_Bren8,  FLAG_RECEIVED_CASTFORM,              0xFFFF },
     { MatchCall_Text_Bren9,  FLAG_RECEIVED_RED_OR_BLUE_ORB,       0xFFFF },
     { MatchCall_Text_Bren10, FLAG_GROUDON_AWAKENED_MAGMA_HIDEOUT, 0xFFFF },
     { MatchCall_Text_Bren11, FLAG_MET_TEAM_AQUA_HARBOR,           0xFFFF },
     { MatchCall_Text_Bren12, FLAG_TEAM_AQUA_ESCAPED_IN_SUBMARINE, 0xFFFF },
     { MatchCall_Text_Bren13, FLAG_KYOGRE_ESCAPED_SEAFLOOR_CAVERN, 0xFFFF },
-    { MatchCall_Text_Bren14, FLAG_DEFEATED_SOOTOPOLIS_GYM,        0xFFFF },
+    { MatchCall_Text_Bren14, FLAG_BADGE08_GET,                    0xFFFF },
     { MatchCall_Text_Bren15, FLAG_SYS_GAME_CLEAR,                 0xFFFF },
-    { NULL,                 0xFFFF,                              0xFFFF }
+    { NULL,                  0xFFFF,                              0xFFFF }
 };
 
 static const struct MatchCallRival sBrenMatchCallHeader =
@@ -302,19 +302,19 @@ static const struct MatchCallRival sBrenMatchCallHeader =
 
 static const match_call_text_data_t sSpencerTextScripts[] = {
     { MatchCall_Text_Spencer1,  0xFFFF,                              0xFFFF },
-    { MatchCall_Text_Spencer2,  FLAG_DEFEATED_DEWFORD_GYM,           0xFFFF },
+    { MatchCall_Text_Spencer2,  FLAG_BADGE02_GET,                    0xFFFF },
     { MatchCall_Text_Spencer3,  FLAG_DELIVERED_DEVON_GOODS,          0xFFFF },
     { MatchCall_Text_Spencer4,  FLAG_HIDE_MAUVILLE_CITY_WALLY,       0xFFFF },
     { MatchCall_Text_Spencer5,  FLAG_RECEIVED_HM_STRENGTH,           0xFFFF },
-    { MatchCall_Text_Spencer6,  FLAG_DEFEATED_LAVARIDGE_GYM,         0xFFFF },
-    { MatchCall_Text_Spencer7,  FLAG_DEFEATED_PETALBURG_GYM,         0xFFFF },
+    { MatchCall_Text_Spencer6,  FLAG_BADGE04_GET,                    0xFFFF },
+    { MatchCall_Text_Spencer7,  FLAG_BADGE05_GET,                    0xFFFF },
     { MatchCall_Text_Spencer8,  FLAG_RECEIVED_CASTFORM,              0xFFFF },
     { MatchCall_Text_Spencer9,  FLAG_RECEIVED_RED_OR_BLUE_ORB,       0xFFFF },
     { MatchCall_Text_Spencer10, FLAG_GROUDON_AWAKENED_MAGMA_HIDEOUT, 0xFFFF },
     { MatchCall_Text_Spencer11, FLAG_MET_TEAM_AQUA_HARBOR,           0xFFFF },
     { MatchCall_Text_Spencer12, FLAG_TEAM_AQUA_ESCAPED_IN_SUBMARINE, 0xFFFF },
     { MatchCall_Text_Spencer13, FLAG_KYOGRE_ESCAPED_SEAFLOOR_CAVERN, 0xFFFF },
-    { MatchCall_Text_Spencer14, FLAG_DEFEATED_SOOTOPOLIS_GYM,        0xFFFF },
+    { MatchCall_Text_Spencer14, FLAG_BADGE08_GET            ,        0xFFFF },
     { MatchCall_Text_Spencer15, FLAG_SYS_GAME_CLEAR,                 0xFFFF },
     { NULL,                     0xFFFF,                              0xFFFF }
 };
@@ -331,21 +331,21 @@ static const struct MatchCallRival sSpencerMatchCallHeader =
 
 static const match_call_text_data_t sKyleTextScripts[] = {
     { MatchCall_Text_Kyle1,  0xFFFF,                              0xFFFF },
-    { MatchCall_Text_Kyle2,  FLAG_DEFEATED_DEWFORD_GYM,           0xFFFF },
+    { MatchCall_Text_Kyle2,  FLAG_BADGE02_GET,                    0xFFFF },
     { MatchCall_Text_Kyle3,  FLAG_DELIVERED_DEVON_GOODS,          0xFFFF },
     { MatchCall_Text_Kyle4,  FLAG_HIDE_MAUVILLE_CITY_WALLY,       0xFFFF },
     { MatchCall_Text_Kyle5,  FLAG_RECEIVED_HM_STRENGTH,           0xFFFF },
-    { MatchCall_Text_Kyle6,  FLAG_DEFEATED_LAVARIDGE_GYM,         0xFFFF },
-    { MatchCall_Text_Kyle7,  FLAG_DEFEATED_PETALBURG_GYM,         0xFFFF },
+    { MatchCall_Text_Kyle6,  FLAG_BADGE04_GET,                    0xFFFF },
+    { MatchCall_Text_Kyle7,  FLAG_BADGE05_GET,                    0xFFFF },
     { MatchCall_Text_Kyle8,  FLAG_RECEIVED_CASTFORM,              0xFFFF },
     { MatchCall_Text_Kyle9,  FLAG_RECEIVED_RED_OR_BLUE_ORB,       0xFFFF },
     { MatchCall_Text_Kyle10, FLAG_GROUDON_AWAKENED_MAGMA_HIDEOUT, 0xFFFF },
     { MatchCall_Text_Kyle11, FLAG_MET_TEAM_AQUA_HARBOR,           0xFFFF },
     { MatchCall_Text_Kyle12, FLAG_TEAM_AQUA_ESCAPED_IN_SUBMARINE, 0xFFFF },
     { MatchCall_Text_Kyle13, FLAG_KYOGRE_ESCAPED_SEAFLOOR_CAVERN, 0xFFFF },
-    { MatchCall_Text_Kyle14, FLAG_DEFEATED_SOOTOPOLIS_GYM,        0xFFFF },
+    { MatchCall_Text_Kyle14, FLAG_BADGE08_GET,                    0xFFFF },
     { MatchCall_Text_Kyle15, FLAG_SYS_GAME_CLEAR,                 0xFFFF },
-    { NULL,                     0xFFFF,                              0xFFFF }
+    { NULL,                  0xFFFF,                              0xFFFF }
 };
 
 static const struct MatchCallRival sKyleMatchCallHeader =
@@ -361,7 +361,7 @@ static const struct MatchCallRival sKyleMatchCallHeader =
 static const match_call_text_data_t sWallyTextScripts[] = {
     { MatchCall_Text_Wally1, 0xFFFF,                              0xFFFF },
     { MatchCall_Text_Wally2, FLAG_RUSTURF_TUNNEL_OPENED,          0xFFFF },
-    { MatchCall_Text_Wally3, FLAG_DEFEATED_LAVARIDGE_GYM,         0xFFFF },
+    { MatchCall_Text_Wally3, FLAG_BADGE04_GET,                    0xFFFF },
     { MatchCall_Text_Wally4, FLAG_RECEIVED_CASTFORM,              0xFFFF },
     { MatchCall_Text_Wally5, FLAG_GROUDON_AWAKENED_MAGMA_HIDEOUT, 0xFFFF },
     { MatchCall_Text_Wally6, FLAG_KYOGRE_ESCAPED_SEAFLOOR_CAVERN, 0xFFFF },
@@ -393,7 +393,7 @@ static const match_call_text_data_t sScottTextScripts[] = {
     { MatchCall_Text_Scott3, FLAG_RECEIVED_CASTFORM,              0xFFFF },
     { MatchCall_Text_Scott4, FLAG_RECEIVED_RED_OR_BLUE_ORB,       0xFFFF },
     { MatchCall_Text_Scott5, FLAG_TEAM_AQUA_ESCAPED_IN_SUBMARINE, 0xFFFF },
-    { MatchCall_Text_Scott6, FLAG_DEFEATED_SOOTOPOLIS_GYM,        0xFFFF },
+    { MatchCall_Text_Scott6, FLAG_BADGE08_GET            ,        0xFFFF },
     { MatchCall_Text_Scott7, FLAG_SYS_GAME_CLEAR,                 0xFFFF },
     { NULL,                  0xFFFF,                              0xFFFF }
 };
@@ -732,7 +732,7 @@ static const struct MatchCallCheckPageOverride sCheckPageOverrides[] = {
     {
         .idx = MC_HEADER_STEVEN,
         .facilityClass = FACILITY_CLASS_STEVEN,
-        .flag = FLAG_DEFEATED_MOSSDEEP_GYM,
+        .flag = FLAG_BADGE07_GET,
         .flavorTexts = {
             [CHECK_PAGE_STRATEGY] = gText_MatchCallSteven_Strategy,
             [CHECK_PAGE_POKEMON]  = gText_MatchCallSteven_Pokemon,
