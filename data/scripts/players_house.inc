@@ -65,8 +65,7 @@ PlayersHouse_2F_EventScript_WallClock::
 	delay 30
 	setvar VAR_LITTLEROOT_INTRO_STATE, 7
 	setflag FLAG_SET_WALL_CLOCK
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_PLAYERS_HOUSE_VIGOROTH_1
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_PLAYERS_HOUSE_VIGOROTH_2
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_PLAYERS_HOUSE_VIGOROTHS
 	checkfriendchoice
 	call_if_eq VAR_RESULT, SPENCER, PlayersHouse_2F_EventScript_MomComesUpstairsMale
 	call_if_le VAR_RESULT, BREN, PlayersHouse_2F_EventScript_MomComesUpstairsFemale
