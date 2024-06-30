@@ -480,6 +480,15 @@
       "var": "VAR_ROUTE116_STATE",
       "var_value": "1",
       "script": "Route116_EventScript_BrineyTrigger2"
+    },
+    {
+      "type": "trigger",
+      "x": 41,
+      "y": 13,
+      "elevation": 0,
+      "var": "VAR_ROUTE116_STATE",
+      "var_value": "1",
+      "script": "Route116_EventScript_BrineyTrigger3"
     }
   ],
   "bg_events": [

@@ -31,6 +31,7 @@ GraniteCave_StevensRoom_EventScript_Steven::
 	call_if_eq VAR_FACING, DIR_EAST, GraniteCave_StevensRoom_EventScript_StevenExitWestEast
 	playse SE_EXIT
 	removeobject LOCALID_STEVEN
+	clearflag FLAG_HIDE_OUTDOOR_DEWFORD_RIVALS
 	release
 	end
 

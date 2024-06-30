@@ -352,6 +352,14 @@ script Route116_EventScript_BrineyTrigger2 {
 	end
 }
 
+script Route116_EventScript_BrineyTrigger3 {
+	lockall
+	applymovement (OBJ_EVENT_ID_PLAYER, Route116_Movement_PlayerApproachRival3)
+	waitmovement (0)
+	goto (Route116_EventScript_BrineyEvent)
+	end
+}
+
 script Route116_EventScript_BrineyEvent {
 	delay (10)
 	applymovement (LOCALID_RIVAL1, Common_Movement_BeginTalkDown)
@@ -393,7 +401,11 @@ movement Route116_Movement_PlayerApproachRival1 {
 movement Route116_Movement_PlayerApproachRival2 {
 	walk_right * 2
 	walk_up * 2
-	face_up
+}
+
+movement Route116_Movement_PlayerApproachRival3 {
+	walk_right * 2
+	walk_up * 3
 }
 
 movement Route116_Movement_BrineyWalkToPlayer {

@@ -597,6 +597,7 @@ bool8 ScrCmd_clearflag(struct ScriptContext *ctx)
 bool8 ScrCmd_checkflag(struct ScriptContext *ctx)
 {
     ctx->comparisonResult = FlagGet(ScriptReadHalfword(ctx));
+    gSpecialVar_Result = ctx->comparisonResult;
     return FALSE;
 }
 
