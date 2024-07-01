@@ -84,19 +84,102 @@ Route109_SeashoreHouse_EventScript_Simon::
 	trainerbattle_single TRAINER_SIMON, Route109_SeashoreHouse_Text_SimonIntro, Route109_SeashoreHouse_Text_SimonDefeated, Route109_SeashoreHouse_EventScript_CheckTrainersCompletion
 	msgbox Route109_SeashoreHouse_Text_SimonPostBattle, MSGBOX_AUTOCLOSE
 	end
+`
 
-Route109_SeashoreHouse_EventScript_CheckTrainersCompletion::
-	goto_if_not_defeated TRAINER_DWAYNE, Route109_SeashoreHouse_EventScript_TrainersNotCompleted
-	goto_if_not_defeated TRAINER_JOHANNA, Route109_SeashoreHouse_EventScript_TrainersNotCompleted
-	goto_if_not_defeated TRAINER_SIMON, Route109_SeashoreHouse_EventScript_TrainersNotCompleted
-	setflag FLAG_DEFEATED_SEASHORE_HOUSE
+script Route109_SeashoreHouse_EventScript_Rival2 {
+	checkfriendchoice
+		switch (var(VAR_RESULT)) {
+			case SPENCER:
+				trainerbattle_single (TRAINER_KYLE_SEASHORE, Route109_SeashoreHouse_Text_KyleIntro, Route109_SeashoreHouse_Text_KyleDefeated, Route109_SeashoreHouse_EventScript_CheckTrainersCompletion)
+				msgbox (Route109_SeashoreHouse_Text_KylePostBattle, MSGBOX_AUTOCLOSE)
+			case BREN:
+				trainerbattle_single (TRAINER_SPENCER_SEASHORE, Route109_SeashoreHouse_Text_SpencerIntro, Route109_SeashoreHouse_Text_SpencerDefeated, Route109_SeashoreHouse_EventScript_CheckTrainersCompletion)
+				msgbox (Route109_SeashoreHouse_Text_SpencerPostBattle, MSGBOX_AUTOCLOSE)
+			case KYLE:
+				trainerbattle_single (TRAINER_BREN_SEASHORE, Route109_SeashoreHouse_Text_BrenIntro, Route109_SeashoreHouse_Text_BrenDefeated, Route109_SeashoreHouse_EventScript_CheckTrainersCompletion)
+				msgbox (Route109_SeashoreHouse_Text_BrenPostBattle, MSGBOX_AUTOCLOSE)
+		}
+	end
+}
+
+script Route109_SeashoreHouse_EventScript_CheckTrainersCompletion {
+	goto_if_not_defeated (TRAINER_DWAYNE, Route109_SeashoreHouse_EventScript_TrainersNotCompleted)
+	goto_if_not_defeated (TRAINER_JOHANNA, Route109_SeashoreHouse_EventScript_TrainersNotCompleted)
+	goto_if_not_defeated (TRAINER_SIMON, Route109_SeashoreHouse_EventScript_TrainersNotCompleted)
+	checkflag (FLAG_HIDE_SEASHORE_HOUSE_RIVAL2)
+	if (var(VAR_RESULT) == FALSE) {
+		checkfriendchoice
+		switch (var(VAR_RESULT)) {
+			case SPENCER:
+				goto_if_not_defeated (TRAINER_KYLE_SEASHORE, Route109_SeashoreHouse_EventScript_TrainersNotCompleted)
+			case BREN:
+				goto_if_not_defeated (TRAINER_SPENCER_SEASHORE, Route109_SeashoreHouse_EventScript_TrainersNotCompleted)
+			case KYLE:
+				goto_if_not_defeated (TRAINER_BREN_SEASHORE, Route109_SeashoreHouse_EventScript_TrainersNotCompleted)
+		}
+	}
+	setflag (FLAG_DEFEATED_SEASHORE_HOUSE)
 	release
 	end
+}
 
-Route109_SeashoreHouse_EventScript_TrainersNotCompleted::
+script Route109_SeashoreHouse_EventScript_TrainersNotCompleted {
 	release
 	end
+}
 
+text Route109_SeashoreHouse_Text_SpencerIntro {
+	format ("That guy over there gave me some\NSODA POP in exchange for battling\Ntrainers who come in here."
+		"What a steal!\p"
+		"…Hold on.\N"
+		"You're a trainer!\N"
+		"Time to earn my keep!")
+}
+
+text Route109_SeashoreHouse_Text_BrenIntro {
+	format ("That guy over there gave me some\NSODA POP in exchange for battling\Ntrainers who come in here."
+		"What a steal!\p"
+		"…Hold on.\N"
+		"You're a trainer!\N"
+		"Time to earn my keep!")
+}
+
+text Route109_SeashoreHouse_Text_KyleIntro {
+	format ("That guy over there gave me some\NSODA POP in exchange for battling\Ntrainers who come in here."
+		"What a steal!\p"
+		"…Hold on.\N"
+		"You're a trainer!\N"
+		"Time to earn my keep!")
+}
+
+text Route109_SeashoreHouse_Text_SpencerDefeated {
+	format ("At least I have my SODA POP!")
+}
+
+text Route109_SeashoreHouse_Text_BrenDefeated {
+	format ("At least I have my SODA POP!")
+}
+
+text Route109_SeashoreHouse_Text_KyleDefeated {
+	format ("At least I have my SODA POP!")
+}
+
+text Route109_SeashoreHouse_Text_SpencerPostBattle {
+	format ("I know it's for POKéMON, but\N"
+		"I like the taste of SODA POP, too!")
+}
+
+text Route109_SeashoreHouse_Text_BrenPostBattle {
+	format ("I know it's for POKéMON, but\N"
+		"I like the taste of SODA POP, too!")
+}
+
+text Route109_SeashoreHouse_Text_KylePostBattle {
+	format ("I know it's for POKéMON, but\N"
+		"I like the taste of SODA POP, too!")
+}
+
+raw `
 Route109_SeashoreHouse_Text_SeashoreHouseIntro:
 	.string "I'm the owner of the SEASHORE HOUSE.\n"
 	.string "But you can call me MR. SEA!\p"

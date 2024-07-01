@@ -225,7 +225,7 @@ Route119_EventScript_BattleBrendan::
 # 113 "data/maps/Route119/scripts.pory"
 Route119_EventScript_BattleBrendanTreecko::
 # 114 "data/maps/Route119/scripts.pory"
-	trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_119_TREECKO, Route119_Text_BrendanDefeat
+	@trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_119_TREECKO, Route119_Text_BrendanDefeat
 # 115 "data/maps/Route119/scripts.pory"
 	goto Route119_EventScript_DefeatedBrendan
 # 116 "data/maps/Route119/scripts.pory"
@@ -235,7 +235,7 @@ Route119_EventScript_BattleBrendanTreecko::
 # 118 "data/maps/Route119/scripts.pory"
 Route119_EventScript_BattleBrendanTorchic::
 # 119 "data/maps/Route119/scripts.pory"
-	trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_119_TORCHIC, Route119_Text_BrendanDefeat
+	@trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_119_TORCHIC, Route119_Text_BrendanDefeat
 # 120 "data/maps/Route119/scripts.pory"
 	goto Route119_EventScript_DefeatedBrendan
 # 121 "data/maps/Route119/scripts.pory"
@@ -245,7 +245,7 @@ Route119_EventScript_BattleBrendanTorchic::
 # 123 "data/maps/Route119/scripts.pory"
 Route119_EventScript_BattleBrendanMudkip::
 # 124 "data/maps/Route119/scripts.pory"
-	trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_119_MUDKIP, Route119_Text_BrendanDefeat
+	@trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_119_MUDKIP, Route119_Text_BrendanDefeat
 # 125 "data/maps/Route119/scripts.pory"
 	goto Route119_EventScript_DefeatedBrendan
 # 126 "data/maps/Route119/scripts.pory"

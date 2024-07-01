@@ -176,11 +176,11 @@ script DewfordTown_EventScript_SailToSlateport {
 		applymovement (LOCALID_RIVAL1_DEWFORD, DewfordTown_Movement_RivalsJoinBoatToSlateport)
 		applymovement (LOCALID_RIVAL2_DEWFORD, DewfordTown_Movement_RivalsJoinBoatToSlateport)
 		waitmovement (0)
-		setobjectsubpriority (LOCALID_RIVAL1_DEWFORD, MAP_DEWFORD_TOWN, 0)
-		setobjectsubpriority (LOCALID_RIVAL2_DEWFORD, MAP_DEWFORD_TOWN, 0)
+		setobjectsubpriority (LOCALID_RIVAL1_DEWFORD, MAP_DEWFORD_TOWN, 2)
+		setobjectsubpriority (LOCALID_RIVAL2_DEWFORD, MAP_DEWFORD_TOWN, 2)
 	}
-	setobjectsubpriority (LOCALID_BRINEY_DEWFORD, MAP_DEWFORD_TOWN, 0)
-	setobjectsubpriority (OBJ_EVENT_ID_PLAYER, MAP_DEWFORD_TOWN, 1)
+	setobjectsubpriority (LOCALID_BRINEY_DEWFORD, MAP_DEWFORD_TOWN, 2)
+	setobjectsubpriority (OBJ_EVENT_ID_PLAYER, MAP_DEWFORD_TOWN, 2)
 	applymovement (LOCALID_BRINEY_DEWFORD, DewfordTown_Movement_BrineyBoardBoat)
 	waitmovement (0)
 	removeobject (LOCALID_BRINEY_DEWFORD)
@@ -191,6 +191,7 @@ script DewfordTown_EventScript_SailToSlateport {
 		applymovement (LOCALID_RIVAL2_DEWFORD, DewfordTown_Movement_Rival2BoardBoat)
 	}
 	waitmovement (0)
+	setobjectsubpriority (LOCALID_BOAT_DEWFORD, MAP_DEWFORD_TOWN, 0)
 	checkflag (FLAG_HIDE_OUTDOOR_DEWFORD_RIVALS)
 	if (var(VAR_RESULT) == FALSE) {
 	resetobjectsubpriority (LOCALID_RIVAL1_DEWFORD, MAP_DEWFORD_TOWN)
@@ -200,13 +201,17 @@ script DewfordTown_EventScript_SailToSlateport {
 	applymovement (LOCALID_BOAT_DEWFORD, DewfordTown_Movement_SailToSlateport)
 	applymovement (OBJ_EVENT_ID_PLAYER, DewfordTown_Movement_SailToSlateport)
 	waitmovement (0)
+	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_Walk_Up)
+	waitmovement (0)
 	call (Common_EventScript_StopBrineysBoatMusic)
 	checkflag (FLAG_HIDE_OUTDOOR_DEWFORD_RIVALS)
 	if (var(VAR_RESULT) == FALSE) {
 		addobject (LOCALID_RIVAL1_R109)
-		setobjectsubpriority (LOCALID_RIVAL1_R109, MAP_ROUTE109, 0)
+		hideobjectat (LOCALID_RIVAL1_R109, MAP_ROUTE109)
+		setobjectsubpriority (LOCALID_RIVAL1_R109, MAP_ROUTE109, 2)
 		addobject (LOCALID_RIVAL2_R109)
-		setobjectsubpriority (LOCALID_RIVAL2_R109, MAP_ROUTE109, 0)
+		hideobjectat (LOCALID_RIVAL1_R109, MAP_ROUTE109)
+		setobjectsubpriority (LOCALID_RIVAL2_R109, MAP_ROUTE109, 2)
 		applymovement (LOCALID_RIVAL1_R109, DewfordTown_Movement_Rival1ExitBoatSlateport)
 		applymovement (LOCALID_RIVAL2_R109, DewfordTown_Movement_Rival2ExitBoatSlateport)
 	}
@@ -214,7 +219,7 @@ script DewfordTown_EventScript_SailToSlateport {
 	waitmovement (0)
 	setobjectxyperm (LOCALID_BRINEY_R109, 21, 26)
 	addobject (LOCALID_BRINEY_R109)
-	setobjectsubpriority (LOCALID_BRINEY_R109, MAP_ROUTE109, 0)
+	setobjectsubpriority (LOCALID_BRINEY_R109, MAP_ROUTE109, 2)
 	applymovement (LOCALID_BRINEY_R109, DewfordTown_Movement_BrineyExitBoat)
 	waitmovement (0)
 	clearflag (FLAG_HIDE_ROUTE_109_MR_BRINEY)
@@ -228,6 +233,7 @@ script DewfordTown_EventScript_SailToSlateport {
 	copyvar (VAR_BRINEY_LOCATION, VAR_0x8008)
 	resetobjectsubpriority (OBJ_EVENT_ID_PLAYER, MAP_DEWFORD_TOWN)
 	resetobjectsubpriority (LOCALID_BRINEY_R109, MAP_ROUTE109)
+	resetobjectsubpriority (LOCALID_BOAT_DEWFORD, MAP_DEWFORD_TOWN)
 	checkflag (FLAG_HIDE_OUTDOOR_DEWFORD_RIVALS)
 	if (var(VAR_RESULT) == FALSE) {
 		resetobjectsubpriority (LOCALID_RIVAL1_R109, MAP_ROUTE109)
@@ -256,14 +262,16 @@ movement DewfordTown_Movement_Rival2BoardBoat {
 }
 
 movement DewfordTown_Movement_Rival1ExitBoatSlateport {
-	walk_up * 3
+	set_visible
+	walk_up * 2
 	walk_right
 	face_down
 }
 
 movement DewfordTown_Movement_Rival2ExitBoatSlateport {
-	delay_4
-	walk_up * 3
+	delay_16
+	set_visible
+	walk_up * 2
 	walk_left
 	face_down
 }
@@ -307,7 +315,7 @@ movement DewfordTown_Movement_Rival2RunToSlateport {
 text DewfordTown_Text_GoingToMuseum {
 	format ("I'm gonna go check out SLATEPORT.\N"
 		"I hear they have an awesome museum!\p"
-		"Come find me when you locate CAPT. STERN.")
+		"Come find me when you locate\NCAPT. STERN.")
 }
 
 text DewfordTown_Text_HitTheBeach {
@@ -710,10 +718,9 @@ DewfordTown_Movement_ExitBoatPetalburg:
 `
 
 movement DewfordTown_Movement_ExitBoatSlateport {
+	delay_16 * 2
 	set_visible
-	delay_4 * 3
-	delay_2
-	walk_up * 3
+	walk_up * 2
 	walk_in_place_faster_down
 }
 

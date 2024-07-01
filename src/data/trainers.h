@@ -6262,34 +6262,34 @@ const struct Trainer gTrainers[] = {
         .party = TRAINER_PARTY(sParty_KyleRoute103),
     },
 
-    [TRAINER_BRENDAN_ROUTE_110_MUDKIP] =
+    [TRAINER_SPENCER_SEASHORE] =
     {
         .trainerClass = TRAINER_CLASS_RIVAL,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-        .trainerPic = TRAINER_PIC_BRENDAN,
-        .trainerName = _("BRENDAN"),
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_RIVAL,
+        .trainerPic = TRAINER_PIC_FRIEND_SPENCER,
+        .trainerName = _("SPENCER"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_TRY_TO_FAINT | AI_FLAG_CHECK_VIABILITY,
-        .party = TRAINER_PARTY(sParty_BrendanRoute110Mudkip),
+        .party = TRAINER_PARTY(sParty_SpencerSeashore),
     },
 
-    [TRAINER_BRENDAN_ROUTE_119_MUDKIP] =
+    [TRAINER_BREN_SEASHORE] =
     {
         .trainerClass = TRAINER_CLASS_RIVAL,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-        .trainerPic = TRAINER_PIC_BRENDAN,
-        .trainerName = _("BRENDAN"),
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_RIVAL,
+        .trainerPic = TRAINER_PIC_FRIEND_BREN,
+        .trainerName = _("BREN"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_TRY_TO_FAINT | AI_FLAG_CHECK_VIABILITY,
-        .party = TRAINER_PARTY(sParty_BrendanRoute119Mudkip),
+        .party = TRAINER_PARTY(sParty_BrenSeashore),
     },
 
     [TRAINER_BREN_ROUTE_103] =
     {
         .trainerClass = TRAINER_CLASS_RIVAL,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_RIVAL,
         .trainerPic = TRAINER_PIC_FRIEND_BREN,
         .trainerName = _("BREN"),
         .items = {},
@@ -6298,16 +6298,16 @@ const struct Trainer gTrainers[] = {
         .party = TRAINER_PARTY(sParty_BrenRoute103),
     },
 
-    [TRAINER_BRENDAN_ROUTE_110_TREECKO] =
+    [TRAINER_KYLE_SEASHORE] =
     {
         .trainerClass = TRAINER_CLASS_RIVAL,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-        .trainerPic = TRAINER_PIC_BRENDAN,
-        .trainerName = _("BRENDAN"),
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_RIVAL,
+        .trainerPic = TRAINER_PIC_FRIEND_KYLE,
+        .trainerName = _("KYLE"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_TRY_TO_FAINT | AI_FLAG_CHECK_VIABILITY,
-        .party = TRAINER_PARTY(sParty_BrendanRoute110Treecko),
+        .party = TRAINER_PARTY(sParty_KyleSeashore),
     },
 
     [TRAINER_BRENDAN_ROUTE_119_TREECKO] =

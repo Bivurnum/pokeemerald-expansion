@@ -887,7 +887,7 @@ Route110_EventScript_BrendanBattle::
 # 444 "data/maps/Route110/scripts.pory"
 Route110_EventScript_BrendanBattleTreecko::
 # 445 "data/maps/Route110/scripts.pory"
-	trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_110_TREECKO, Route110_Text_BrendanDefeated
+	@trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_110_TREECKO, Route110_Text_BrendanDefeated
 # 446 "data/maps/Route110/scripts.pory"
 	goto Route110_EventScript_BrendanDefeated
 # 447 "data/maps/Route110/scripts.pory"
@@ -897,7 +897,7 @@ Route110_EventScript_BrendanBattleTreecko::
 # 449 "data/maps/Route110/scripts.pory"
 Route110_EventScript_BrendanBattleTorchic::
 # 450 "data/maps/Route110/scripts.pory"
-	trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_110_TORCHIC, Route110_Text_BrendanDefeated
+	@trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_110_TORCHIC, Route110_Text_BrendanDefeated
 # 451 "data/maps/Route110/scripts.pory"
 	goto Route110_EventScript_BrendanDefeated
 # 452 "data/maps/Route110/scripts.pory"
@@ -907,7 +907,7 @@ Route110_EventScript_BrendanBattleTorchic::
 # 454 "data/maps/Route110/scripts.pory"
 Route110_EventScript_BrendanBattleMudkip::
 # 455 "data/maps/Route110/scripts.pory"
-	trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_110_MUDKIP, Route110_Text_BrendanDefeated
+	@trainerbattle_no_intro TRAINER_BRENDAN_ROUTE_110_MUDKIP, Route110_Text_BrendanDefeated
 # 456 "data/maps/Route110/scripts.pory"
 	goto Route110_EventScript_BrendanDefeated
 # 457 "data/maps/Route110/scripts.pory"

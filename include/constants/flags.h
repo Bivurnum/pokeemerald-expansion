@@ -671,7 +671,7 @@
 #define FLAG_HIDE_DEVON_3F_RIVAL1               0x274
 #define FLAG_CHEAT_START                        0x275
 #define FLAG_HIDE_OUTDOOR_DEWFORD_RIVALS        0x276
-#define FLAG_UNUSED_0x277  0x277 // Unused Flag
+#define FLAG_HIDE_SEASHORE_HOUSE_RIVAL2         0x277
 #define FLAG_UNUSED_0x278  0x278 // Unused Flag
 #define FLAG_UNUSED_0x279  0x279 // Unused Flag
 #define FLAG_UNUSED_0x27A  0x27A // Unused Flag

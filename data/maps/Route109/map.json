@@ -340,7 +340,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_VAR_0",
       "x": 21,
-      "y": 26,
+      "y": 25,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_FACE_UP",
       "movement_range_x": 0,
@@ -353,7 +353,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_VAR_F",
       "x": 21,
-      "y": 26,
+      "y": 25,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_FACE_UP",
       "movement_range_x": 0,
