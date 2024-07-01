@@ -151,6 +151,7 @@ script Route104_EventScript_RestoreMusic {
 }
 
 script Route104_EventScript_Rival1Encounter {
+	setflag (FLAG_HIDE_OUTDOOR_DEWFORD_RIVALS)
 	msgbox (Route104_Text_BrineyStillPreparing, MSGBOX_DEFAULT)
 	closemessage
 	call_if_eq (VAR_RUSTURF_TUNNEL_STATE, 6, Route104_EventScript_BattleRival1)
@@ -501,7 +502,6 @@ script Route104_EventScript_LeaveWithoutRival2 {
 	removeobject (LOCALID_RIVAL1)
 	removeobject (LOCALID_RIVAL2)
 	setflag (FLAG_HIDE_ROUTE_104_RIVAL1)
-	setflag (FLAG_HIDE_OUTDOOR_DEWFORD_RIVALS)
 	call (Common_EventScript_PlayBrineysBoatMusic)
 	goto (Route104_EventScript_SailToDewfordDadCalls)
 	end
@@ -981,6 +981,7 @@ script Route104_EventScript_ArriveInDewford2 {
 	setvar (VAR_BOARD_BRINEY_BOAT_STATE, 0)
 	msgbox (Route104_Text_LandedInDewfordDeliverLetter, MSGBOX_DEFAULT)
 	closemessage
+	delay (20)
 	applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft)
 	applymovement (LOCALID_RIVAL2_DEWFORD, Common_Movement_BeginTalkRight)
 	waitmovement (0)

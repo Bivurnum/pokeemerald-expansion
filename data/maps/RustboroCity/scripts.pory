@@ -1240,34 +1240,46 @@ script RustboroCity_EventScript_RivalEncounter {
 			trainerbattle_no_intro (TRAINER_BREN_RUSTBORO, RustboroCity_Text_RivalEndBattleBren)
 	}
 	delay (20)
-	switch (var(VAR_FACING)) {
-		case DIR_NORTH:
-			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkUp)
-		case DIR_EAST:
+	if (var(VAR_0x8005) == 2) {
+		getplayerxy (VAR_TEMP_0, VAR_TEMP_1)
+		if (var(VAR_TEMP_0) == 15) {
 			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkRight)
-		case DIR_WEST:
-			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkLeft)
-		case DIR_SOUTH:
+		}
+		elif (var(VAR_TEMP_0) == 16 && var(VAR_TEMP_1) == 49) {
 			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkDown)
-		default:
+		}
+		elif (var(VAR_TEMP_0) == 17) {
+			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkLeft)
+		}
+		else {
 			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkUp)
+		}
+	}
+	else {
+		applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkUp)
 	}
 	waitmovement (0)
 	delay (20)
 	msgbox (RustboroCity_Text_GoingToAnIslandTown, MSGBOX_DEFAULT)
 	closemessage
 	delay (20)
-	switch (var(VAR_FACING)) {
-		case DIR_NORTH:
-			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkUp)
-		case DIR_EAST:
+	if (var(VAR_0x8005) == 2) {
+		getplayerxy (VAR_TEMP_0, VAR_TEMP_1)
+		if (var(VAR_TEMP_0) == 15) {
 			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkRight)
-		case DIR_WEST:
-			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkLeft)
-		case DIR_SOUTH:
+		}
+		elif (var(VAR_TEMP_0) == 16 && var(VAR_TEMP_1) == 49) {
 			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkDown)
-		default:
+		}
+		elif (var(VAR_TEMP_0) == 17) {
+			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkLeft)
+		}
+		else {
 			applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkUp)
+		}
+	}
+	else {
+		applymovement (OBJ_EVENT_ID_PLAYER, Common_Movement_BeginTalkUp)
 	}
 	waitmovement (0)
 	delay (20)

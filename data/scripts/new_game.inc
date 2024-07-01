@@ -282,5 +282,6 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_RUSTBORO_RIVAL1
 	setflag FLAG_HIDE_ROUTE_116_RIVAL1
 	setflag FLAG_HIDE_RIVAL2_DEVON_2F
+	setflag FLAG_HIDE_OUTDOOR_DEWFORD_RIVALS
 	call EventScript_ResetAllBerries
 	end

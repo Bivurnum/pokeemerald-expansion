@@ -33,7 +33,7 @@ DewfordTown_Hall_EventScript_Rival2::
 	call Common_EventScript_BufferTrendyPhrase
 # 22 "data/maps/DewfordTown_Hall/scripts.pory"
 	compare VAR_TEMP_3, 5
-	goto_if_ne DewfordTown_Hall_EventScript_Rival2_2
+	goto_if_eq DewfordTown_Hall_EventScript_Rival2_2
 # 26 "data/maps/DewfordTown_Hall/scripts.pory"
 	msgbox DewfordTown_Hall_Text_WhatTheHeck, MSGBOX_DEFAULT
 # 27 "data/maps/DewfordTown_Hall/scripts.pory"

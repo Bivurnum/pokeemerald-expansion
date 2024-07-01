@@ -19,7 +19,7 @@ script DewfordTown_Hall_EventScript_Rival2 {
 	applymovement (LOCALID_RIVAL2, Common_Movement_FacePlayer)
 	waitmovement (0)
 	call (Common_EventScript_BufferTrendyPhrase)
-	if (var(VAR_TEMP_3) != 5) {
+	if (var(VAR_TEMP_3) == 5) {
 		msgbox (DewfordTown_Hall_Text_StuckInMyHead, MSGBOX_DEFAULT)
 	}
 	else {
