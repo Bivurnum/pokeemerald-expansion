@@ -17,6 +17,7 @@
 #include "fldeff_misc.h"
 #include "item_menu.h"
 #include "link.h"
+#include "look_feet.h"
 #include "match_call.h"
 #include "metatile_behavior.h"
 #include "overworld.h"
@@ -109,6 +110,8 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
                 input->pressedAButton = TRUE;
             if (newKeys & B_BUTTON)
                 input->pressedBButton = TRUE;
+            if (newKeys & LF_BUTTON)
+                input->input_field_1_4 = TRUE;
         }
 
         if (heldKeys & (DPAD_UP | DPAD_DOWN | DPAD_LEFT | DPAD_RIGHT))
@@ -200,6 +203,13 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     }
     if (input->pressedSelectButton && UseRegisteredKeyItemOnField() == TRUE)
         return TRUE;
+
+    if (input->input_field_1_4)
+    {
+        PlaySE(SE_WIN_OPEN);
+        LookAtFeet();
+        return TRUE;
+    }
 
 #if DEBUG_OVERWORLD_MENU == TRUE && DEBUG_OVERWORLD_IN_MENU == FALSE
     if (input->input_field_1_2)
