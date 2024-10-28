@@ -162,6 +162,13 @@ EventScript_NoRoomToPickUpItem::
 	setvar VAR_RESULT, FALSE
 	return
 
+EventScript_HiddenItemLookAtFeet::
+	lockall
+	waitse
+	callnative LookAtFeet
+	release
+	end
+
 EventScript_HiddenItemScript::
 	lockall
 	waitse

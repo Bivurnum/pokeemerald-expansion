@@ -25,6 +25,7 @@
 #include "fieldmap.h"
 #include "item.h"
 #include "lilycove_lady.h"
+#include "look_feet.h"
 #include "main.h"
 #include "menu.h"
 #include "money.h"
