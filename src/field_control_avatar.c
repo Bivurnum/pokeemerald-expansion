@@ -383,7 +383,7 @@ static const u8 *GetInteractedBackgroundEventScript(struct MapPosition *position
         gSpecialVar_0x8005 = (u32)bgEvent->bgUnion.script;
         if (FlagGet(gSpecialVar_0x8004) == TRUE)
             return NULL;
-        if (!GetCollisionInDirection(&gObjectEvents[gPlayerAvatar.objectEventId], VarGet(VAR_FACING)))
+        if (IsHiddenItemOnGround())
         {
             return EventScript_HiddenItemLookAtFeet;
         }

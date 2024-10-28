@@ -5,6 +5,7 @@
 #include "event_object_movement.h"
 #include "field_weather.h"
 #include "field_player_avatar.h"
+#include "field_specials.h"
 #include "gpu_regs.h"
 #include "item.h"
 #include "item_icon.h"
@@ -379,7 +380,7 @@ static void Task_HandleLookFeetInput(u8 taskId)
 {
     u8 spriteId;
 
-    if (gTasks[taskId].tNumSwipes > 3)
+    if (gTasks[taskId].tNumSwipes >= 3)
     {
         DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
         AddTextPrinterParameterized(0, FONT_NORMAL, gText_BirchInTrouble, 0, 1, 0, NULL);
@@ -441,6 +442,7 @@ static void Task_FoundItem(u8 taskId)
     {
         PlaySE(SE_SELECT);
         gSpecialVar_Result = AddBagItem(gSpecialVar_0x8005, 1);
+        SetHiddenItemFlag();
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
         gTasks[taskId].func = Task_ExitLookFeet;
     }
