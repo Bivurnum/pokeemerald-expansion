@@ -1,4 +1,5 @@
 #include "global.h"
+#include "battle_anim.h"
 #include "bg.h"
 #include "decompress.h"
 #include "event_data.h"
@@ -7,6 +8,7 @@
 #include "field_player_avatar.h"
 #include "field_specials.h"
 #include "gpu_regs.h"
+#include "international_string_util.h"
 #include "item.h"
 #include "item_icon.h"
 #include "look_feet.h"
@@ -19,6 +21,7 @@
 #include "sound.h"
 #include "sprite.h"
 #include "strings.h"
+#include "string_util.h"
 #include "task.h"
 #include "text.h"
 #include "text_window.h"
@@ -29,13 +32,13 @@
 #include "constants/rgb.h"
 
 #define TAG_SWIPE_GROUND 0x1000
-#define TAG_STARTER_CIRCLE  0x1001
+#define TAG_ITEM  0x1001
 
 #define LEFT    0
 #define RIGHT   1
 
 const u16 gLookFeetGround_Pal[] = INCBIN_U16("graphics/look_feet/tiles.gbapal");
-const u32 gLookFeetGroundTilemap[] = INCBIN_U32("graphics/look_feet/birch_bag.bin.lz");
+const u32 gLookFeetGroundTilemap[] = INCBIN_U32("graphics/look_feet/birch_grass.bin.lz");
 const u32 gLookFeetGround_Gfx[] = INCBIN_U32("graphics/look_feet/tiles.4bpp.lz");
 const u32 gSwipeGround_Gfx[] = INCBIN_U32("graphics/look_feet/pokeball_selection.4bpp.lz");
 static const u32 sStarterCircle_Gfx[] = INCBIN_U32("graphics/look_feet/starter_circle.4bpp.lz");
@@ -43,6 +46,7 @@ static const u16 sSwipeGround_Pal[] = INCBIN_U16("graphics/look_feet/pokeball_se
 static const u16 sStarterCircle_Pal[] = INCBIN_U16("graphics/look_feet/starter_circle.gbapal");
 
 static void CB2_StartLookAtFeet(void);
+static void Task_InitSprites(u8 taskId);
 static void Task_LookAtFeet(u8 taskId);
 static void Task_HandleLookFeetInput(u8 taskId);
 static void Task_ExitLookFeet(u8 taskId);
@@ -51,17 +55,17 @@ static void SpriteCB_Ground(struct Sprite *sprite);
 static void LF_AnimHandSwipeLeft(struct Sprite *sprite);
 static void LF_AnimHandSwipeRight(struct Sprite *sprite);
 static void Task_WaitForHandSwipe(u8 taskId);
-static void SpriteCB_Item(struct Sprite *sprite);
+static void SpriteCB_Item_Still(struct Sprite *sprite);
 static void Task_FoundItem(u8 taskId);
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
     {
         .bg = 0,
-        .tilemapLeft = 3,
-        .tilemapTop = 15,
-        .width = 24,
-        .height = 4,
+        .tilemapLeft = 1,
+        .tilemapTop = 17,
+        .width = 28,
+        .height = 2,
         .paletteNum = 14,
         .baseBlock = 0x0200
     },
@@ -133,14 +137,22 @@ static const struct OamData sOam_Ground =
     .affineParam = 0,
 };
 
-static const union AffineAnimCmd sAffineAnim_Item[] =
+static const struct OamData sOam_Item =
 {
-    AFFINEANIMCMD_FRAME(20, 20, 0, 0),
-    AFFINEANIMCMD_FRAME(20, 20, 0, 15),
-    AFFINEANIMCMD_END,
+    .y = DISPLAY_HEIGHT,
+    .affineMode = ST_OAM_AFFINE_DOUBLE,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(32x32),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(32x32),
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
 };
-
-static const union AffineAnimCmd * const sAffineAnims_Item = {sAffineAnim_Item};
 
 static const struct CompressedSpriteSheet sSpriteSheet_PokeballSelect[] =
 {
@@ -157,7 +169,7 @@ static const struct CompressedSpriteSheet sSpriteSheet_StarterCircle[] =
     {
         .data = sStarterCircle_Gfx,
         .size = 0x0800,
-        .tag = TAG_STARTER_CIRCLE
+        .tag = TAG_SWIPE_GROUND
     },
     {}
 };
@@ -170,7 +182,7 @@ static const struct SpritePalette sSpritePalettes_StarterChoose[] =
     },
     {
         .data = sStarterCircle_Pal,
-        .tag = TAG_STARTER_CIRCLE
+        .tag = TAG_SWIPE_GROUND
     },
     {},
 };
@@ -199,6 +211,12 @@ static const union AnimCmd sAnim_Ground2[] =
     ANIMCMD_END,
 };
 
+static const union AnimCmd sAnim_Item[] =
+{
+    ANIMCMD_FRAME(0, 30),
+    ANIMCMD_END,
+};
+
 static const union AnimCmd * const sAnims_Hand[] =
 {
     sAnim_Hand,
@@ -209,6 +227,35 @@ static const union AnimCmd * const sAnims_Ground[] =
     sAnim_GroundStart,
     sAnim_Ground1,
     sAnim_Ground2,
+};
+
+static const union AnimCmd * const sAnims_Item[] =
+{
+    sAnim_Item,
+};
+
+static const union AffineAnimCmd sAffineAnim_Item_Still[] =
+{
+    AFFINEANIMCMD_FRAME(512, 512, 0, 0),
+    AFFINEANIMCMD_END,
+};
+
+static const union AffineAnimCmd sAffineAnim_Item_To_Bag[] =
+{
+    AFFINEANIMCMD_FRAME(512, 512, 0, 0),
+    AFFINEANIMCMD_FRAME(64, 64, 0, 30),
+    AFFINEANIMCMD_END,
+};
+
+enum {
+    ANIM_ITEM_STILL,
+    ANIM_ITEM_TO_BAG,
+};
+
+static const union AffineAnimCmd * const sAffineAnims_Item[] =
+{
+    [ANIM_ITEM_STILL] = sAffineAnim_Item_Still,
+    [ANIM_ITEM_TO_BAG] = sAffineAnim_Item_To_Bag,
 };
 
 static const struct SpriteTemplate sSpriteTemplate_HandLeft =
@@ -244,18 +291,30 @@ static const struct SpriteTemplate sSpriteTemplate_Ground =
     .callback = SpriteCB_Ground
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Item =
+{
+    .tileTag = TAG_ITEM,
+    .paletteTag = TAG_ITEM,
+    .oam = &sOam_Item,
+    .anims = sAnims_Item,
+    .images = NULL,
+    .affineAnims = sAffineAnims_Item,
+    .callback = SpriteCB_Item_Still
+};
+
 void LookAtFeet(void)
 {
-
+/*
     if (IsOverworldLinkActive())
     {
         FreezeObjectEvents();
         PlayerFreeze();
         StopPlayerAvatar();
     }
-    FadeScreen(FADE_TO_BLACK, 0);
     LockPlayerFieldControls();
+    */
     SetMainCallback2(CB2_StartLookAtFeet);
+    gMain.savedCallback = CB2_ReturnToField;
 }
 
 static void VblankCB_LookFeet(void)
@@ -271,8 +330,7 @@ static void VblankCB_LookFeet(void)
 
 static void CB2_StartLookAtFeet(void)
 {
-    u8 taskId;
-    u8 spriteId;
+    //u8 taskId;
 
     SetVBlankCallback(NULL);
 
@@ -297,14 +355,12 @@ static void CB2_StartLookAtFeet(void)
 
     LZ77UnCompVram(gLookFeetGround_Gfx, (void *)VRAM);
     LZ77UnCompVram(gLookFeetGroundTilemap, (void *)(BG_SCREEN_ADDR(6)));
-    //LZ77UnCompVram(gBirchGrassTilemap, (void *)(BG_SCREEN_ADDR(7)));
 
     ResetBgsAndClearDma3BusyFlags(0);
     InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
     InitWindows(sWindowTemplates);
 
     DeactivateAllTextPrinters();
-    LoadUserWindowBorderGfx(0, 0x2A8, BG_PLTT_ID(13));
     ClearScheduledBgCopiesToVram();
     ScanlineEffect_Stop();
     ResetTasks();
@@ -313,8 +369,9 @@ static void CB2_StartLookAtFeet(void)
     FreeAllSpritePalettes();
     ResetAllPicSprites();
 
-    LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(14), PLTT_SIZE_4BPP);
     LoadPalette(gLookFeetGround_Pal, BG_PLTT_ID(0), sizeof(gLookFeetGround_Pal));
+    LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(14), PLTT_SIZE_4BPP);
+    LoadUserWindowBorderGfx(0, 0x2A8, BG_PLTT_ID(13));
     LoadCompressedSpriteSheet(&sSpriteSheet_PokeballSelect[0]);
     LoadCompressedSpriteSheet(&sSpriteSheet_StarterCircle[0]);
     LoadSpritePalettes(sSpritePalettes_StarterChoose);
@@ -337,21 +394,33 @@ static void CB2_StartLookAtFeet(void)
     ShowBg(1);
     ShowBg(2);
 
-    taskId = CreateTask(Task_LookAtFeet, 0);
+    CreateTask(Task_InitSprites, 0);
+}
 
-    spriteId = CreateSprite(&sSpriteTemplate_Ground, 120, 60, 1);
-    gSprites[spriteId].sTaskId = taskId;
-    gTasks[taskId].data[3] = spriteId;
-    gTasks[taskId].data[0] = 2;
+static void Task_InitSprites(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        u8 spriteId;
 
-    FreeSpriteTilesByTag(102); // TAG_ITEM_ICON
-    FreeSpritePaletteByTag(102); // TAG_ITEM_ICON
-    spriteId = AddItemIconSprite(102, 102, gSpecialVar_0x8005);
-    gSprites[spriteId].callback = SpriteCB_Item;
-    //gSprites[spriteId].affineAnims = &sAffineAnims_Item;
-    gSprites[spriteId].subpriority = 3;
-    gSprites[spriteId].sTaskId = taskId;
-    gTasks[taskId].data[4] = spriteId;
+        // Create Ground Sprite
+        spriteId = CreateSprite(&sSpriteTemplate_Ground, 120, 60, 1);
+        gSprites[spriteId].sTaskId = taskId;
+        gTasks[taskId].data[3] = spriteId;
+        gTasks[taskId].data[0] = 2;
+
+        FreeSpriteTilesByTag(102); // TAG_ITEM_ICON
+        FreeSpritePaletteByTag(102); // TAG_ITEM_ICON
+
+        // Create Item Sprite
+        spriteId = AddCustomItemIconSprite(&sSpriteTemplate_Item, TAG_ITEM, TAG_ITEM, gSpecialVar_0x8005);
+        gSprites[spriteId].callback = SpriteCB_Item_Still;
+        gSprites[spriteId].subpriority = 3;
+        gSprites[spriteId].sTaskId = taskId;
+        gTasks[taskId].data[4] = spriteId;
+
+        gTasks[taskId].func = Task_LookAtFeet;
+    }
 }
 
 void CB2_LookAtFeet(void)
@@ -382,8 +451,13 @@ static void Task_HandleLookFeetInput(u8 taskId)
 
     if (gTasks[taskId].tNumSwipes >= 3)
     {
+        s32 xPos;
+
+        CopyItemName(gSpecialVar_0x8005, gStringVar2);
+        StringExpandPlaceholders(gStringVar4, gText_FoundAHiddenItem);
         DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
-        AddTextPrinterParameterized(0, FONT_NORMAL, gText_BirchInTrouble, 0, 1, 0, NULL);
+        xPos = GetStringCenterAlignXOffset(FONT_NORMAL, gStringVar4, 226);
+        AddTextPrinterParameterized(0, FONT_NORMAL, gStringVar4, xPos, 1, 0, NULL);
         PutWindowTilemap(0);
         ScheduleBgCopyTilemapToVram(0);
         gTasks[taskId].func = Task_FoundItem;
@@ -418,8 +492,10 @@ static void Task_HandleLookFeetInput(u8 taskId)
     }
     else if (JOY_NEW(B_BUTTON))
     {
-            BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
-            gTasks[taskId].func = Task_ExitLookFeet;
+        DestroySprite(&gSprites[gTasks[taskId].tItemSpriteId]);
+        DestroySprite(&gSprites[gTasks[taskId].tGroundSpriteId]);
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
+        gTasks[taskId].func = Task_ExitLookFeet;
     }
 }
 
@@ -549,8 +625,8 @@ static void SpriteCB_Ground(struct Sprite *sprite)
     }
 }
 
-static void SpriteCB_Item(struct Sprite *sprite)
+static void SpriteCB_Item_Still(struct Sprite *sprite)
 {
-    sprite->x = 120;
-    sprite->y = 60;
+    sprite->x = 127;
+    sprite->y = 70;
 }

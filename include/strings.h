@@ -3046,4 +3046,7 @@ extern const u8 gText_PlantBerry[];
 extern const u8 gText_AM[];
 extern const u8 gText_PM[];
 
+// Look At Feet
+extern const u8 gText_FoundAHiddenItem[];
+
 #endif // GUARD_STRINGS_H

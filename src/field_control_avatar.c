@@ -206,7 +206,8 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
 
     if (input->input_field_1_4)
     {
-        PlaySE(SE_WIN_OPEN);
+        gSpecialVar_0x8004 = 1;
+        gSpecialVar_0x8005 = ITEM_TM05;
         LookAtFeet();
         return TRUE;
     }

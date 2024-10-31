@@ -10,12 +10,13 @@ Std_ObtainItem::
 EventScript_ObtainItemMessage::
 	bufferitemnameplural STR_VAR_2, ITEMID, AMOUNT
 	checkitemtype ITEMID
-	call EventScript_BufferPocketNameAndTryFanfare
+	call EventScript_BufferPocketName
+	call EventScript_TryFanfare
 	call_if_eq VAR_0x8007, TRUE, EventScript_ObtainedItem
 	call_if_eq VAR_0x8007, FALSE, EventScript_NoRoomForItem
 	return
 
-EventScript_BufferPocketNameAndTryFanfare::
+EventScript_BufferPocketName::
 	switch VAR_RESULT
 	case POCKET_ITEMS,      EventScript_BufferItemsPocket
 	case POCKET_KEY_ITEMS,  EventScript_BufferKeyItemsPocket
@@ -26,26 +27,30 @@ EventScript_BufferPocketNameAndTryFanfare::
 
 EventScript_BufferItemsPocket::
 	bufferstdstring STR_VAR_3, STDSTRING_ITEMS
-	call_if_eq VAR_0x8007, TRUE, EventScript_PlayFanfareObtainedItem
+	call EventScript_TryFanfare
 	return
 
 EventScript_BufferKeyItemsPocket::
 	bufferstdstring STR_VAR_3, STDSTRING_KEYITEMS
-	call_if_eq VAR_0x8007, TRUE, EventScript_PlayFanfareObtainedItem
+	call EventScript_TryFanfare
 	return
 
 EventScript_BufferPokeballsPocket::
 	bufferstdstring STR_VAR_3, STDSTRING_POKEBALLS
-	call_if_eq VAR_0x8007, TRUE, EventScript_PlayFanfareObtainedItem
+	call EventScript_TryFanfare
 	return
 
 EventScript_BufferTMHMsPocket::
 	bufferstdstring STR_VAR_3, STDSTRING_TMHMS
-	call_if_eq VAR_0x8007, TRUE, EventScript_PlayFanfareObtainedTMHM
+	call EventScript_TryFanfare
 	return
 
 EventScript_BufferBerriesPocket::
 	bufferstdstring STR_VAR_3, STDSTRING_BERRIES
+	call EventScript_TryFanfare
+	return
+
+EventScript_TryFanfare::
 	call_if_eq VAR_0x8007, TRUE, EventScript_PlayFanfareObtainedItem
 	return
 
@@ -109,7 +114,8 @@ Std_FindItem::
 	copyvar VAR_0x8007, VAR_RESULT
 	bufferitemnameplural STR_VAR_2, ITEMID, AMOUNT
 	checkitemtype ITEMID
-	call EventScript_BufferPocketNameAndTryFanfare
+	call EventScript_BufferPocketName
+	call EventScript_TryFanfare
 	call_if_eq VAR_0x8007, TRUE, EventScript_PickUpItem
 	call_if_eq VAR_0x8007, FALSE, EventScript_NoRoomToPickUpItem
 	release
@@ -164,6 +170,9 @@ EventScript_NoRoomToPickUpItem::
 
 EventScript_HiddenItemLookAtFeet::
 	lockall
+	checkitemtype VAR_0x8005
+	call EventScript_BufferPocketName
+	fadescreen FADE_TO_BLACK
 	waitse
 	callnative LookAtFeet
 	release
@@ -176,7 +185,8 @@ EventScript_HiddenItemScript::
 	copyvar VAR_0x8007, VAR_RESULT
 	bufferitemnameplural STR_VAR_2, VAR_0x8005, 1
 	checkitemtype VAR_0x8005
-	call EventScript_BufferPocketNameAndTryFanfare
+	call EventScript_BufferPocketName
+	call EventScript_TryFanfare
 	goto_if_eq VAR_0x8007, TRUE, EventScript_PickUpHiddenItem
 	goto_if_eq VAR_0x8007, FALSE, EventScript_NoRoomForHiddenItem
 	end
