@@ -3048,5 +3048,8 @@ extern const u8 gText_PM[];
 
 // Look At Feet
 extern const u8 gText_FoundAHiddenItem[];
+extern const u8 gText_FoundAHiddenTMHM[];
+extern const u8 gText_PutAwayHiddenItem[];
+extern const u8 gText_PocketIsFull[];
 
 #endif // GUARD_STRINGS_H

@@ -34,5 +34,6 @@ bool8 ShouldShowBoxWasFullMessage(void);
 void SetPCBoxToSendMon(u8 boxId);
 void PreparePartyForSkyBattle(void);
 void SetHiddenItemFlag(void);
+bool8 BufferTMHMMoveName(void);
 
 #endif // GUARD_FIELD_SPECIALS_H

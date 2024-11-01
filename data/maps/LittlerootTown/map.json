@@ -269,8 +269,8 @@
       "x": 19,
       "y": 9,
       "elevation": 0,
-      "item": "ITEM_PEWTER_CRUNCHIES",
-      "flag": "FLAG_HIDDEN_ITEM_PETALBURG_CITY_RARE_CANDY"
+      "item": "ITEM_TM35",
+      "flag": "FLAG_TEMP_1"
     },
     {
       "type": "hidden_item",

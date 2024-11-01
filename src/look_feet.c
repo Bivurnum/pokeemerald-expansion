@@ -8,6 +8,7 @@
 #include "field_player_avatar.h"
 #include "field_specials.h"
 #include "gpu_regs.h"
+#include "graphics.h"
 #include "international_string_util.h"
 #include "item.h"
 #include "item_icon.h"
@@ -33,6 +34,7 @@
 
 #define TAG_SWIPE_GROUND 0x1000
 #define TAG_ITEM  0x1001
+//#define TAG_DUST  0x1002
 
 #define LEFT    0
 #define RIGHT   1
@@ -41,9 +43,9 @@ const u16 gLookFeetGround_Pal[] = INCBIN_U16("graphics/look_feet/tiles.gbapal");
 const u32 gLookFeetGroundTilemap[] = INCBIN_U32("graphics/look_feet/birch_grass.bin.lz");
 const u32 gLookFeetGround_Gfx[] = INCBIN_U32("graphics/look_feet/tiles.4bpp.lz");
 const u32 gSwipeGround_Gfx[] = INCBIN_U32("graphics/look_feet/pokeball_selection.4bpp.lz");
-static const u32 sStarterCircle_Gfx[] = INCBIN_U32("graphics/look_feet/starter_circle.4bpp.lz");
+//static const u32 sStarterCircle_Gfx[] = INCBIN_U32("graphics/look_feet/starter_circle.4bpp.lz");
 static const u16 sSwipeGround_Pal[] = INCBIN_U16("graphics/look_feet/pokeball_selection.gbapal");
-static const u16 sStarterCircle_Pal[] = INCBIN_U16("graphics/look_feet/starter_circle.gbapal");
+//static const u16 sStarterCircle_Pal[] = INCBIN_U16("graphics/look_feet/starter_circle.gbapal");
 
 static void CB2_StartLookAtFeet(void);
 static void Task_InitSprites(u8 taskId);
@@ -57,6 +59,12 @@ static void LF_AnimHandSwipeRight(struct Sprite *sprite);
 static void Task_WaitForHandSwipe(u8 taskId);
 static void SpriteCB_Item_Still(struct Sprite *sprite);
 static void Task_FoundItem(u8 taskId);
+static void Task_ItemToBag(u8 taskId);
+static void SpriteCB_Item_Float_To_Pocket(struct Sprite *sprite);
+static void CreateDustSprites(void);
+static void SpriteCB_Dust(struct Sprite *sprite);
+
+extern const struct CompressedSpriteSheet gBattleAnimPicTable[];
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -164,24 +172,10 @@ static const struct CompressedSpriteSheet sSpriteSheet_PokeballSelect[] =
     {}
 };
 
-static const struct CompressedSpriteSheet sSpriteSheet_StarterCircle[] =
-{
-    {
-        .data = sStarterCircle_Gfx,
-        .size = 0x0800,
-        .tag = TAG_SWIPE_GROUND
-    },
-    {}
-};
-
 static const struct SpritePalette sSpritePalettes_StarterChoose[] =
 {
     {
         .data = sSwipeGround_Pal,
-        .tag = TAG_SWIPE_GROUND
-    },
-    {
-        .data = sStarterCircle_Pal,
         .tag = TAG_SWIPE_GROUND
     },
     {},
@@ -217,6 +211,16 @@ static const union AnimCmd sAnim_Item[] =
     ANIMCMD_END,
 };
 
+static const union AnimCmd sAnim_Dust[] =
+{
+    ANIMCMD_FRAME(0, 5),
+    ANIMCMD_FRAME(32, 5),
+    ANIMCMD_FRAME(64, 5),
+    ANIMCMD_FRAME(96, 5),
+    ANIMCMD_FRAME(128, 20),
+    ANIMCMD_END,
+};
+
 static const union AnimCmd * const sAnims_Hand[] =
 {
     sAnim_Hand,
@@ -234,27 +238,46 @@ static const union AnimCmd * const sAnims_Item[] =
     sAnim_Item,
 };
 
+static const union AnimCmd * const sAnims_Dust[] =
+{
+    sAnim_Dust,
+};
+
 static const union AffineAnimCmd sAffineAnim_Item_Still[] =
 {
     AFFINEANIMCMD_FRAME(512, 512, 0, 0),
     AFFINEANIMCMD_END,
 };
 
+static const union AffineAnimCmd sAffineAnim_Item_Shake[] =
+{
+    AFFINEANIMCMD_FRAME(512, 512, 0, 0),
+    AFFINEANIMCMD_FRAME(3, 3, 0, 15),
+    AFFINEANIMCMD_FRAME(0, 0, 254, 10),
+    AFFINEANIMCMD_FRAME(0, 0, 2, 15),
+    AFFINEANIMCMD_FRAME(0, 0, 254, 15),
+    AFFINEANIMCMD_FRAME(0, 0, 2, 10),
+    AFFINEANIMCMD_FRAME(-3, -3, 0, 15),
+    AFFINEANIMCMD_END,
+};
+
 static const union AffineAnimCmd sAffineAnim_Item_To_Bag[] =
 {
     AFFINEANIMCMD_FRAME(512, 512, 0, 0),
-    AFFINEANIMCMD_FRAME(64, 64, 0, 30),
+    AFFINEANIMCMD_FRAME(-5, -5, -1, 50),
     AFFINEANIMCMD_END,
 };
 
 enum {
     ANIM_ITEM_STILL,
+    ANIM_ITEM_SHAKE,
     ANIM_ITEM_TO_BAG,
 };
 
 static const union AffineAnimCmd * const sAffineAnims_Item[] =
 {
     [ANIM_ITEM_STILL] = sAffineAnim_Item_Still,
+    [ANIM_ITEM_SHAKE] = sAffineAnim_Item_Shake,
     [ANIM_ITEM_TO_BAG] = sAffineAnim_Item_To_Bag,
 };
 
@@ -300,6 +323,17 @@ static const struct SpriteTemplate sSpriteTemplate_Item =
     .images = NULL,
     .affineAnims = sAffineAnims_Item,
     .callback = SpriteCB_Item_Still
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Dust =
+{
+    .tileTag = ANIM_TAG_GRAY_SMOKE,
+    .paletteTag = ANIM_TAG_GRAY_SMOKE,
+    .oam = &gOamData_AffineOff_ObjNormal_32x32,
+    .anims = sAnims_Dust,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_Dust
 };
 
 void LookAtFeet(void)
@@ -369,11 +403,14 @@ static void CB2_StartLookAtFeet(void)
     FreeAllSpritePalettes();
     ResetAllPicSprites();
 
-    LoadPalette(gLookFeetGround_Pal, BG_PLTT_ID(0), sizeof(gLookFeetGround_Pal));
+    //LoadPalette(sMapPreviewImageData[sMapPreviewScreenData[idx].image].palptr, BG_PLTT_ID(13), 3 * PLTT_SIZE_4BPP);
+    LoadPalette(gLookFeetGround_Pal, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
     LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(14), PLTT_SIZE_4BPP);
     LoadUserWindowBorderGfx(0, 0x2A8, BG_PLTT_ID(13));
     LoadCompressedSpriteSheet(&sSpriteSheet_PokeballSelect[0]);
-    LoadCompressedSpriteSheet(&sSpriteSheet_StarterCircle[0]);
+    //LoadCompressedSpriteSheet(&sSpriteSheet_StarterCircle[0]);
+    LoadCompressedSpriteSheetUsingHeap(&gBattleAnimPicTable[GET_TRUE_SPRITE_INDEX(ANIM_TAG_GRAY_SMOKE)]);
+    LoadCompressedSpritePaletteUsingHeap(&gBattleAnimPaletteTable[GET_TRUE_SPRITE_INDEX(ANIM_TAG_GRAY_SMOKE)]);
     LoadSpritePalettes(sSpritePalettes_StarterChoose);
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0x10, 0, RGB_BLACK);
 
@@ -404,7 +441,7 @@ static void Task_InitSprites(u8 taskId)
         u8 spriteId;
 
         // Create Ground Sprite
-        spriteId = CreateSprite(&sSpriteTemplate_Ground, 120, 60, 1);
+        spriteId = CreateSprite(&sSpriteTemplate_Ground, 120, 60, 2);
         gSprites[spriteId].sTaskId = taskId;
         gTasks[taskId].data[3] = spriteId;
         gTasks[taskId].data[0] = 2;
@@ -438,6 +475,7 @@ void CB2_LookAtFeet(void)
 #define tNumSwipes          data[2]
 #define tGroundSpriteId     data[3]
 #define tItemSpriteId       data[4]
+#define tFrameCounter       data[5]
 
 static void Task_LookAtFeet(u8 taskId)
 {
@@ -453,8 +491,19 @@ static void Task_HandleLookFeetInput(u8 taskId)
     {
         s32 xPos;
 
-        CopyItemName(gSpecialVar_0x8005, gStringVar2);
-        StringExpandPlaceholders(gStringVar4, gText_FoundAHiddenItem);
+        gSpecialVar_Result = AddBagItem(gSpecialVar_0x8005, 1);
+        if (gSpecialVar_Result)
+            PlayFanfare(MUS_OBTAIN_ITEM);
+
+        StartSpriteAffineAnim(&gSprites[gTasks[taskId].tItemSpriteId], ANIM_ITEM_SHAKE);
+        CopyItemName(gSpecialVar_0x8005, gStringVar1);
+        gSpecialVar_0x8003 = gSpecialVar_0x8004;
+        gSpecialVar_0x8004 = gSpecialVar_0x8005;
+        if (BufferTMHMMoveName())
+            StringExpandPlaceholders(gStringVar4, gText_FoundAHiddenTMHM);
+        else
+            StringExpandPlaceholders(gStringVar4, gText_FoundAHiddenItem);
+
         DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
         xPos = GetStringCenterAlignXOffset(FONT_NORMAL, gStringVar4, 226);
         AddTextPrinterParameterized(0, FONT_NORMAL, gStringVar4, xPos, 1, 0, NULL);
@@ -468,9 +517,9 @@ static void Task_HandleLookFeetInput(u8 taskId)
             gTasks[taskId].tCurrSide = RIGHT;
 
         // Create hand sprite
-        spriteId = CreateSprite(&sSpriteTemplate_HandLeft, 190, 60, 0);
+        spriteId = CreateSprite(&sSpriteTemplate_HandLeft, 180, 70, 0);
         gSprites[spriteId].data[0] = taskId;
-        gSprites[spriteId].data[7] = 0;
+        gSprites[spriteId].tFrameCounter = 0;
         gTasks[taskId].tHandSpriteId = spriteId;
         gTasks[taskId].tCurrSide = ChangeSwipeSide(gTasks[taskId].tCurrSide);
         gTasks[taskId].func = Task_WaitForHandSwipe;
@@ -482,9 +531,9 @@ static void Task_HandleLookFeetInput(u8 taskId)
             gTasks[taskId].tCurrSide = LEFT;
             
         // Create hand sprite
-        spriteId = CreateSprite(&sSpriteTemplate_HandRight, 60, 60, 0);
+        spriteId = CreateSprite(&sSpriteTemplate_HandRight, 70, 70, 0);
         gSprites[spriteId].data[0] = taskId;
-        gSprites[spriteId].data[7] = 0;
+        gSprites[spriteId].tFrameCounter = 0;
         gTasks[taskId].tHandSpriteId = spriteId;
         gTasks[taskId].tCurrSide = ChangeSwipeSide(gTasks[taskId].tCurrSide);
         gTasks[taskId].func = Task_WaitForHandSwipe;
@@ -497,6 +546,17 @@ static void Task_HandleLookFeetInput(u8 taskId)
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
         gTasks[taskId].func = Task_ExitLookFeet;
     }
+}
+
+static u8 ChangeSwipeSide(u8 side)
+{
+    if (side == LEFT)
+        return RIGHT;
+
+    if (side == RIGHT)
+        return LEFT;
+
+    return LEFT;
 }
 
 static void Task_WaitForHandSwipe(u8 taskId)
@@ -514,26 +574,45 @@ static void Task_WaitForHandSwipe(u8 taskId)
 
 static void Task_FoundItem(u8 taskId)
 {
-    if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
+    if (IsFanfareTaskInactive() && gSprites[gTasks[taskId].tItemSpriteId].affineAnimEnded && (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON)))
     {
+        u32 xPos;
+            
         PlaySE(SE_SELECT);
-        gSpecialVar_Result = AddBagItem(gSpecialVar_0x8005, 1);
-        SetHiddenItemFlag();
-        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
-        gTasks[taskId].func = Task_ExitLookFeet;
+        if (gSpecialVar_Result)
+        {
+            FlagSet(gSpecialVar_0x8003); // Set hidden item flag
+            StringExpandPlaceholders(gStringVar4, gText_PutAwayHiddenItem);
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            xPos = GetStringCenterAlignXOffset(FONT_NORMAL, gStringVar4, 226);
+            AddTextPrinterParameterized(0, FONT_NORMAL, gStringVar4, xPos, 1, 0, NULL);
+            gTasks[taskId].tFrameCounter = 0;
+            
+            gTasks[taskId].func = Task_ItemToBag;
+            gSprites[gTasks[taskId].tItemSpriteId].callback = SpriteCB_Item_Float_To_Pocket;
+            StartSpriteAffineAnim(&gSprites[gTasks[taskId].tItemSpriteId], ANIM_ITEM_TO_BAG);
+        }
+        else {
+            StringExpandPlaceholders(gStringVar4, gText_PocketIsFull);
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            xPos = GetStringCenterAlignXOffset(FONT_NORMAL, gStringVar4, 226);
+            AddTextPrinterParameterized(0, FONT_NORMAL, gStringVar4, xPos, 1, 0, NULL);
+            gTasks[taskId].tFrameCounter = 0;
+            
+            gTasks[taskId].func = Task_ItemToBag;
+        }
     }
 }
 
-
-static u8 ChangeSwipeSide(u8 side)
+static void Task_ItemToBag(u8 taskId)
 {
-    if (side == LEFT)
-        return RIGHT;
+    if (gTasks[taskId].tFrameCounter < 40)
+        gTasks[taskId].tFrameCounter++;
 
-    if (side == RIGHT)
-        return LEFT;
-
-    return LEFT;
+    if (gTasks[taskId].tFrameCounter >= 20 && (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))) {
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
+        gTasks[taskId].func = Task_ExitLookFeet;
+    }
 }
 
 static void Task_ExitLookFeet(u8 taskId)
@@ -545,30 +624,58 @@ static void Task_ExitLookFeet(u8 taskId)
         SetMainCallback2(CB2_ReturnToField);
     }
 }
+
+static void CreateDustSprites(void)
+{
+    //s32 limit = (Random() % 2) + 3;
+    s32 i;
+
+    for (i = 0; i < 5; i++)
+    {
+        u16 rand;
+        s32 x, y;
+        u8 spriteId;
+
+        rand = (Random() % 20);
+
+        x = gSineTable[(rand & 0xFF) + 64] / 4;
+        y = gSineTable[(rand & 0xFF)] / 4;
+
+        spriteId = CreateSprite(&sSpriteTemplate_Dust, x + 60, y + 45, 1);
+        gSprites[spriteId].data[0] = 16 - (Random() % 32);
+        gSprites[spriteId].data[1] = 16 - (Random() % 32);
+
+        gSprites[spriteId].callback = SpriteCB_Dust;
+        gSprites[spriteId].oam.priority = 1;
+    }
+}
+
+#define sFrameCounter       data[1]
     
 static void LF_AnimHandSwipeLeft(struct Sprite *sprite)
 {
-    if (sprite->data[7] == 20)
+    if (sprite->sFrameCounter == 10)
     {
         gTasks[sprite->sTaskId].tNumSwipes++;
-        //PlaySE(SE_M_SCRATCH);
+        CreateDustSprites();
     }
 
-    sprite->data[7]++;
-    //sprite->y2 = Sin(sprite->data[1], 8);
+    sprite->sFrameCounter++;
+    sprite->y2 = Sin2(200 + sprite->sFrameCounter * 6) / 512;
+    //sprite->y2 = Sin(sprite->sFrameCounter, 8);
     //sprite->data[1] = (u8)(sprite->data[1]) - 2;
 
-    if (sprite->data[7] < 10)
+    if (sprite->sFrameCounter <= 5)
     {
-        sprite->x--;
+        sprite->x -= 3;
     }
-    else if (sprite->data[7] < 30)
+    else if (sprite->sFrameCounter <= 15)
     {
         sprite->x -= 6;
     }
-    else if (sprite->data[7] < 40)
+    else if (sprite->sFrameCounter <= 25)
     {
-        sprite->x--;
+        sprite->x -= 3;
     }
     else
     {
@@ -578,27 +685,28 @@ static void LF_AnimHandSwipeLeft(struct Sprite *sprite)
 
 static void LF_AnimHandSwipeRight(struct Sprite *sprite)
 {
-    if (sprite->data[7] == 20)
+    if (sprite->sFrameCounter == 10)
     {
         gTasks[sprite->sTaskId].tNumSwipes++;
-        //PlaySE(SE_M_SCRATCH);
+        CreateDustSprites();
     }
 
-    sprite->data[7]++;
-    //sprite->y2 = Sin(sprite->data[1], 8);
+    sprite->sFrameCounter++;
+    sprite->y2 = Sin2(200 + sprite->sFrameCounter * 6) / 512;
+    //sprite->y2 = Sin(sprite->sFrameCounter, 8);
     //sprite->data[1] = (u8)(sprite->data[1]) - 2;
 
-    if (sprite->data[7] < 10)
+    if (sprite->sFrameCounter <= 5)
     {
-        sprite->x++;
+        sprite->x += 3;
     }
-    else if (sprite->data[7] < 30)
+    else if (sprite->sFrameCounter <= 15)
     {
         sprite->x += 6;
     }
-    else if (sprite->data[7] < 40)
+    else if (sprite->sFrameCounter <= 25)
     {
-        sprite->x++;
+        sprite->x += 3;
     }
     else
     {
@@ -629,4 +737,46 @@ static void SpriteCB_Item_Still(struct Sprite *sprite)
 {
     sprite->x = 127;
     sprite->y = 70;
+}
+
+static void SpriteCB_Item_Float_To_Pocket(struct Sprite *sprite)
+{
+    if (sprite->sFrameCounter <= 5)
+        sprite->y2-=2;
+    else if ((sprite->sFrameCounter >= 6 && sprite->sFrameCounter <= 8) || sprite->sFrameCounter == 10 || sprite->sFrameCounter == 12)
+        sprite->y2-=1;
+    else if (sprite->sFrameCounter == 16 || sprite->sFrameCounter == 18 || (sprite->sFrameCounter >= 20 && sprite->sFrameCounter <= 24))
+        sprite->y2+=1;
+    else if (sprite->sFrameCounter > 24 && sprite->sFrameCounter < 30)
+        sprite->y2+=2;
+    else if (sprite->sFrameCounter >= 30 && sprite->sFrameCounter < 40)
+        sprite->y2+=3;
+    else if (sprite->sFrameCounter >= 40)
+        sprite->y2+=4;
+
+    sprite->x2 = Sin2(-200 - sprite->sFrameCounter * 3) / 64;
+
+    if (sprite->y2 > 150)
+    {
+        u8 spriteId;
+
+        spriteId = gTasks[sprite->sTaskId].tItemSpriteId;
+        FreeOamMatrix(gSprites[spriteId].oam.matrixNum);
+        DestroySprite(&gSprites[spriteId]);
+    }
+
+    sprite->sFrameCounter++;
+}
+
+static void SpriteCB_Dust(struct Sprite *sprite)
+{
+    sprite->data[2] += sprite->data[0];
+    sprite->data[3] += sprite->data[1];
+    sprite->x2 = sprite->data[2] / 8;
+    sprite->y2 = sprite->data[3] / 8;
+
+    if (sprite->data[5] >= 40)
+        DestroySprite(sprite);
+
+    sprite->data[5]++;
 }

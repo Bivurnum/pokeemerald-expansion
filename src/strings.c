@@ -255,8 +255,10 @@ const u8 gText_TheBattle[] = _("the battle");
 const u8 gText_ThePokemonList[] = _("the POKéMON LIST");
 const u8 gText_TheShop[] = _("the shop");
 const u8 gText_ThePC[] = _("the PC");
-const u8 gText_FoundAHiddenItem[] = _("{PLAYER} found a hidden {STR_VAR_2}!");
+const u8 gText_FoundAHiddenItem[] = _("{PLAYER} found a hidden {STR_VAR_1}!");
+const u8 gText_FoundAHiddenTMHM[] = _("{PLAYER} found a hidden {STR_VAR_1} {STR_VAR_2}!");
 const u8 gText_PutAwayHiddenItem[] = _("It was put in the {STR_VAR_3} POCKET.");
+const u8 gText_PocketIsFull[] = _("But the {STR_VAR_3} POCKET is full…");
 
 const u8 *const gBagMenu_ReturnToStrings[] =
 {
