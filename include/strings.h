@@ -3047,6 +3047,7 @@ extern const u8 gText_AM[];
 extern const u8 gText_PM[];
 
 // Look At Feet
+extern const u8 gText_SomethingHidden[];
 extern const u8 gText_FoundAHiddenItem[];
 extern const u8 gText_FoundAHiddenTMHM[];
 extern const u8 gText_PutAwayHiddenItem[];

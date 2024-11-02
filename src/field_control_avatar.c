@@ -207,7 +207,7 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     if (input->input_field_1_4)
     {
         gSpecialVar_0x8004 = 1;
-        gSpecialVar_0x8005 = ITEM_ELECTRIC_TERA_SHARD;
+        gSpecialVar_0x8005 = ITEM_TOXIC_PLATE;
         LookAtFeet();
         return TRUE;
     }
@@ -385,9 +385,8 @@ static const u8 *GetInteractedBackgroundEventScript(struct MapPosition *position
         if (FlagGet(gSpecialVar_0x8004) == TRUE)
             return NULL;
         if (IsHiddenItemOnGround())
-        {
             return EventScript_HiddenItemLookAtFeet;
-        }
+        
         return EventScript_HiddenItemScript;
     case BG_EVENT_SECRET_BASE:
         if (direction == DIR_NORTH)
