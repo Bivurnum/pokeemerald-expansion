@@ -207,7 +207,7 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     if (input->input_field_1_4)
     {
         gSpecialVar_0x8004 = 1;
-        gSpecialVar_0x8005 = ITEM_TOXIC_PLATE;
+        gSpecialVar_0x8005 = ITEM_POKE_BALL;
         LookAtFeet();
         return TRUE;
     }

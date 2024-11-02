@@ -269,7 +269,7 @@
       "x": 19,
       "y": 9,
       "elevation": 0,
-      "item": "ITEM_TM35",
+      "item": "ITEM_ORAN_BERRY",
       "flag": "FLAG_TEMP_1"
     },
     {
@@ -277,7 +277,7 @@
       "x": 9,
       "y": 16,
       "elevation": 0,
-      "item": "ITEM_REVIVE",
+      "item": "ITEM_ORAN_BERRY",
       "flag": "FLAG_HIDDEN_ITEM_ROUTE_110_REVIVE"
     }
   ]
