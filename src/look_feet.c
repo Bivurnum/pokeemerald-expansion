@@ -134,7 +134,7 @@ static const struct OamData sOam_Ground =
 {
     .y = DISPLAY_HEIGHT,
     .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
+    .objMode = ST_OAM_OBJ_BLEND,
     .mosaic = FALSE,
     .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(64x64),
@@ -440,7 +440,7 @@ static void CB2_StartLookAtFeet(void)
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
 
     ShowBg(0);
-    ShowBg(1);
+    //ShowBg(1);
     ShowBg(2);
 
     CreateTask(Task_InitSprites, 0);
@@ -460,17 +460,15 @@ static void Task_InitSprites(u8 taskId)
         
         // Create Ground Sprite
         spriteId = CreateSprite(&sSpriteTemplate_Ground, 152, 60, 2);
+        gSprites[spriteId].x = randX;
+        gSprites[spriteId].y = randY;
         gSprites[spriteId].sTaskId = taskId;
         gSprites[spriteId].sSpriteId = spriteId;
         gTasks[taskId].tRGroundSpriteId = spriteId;
         gSprites[spriteId].hFlip = 1;
         gTasks[taskId].tCurrSide = 2;
-        
-        // Create Ground Sprite
-        spriteId = CreateSprite(&sSpriteTemplate_Ground, 88, 60, 2);
-        gSprites[spriteId].sTaskId = taskId;
-        gSprites[spriteId].sSpriteId = spriteId;
-        gTasks[taskId].tLGroundSpriteId = spriteId;
+        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG2);
+        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 16));
 
         // Create Item Sprite
         spriteId = AddCustomItemIconSprite(&sSpriteTemplate_Item, TAG_ITEM, TAG_ITEM, gSpecialVar_0x8005);
