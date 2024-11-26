@@ -35,7 +35,7 @@
 
 #define TAG_SWIPE_GROUND 0x1000
 #define TAG_ITEM  0x1001
-//#define TAG_DUST  0x1002
+#define TAG_DPAD  0x1002
 
 #define LEFT    0
 #define RIGHT   1
@@ -45,6 +45,8 @@ const u32 gLookFeetGroundTilemap[] = INCBIN_U32("graphics/look_feet/hidden_item_
 const u32 gLookFeetGround_Gfx[] = INCBIN_U32("graphics/look_feet/tiles.4bpp.lz");
 const u32 gSwipeGround_Gfx[] = INCBIN_U32("graphics/look_feet/swipe_ground.4bpp.lz");
 static const u16 sSwipeGround_Pal[] = INCBIN_U16("graphics/look_feet/swipe_ground.gbapal");
+const u32 gDPad_Gfx[] = INCBIN_U32("graphics/look_feet/dpad.4bpp.lz");
+static const u16 sDPad_Pal[] = INCBIN_U16("graphics/look_feet/dpad.gbapal");
 
 static void CB2_StartLookAtFeet(void);
 static void Task_InitSprites(u8 taskId);
@@ -53,18 +55,20 @@ static void Task_HandleLookFeetInput(u8 taskId);
 static void Task_ExitLookFeet(u8 taskId);
 static u8 ChangeSwipeSide(u8 side);
 static void SpriteCB_Ground(struct Sprite *sprite);
-static void LF_AnimHandSwipeLeft(struct Sprite *sprite);
-static void LF_AnimHandSwipeRight(struct Sprite *sprite);
+static void SpriteCB_HandSwipeLeft(struct Sprite *sprite);
+static void SpriteCB_HandSwipeRight(struct Sprite *sprite);
 static void Task_WaitForHandSwipe(u8 taskId);
 static void SpriteCB_Item_Move_To_Center(struct Sprite *sprite);
 static void Task_FoundItem(u8 taskId);
 static void Task_ItemToBag(u8 taskId);
 static void SpriteCB_Item_Float_To_Pocket(struct Sprite *sprite);
-static void CreateDustSprites(void);
+static void CreateDustSprites(struct Sprite *sprite);
 static void SpriteCB_Dust(struct Sprite *sprite);
 static void CreateHandLeft(u8 taskId);
 static void CreateHandRight(u8 taskId);
 static void SpriteCB_Item_Shake(struct Sprite *sprite);
+static void ShowDPad(u8 taskId);
+static void DestroyDPad(u8 taskId);
 
 extern const struct CompressedSpriteSheet gBattleAnimPicTable[];
 
@@ -164,7 +168,7 @@ static const struct OamData sOam_Item =
     .affineParam = 0,
 };
 
-static const struct CompressedSpriteSheet sSpriteSheet_PokeballSelect[] =
+static const struct CompressedSpriteSheet sSpriteSheet_SwipeGround[] =
 {
     {
         .data = gSwipeGround_Gfx,
@@ -174,11 +178,34 @@ static const struct CompressedSpriteSheet sSpriteSheet_PokeballSelect[] =
     {}
 };
 
-static const struct SpritePalette sSpritePalettes_StarterChoose[] =
+static const struct SpritePalette sSpritePalettes_LookFeet[] =
 {
     {
         .data = sSwipeGround_Pal,
         .tag = TAG_SWIPE_GROUND
+    },
+    {
+        .data = sDPad_Pal,
+        .tag = TAG_DPAD
+    },
+    {},
+};
+
+static const struct CompressedSpriteSheet sSpriteSheet_DPad[] =
+{
+    {
+        .data = gDPad_Gfx,
+        .size = 0x0A00,
+        .tag = TAG_DPAD
+    },
+    {}
+};
+
+static const struct SpritePalette sSpritePalettes_DPad[] =
+{
+    {
+        .data = sDPad_Pal,
+        .tag = TAG_DPAD
     },
     {},
 };
@@ -223,6 +250,16 @@ static const union AnimCmd sAnim_Dust[] =
     ANIMCMD_END,
 };
 
+static const union AnimCmd sAnim_DPad[] =
+{
+    ANIMCMD_FRAME(0, 10),
+    ANIMCMD_FRAME(48, 30),
+    ANIMCMD_FRAME(0, 30),
+    ANIMCMD_FRAME(64, 30),
+    ANIMCMD_FRAME(0, 20),
+    ANIMCMD_JUMP(0),
+};
+
 static const union AnimCmd * const sAnims_Hand[] =
 {
     sAnim_Hand,
@@ -243,6 +280,11 @@ static const union AnimCmd * const sAnims_Item[] =
 static const union AnimCmd * const sAnims_Dust[] =
 {
     sAnim_Dust,
+};
+
+static const union AnimCmd * const sAnims_DPad[] =
+{
+    sAnim_DPad,
 };
 
 static const union AffineAnimCmd sAffineAnim_Item_Still[] =
@@ -291,7 +333,7 @@ static const struct SpriteTemplate sSpriteTemplate_HandLeft =
     .anims = sAnims_Hand,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = LF_AnimHandSwipeLeft
+    .callback = SpriteCB_HandSwipeLeft
 };
 
 static const struct SpriteTemplate sSpriteTemplate_HandRight =
@@ -302,7 +344,7 @@ static const struct SpriteTemplate sSpriteTemplate_HandRight =
     .anims = sAnims_Hand,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = LF_AnimHandSwipeRight
+    .callback = SpriteCB_HandSwipeRight
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Ground =
@@ -338,6 +380,17 @@ static const struct SpriteTemplate sSpriteTemplate_Dust =
     .callback = SpriteCB_Dust
 };
 
+static const struct SpriteTemplate sSpriteTemplate_DPad =
+{
+    .tileTag = TAG_DPAD,
+    .paletteTag = TAG_DPAD,
+    .oam = &gOamData_AffineOff_ObjNormal_32x32,
+    .anims = sAnims_DPad,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
 void LookAtFeet(void)
 {
 /*
@@ -368,6 +421,8 @@ static void VblankCB_LookFeet(void)
 #define tRGroundSpriteId    data[4]
 #define tItemSpriteId       data[5]
 #define tFrameCounter       data[6]
+#define tDPadExists         data[7]
+#define tDPadSpriteId       data[8]
 
 // Data for Sprites
 #define sTaskId             data[0]
@@ -420,10 +475,11 @@ static void CB2_StartLookAtFeet(void)
     LoadPalette(gLookFeetGround_Pal, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
     LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(14), PLTT_SIZE_4BPP);
     LoadUserWindowBorderGfx(0, 0x2A8, BG_PLTT_ID(13));
-    LoadCompressedSpriteSheet(&sSpriteSheet_PokeballSelect[0]);
+    LoadCompressedSpriteSheet(&sSpriteSheet_SwipeGround[0]);
+    LoadCompressedSpriteSheet(&sSpriteSheet_DPad[0]);
     LoadCompressedSpriteSheetUsingHeap(&gBattleAnimPicTable[GET_TRUE_SPRITE_INDEX(ANIM_TAG_GRAY_SMOKE)]);
     LoadCompressedSpritePaletteUsingHeap(&gBattleAnimPaletteTable[GET_TRUE_SPRITE_INDEX(ANIM_TAG_GRAY_SMOKE)]);
-    LoadSpritePalettes(sSpritePalettes_StarterChoose);
+    LoadSpritePalettes(sSpritePalettes_LookFeet);
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0x10, 0, RGB_BLACK);
 
     EnableInterrupts(DISPSTAT_VBLANK);
@@ -465,7 +521,6 @@ static void Task_InitSprites(u8 taskId)
         gSprites[spriteId].sTaskId = taskId;
         gSprites[spriteId].sSpriteId = spriteId;
         gTasks[taskId].tRGroundSpriteId = spriteId;
-        gSprites[spriteId].hFlip = 1;
         gTasks[taskId].tCurrSide = 2;
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG2);
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 16));
@@ -528,20 +583,31 @@ static void Task_HandleLookFeetInput(u8 taskId)
     }
     else if (JOY_NEW(DPAD_LEFT) && gTasks[taskId].tCurrSide > 0)
     {
+        gTasks[taskId].tFrameCounter = 121;
+        DestroyDPad(taskId);
+
         CreateHandLeft(taskId);
     }
     else if (JOY_NEW(DPAD_RIGHT) && gTasks[taskId].tCurrSide != RIGHT)
     {
+        gTasks[taskId].tFrameCounter = 121;
+        DestroyDPad(taskId);
+
         CreateHandRight(taskId);
     }
     else if (JOY_NEW(B_BUTTON))
     {
+        DestroyDPad(taskId);
         DestroySprite(&gSprites[gTasks[taskId].tItemSpriteId]);
         DestroySprite(&gSprites[gTasks[taskId].tRGroundSpriteId]);
         DestroySprite(&gSprites[gTasks[taskId].tLGroundSpriteId]);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
         gTasks[taskId].func = Task_ExitLookFeet;
     }
+    if (gTasks[taskId].tFrameCounter == 120 && gTasks[taskId].tNumSwipes < 3)
+        ShowDPad(taskId);
+
+    gTasks[taskId].tFrameCounter++;
 }
 
 static u8 ChangeSwipeSide(u8 side)
@@ -555,24 +621,55 @@ static u8 ChangeSwipeSide(u8 side)
     return LEFT;
 }
 
+static void ShowDPad(u8 taskId)
+{
+    u8 spriteId;
+
+    spriteId = CreateSprite(&sSpriteTemplate_DPad, 24, 24, 0);
+    gSprites[spriteId].sTaskId = taskId;
+    gSprites[spriteId].sSpriteId = spriteId;
+    gSprites[spriteId].oam.priority = 0;
+    gTasks[taskId].tDPadSpriteId = spriteId;
+    gTasks[taskId].tDPadExists = TRUE;
+
+    return;
+}
+
+static void DestroyDPad(u8 taskId)
+{
+    if (gTasks[taskId].tDPadExists)
+    {
+        u8 spriteId = gTasks[taskId].tDPadSpriteId;
+
+        FreeOamMatrix(gSprites[spriteId].oam.matrixNum);
+        DestroySprite(&gSprites[spriteId]);
+        gTasks[taskId].tDPadExists = FALSE;
+    }
+
+    return;
+}
+
 static void Task_WaitForHandSwipe(u8 taskId)
 {
     u8 spriteId = gTasks[taskId].tHandSpriteId;
 
     if (gSprites[gTasks[taskId].tHandSpriteId].animEnded)
     {
+        gTasks[taskId].tFrameCounter = 0;
         FreeOamMatrix(gSprites[spriteId].oam.matrixNum);
         DestroySprite(&gSprites[spriteId]);
         gTasks[taskId].func = Task_HandleLookFeetInput;
     }
     if (JOY_NEW(DPAD_LEFT) && gTasks[taskId].tCurrSide > 0 && gSprites[gTasks[taskId].tHandSpriteId].sFrameCounter > 17 && gTasks[taskId].tNumSwipes < 3)
     {
+        gTasks[taskId].tFrameCounter = 0;
         FreeOamMatrix(gSprites[spriteId].oam.matrixNum);
         DestroySprite(&gSprites[spriteId]);
         CreateHandLeft(taskId);
     }
     if (JOY_NEW(DPAD_RIGHT) && gTasks[taskId].tCurrSide != RIGHT && gSprites[gTasks[taskId].tHandSpriteId].sFrameCounter > 17 && gTasks[taskId].tNumSwipes < 3)
     {
+        gTasks[taskId].tFrameCounter = 0;
         FreeOamMatrix(gSprites[spriteId].oam.matrixNum);
         DestroySprite(&gSprites[spriteId]);
         CreateHandRight(taskId);
@@ -644,7 +741,7 @@ static void CreateHandLeft(u8 taskId)
         // Create hand sprite
         spriteId = CreateSprite(&sSpriteTemplate_HandLeft, 180, 70, 0);
         gSprites[spriteId].sTaskId = taskId;
-        gSprites[spriteId].tFrameCounter = 0;
+        gSprites[spriteId].sFrameCounter = 0;
         gTasks[taskId].tHandSpriteId = spriteId;
         gTasks[taskId].tCurrSide = ChangeSwipeSide(gTasks[taskId].tCurrSide);
         gTasks[taskId].func = Task_WaitForHandSwipe;
@@ -661,7 +758,7 @@ static void CreateHandRight(u8 taskId)
         // Create hand sprite
         spriteId = CreateSprite(&sSpriteTemplate_HandRight, 70, 70, 0);
         gSprites[spriteId].sTaskId = taskId;
-        gSprites[spriteId].tFrameCounter = 0;
+        gSprites[spriteId].sFrameCounter = 0;
         gTasks[taskId].tHandSpriteId = spriteId;
         gTasks[taskId].tCurrSide = ChangeSwipeSide(gTasks[taskId].tCurrSide);
         gTasks[taskId].func = Task_WaitForHandSwipe;
@@ -674,16 +771,15 @@ static void CreateHandRight(u8 taskId)
 #define sXshift         data[5]
 #define sYshift         data[6]
 
-static void CreateDustSprites(void)
+static void CreateDustSprites(struct Sprite *sprite)
 {
     s32 i;
+    u16 rand;
+    s32 x, y;
+    u8 spriteId;
 
     for (i = 0; i < 5; i++)
     {
-        u16 rand;
-        s32 x, y;
-        u8 spriteId;
-
         rand = (Random() % 20);
 
         x = gSineTable[(rand & 0xFF) + 64] / 4;
@@ -696,14 +792,27 @@ static void CreateDustSprites(void)
         gSprites[spriteId].callback = SpriteCB_Dust;
         gSprites[spriteId].oam.priority = 1;
     }
+
+    for (i = 0; i < 3; i++)
+    {
+        //x = gSineTable[(rand & 0xFF) + 64] / 4;
+        //y = gSineTable[(rand & 0xFF)] / 4;
+
+        spriteId = CreateSprite(&sSpriteTemplate_Dust, gSprites[gTasks[sprite->sTaskId].tItemSpriteId].x, gSprites[gTasks[sprite->sTaskId].tItemSpriteId].y, 1);
+        gSprites[spriteId].sRand1 = 16 - (Random() % 32);
+        gSprites[spriteId].sRand2 = 16 - (Random() % 32);
+
+        gSprites[spriteId].callback = SpriteCB_Dust;
+        gSprites[spriteId].oam.priority = 1;
+    }
 }
     
-static void LF_AnimHandSwipeLeft(struct Sprite *sprite)
+static void SpriteCB_HandSwipeLeft(struct Sprite *sprite)
 {
     if (sprite->sFrameCounter == 10)
     {
         gTasks[sprite->sTaskId].tNumSwipes++;
-        CreateDustSprites();
+        CreateDustSprites(sprite);
     }
 
     sprite->sFrameCounter++;
@@ -727,12 +836,12 @@ static void LF_AnimHandSwipeLeft(struct Sprite *sprite)
     }
 }
 
-static void LF_AnimHandSwipeRight(struct Sprite *sprite)
+static void SpriteCB_HandSwipeRight(struct Sprite *sprite)
 {
     if (sprite->sFrameCounter == 10)
     {
         gTasks[sprite->sTaskId].tNumSwipes++;
-        CreateDustSprites();
+        CreateDustSprites(sprite);
     }
 
     sprite->sFrameCounter++;
