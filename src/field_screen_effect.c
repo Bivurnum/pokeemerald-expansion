@@ -12,6 +12,7 @@
 #include "field_screen_effect.h"
 #include "field_special_scene.h"
 #include "field_weather.h"
+#include "follow_me.h"
 #include "gpu_regs.h"
 #include "heal_location.h"
 #include "io_reg.h"
@@ -47,8 +48,6 @@ static void FillPalBufferWhite(void);
 static void Task_ExitDoor(u8);
 static bool32 WaitForWeatherFadeIn(void);
 static void Task_SpinEnterWarp(u8 taskId);
-static void Task_WarpAndLoadMap(u8 taskId);
-static void Task_DoDoorWarp(u8 taskId);
 static void Task_EnableScriptAfterMusicFade(u8 taskId);
 
 static void ExitStairsMovement(s16*, s16*, s16*, s16*, s16*);
@@ -124,7 +123,7 @@ void WarpFadeOutScreen(void)
     }
 }
 
-static void SetPlayerVisibility(bool8 visible)
+void SetPlayerVisibility(bool8 visible)
 {
     SetPlayerInvisibility(!visible);
 }
@@ -292,6 +291,7 @@ void FieldCB_DefaultWarpExit(void)
     Overworld_PlaySpecialMapMusic();
     WarpFadeInScreen();
     SetUpWarpExitTask();
+    FollowMe_WarpSetEnd();  
     LockPlayerFieldControls();
 }
 
@@ -340,6 +340,7 @@ static void Task_ExitDoor(u8 taskId)
     switch (task->tState)
     {
     case 0:
+        HideFollower();
         SetPlayerVisibility(FALSE);
         FreezeObjectEvents();
         PlayerGetDestCoords(x, y);
@@ -369,6 +370,9 @@ static void Task_ExitDoor(u8 taskId)
     case 3:
         if (task->data[1] < 0 || gTasks[task->data[1]].isActive != TRUE)
         {
+            FollowMe_SetIndicatorToComeOutDoor();
+            FollowMe_WarpSetEnd();
+
             UnfreezeObjectEvents();
             task->tState = 4;
         }
@@ -389,6 +393,7 @@ static void Task_ExitNonAnimDoor(u8 taskId)
     switch (task->tState)
     {
     case 0:
+        HideFollower();
         SetPlayerVisibility(FALSE);
         FreezeObjectEvents();
         PlayerGetDestCoords(x, y);
@@ -407,6 +412,9 @@ static void Task_ExitNonAnimDoor(u8 taskId)
     case 2:
         if (IsPlayerStandingStill())
         {
+            FollowMe_SetIndicatorToComeOutDoor();
+            FollowMe_WarpSetEnd();
+
             UnfreezeObjectEvents();
             task->tState = 3;
         }
@@ -660,7 +668,7 @@ void ReturnFromLinkRoom(void)
     CreateTask(Task_ReturnToWorldFromLinkRoom, 10);
 }
 
-static void Task_WarpAndLoadMap(u8 taskId)
+void Task_WarpAndLoadMap(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
 
@@ -691,63 +699,139 @@ static void Task_WarpAndLoadMap(u8 taskId)
     }
 }
 
-static void Task_DoDoorWarp(u8 taskId)
+void Task_DoDoorWarp(u8 taskId)
 {
-    struct Task *task = &gTasks[taskId];
-    s16 *x = &task->data[2];
-    s16 *y = &task->data[3];
-    struct ObjectEvent *followerObject = GetFollowerObject();
+    if (gSaveBlock2Ptr->follower.inProgress) {
+        struct Task *task = &gTasks[taskId];
+        s16 *x = &task->data[2];
+        s16 *y = &task->data[3];
+        u8 playerObjId = gPlayerAvatar.objectEventId;
+        u8 followerObjId = GetFollowerObjectId();
 
-    switch (task->tState)
-    {
-    case 0:
-        FreezeObjectEvents();
-        PlayerGetDestCoords(x, y);
-        PlaySE(GetDoorSoundEffect(*x, *y - 1));
-        if (followerObject)
+        switch (task->data[0])
         {
-            // Put follower into pokeball
-            ClearObjectEventMovement(followerObject, &gSprites[followerObject->spriteId]);
-            ObjectEventSetHeldMovement(followerObject, MOVEMENT_ACTION_ENTER_POKEBALL);
+        case 0:
+            if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_DASH))
+                SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT); //Stop running
+
+            gSaveBlock2Ptr->follower.comeOutDoorStairs = 0; //Just in case came out and when right back in
+            FreezeObjectEvents();
+            PlayerGetDestCoords(x, y);
+            PlaySE(GetDoorSoundEffect(*x, *y - 1));
+            task->data[1] = FieldAnimateDoorOpen(*x, *y - 1);
+            task->data[0] = 1;
+            break;
+        case 1:
+            if (task->data[1] < 0 || gTasks[task->data[1]].isActive != TRUE)
+            {
+                ObjectEventClearHeldMovementIfActive(&gObjectEvents[playerObjId]);
+                ObjectEventSetHeldMovement(&gObjectEvents[playerObjId], MOVEMENT_ACTION_WALK_NORMAL_UP);
+
+                if (gSaveBlock2Ptr->follower.inProgress && !gObjectEvents[followerObjId].invisible)
+                {
+                    u8 newState = DetermineFollowerState(&gObjectEvents[followerObjId], MOVEMENT_ACTION_WALK_NORMAL_UP,
+                                                        DetermineFollowerDirection(&gObjectEvents[playerObjId], &gObjectEvents[followerObjId]));
+                    ObjectEventClearHeldMovementIfActive(&gObjectEvents[followerObjId]);
+                    ObjectEventSetHeldMovement(&gObjectEvents[followerObjId], newState);
+                }
+
+                task->data[0] = 2;
+            }
+            break;
+        case 2:
+            if (IsPlayerStandingStill())
+            {
+                if (!gSaveBlock2Ptr->follower.inProgress || gObjectEvents[followerObjId].invisible) //Don't close door on follower
+                    task->data[1] = FieldAnimateDoorClose(*x, *y - 1);
+                ObjectEventClearHeldMovementIfFinished(&gObjectEvents[playerObjId]);
+                SetPlayerVisibility(0);
+                task->data[0] = 3;
+            }
+            break;
+        case 3:
+            if (task->data[1] < 0 || gTasks[task->data[1]].isActive != TRUE)
+            {
+                task->data[0] = 4;
+            }
+            break;
+        case 4:
+            if (gSaveBlock2Ptr->follower.inProgress)
+            {
+                ObjectEventClearHeldMovementIfActive(&gObjectEvents[followerObjId]);
+                ObjectEventSetHeldMovement(&gObjectEvents[followerObjId], MOVEMENT_ACTION_WALK_NORMAL_UP);
+            }
+
+            TryFadeOutOldMapMusic();
+            WarpFadeOutScreen();
+            PlayRainStoppingSoundEffect();
+            task->data[0] = 0;
+            task->func = Task_WarpAndLoadMap;
+            break;
+        case 5:
+            TryFadeOutOldMapMusic();
+            PlayRainStoppingSoundEffect();
+            task->data[0] = 0;
+            task->func = Task_WarpAndLoadMap;
+            break;
         }
-        task->data[1] = FieldAnimateDoorOpen(*x, *y - 1);
-        task->tState = 1;
-        break;
-    case 1:
-        if (task->data[1] < 0 || gTasks[task->data[1]].isActive != TRUE)
+    }
+    else {
+        struct Task *task = &gTasks[taskId];
+        s16 *x = &task->data[2];
+        s16 *y = &task->data[3];
+        struct ObjectEvent *followerObject = GetFollowerObject();
+
+        switch (task->tState)
         {
-            u8 objEventId;
-            objEventId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
-            ObjectEventClearHeldMovementIfActive(&gObjectEvents[objEventId]);
-            objEventId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
-            ObjectEventSetHeldMovement(&gObjectEvents[objEventId], MOVEMENT_ACTION_WALK_NORMAL_UP);
-            task->tState = 2;
+        case 0:
+            FreezeObjectEvents();
+            PlayerGetDestCoords(x, y);
+            PlaySE(GetDoorSoundEffect(*x, *y - 1));
+            if (followerObject)
+            {
+                // Put follower into pokeball
+                ClearObjectEventMovement(followerObject, &gSprites[followerObject->spriteId]);
+                ObjectEventSetHeldMovement(followerObject, MOVEMENT_ACTION_ENTER_POKEBALL);
+            }
+            task->data[1] = FieldAnimateDoorOpen(*x, *y - 1);
+            task->tState = 1;
+            break;
+        case 1:
+            if (task->data[1] < 0 || gTasks[task->data[1]].isActive != TRUE)
+            {
+                u8 objEventId;
+                objEventId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
+                ObjectEventClearHeldMovementIfActive(&gObjectEvents[objEventId]);
+                objEventId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
+                ObjectEventSetHeldMovement(&gObjectEvents[objEventId], MOVEMENT_ACTION_WALK_NORMAL_UP);
+                task->tState = 2;
+            }
+            break;
+        case 2:
+            if (IsPlayerStandingStill())
+            {
+                u8 objEventId;
+                task->data[1] = FieldAnimateDoorClose(*x, *y - 1);
+                objEventId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
+                ObjectEventClearHeldMovementIfFinished(&gObjectEvents[objEventId]);
+                SetPlayerVisibility(FALSE);
+                task->tState = 3;
+            }
+            break;
+        case 3:
+            if (task->data[1] < 0 || gTasks[task->data[1]].isActive != TRUE)
+            {
+                task->tState = 4;
+            }
+            break;
+        case 4:
+            TryFadeOutOldMapMusic();
+            WarpFadeOutScreen();
+            PlayRainStoppingSoundEffect();
+            task->tState = 0;
+            task->func = Task_WarpAndLoadMap;
+            break;
         }
-        break;
-    case 2:
-        if (IsPlayerStandingStill())
-        {
-            u8 objEventId;
-            task->data[1] = FieldAnimateDoorClose(*x, *y - 1);
-            objEventId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
-            ObjectEventClearHeldMovementIfFinished(&gObjectEvents[objEventId]);
-            SetPlayerVisibility(FALSE);
-            task->tState = 3;
-        }
-        break;
-    case 3:
-        if (task->data[1] < 0 || gTasks[task->data[1]].isActive != TRUE)
-        {
-            task->tState = 4;
-        }
-        break;
-    case 4:
-        TryFadeOutOldMapMusic();
-        WarpFadeOutScreen();
-        PlayRainStoppingSoundEffect();
-        task->tState = 0;
-        task->func = Task_WarpAndLoadMap;
-        break;
     }
 }
 
@@ -1034,6 +1118,8 @@ static void Task_SpinEnterWarp(u8 taskId)
     case 1:
         if (WaitForWeatherFadeIn() && IsPlayerSpinEntranceActive() != TRUE)
         {
+            FollowMe_WarpSetEnd();
+            
             UnfreezeObjectEvents();
             UnlockPlayerFieldControls();
             DestroyTask(taskId);

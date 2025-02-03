@@ -21,6 +21,7 @@
 #include "field_weather.h"
 #include "fieldmap.h"
 #include "fldeff.h"
+#include "follow_me.h"
 #include "gpu_regs.h"
 #include "heal_location.h"
 #include "io_reg.h"
@@ -65,6 +66,7 @@
 #include "vs_seeker.h"
 #include "frontier_util.h"
 #include "constants/abilities.h"
+#include "constants/event_object_movement.h"
 #include "constants/layouts.h"
 #include "constants/map_types.h"
 #include "constants/region_map_sections.h"
@@ -446,6 +448,7 @@ static void Overworld_ResetStateAfterWhiteOut(void)
         VarSet(VAR_SHOULD_END_ABNORMAL_WEATHER, 0);
         VarSet(VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_NONE);
     }
+    FollowMe_TryRemoveFollowerOnWhiteOut();
 }
 
 static void UpdateMiscOverworldStates(void)
@@ -1522,6 +1525,10 @@ static void DoCB1_Overworld(u16 newKeys, u16 heldKeys)
             PlayerStep(inputStruct.dpadDirection, newKeys, heldKeys);
         }
     }
+    
+    // if stop running but keep holding B -> fix follower frame
+    if (PlayerHasFollower() && IsPlayerOnFoot() && IsPlayerStandingStill())
+        ObjectEventSetHeldMovement(&gObjectEvents[GetFollowerObjectId()], GetFaceDirectionAnimNum(gObjectEvents[GetFollowerObjectId()].facingDirection));
 }
 
 void CB1_Overworld(void)
@@ -2053,6 +2060,7 @@ static bool32 ReturnToFieldLocal(u8 *state)
     case 1:
         InitViewGraphics();
         TryLoadTrainerHillEReaderPalette();
+        FollowMe_BindToSurfBlobOnReloadScreen();
         (*state)++;
         break;
     case 2:
@@ -2253,6 +2261,7 @@ static void InitObjectEventsLocal(void)
     TrySpawnObjectEvents(0, 0);
     UpdateFollowingPokemon();
     TryRunOnWarpIntoMapScript();
+    FollowMe_HandleSprite();
 }
 
 static void InitObjectEventsReturnToField(void)

@@ -3426,7 +3426,7 @@ u8 GetMonsStateToDoubles_2(void)
     s32 aliveCount = 0;
     s32 i;
 
-    if (OW_DOUBLE_APPROACH_WITH_ONE_MON)
+    if (OW_DOUBLE_APPROACH_WITH_ONE_MON || gSaveBlock2Ptr->follower.battlePartner)
         return PLAYER_HAS_TWO_USABLE_MONS;
 
     for (i = 0; i < PARTY_SIZE; i++)

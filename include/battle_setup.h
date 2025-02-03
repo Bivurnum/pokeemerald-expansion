@@ -43,6 +43,7 @@ void SetUpTwoTrainersBattle(void);
 bool32 GetTrainerFlagFromScriptPointer(const u8 *data);
 void SetTrainerFacingDirection(void);
 u8 GetTrainerBattleMode(void);
+bool8 GetFollowerPartner(void);
 bool8 GetTrainerFlag(void);
 bool8 HasTrainerBeenFought(u16 trainerId);
 void SetTrainerFlag(u16 trainerId);

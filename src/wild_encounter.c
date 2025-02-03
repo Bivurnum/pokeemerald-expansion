@@ -3,6 +3,7 @@
 #include "pokemon.h"
 #include "metatile_behavior.h"
 #include "fieldmap.h"
+#include "follow_me.h"
 #include "random.h"
 #include "field_player_avatar.h"
 #include "event_data.h"
@@ -771,8 +772,18 @@ void RockSmashWildEncounter(void)
         else if (WildEncounterCheck(wildPokemonInfo->encounterRate, TRUE) == TRUE
          && TryGenerateWildMon(wildPokemonInfo, WILD_AREA_ROCKS, WILD_CHECK_REPEL | WILD_CHECK_KEEN_EYE) == TRUE)
         {
-            BattleSetup_StartWildBattle();
-            gSpecialVar_Result = TRUE;
+            if (TryDoDoubleWildBattle())
+            {
+                struct Pokemon mon1 = gEnemyParty[0];
+                TryGenerateWildMon(wildPokemonInfo, WILD_AREA_ROCKS, WILD_CHECK_REPEL | WILD_CHECK_KEEN_EYE);
+                gEnemyParty[1] = mon1;
+                BattleSetup_StartDoubleWildBattle();
+                gSpecialVar_Result = TRUE;
+            }
+            else {
+                BattleSetup_StartWildBattle();
+                gSpecialVar_Result = TRUE;
+            }
         }
         else
         {
@@ -1118,6 +1129,9 @@ bool8 TryDoDoubleWildBattle(void)
     if (GetSafariZoneFlag()
       || (B_DOUBLE_WILD_REQUIRE_2_MONS == TRUE && GetMonsStateToDoubles() != PLAYER_HAS_TWO_USABLE_MONS))
         return FALSE;
+    if (gSaveBlock2Ptr->follower.battlePartner && F_FLAG_PARTNER_WILD_BATTLES != 0
+     && (FlagGet(F_FLAG_PARTNER_WILD_BATTLES) || F_FLAG_PARTNER_WILD_BATTLES == ALWAYS) && FOLLOWER_WILD_BATTLE_VS_2 == TRUE)
+        return TRUE;
     else if (B_FLAG_FORCE_DOUBLE_WILD != 0 && FlagGet(B_FLAG_FORCE_DOUBLE_WILD))
         return TRUE;
     else if (B_DOUBLE_WILD_CHANCE != 0 && ((Random() % 100) + 1 <= B_DOUBLE_WILD_CHANCE))

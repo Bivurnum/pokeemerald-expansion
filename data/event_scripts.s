@@ -29,6 +29,7 @@
 #include "constants/field_tasks.h"
 #include "constants/field_weather.h"
 #include "constants/flags.h"
+#include "constants/follow_me.h"
 #include "constants/frontier_util.h"
 #include "constants/game_stat.h"
 #include "constants/item.h"
