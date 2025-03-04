@@ -126,7 +126,7 @@ struct FishBehaviorData
     struct FishValues speed;
     struct FishValues distance;
     struct FishValues delay;
-    u8 idleMovement; // Cannot be less than 1.
+    u8 idleMovement;
 };
 
 void CB2_InitFishingGame(void);

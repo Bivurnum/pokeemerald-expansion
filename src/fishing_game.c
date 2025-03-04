@@ -1412,6 +1412,8 @@ static void SetMonIconPosition(u8 taskId)
         }
 
         // Fish idle movement.
+        if (sBehavior.idleMovement == 0) // Prevent % 0 (undefined behavior).
+            return;
         rand = (Random() % 100);
         if (rand < (FISH_IDLE_NUDGE_CHANCE / 2)) // Nudge to right.
         {
