@@ -106,6 +106,29 @@ enum {
 
 #define NUM_DEFAULT_BEHAVIORS   3 // Each rod type has a default behavior.
 
+#define TAG_FISHING_BAR         0x1000
+#define TAG_FISHING_BAR_RIGHT   0x1001
+#define TAG_SCORE_METER         0x1002
+#define TAG_PERFECT             0x1003
+#define TAG_QUESTION_MARK       0x1004
+#define TAG_VAGUE_FISH          0x1005
+#define TAG_SCORE_BACKING       0x1006
+
+struct FishValues
+{
+    u8 min;
+    u8 max;
+};
+
+struct FishBehaviorData
+{
+    u16 species;
+    struct FishValues speed;
+    struct FishValues distance;
+    struct FishValues delay;
+    u8 idleMovement; // Cannot be less than 1.
+};
+
 void CB2_InitFishingGame(void);
 void Task_InitOWMinigame(u8 taskId);
 
