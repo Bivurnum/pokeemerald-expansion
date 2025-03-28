@@ -29,11 +29,22 @@
 #define FISH_ICON_HITBOX_WIDTH          12   // Width of the fish's hitbox in number of pixels.
 #define FISH_SPEED_MULTIPLIER           100  // Global fish speed multiplier. It is a percent, so 50 would be half speed and 200 would be double speed.
 
+#define FISH_VAR_TREASURE_CHANCE        0    // Replace 0 with an unused Var to use it to change the percent chance a random treasure will spawn via scripts.
+#define DEFAULT_TREASURE_CHANCE         30   // Percent chance a random treasure will spawn if FISH_VAR_TREASURE_CHANCE is 0.
+#define TREASURE_ITEM_POOL_SIZE         14   // Number of different items allowed in the treasure pool.
+#define FISH_VAR_ITEM_RARITY            0    // Replace 0 with an unused Var to use it to change the rarity of the treasure item pool via scripts.
+                                             // Otherwise, the rarity will be determined by the type of rod used.
+                                             // This is an offset value for the table in fishing_game_treasures.h.
+                                             // Eg: If the Var is set to 2, the item pool will start AFTER the second item in the table.
+                                             // The value of this Var should always be less than the number of items in the table (or the item will always be Tiny Mushroom).
+
+#define TREASURE_ITEM_COMMON_WEIGHT     50   // The percent chance the treasure item will be restricted to the lower(more common) half of the current pool.
+
 
 // Fishing Bar Constants
 #define BAR_SPEED_MODIFIER              (FISHING_BAR_MAX_SPEED / (FISHING_BAR_MAX_SPEED / BAR_SPEED_SLOWING))
 #define FISHING_AREA_WIDTH              202  // The width of the total fishing bar area in number of pixels.
-#define FISHING_BAR_Y                   102
+#define FISHING_BAR_Y                   22
 #define FISHING_BAR_START_X             35
 #define FISHING_BAR_SEGMENT_WIDTH       32
 #define FISHING_BAR_WIDTH_MIN           33
@@ -47,33 +58,45 @@
 #define SCORE_BAR_OFFSET                ((SCORE_SECTION_WIDTH / 2) - SCORE_AREA_OFFSET) // Sets the score position in relation to SCORE_AREA_OFFSET.
 #define SCORE_INTERVAL                  (SCORE_MAX / SCORE_AREA_WIDTH)
 #define SCORE_SECTION_INIT_X            ((STARTING_SCORE / SCORE_INTERVAL) - SCORE_BAR_OFFSET)
-#define SCORE_SECTION_Y                 80
+#define SCORE_SECTION_Y                 0
 #define SCORE_SECTION_WIDTH             64   // The width of one score meter section sprite in number of pixels.
 #define NUM_SCORE_SECTIONS              (SCORE_AREA_WIDTH / SCORE_SECTION_WIDTH)
 #define NUM_COLOR_INTERVALS             64
 #define SCORE_COLOR_INTERVAL            (SCORE_AREA_WIDTH / NUM_COLOR_INTERVALS)
 #define SCORE_THIRD_SIZE                (SCORE_AREA_WIDTH / 3)
-#define SCORE_COLOR_NUM                 12 // The color position in the palette that the score meter uses.
+#define SCORE_COLOR_NUM                 12   // The color position in the palette that the score meter uses.
 
 // Pokemon Icon Constants
 #define FISH_ICON_WIDTH                 32
-#define FISH_ICON_Y                     99
+#define FISH_ICON_Y                     19
 #define FISH_ICON_START_X               36
 #define FISH_ICON_MIN_X                 26
 #define FISH_ICON_MAX_X                 ((FISHING_AREA_WIDTH - ((FISH_ICON_WIDTH / 2) + 4)) * POSITION_ADJUSTMENT)
-#define FISH_IDLE_NUDGE_CHANCE          60 // Percent chance per frame that the fish position value changes while idling.
+#define FISH_IDLE_NUDGE_CHANCE          60   // Percent chance per frame that the fish position value changes while idling.
 
 // Perfect Icon Constants
 #define PERFECT_SPRITE_WIDTH            32
 #define PERFECT_X                       ((FISHING_BAR_START_X + FISHING_AREA_WIDTH) - PERFECT_SPRITE_WIDTH)
-#define PERFECT_Y                       SCORE_SECTION_Y
+#define PERFECT_Y                       38
 
-// OW Constants
-#define OW_FISHING_BAR_Y                22
-#define OW_SCORE_SECTION_Y              0
-#define OW_FISH_ICON_Y                  19
-#define OW_PERFECT_Y                    (OW_SCORE_SECTION_Y + 38)
-#define OW_PAUSE_BEFORE_START           20 // Number of frames before the minigame starts.
+// Treasure Icon Constants
+#define TREASURE_TIME_GOAL              135  // Number of frames inside the fishing bar required to claim the treasure. Must be divisible by TREASURE_INCREMENT.
+#define TREASURE_INCREMENT              15   // Height of full treasure score meter in pixels.
+#define TREASURE_ICON_WIDTH             32
+#define TREASURE_ICON_HITBOX_WIDTH      6
+#define TREASURE_SPAWN_MIN              100  // Minimum number of frames before treasure can spawn.
+#define TREASURE_SPAWN_MAX              200  // Maximum number of frames before treasure can spawn.
+#define TREASURE_DEST_X                 230  // X position of the treasure icon after it is acquired.
+#define TREASURE_DEST_Y                 4    // Y position of the treasure icon after it is acquired.
+#define TREASURE_TILE_SIZE              4
+#define TREASURE_SCORE_COLOR_INTERVAL   (TREASURE_TIME_GOAL / NUM_COLOR_INTERVALS)
+#define TREASURE_SCORE_COLOR_NUM        10   // The color position in the palette that the treasure score meter uses.
+#define TREASURE_POST_GAME_X            109  // X position of the treasure icon to be inside the text box after battle.
+#define TREASURE_POST_GAME_Y            68  // Y position of the treasure icon to be inside the text box after battle.
+
+// Other Constants
+#define OW_PAUSE_BEFORE_START           20   // Number of frames before the minigame starts in the overworld.
+#define SEPARATE_SCREEN_MODIFIER        80
 
 
 // Sprite sheet numbers.
@@ -84,7 +107,9 @@ enum {
     PERFECT,
     QUESTION_MARK,
     VAGUE_FISH,
-    SCORE_METER_BACKING
+    SCORE_METER_BACKING,
+    TREASURE,
+    TREASURE_SCORE,
 };
 
 // Fishing bar palette values.
@@ -97,6 +122,41 @@ enum {
     OUTSIDE_3
 };
 
+// Affine anims for treasure sprites.
+enum {
+    ANIM_TREASURE_NONE,
+    ANIM_TREASURE_GROW,
+    ANIM_TREASURE_SHRINK,
+    ANIM_TREASURE_GROW_FAST,
+    ANIM_TREASURE_SHRINK_FAST
+};
+
+// Treasure state values.
+enum {
+    TREASURE_NOT_SPAWNED,
+    TREASURE_GROWING,
+    TREASURE_SPAWNED,
+    TREASURE_GOT,
+    TREASURE_END
+};
+
+// Post-battle treasure task states
+enum {
+    FISHTASK_FIRST_MSG,
+    FISHTASK_FIELD_MOVE_ANIM,
+    FISHTASK_CREATE_TREASURE_SPRITE,
+    FISHTASK_OPEN_TREASURE_CHEST,
+    FISHTASK_CREATE_ITEM_SPRITE,
+    FISHTASK_ITEM_GROW,
+    FISHTASK_WAIT_FANFARE,
+    FISHTASK_OBTAIN_ITEM,
+    FISHTASK_DESTROY_TREASURE_SPRITE,
+    FISHTASK_STOP_FIELD_MOVE_ANIM,
+    FISHTASK_ITEM_SHRINK,
+    FISHTASK_WAIT_FINAL_INPUT,
+    FISHTASK_END_TASK
+};
+
 #define FISH_DIR_LEFT   0
 #define FISH_DIR_RIGHT  1
 
@@ -104,7 +164,12 @@ enum {
 #define SCORE_MIDDLE    1
 #define SCORE_LEFT      2
 
+#define GAME_ENDED      3
+
 #define NUM_DEFAULT_BEHAVIORS   3 // Each rod type has a default behavior.
+
+#define ANIM_TREASURE_CLOSED    0
+#define ANIM_TREASURE_OPEN      16
 
 #define TAG_FISHING_BAR         0x1000
 #define TAG_FISHING_BAR_RIGHT   0x1001
@@ -113,6 +178,7 @@ enum {
 #define TAG_QUESTION_MARK       0x1004
 #define TAG_VAGUE_FISH          0x1005
 #define TAG_SCORE_BACKING       0x1006
+#define TAG_ITEM                0x1009
 
 struct FishValues
 {
@@ -129,7 +195,10 @@ struct FishBehaviorData
     u8 idleMovement;
 };
 
+#define treasure_score_frame(ptr, frame) {.data = (u8 *)ptr + (TREASURE_TILE_SIZE * TREASURE_TILE_SIZE * frame * 64)/2, .size = (TREASURE_TILE_SIZE * TREASURE_TILE_SIZE * 64)/2}
+
 void CB2_InitFishingMinigame(void);
 void Task_InitOWFishingMinigame(u8 taskId);
+void Task_DoReturnToFieldFishTreasure(u8 taskId);
 
 #endif // GUARD_FISHING_GAME_H
