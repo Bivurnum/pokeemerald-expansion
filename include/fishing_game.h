@@ -30,7 +30,7 @@
 #define FISH_SPEED_MULTIPLIER           100  // Global fish speed multiplier. It is a percent, so 50 would be half speed and 200 would be double speed.
 
 #define FISH_VAR_TREASURE_CHANCE        0    // Replace 0 with an unused Var to use it to change the percent chance a random treasure will spawn via scripts.
-#define DEFAULT_TREASURE_CHANCE         30   // Percent chance a random treasure will spawn if FISH_VAR_TREASURE_CHANCE is 0.
+#define DEFAULT_TREASURE_CHANCE         90   // Percent chance a random treasure will spawn if FISH_VAR_TREASURE_CHANCE is 0.
 #define TREASURE_ITEM_POOL_SIZE         14   // Number of different items allowed in the treasure pool.
 #define FISH_VAR_ITEM_RARITY            0    // Replace 0 with an unused Var to use it to change the rarity of the treasure item pool via scripts.
                                              // Otherwise, the rarity will be determined by the type of rod used.
