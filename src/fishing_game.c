@@ -708,6 +708,9 @@ static void VblankCB_FishingGame(void)
 #define sTreasureStartTime  data[6]
 #define sTreasScoreFrame    data[7]
 
+#define sTimer              data[1]
+#define sVelocity           data[2]
+
 #define taskData            gTasks[taskId]
 
 void CB2_InitFishingMinigame(void)
@@ -1915,6 +1918,16 @@ static void SpriteCB_Treasure(struct Sprite *sprite)
 
 }
 
+static void SpriteCB_TreasureSurfBobbing(struct Sprite *sprite)
+{
+    if (((u16)(++sprite->sTimer) & 3) == 0)
+            sprite->y2 += sprite->sVelocity;
+
+        // Reverse bob direction
+        if ((sprite->sTimer & 15) == 0)
+            sprite->sVelocity = -sprite->sVelocity;
+}
+
 static void SpriteCB_Other(struct Sprite *sprite)
 {
     if (gTasks[sprite->sTaskId].tPaused == GAME_ENDED)
@@ -1995,7 +2008,7 @@ void Task_DoReturnToFieldFishTreasure(u8 taskId)
             if (taskData.tFrameCounter == 16)
             {
                 LoadSpritePalettes(sSpritePalettes_FishingGame);
-                if (IndexOfSpritePaletteTag(TAG_FISHING_BAR) == 0xFF || TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
+                if (IndexOfSpritePaletteTag(TAG_FISHING_BAR) == 0xFF)
                 {
                     taskData.tFrameCounter = 1;
                     TreasureSpriteId = MAX_SPRITES;
@@ -2005,9 +2018,19 @@ void Task_DoReturnToFieldFishTreasure(u8 taskId)
                 else
                 {
                     spriteId = CreateSprite(&sSpriteTemplate_Treasure, TREASURE_POST_GAME_X, TREASURE_POST_GAME_Y, 1);
-                    spriteData.callback = SpriteCallbackDummy;
                     spriteData.sTaskId = taskId;
                     TreasureSpriteId = spriteId;
+                    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
+                    {
+                        spriteData.callback = SpriteCB_TreasureSurfBobbing;
+                        spriteData.sVelocity = -1;
+                        spriteData.sTimer = 6;
+                        spriteData.y--;
+                    }
+                    else
+                    {
+                        spriteData.callback = SpriteCallbackDummy;
+                    }
                     taskData.tFrameCounter = 1;
 
                     TaskState = FISHTASK_OPEN_TREASURE_CHEST;
