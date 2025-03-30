@@ -708,6 +708,7 @@ static void VblankCB_FishingGame(void)
 #define sTreasureStartTime  data[6]
 #define sTreasScoreFrame    data[7]
 
+// Data for Treasure sprite after battle
 #define sTimer              data[1]
 #define sVelocity           data[2]
 
