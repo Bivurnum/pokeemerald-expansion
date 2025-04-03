@@ -8,7 +8,6 @@
 #include "lottery_corner.h"
 #include "play_time.h"
 #include "mauville_old_man.h"
-#include "main_menu.h"
 #include "match_call.h"
 #include "lilycove_lady.h"
 #include "load_save.h"
@@ -128,7 +127,7 @@ static void ClearFrontierRecord(void)
 
 static void WarpToTruck(void)
 {
-    SetWarpDestination(MAP_GROUP(FISHING_TEST), MAP_NUM(FISHING_TEST), WARP_ID_NONE, 23, 6);
+    SetWarpDestination(MAP_GROUP(INSIDE_OF_TRUCK), MAP_NUM(INSIDE_OF_TRUCK), WARP_ID_NONE, -1, -1);
     WarpIntoMap();
 }
 
@@ -182,19 +181,10 @@ void NewGameInitData(void)
     InitLotadSizeRecord();
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
-    CreateMon(&gPlayerParty[0], SPECIES_PIKACHU, 75, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
     ResetPokemonStorageSystem();
     DeactivateAllRoamers();
+    gSaveBlock1Ptr->registeredItem = ITEM_NONE;
     ClearBag();
-    AddBagItem(ITEM_OLD_ROD, 1);
-    AddBagItem(ITEM_GOOD_ROD, 1);
-    AddBagItem(ITEM_SUPER_ROD, 1);
-    AddBagItem(ITEM_POKE_BALL, 50);
-    AddBagItem(ITEM_FULL_RESTORE, 50);
-    gSaveBlock1Ptr->registeredItem = ITEM_GOOD_ROD;
-    gSaveBlock2Ptr->playerGender = FEMALE;
-    gSaveBlock2Ptr->optionsTextSpeed = 2;
-    NewGameBirchSpeech_SetDefaultPlayerName(0);
     NewGameInitPCItems();
     ClearPokeblocks();
     ClearDecorationInventories();

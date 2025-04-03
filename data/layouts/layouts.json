@@ -4410,26 +4410,6 @@
       "secondary_tileset": "gTileset_MysteryEventsHouse",
       "border_filepath": "data/layouts/SootopolisCity_MysteryEventsHouse_1F_StairsUnblocked/border.bin",
       "blockdata_filepath": "data/layouts/SootopolisCity_MysteryEventsHouse_1F_StairsUnblocked/map.bin"
-    },
-    {
-      "id": "LAYOUT_FISHING_TEST",
-      "name": "FishingTest_Layout",
-      "width": 40,
-      "height": 22,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Rustboro",
-      "border_filepath": "data/layouts/FishingTest/border.bin",
-      "blockdata_filepath": "data/layouts/FishingTest/map.bin"
-    },
-    {
-      "id": "LAYOUT_FISHING_TEST1",
-      "name": "FishingTest1_Layout",
-      "width": 52,
-      "height": 28,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Rustboro",
-      "border_filepath": "data/layouts/FishingTest1/border.bin",
-      "blockdata_filepath": "data/layouts/FishingTest1/map.bin"
     }
   ]
 }

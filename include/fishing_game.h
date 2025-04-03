@@ -129,7 +129,7 @@ struct FishBehaviorData
     u8 idleMovement;
 };
 
-void CB2_InitFishingGame(void);
-void Task_InitOWMinigame(u8 taskId);
+void CB2_InitFishingMinigame(void);
+void Task_InitOWFishingMinigame(u8 taskId);
 
 #endif // GUARD_FISHING_GAME_H

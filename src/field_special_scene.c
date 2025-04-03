@@ -345,7 +345,7 @@ void Task_HandlePorthole(u8 taskId)
         break;
     case EXIT_PORTHOLE:
         FlagClear(FLAG_DONT_TRANSITION_MUSIC);
-        //FlagClear(FLAG_HIDE_MAP_NAME_POPUP);
+        FlagClear(FLAG_HIDE_MAP_NAME_POPUP);
         SetWarpDestinationToDynamicWarp(0);
         DoDiveWarp();
         DestroyTask(taskId);

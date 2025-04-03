@@ -2112,12 +2112,12 @@ static bool32 Fishing_StartMinigame(struct Task *task)
             task->tFrameCounter++;
         }
 
-        if (task->tFrameCounter != 0)
+        if (task->tFrameCounter == 1)
         {
             PlayBGM(MUS_TRICK_HOUSE);
-            SetMainCallback2(CB2_InitFishingGame);
+            SetMainCallback2(CB2_InitFishingMinigame);
             gMain.savedCallback = CB2_ReturnToField;
-            DestroyTask(FindTaskIdByFunc(Task_Fishing));
+            task->tFrameCounter++;
         }
     }
     else if (MINIGAME_ON_SEPARATE_SCREEN == FALSE)
@@ -2136,7 +2136,7 @@ static bool32 Fishing_StartMinigame(struct Task *task)
         task->data[11] = 0;
         task->data[12] = 0;
         task->data[13] = 0;
-        task->func = Task_InitOWMinigame;
+        task->func = Task_InitOWFishingMinigame;
     }
     return FALSE;
 }
