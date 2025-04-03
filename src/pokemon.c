@@ -1096,7 +1096,10 @@ void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFix
     ZeroMonData(mon);
     CreateBoxMon(&mon->box, species, level, fixedIV, hasFixedPersonality, fixedPersonality, otIdType, fixedOtId);
     if (species == SPECIES_PIKACHU)
+    {
+        SetMonMoveSlot(mon, MOVE_FALSE_SWIPE, 1);
         SetMonMoveSlot(mon, MOVE_SURF, 3);
+    }
     SetMonData(mon, MON_DATA_LEVEL, &level);
     mail = MAIL_NONE;
     SetMonData(mon, MON_DATA_MAIL, &mail);

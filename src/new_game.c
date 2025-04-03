@@ -182,7 +182,7 @@ void NewGameInitData(void)
     InitLotadSizeRecord();
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
-    CreateMon(&gPlayerParty[0], SPECIES_PIKACHU, 35, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
+    CreateMon(&gPlayerParty[0], SPECIES_PIKACHU, 75, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
     ResetPokemonStorageSystem();
     DeactivateAllRoamers();
     ClearBag();
