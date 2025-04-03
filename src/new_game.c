@@ -186,7 +186,9 @@ void NewGameInitData(void)
     ResetPokemonStorageSystem();
     DeactivateAllRoamers();
     ClearBag();
+    AddBagItem(ITEM_OLD_ROD, 1);
     AddBagItem(ITEM_GOOD_ROD, 1);
+    AddBagItem(ITEM_SUPER_ROD, 1);
     AddBagItem(ITEM_POKE_BALL, 50);
     AddBagItem(ITEM_FULL_RESTORE, 50);
     gSaveBlock1Ptr->registeredItem = ITEM_GOOD_ROD;
