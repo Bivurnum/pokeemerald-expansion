@@ -1188,9 +1188,8 @@ bool8 ScrCmd_resetobjectsubpriority(struct ScriptContext *ctx)
 
 bool8 ScrCmd_faceplayer(struct ScriptContext *ctx)
 {
-#if OW_ENABLE_NPC_FOLLOWERS
-    if (gSaveBlock3Ptr->NPCfollower.inProgress 
-     && gObjectEvents[GetFollowerNPCMapObjId()].invisible == FALSE 
+    if (PlayerHasFollowerNPC() 
+     && gObjectEvents[GetFollowerNPCObjectId()].invisible == FALSE 
      && gSelectedObjectEvent == GetFollowerNPCObjectId())
     {
         struct ObjectEvent *npcFollower = &gObjectEvents[GetFollowerNPCObjectId()];
@@ -1212,7 +1211,6 @@ bool8 ScrCmd_faceplayer(struct ScriptContext *ctx)
         }
         return FALSE;
     }
-#endif
     if (gObjectEvents[gSelectedObjectEvent].active)
         ObjectEventFaceOppositeDirection(&gObjectEvents[gSelectedObjectEvent], GetPlayerFacingDirection());
     return FALSE;

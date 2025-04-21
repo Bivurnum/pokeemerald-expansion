@@ -36,10 +36,6 @@
 #include "trainer_hill.h"
 #include "fldeff.h"
 
-#if OW_ENABLE_NPC_FOLLOWERS
-#include "follower_npc.h"
-#endif
-
 static void Task_ExitNonAnimDoor(u8);
 static void Task_ExitNonDoor(u8);
 static void Task_DoContestHallWarp(u8);
@@ -278,9 +274,7 @@ void FieldCB_DefaultWarpExit(void)
     Overworld_PlaySpecialMapMusic();
     WarpFadeInScreen();
     SetUpWarpExitTask();
-#if OW_ENABLE_NPC_FOLLOWERS
     FollowerNPC_WarpSetEnd();
-#endif
     LockPlayerFieldControls();
 }
 
@@ -329,9 +323,7 @@ static void Task_ExitDoor(u8 taskId)
     switch (task->tState)
     {
     case 0:
-#if OW_ENABLE_NPC_FOLLOWERS
         HideNPCFollower();
-#endif
         SetPlayerVisibility(FALSE);
         FreezeObjectEvents();
         PlayerGetDestCoords(x, y);
@@ -361,10 +353,8 @@ static void Task_ExitDoor(u8 taskId)
     case 3:
         if (task->data[1] < 0 || gTasks[task->data[1]].isActive != TRUE)
         {
-#if OW_ENABLE_NPC_FOLLOWERS
             FollowerNPC_SetIndicatorToComeOutDoor();
             FollowerNPC_WarpSetEnd();
-#endif
             UnfreezeObjectEvents();
             task->tState = 4;
         }
@@ -385,9 +375,7 @@ static void Task_ExitNonAnimDoor(u8 taskId)
     switch (task->tState)
     {
     case 0:
-#if OW_ENABLE_NPC_FOLLOWERS
         HideNPCFollower();
-#endif
         SetPlayerVisibility(FALSE);
         FreezeObjectEvents();
         PlayerGetDestCoords(x, y);
@@ -406,10 +394,8 @@ static void Task_ExitNonAnimDoor(u8 taskId)
     case 2:
         if (IsPlayerStandingStill())
         {
-#if OW_ENABLE_NPC_FOLLOWERS
             FollowerNPC_SetIndicatorToComeOutDoor();
             FollowerNPC_WarpSetEnd();
-#endif
             UnfreezeObjectEvents();
             task->tState = 3;
         }
@@ -1119,9 +1105,7 @@ static void Task_SpinEnterWarp(u8 taskId)
     case 1:
         if (WaitForWeatherFadeIn() && IsPlayerSpinEntranceActive() != TRUE)
         {
-#if OW_ENABLE_NPC_FOLLOWERS
             FollowerNPC_WarpSetEnd();
-#endif
             UnfreezeObjectEvents();
             UnlockPlayerFieldControls();
             DestroyTask(taskId);

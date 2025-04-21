@@ -507,10 +507,7 @@ static bool8 SetUpFieldMove_Dive(void);
 void TryItemHoldFormChange(struct Pokemon *mon);
 static void ShowMoveSelectWindow(u8 slot);
 static void Task_HandleWhichMoveInput(u8 taskId);
-
-#if OW_ENABLE_NPC_FOLLOWERS
 static void Task_HideFollowerForTeleport(u8);
-#endif
 
 // static const data
 #include "data/party_menu.h"
@@ -4019,9 +4016,9 @@ bool8 FieldCallback_PrepareFadeInFromMenu(void)
 {
     FadeInFromBlack();
     CreateTask(Task_FieldMoveWaitForFade, 8);
-#if OW_ENABLE_NPC_FOLLOWERS
-    CreateTask(Task_HideFollowerForTeleport, 0);
-#endif
+    if (PlayerHasFollowerNPC())
+        CreateTask(Task_HideFollowerForTeleport, 0);
+
     return TRUE;
 }
 
@@ -4032,17 +4029,16 @@ bool8 FieldCallback_PrepareFadeInForTeleport(void)
     return FieldCallback_PrepareFadeInFromMenu();
 }
 
-#if OW_ENABLE_NPC_FOLLOWERS
 #define taskState       task->data[0]
 
 static void Task_HideFollowerForTeleport(u8 taskId)
 {
-    struct ObjectEvent *follower = &gObjectEvents[GetFollowerNPCMapObjId()];
+    struct ObjectEvent *follower = &gObjectEvents[GetFollowerNPCObjectId()];
     struct Task *task;
     task = &gTasks[taskId];
     if (taskState == 0)
     {
-        if (!gSaveBlock3Ptr->NPCfollower.inProgress)
+        if (!PlayerHasFollowerNPC())
         {
             DestroyTask(taskId);
         }
@@ -4063,7 +4059,6 @@ static void Task_HideFollowerForTeleport(u8 taskId)
 }
 
 #undef taskState
-#endif
 
 static void Task_FieldMoveWaitForFade(u8 taskId)
 {
@@ -4102,10 +4097,9 @@ static void FieldCallback_Surf(void)
 
 static bool8 SetUpFieldMove_Surf(void)
 {
-#if OW_ENABLE_NPC_FOLLOWERS
     if (!CheckFollowerNPCFlag(FOLLOWER_NPC_FLAG_CAN_SURF))
         return FALSE;
-#endif
+
     if (PartyHasMonWithSurf() == TRUE && IsPlayerFacingSurfableFishableWater() == TRUE)
     {
         gFieldCallback2 = FieldCallback_PrepareFadeInFromMenu;
@@ -4125,10 +4119,9 @@ static void DisplayCantUseSurfMessage(void)
 
 static bool8 SetUpFieldMove_Fly(void)
 {
-#if OW_ENABLE_NPC_FOLLOWERS
     if (!CheckFollowerNPCFlag(FOLLOWER_NPC_FLAG_CAN_LEAVE_ROUTE))
         return FALSE;
-#endif
+
     if (Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
         return TRUE;
     else
@@ -4150,10 +4143,9 @@ static bool8 SetUpFieldMove_Waterfall(void)
 {
     s16 x, y;
 
-#if OW_ENABLE_NPC_FOLLOWERS
     if (!CheckFollowerNPCFlag(FOLLOWER_NPC_FLAG_CAN_WATERFALL))
         return FALSE;
-#endif
+
     GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
     if (MetatileBehavior_IsWaterfall(MapGridGetMetatileBehaviorAt(x, y)) == TRUE && IsPlayerSurfingNorth() == TRUE)
     {
@@ -4172,10 +4164,9 @@ static void FieldCallback_Dive(void)
 
 static bool8 SetUpFieldMove_Dive(void)
 {
-#if OW_ENABLE_NPC_FOLLOWERS
     if (!CheckFollowerNPCFlag(FOLLOWER_NPC_FLAG_CAN_DIVE))
         return FALSE;
-#endif
+
     gFieldEffectArguments[1] = TrySetDiveWarp();
     if (gFieldEffectArguments[1] != 0)
     {
@@ -7561,14 +7552,11 @@ static void Task_WaitAfterMultiPartnerPartySlideIn(u8 taskId)
     s16 *data = gTasks[taskId].data;
 
     // data[0] used as a timer afterwards rather than the x pos
-#if OW_ENABLE_NPC_FOLLOWERS
-    if (gSaveBlock3Ptr->NPCfollower.battlePartner) {
+    if (IsFollowerNPCBattlePartner()) {
         if (++data[0] == 128)
             Task_ClosePartyMenu(taskId);
     }
-    else 
-#endif
-    if (++data[0] == 256)
+    else if (++data[0] == 256)
         Task_ClosePartyMenu(taskId);
 }
 
