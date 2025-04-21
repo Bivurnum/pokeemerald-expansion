@@ -1455,7 +1455,7 @@ static void Task_FlyIntoMap(u8 taskId)
     {
         if (!FieldEffectActiveListContains(FLDEFF_FLY_IN))
         {
-            if (PlayerHasFollowerNPC())
+            if (OW_NPC_FOLLOWER_SHOW_AFTER_LEAVE_ROUTE)
                 FollowerNPCReappearAfterLeaveMap(follower, player);
 
             taskState++;
@@ -1465,7 +1465,8 @@ static void Task_FlyIntoMap(u8 taskId)
     {
         if (PlayerHasFollowerNPC() && ObjectEventClearHeldMovementIfFinished(follower))
         {
-            FollowerNPCFaceAfterLeaveMap();
+            if (OW_NPC_FOLLOWER_SHOW_AFTER_LEAVE_ROUTE)
+                FollowerNPCFaceAfterLeaveMap();
             taskState++;
         }
         else if (!PlayerHasFollowerNPC())
@@ -2483,14 +2484,18 @@ static void EscapeRopeWarpInEffect_Spin(struct Task *task)
 
     if (task->data[3] == 1)
     {
-        FollowerNPCReappearAfterLeaveMap(follower, player);
+        if (OW_NPC_FOLLOWER_SHOW_AFTER_LEAVE_ROUTE)
+            FollowerNPCReappearAfterLeaveMap(follower, player);
+
         task->data[3]++;
     }
     if (task->data[3] == 2)
     {
         if (PlayerHasFollowerNPC() && ObjectEventClearHeldMovementIfFinished(follower))
         {
-            FollowerNPCFaceAfterLeaveMap();
+            if (OW_NPC_FOLLOWER_SHOW_AFTER_LEAVE_ROUTE)
+                FollowerNPCFaceAfterLeaveMap();
+
             task->data[3]++;
         }
         else if (!PlayerHasFollowerNPC())
@@ -2705,7 +2710,9 @@ static void TeleportWarpInFieldEffect_SpinGround(struct Task *task)
         task->data[1] = 8;
         if ((++task->data[2]) > 4 && task->data[14] == player->facingDirection)
         {
-            FollowerNPCReappearAfterLeaveMap(follower, player);
+            if (OW_NPC_FOLLOWER_SHOW_AFTER_LEAVE_ROUTE)
+                FollowerNPCReappearAfterLeaveMap(follower, player);
+
             task->data[3] = 1;
         }
     }
@@ -2713,7 +2720,9 @@ static void TeleportWarpInFieldEffect_SpinGround(struct Task *task)
     {
         if (PlayerHasFollowerNPC() && ObjectEventClearHeldMovementIfFinished(follower))
         {
-            FollowerNPCFaceAfterLeaveMap();
+            if (OW_NPC_FOLLOWER_SHOW_AFTER_LEAVE_ROUTE)
+                FollowerNPCFaceAfterLeaveMap();
+
             task->data[3]++;
         }
         else if (!PlayerHasFollowerNPC())
