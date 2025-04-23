@@ -135,6 +135,7 @@ const u8 *GetFollowerNPCScriptPointer(void)
 #if OW_ENABLE_NPC_FOLLOWERS
     if (PlayerHasFollowerNPC())
         return gSaveBlock3Ptr->NPCfollower.script;
+        
 #endif
     return NULL;
 }
@@ -361,7 +362,6 @@ static u8 GetPlayerFaceToDoorDirection(struct ObjectEvent *player, struct Object
 
     if (delta_x < 0)
         return DIR_EAST;
-
     else if (delta_x > 0)
         return DIR_WEST;
 
@@ -956,7 +956,9 @@ void SetFollowerNPCSprite(u8 spriteIndex)
         ObjectEventTurn(follower, follower->facingDirection);
     }
     else
+    {
         ClearFollowerNPCData();
+    }
 }
 
 static void ChooseFirstThreeEligibleMons(void)
@@ -996,10 +998,8 @@ void NPCFollow(struct ObjectEvent *npc, u8 state, bool8 ignoreScriptActive)
 
     if (player != npc) // Only when the player moves
         return;
-
     else if (!PlayerHasFollowerNPC())
         return;
-
     else if (ArePlayerFieldControlsLocked() && !ignoreScriptActive)
         return; // Don't follow during a script
 
@@ -1038,7 +1038,9 @@ void NPCFollow(struct ObjectEvent *npc, u8 state, bool8 ignoreScriptActive)
             SetSurfBlob_BobState(follower->fieldEffectSpriteId, 1);
         }
         else
+        {
             TryUpdateFollowerNPCSpriteUnderwater();
+        }
     }
 
     dir = DetermineFollowerNPCDirection(player, follower);
@@ -1143,9 +1145,13 @@ void FollowerNPC_HandleSprite(void)
             SetFollowerNPCSprite(FOLLOWER_NPC_SPRITE_INDEX_ACRO_BIKE);
     }
     else if (gMapHeader.mapType == MAP_TYPE_UNDERWATER)
+    {
         TryUpdateFollowerNPCSpriteUnderwater();
+    }
     else
+    {
         SetFollowerNPCSprite(FOLLOWER_NPC_SPRITE_INDEX_NORMAL);
+    }
 }
 
 u8 DetermineFollowerNPCDirection(struct ObjectEvent *player, struct ObjectEvent *follower)
@@ -1258,9 +1264,13 @@ void FollowerNPC_HandleBike(void)
         return; // Sprite will automatically be adjusted when they finish surfing
 
     if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_MACH_BIKE && FollowerNPCCanBike() && GetFollowerNPCData(FNPC_DATA_COME_OUT_DOOR) != FNPC_DOOR_NEEDS_TO_EXIT) //Coming out door
+    {
         SetFollowerNPCSprite(FOLLOWER_NPC_SPRITE_INDEX_MACH_BIKE); // Mach Bike on
+    }
     else if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_ACRO_BIKE && FollowerNPCCanBike() && GetFollowerNPCData(FNPC_DATA_COME_OUT_DOOR) != FNPC_DOOR_NEEDS_TO_EXIT) //Coming out door
+    {
         SetFollowerNPCSprite(FOLLOWER_NPC_SPRITE_INDEX_ACRO_BIKE); // Acro Bike on
+    }
     else
     {
         SetFollowerNPCSprite(FOLLOWER_NPC_SPRITE_INDEX_NORMAL);
@@ -1571,6 +1581,7 @@ void ScriptDestroyFollowerNPC(struct ScriptContext *ctx)
         FlagSet(GetFollowerNPCData(FNPC_DATA_EVENT_FLAG));
         ClearFollowerNPCData();
     }
+
     UpdateFollowingPokemon();
 }
 
