@@ -45,6 +45,7 @@
 #include "mystery_gift.h"
 #include "union_room_chat.h"
 #include "constants/items.h"
+#include "follower_npc.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 
@@ -204,9 +205,7 @@ void NewGameInitData(void)
     WipeTrainerNameRecords();
     ResetTrainerHillResults();
     ResetContestLinkResults();
-#if OW_ENABLE_NPC_FOLLOWERS
-    memset(&gSaveBlock3Ptr->NPCfollower, 0, sizeof(gSaveBlock3Ptr->NPCfollower));
-#endif
+    ClearFollowerNPCData();
 }
 
 static void ResetMiniGamesRecords(void)
