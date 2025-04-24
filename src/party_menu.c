@@ -507,7 +507,7 @@ static bool8 SetUpFieldMove_Dive(void);
 void TryItemHoldFormChange(struct Pokemon *mon);
 static void ShowMoveSelectWindow(u8 slot);
 static void Task_HandleWhichMoveInput(u8 taskId);
-static void Task_HideFollowerForTeleport(u8);
+static void Task_HideFollowerNPCForTeleport(u8);
 
 // static const data
 #include "data/party_menu.h"
@@ -4017,7 +4017,7 @@ bool8 FieldCallback_PrepareFadeInFromMenu(void)
     FadeInFromBlack();
     CreateTask(Task_FieldMoveWaitForFade, 8);
     if (PlayerHasFollowerNPC())
-        CreateTask(Task_HideFollowerForTeleport, 0);
+        CreateTask(Task_HideFollowerNPCForTeleport, 0);
 
     return TRUE;
 }
@@ -4031,12 +4031,18 @@ bool8 FieldCallback_PrepareFadeInForTeleport(void)
 
 #define taskState       task->data[0]
 
-static void Task_HideFollowerForTeleport(u8 taskId)
+enum
+{
+    FNPC_WALK_INTO_PLAYER,
+    FNPC_WAIT_FOR_ANIM_FINISH
+};
+
+static void Task_HideFollowerNPCForTeleport(u8 taskId)
 {
     struct ObjectEvent *follower = &gObjectEvents[GetFollowerNPCObjectId()];
     struct Task *task;
     task = &gTasks[taskId];
-    if (taskState == 0)
+    if (taskState == FNPC_WALK_INTO_PLAYER)
     {
         if (!PlayerHasFollowerNPC())
         {
@@ -4045,10 +4051,10 @@ static void Task_HideFollowerForTeleport(u8 taskId)
         else
         {
             FollowerNPCWalkIntoPlayerForLeaveMap();
-            taskState++;
+            taskState = FNPC_WAIT_FOR_ANIM_FINISH;
         }
     }
-    if (taskState == 1)
+    if (taskState == FNPC_WAIT_FOR_ANIM_FINISH)
     {
         if (ObjectEventClearHeldMovementIfFinished(follower))
         {
