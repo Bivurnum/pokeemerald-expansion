@@ -1422,7 +1422,9 @@ static void CB2_PreInitIngamePlayerPartnerBattle(void)
         *savedCallback = gMain.savedCallback;
         *savedBattleTypeFlags = gBattleTypeFlags;
         gMain.savedCallback = CB2_PreInitIngamePlayerPartnerBattle;
-        ShowPartyMenuToShowcaseMultiBattleParty();
+        if (!PlayerHasFollowerNPC() || !FollowerNPCIsBattlePartner() || (FNPC_NPC_FOLLOWER_PARTY_PREVIEW && FollowerNPCIsBattlePartner()))
+            ShowPartyMenuToShowcaseMultiBattleParty();
+
         break;
     case 1:
         if (!gPaletteFade.active)
