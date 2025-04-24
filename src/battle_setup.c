@@ -722,7 +722,13 @@ static void CB2_EndWildBattle(void)
     ResetOamRange(0, 128);
     
     if (IsNPCFollowerWildBattle())
+    {
         RestorePartyAfterFollowerNPCBattle();
+        if (FNPC_FLAG_HEAL_AFTER_FOLLOWER_BATTLE != 0
+         && (FNPC_FLAG_HEAL_AFTER_FOLLOWER_BATTLE == FNPC_ALWAYS
+         || FlagGet(FNPC_FLAG_HEAL_AFTER_FOLLOWER_BATTLE)))
+            HealPlayerParty();
+    }
 
     if (IsPlayerDefeated(gBattleOutcome) == TRUE && !InBattlePyramid() && !InBattlePike())
     {
@@ -1466,7 +1472,13 @@ static void CB2_EndTrainerBattle(void)
     HandleBattleVariantEndParty();
 
     if (FollowerNPCIsBattlePartner())
+    {
         RestorePartyAfterFollowerNPCBattle();
+        if (FNPC_FLAG_HEAL_AFTER_FOLLOWER_BATTLE != 0
+         && (FNPC_FLAG_HEAL_AFTER_FOLLOWER_BATTLE == FNPC_ALWAYS
+         || FlagGet(FNPC_FLAG_HEAL_AFTER_FOLLOWER_BATTLE)))
+            HealPlayerParty();
+    }
 
     if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE)
     {
