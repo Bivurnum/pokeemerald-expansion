@@ -1686,6 +1686,29 @@ void ScriptUpdateFollowingMon(struct ScriptContext *ctx)
     UpdateFollowingPokemon();
 }
 
+void ScriptBallFollowingMon(struct ScriptContext *ctx)
+{
+    u16 species;
+    bool8 shiny;
+    u8 form;
+
+    if (OW_POKEMON_OBJECT_EVENTS == FALSE
+     || OW_FOLLOWERS_ENABLED == FALSE
+     || !GetFollowerInfo(&species, &form, &shiny)
+     || SpeciesToGraphicsInfo(species, form) == NULL
+     || (gMapHeader.mapType == MAP_TYPE_INDOOR && SpeciesToGraphicsInfo(species, form)->oam->size > ST_OAM_SIZE_2)
+     || FlagGet(FLAG_TEMP_HIDE_FOLLOWER)
+     || PlayerHasFollowerNPC()
+     )
+    {
+        return;
+    }
+    else
+    {
+        ReturnFollowingMonToBall();
+    }
+}
+
 void ScriptChangeFollowerNPCBattlePartner(struct ScriptContext *ctx)
 {
     u32 newBattlePartner = ScriptReadHalfword(ctx);
