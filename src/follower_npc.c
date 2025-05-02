@@ -698,17 +698,12 @@ static void CalculateFollowerNPCEscalatorTrajectoryDown(struct Task *task)
 u32 DetermineFollowerNPCState(struct ObjectEvent *follower, u32 state, u32 direction)
 {
     u32 newState = MOVEMENT_INVALID;
-    u32 collision = COLLISION_NONE;
     s16 followerX = follower->currentCoords.x;
     s16 followerY = follower->currentCoords.y;
-    u32 currentBehavior = MapGridGetMetatileBehaviorAt(followerX, followerY);
-    u32 nextBehavior;
     u32 noSpecialAnimFrames = (GetFollowerNPCSprite() == GetFollowerNPCData(FNPC_DATA_GFX_ID));
     u32 delayedState = GetFollowerNPCData(FNPC_DATA_DELAYED_STATE);
 
-        MoveCoords(direction, &followerX, &followerY);
-        nextBehavior = MapGridGetMetatileBehaviorAt(followerX, followerY);
-#endif
+    MoveCoords(direction, &followerX, &followerY);
     
     if (FindTaskIdByFunc(Task_MoveNPCFollowerAfterForcedMovement) == TASK_NONE)
         follower->facingDirectionLocked = FALSE;
@@ -729,6 +724,13 @@ u32 DetermineFollowerNPCState(struct ObjectEvent *follower, u32 state, u32 direc
     // Clear ice tile stuff.
     follower->disableAnim = FALSE;
 
+#ifdef MB_SIDEWAYS_STAIRS_RIGHT_SIDE // https://github.com/ghoulslash/pokeemerald/tree/sideways_stairs
+    u32 collision = COLLISION_NONE;
+    u32 currentBehavior = MapGridGetMetatileBehaviorAt(followerX, followerY);
+    u32 nextBehavior;
+    
+    nextBehavior = MapGridGetMetatileBehaviorAt(followerX, followerY);
+
     // Clear overwrite movement.
     follower->directionOverwrite = DIR_NONE;
 
@@ -743,6 +745,7 @@ u32 DetermineFollowerNPCState(struct ObjectEvent *follower, u32 state, u32 direc
         follower->directionOverwrite = GetRightSideStairsDirection(direction);
         break;
     }
+#endif
 
     switch (state) 
     {
@@ -900,12 +903,14 @@ u32 DetermineFollowerNPCState(struct ObjectEvent *follower, u32 state, u32 direc
             RETURN_STATE(MOVEMENT_ACTION_WALK_NORMAL_DOWN, direction);
         }
 
+#ifdef MB_SIDEWAYS_STAIRS_RIGHT_SIDE // https://github.com/ghoulslash/pokeemerald/tree/sideways_stairs
     // Run slow.
     case MOVEMENT_ACTION_RUN_DOWN_SLOW ... MOVEMENT_ACTION_RUN_RIGHT_SLOW:
         if (CheckFollowerNPCFlag(FOLLOWER_NPC_FLAG_HAS_RUNNING_FRAMES))
             RETURN_STATE(MOVEMENT_ACTION_RUN_DOWN_SLOW, direction);
 
         RETURN_STATE(MOVEMENT_ACTION_WALK_NORMAL_DOWN, direction);
+#endif
 
     default:
         return MOVEMENT_INVALID;
