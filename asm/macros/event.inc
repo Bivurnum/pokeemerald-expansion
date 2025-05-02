@@ -2523,7 +2523,7 @@
 
 	@ Sets an NPC up to follow the player.
 	@ If you want to specify a battle partner without specifying a custom script, you can set the script parameter to 0.
-    .macro setfollowernpc localId:req, flags:req, script=0, battlePartner=0
+	.macro setfollowernpc localId:req, flags:req, script=0, battlePartner=0
 	checkfollowernpc
 	goto_if_eq VAR_RESULT, TRUE, 1f
 	ballfollowingmon
@@ -2540,35 +2540,35 @@
 	.4byte \script
 	updatefollowingmon
 	1:
-    .endm
-    
-    @ Removes the NPC follower (assumes there will only ever be one).
-    .macro destroyfollowernpc
-    callnative ScriptDestroyFollowerNPC
-    .endm
-    
-    @ Makes the player and NPC follower face one another.
-    .macro facefollowernpc
-    callnative ScriptFaceFollowerNPC
-    .endm
+	.endm
 
-    @ Makes the NPC follower walk into the player and get hidden.
-    @ Optionally, you can set the walk speed for the movement:
-    @ 0 = Slow
-    @ 1 = Normal (default)
-    @ 2 = Fast
-    @ 3 = Faster
-    .macro hidefollowernpc speed=1
-    callnative ScriptHideNPCFollower
-    .byte \speed
-    waitmovement OBJ_EVENT_ID_NPC_FOLLOWER
-    callnative HideNPCFollower
-    .endm
-    
-    @ Checks if you have an NPC follower. Returns the result to VAR_RESULT.
-    .macro checkfollowernpc
-    callnative ScriptCheckFollowerNPC
-    .endm
+	@ Remove the follower NPC (assumes there will only ever be one).
+	.macro destroyfollowernpc
+	callnative ScriptDestroyFollowerNPC
+	.endm
+
+	@ Makes the player and follower NPC face one another.
+	.macro facefollowernpc
+	callnative ScriptFaceFollowerNPC
+	.endm
+
+	@ Makes the follower NPC walk into the player and get hidden.
+	@ Optionally, you can set the walk speed for the movement:
+	@ 0 = Slow
+	@ 1 = Normal (default)
+	@ 2 = Fast
+	@ 3 = Faster
+	.macro hidefollowernpc speed=1
+	callnative ScriptHideNPCFollower
+	.byte \speed
+	waitmovement OBJ_EVENT_ID_NPC_FOLLOWER
+	callnative HideNPCFollower
+	.endm
+
+	@ Checks if you have a follower NPC. Returns the result to VAR_RESULT.
+	.macro checkfollowernpc
+	callnative ScriptCheckFollowerNPC
+	.endm
 
 	@ Updates Pokemon follower.
 	.macro updatefollowingmon
