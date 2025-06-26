@@ -87,6 +87,16 @@ enum FollowerNPCCreateDebugMenu
     DEBUG_FNPC_COUNT,
 };
 
+enum DebugFollowerNPCFlags
+{
+    DEBUG_FNPC_BIKE,
+    DEBUG_FNPC_LEAVE_ROUTE,
+    DEBUG_FNPC_SURF,
+    DEBUG_FNPC_WATERFALL,
+    DEBUG_FNPC_DIVE,
+    DEBUG_FNPC_CLEAR_ON_WHITE_OUT,
+};
+
 enum FlagsVarsDebugMenu
 {
     DEBUG_FLAGVAR_MENU_ITEM_FLAGS,
@@ -240,10 +250,12 @@ static void DebugAction_OpenSubMenu(u8 taskId, const struct DebugMenuOption *ite
 static void DebugAction_OpenSubMenuFlagsVars(u8 taskId);
 static void DebugAction_OpenSubMenuFakeRTC(u8 taskId, const struct DebugMenuOption *items);
 static void DebugAction_OpenSubMenuCreateFollowerNPC(u8 taskId, const struct DebugMenuOption *items);
+static void DebugAction_OpenSubMenuFollowerNPCFlags(u8 taskId);
 static void DebugAction_ExecuteScript(u8 taskId, const u8 *script);
 
 static void DebugTask_HandleMenuInput_General(u8 taskId);
 static void DebugTask_HandleMenuInput_FlagsVars(u8 taskId);
+static void DebugTask_HandleMenuInput_FollowerNPCFlags(u8 taskId);
 
 static void DebugAction_Util_Fly(u8 taskId);
 static void DebugAction_Util_Warp_Warp(u8 taskId);
@@ -260,6 +272,11 @@ static void DebugAction_TimeMenu_ChangeWeekdays(u8 taskId);
 
 static void DebugAction_CreateFollowerNPC(u8 taskId);
 static void DebugAction_DestroyFollowerNPC(u8 taskId);
+static void Debug_ToggleFollowerNPCFlag(u32 input);
+static bool32 Debug_CheckFNPCFlags(u32 flag);
+static void Debug_GenerateFollowerNPCFlagList(u8 totalItems);
+static void Debug_RefreshFollowerNPCFlagList(u8 taskId);
+static void Debug_RedrawFollowerNPCFlagList(u8 taskId);
 
 static void DebugAction_PCBag_Fill_PCBoxes_Fast(u8 taskId);
 static void DebugAction_PCBag_Fill_PCBoxes_Slow(u8 taskId);
@@ -500,6 +517,17 @@ static const struct DebugMenuOption sDebugMenu_Actions_FollowerNPCMenu_Create[] 
     { NULL }
 };
 
+static const struct DebugMenuOption sDebugMenu_Actions_FollowerNPCFlags[] =
+{
+    [DEBUG_FNPC_BIKE]               = { COMPOUND_STRING("{STR_VAR_1}Can Bike") },
+    [DEBUG_FNPC_LEAVE_ROUTE]        = { COMPOUND_STRING("{STR_VAR_1}Can Leave Route") },
+    [DEBUG_FNPC_SURF]               = { COMPOUND_STRING("{STR_VAR_1}Can Surf") },
+    [DEBUG_FNPC_WATERFALL]          = { COMPOUND_STRING("{STR_VAR_1}Can Waterfall") },
+    [DEBUG_FNPC_DIVE]               = { COMPOUND_STRING("{STR_VAR_1}Can Dive") },
+    [DEBUG_FNPC_CLEAR_ON_WHITE_OUT] = { COMPOUND_STRING("{STR_VAR_1}Clear on White Out") },
+    { NULL }
+};
+
 static const struct DebugMenuOption sDebugMenu_Actions_TimeMenu[] =
 {
     { COMPOUND_STRING("Get time…"),         DebugAction_ExecuteScript, Debug_EventScript_TellTheTime },
@@ -525,6 +553,7 @@ static const struct DebugMenuOption sDebugMenu_Actions_FollowerNPCMenu[] =
 {
     { COMPOUND_STRING("Create Follower"),  DebugAction_OpenSubMenuCreateFollowerNPC, sDebugMenu_Actions_FollowerNPCMenu_Create },
     { COMPOUND_STRING("Destroy Follower"), DebugAction_DestroyFollowerNPC },
+    { COMPOUND_STRING("Toggle Flags"),     DebugAction_OpenSubMenuFollowerNPCFlags,  sDebugMenu_Actions_FollowerNPCFlags},
     { NULL }
 };
 
@@ -822,7 +851,8 @@ static bool32 IsSubMenuAction(const void *action)
     return action == DebugAction_OpenSubMenu
         || action == DebugAction_OpenSubMenuFlagsVars
         || action == DebugAction_OpenSubMenuFakeRTC
-        || action == DebugAction_OpenSubMenuCreateFollowerNPC;
+        || action == DebugAction_OpenSubMenuCreateFollowerNPC
+        || action == DebugAction_OpenSubMenuFollowerNPCFlags;
 }
 
 static void Debug_ShowMenu(DebugFunc HandleInput, const struct DebugMenuOption *items)
@@ -1190,7 +1220,6 @@ static void DebugTask_HandleMenuInput_General(u8 taskId)
     }
 }
 
-
 static void DebugTask_HandleMenuInput_FlagsVars(u8 taskId)
 {
     DebugSubmenuFunc func;
@@ -1272,6 +1301,33 @@ static void DebugAction_OpenSubMenuCreateFollowerNPC(u8 taskId, const struct Deb
     else
     {
         Debug_DestroyMenu_Full_Script(taskId, Debug_Follower_NPC_Not_Enabled);
+    }
+}
+
+static void DebugAction_OpenSubMenuFollowerNPCFlags(u8 taskId)
+{
+    Debug_DestroyMenu(taskId);
+    sDebugMenuListData->listId = 2;
+    Debug_RefreshFollowerNPCFlagList(taskId);
+    Debug_ShowMenuFromTemplate(DebugTask_HandleMenuInput_FollowerNPCFlags, gMultiuseListMenuTemplate);
+}
+
+static void DebugTask_HandleMenuInput_FollowerNPCFlags(u8 taskId)
+{
+    u32 input = ListMenu_ProcessInput(gTasks[taskId].tMenuTaskId);
+
+    if (JOY_NEW(A_BUTTON))
+    {
+        PlaySE(SE_SELECT);
+        Debug_ToggleFollowerNPCFlag(input);
+        Debug_GenerateFollowerNPCFlagList(gMultiuseListMenuTemplate.totalItems);
+        Debug_RedrawFollowerNPCFlagList(taskId);
+    }
+    else if (JOY_NEW(B_BUTTON))
+    {
+        PlaySE(SE_SELECT);
+        Debug_DestroyMenu(taskId);
+        Debug_ShowMainMenu();
     }
 }
 
@@ -3458,6 +3514,149 @@ static void DebugAction_DestroyFollowerNPC(u8 taskId)
     {
         Debug_DestroyMenu_Full_Script(taskId, Debug_Follower_NPC_Not_Enabled);
     }
+}
+
+static void Debug_ToggleFollowerNPCFlag(u32 input)
+{
+    u32 flag = 0;
+
+    switch (input)
+    {
+    case DEBUG_FNPC_BIKE:
+        flag = FOLLOWER_NPC_FLAG_CAN_BIKE;
+        break;
+    case DEBUG_FNPC_LEAVE_ROUTE:
+        flag = FOLLOWER_NPC_FLAG_CAN_LEAVE_ROUTE;
+        break;
+    case DEBUG_FNPC_SURF:
+        flag = FOLLOWER_NPC_FLAG_CAN_SURF;
+        break;
+    case DEBUG_FNPC_WATERFALL:
+        flag = FOLLOWER_NPC_FLAG_CAN_WATERFALL;
+        break;
+    case DEBUG_FNPC_DIVE:
+        flag = FOLLOWER_NPC_FLAG_CAN_DIVE;
+        break;
+    case DEBUG_FNPC_CLEAR_ON_WHITE_OUT:
+        flag = FOLLOWER_NPC_FLAG_CLEAR_ON_WHITE_OUT;
+    }
+
+    ToggleFollowerNPCFlag(flag);
+}
+
+static bool32 Debug_CheckFNPCFlags(u32 flag)
+{
+    bool32 result = 0xFF;
+
+    switch (flag)
+    {
+    case DEBUG_FNPC_BIKE:
+        result = (GetFollowerNPCData(FNPC_DATA_FOLLOWER_FLAGS) & FOLLOWER_NPC_FLAG_CAN_BIKE);
+        break;
+    case DEBUG_FNPC_LEAVE_ROUTE:
+        result = (GetFollowerNPCData(FNPC_DATA_FOLLOWER_FLAGS) & FOLLOWER_NPC_FLAG_CAN_LEAVE_ROUTE);
+        break;
+    case DEBUG_FNPC_SURF:
+        result = (GetFollowerNPCData(FNPC_DATA_FOLLOWER_FLAGS) & FOLLOWER_NPC_FLAG_CAN_SURF);
+        break;
+    case DEBUG_FNPC_WATERFALL:
+        result = (GetFollowerNPCData(FNPC_DATA_FOLLOWER_FLAGS) & FOLLOWER_NPC_FLAG_CAN_WATERFALL);
+        break;
+    case DEBUG_FNPC_DIVE:
+        result = (GetFollowerNPCData(FNPC_DATA_FOLLOWER_FLAGS) & FOLLOWER_NPC_FLAG_CAN_DIVE);
+        break;
+    case DEBUG_FNPC_CLEAR_ON_WHITE_OUT:
+        result = (GetFollowerNPCData(FNPC_DATA_FOLLOWER_FLAGS) & FOLLOWER_NPC_FLAG_CLEAR_ON_WHITE_OUT);
+        break;
+    }
+
+    return result;
+}
+
+static void Debug_GenerateFollowerNPCFlagList(u8 totalItems)
+{
+    const u8 sColor_Red[] = _("{COLOR RED}");
+    const u8 sColor_Green[] = _("{COLOR GREEN}");
+    u32 i, flagResult = 0;
+    u8 const *name = NULL;
+
+    // Copy item names for all entries but the last (which is Cancel)
+    for (i = 0; i < totalItems; i++)
+    {
+        if (sDebugMenuListData->listId == 2)
+        {
+            flagResult = Debug_CheckFNPCFlags(i);
+            name = sDebugMenu_Actions_FollowerNPCFlags[i].text;
+        }
+
+        if (flagResult == 0xFF)
+        {
+            StringCopy(&sDebugMenuListData->itemNames[i][0], name);
+        }
+        else if (flagResult)
+        {
+            StringCopy(gStringVar1, sColor_Green);
+            StringExpandPlaceholders(gStringVar4, name);
+            StringCopy(&sDebugMenuListData->itemNames[i][0], gStringVar4);
+        }
+        else
+        {
+            StringCopy(gStringVar1, sColor_Red);
+            StringExpandPlaceholders(gStringVar4, name);
+            StringCopy(&sDebugMenuListData->itemNames[i][0], gStringVar4);
+        }
+
+        sDebugMenuListData->listItems[i].name = &sDebugMenuListData->itemNames[i][0];
+        sDebugMenuListData->listItems[i].id = i;
+    }
+}
+
+static void Debug_RefreshFollowerNPCFlagList(u8 taskId)
+{
+    u8 totalItems = 0;
+
+    if (sDebugMenuListData->listId == 2)
+    {
+        for (u32 i = 0; i < ARRAY_COUNT(sDebugMenu_Actions_FollowerNPCFlags); i++)
+        {
+            sDebugMenuListData->listItems[i].id = i;
+            sDebugMenuListData->listItems[i].name = sDebugMenu_Actions_FollowerNPCFlags[i].text;
+        }
+        totalItems = gMultiuseListMenuTemplate.totalItems = ARRAY_COUNT(sDebugMenu_Actions_FollowerNPCFlags) - 1;
+    }
+
+    // Failsafe to prevent memory corruption
+    totalItems = min(totalItems, DEBUG_MAX_MENU_ITEMS);
+    Debug_GenerateFollowerNPCFlagList(totalItems);
+
+    // Set list menu data
+    gMultiuseListMenuTemplate.items = sDebugMenuListData->listItems;
+    gMultiuseListMenuTemplate.totalItems = totalItems;
+    gMultiuseListMenuTemplate.maxShowed = DEBUG_MENU_HEIGHT_MAIN;
+    gMultiuseListMenuTemplate.windowId = gTasks[taskId].tWindowId;
+    gMultiuseListMenuTemplate.header_X = 0;
+    gMultiuseListMenuTemplate.item_X = 8;
+    gMultiuseListMenuTemplate.cursor_X = 0;
+    gMultiuseListMenuTemplate.upText_Y = 1;
+    gMultiuseListMenuTemplate.cursorPal = 2;
+    gMultiuseListMenuTemplate.fillValue = 1;
+    gMultiuseListMenuTemplate.cursorShadowPal = 3;
+    gMultiuseListMenuTemplate.lettersSpacing = 1;
+    gMultiuseListMenuTemplate.itemVerticalPadding = 0;
+    gMultiuseListMenuTemplate.scrollMultiple = LIST_NO_MULTIPLE_SCROLL;
+    gMultiuseListMenuTemplate.fontId = 1;
+    gMultiuseListMenuTemplate.cursorKind = 0;
+}
+
+static void Debug_RedrawFollowerNPCFlagList(u8 taskId)
+{
+    u8 listTaskId = gTasks[taskId].tMenuTaskId;
+    u16 scrollOffset, selectedRow;
+    ListMenuGetScrollAndRow(listTaskId, &scrollOffset, &selectedRow);
+
+    DestroyListMenuTask(gTasks[taskId].tMenuTaskId, &scrollOffset, &selectedRow);
+    Debug_RefreshFollowerNPCFlagList(taskId);
+    gTasks[taskId].tMenuTaskId = ListMenuInit(&gMultiuseListMenuTemplate, scrollOffset, selectedRow);
 }
 
 #undef tCurrentSong

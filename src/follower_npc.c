@@ -4,6 +4,7 @@
 #include "battle.h"
 #include "battle_setup.h"
 #include "battle_tower.h"
+#include "bike.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "event_scripts.h"
@@ -1242,6 +1243,49 @@ bool32 CheckFollowerNPCFlag(u32 flag)
         return TRUE;
 
     return FALSE;
+}
+
+void ToggleFollowerNPCFlag(u32 flag)
+{
+    u32 flags = GetFollowerNPCData(FNPC_DATA_FOLLOWER_FLAGS);
+    if (flags & flag)
+    {
+        switch (flag)
+        {
+        case FOLLOWER_NPC_FLAG_CAN_BIKE:
+            u32 behavior;
+            behavior = MapGridGetMetatileBehaviorAt(gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x, gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y);
+            if (FlagGet(FLAG_SYS_CYCLING_ROAD) == FALSE
+             && MetatileBehavior_IsVerticalRail(behavior) == FALSE
+             && MetatileBehavior_IsHorizontalRail(behavior) == FALSE
+             && MetatileBehavior_IsIsolatedVerticalRail(behavior) == FALSE
+             && MetatileBehavior_IsIsolatedHorizontalRail(behavior) == FALSE)
+            {
+                if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_BIKE))
+                {
+                    GetOnOffBike(0);
+                    FollowerNPC_HandleSprite();
+                }
+                SetFollowerNPCData(FNPC_DATA_FOLLOWER_FLAGS, (flags &= ~flag));
+            }
+            break;
+        case FOLLOWER_NPC_FLAG_CAN_SURF:
+            if (!TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING) && !TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_UNDERWATER))
+                SetFollowerNPCData(FNPC_DATA_FOLLOWER_FLAGS, (flags &= ~flag));
+            break;
+        case FOLLOWER_NPC_FLAG_CAN_DIVE:
+            if (!TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_UNDERWATER))
+                SetFollowerNPCData(FNPC_DATA_FOLLOWER_FLAGS, (flags &= ~flag));
+            break;
+        default:
+            SetFollowerNPCData(FNPC_DATA_FOLLOWER_FLAGS, (flags &= ~flag));
+            break;
+        }
+    }
+    else
+    {
+        SetFollowerNPCData(FNPC_DATA_FOLLOWER_FLAGS, (flags |= flag));
+    }
 }
 
 bool32 FollowerNPC_IsCollisionExempt(struct ObjectEvent *obstacle, struct ObjectEvent *collider)

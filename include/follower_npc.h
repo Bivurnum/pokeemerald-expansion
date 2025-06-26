@@ -94,6 +94,7 @@ void FollowerNPC_HandleSprite(void);
 u32 DetermineFollowerNPCDirection(struct ObjectEvent *player, struct ObjectEvent *follower);
 u32 GetFollowerNPCObjectId(void);
 bool32 CheckFollowerNPCFlag(u32 flag);
+void ToggleFollowerNPCFlag(u32 flag);
 bool32 FollowerNPC_IsCollisionExempt(struct ObjectEvent *obstacle, struct ObjectEvent *collider);
 void HideNPCFollower(void);
 void FollowerNPC_WarpSetEnd(void);
