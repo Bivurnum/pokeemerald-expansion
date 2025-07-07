@@ -91,7 +91,9 @@ PetalburgCity_EventScript_Boy::
 	end
 
 PetalburgCity_EventScript_WallysMom::
-	msgbox PetalburgCity_Text_WhereIsWally, MSGBOX_NPC
+    lock
+    startspa
+    releaseall
 	end
 
 PetalburgCity_Movement_WalkToWallyHousePlayer:

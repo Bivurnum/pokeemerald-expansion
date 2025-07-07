@@ -2639,3 +2639,9 @@
 	callnative ScriptChangeFollowerNPCBattlePartner
 	.2byte \battlePartner
 	.endm
+
+    @ Start spa game.
+    .macro startspa
+    callnative Script_StartSpa
+    waitstate
+    .endm
