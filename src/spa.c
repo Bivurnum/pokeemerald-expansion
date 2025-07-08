@@ -728,11 +728,9 @@ static void SpriteCB_RatEarLeft(struct Sprite *sprite)
 
     if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
     {
-        if (sprite->y2 != 0)
+        if (sprite->y2 < 0)
         {
-            sprite->y2 /= 2;
-            if (sprite->y2 > -2)
-                sprite->y2++;
+            sprite->y2++;
         }
     }
     else
@@ -754,11 +752,9 @@ static void SpriteCB_RatEarRight(struct Sprite *sprite)
 
     if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
     {
-        if (sprite->y2 != 0)
+        if (sprite->y2 < 0)
         {
-            sprite->y2 /= 2;
-            if (sprite->y2 > -2)
-                sprite->y2++;
+            sprite->y2++;
         }
     }
     else
@@ -780,11 +776,9 @@ static void SpriteCB_RatMouth(struct Sprite *sprite)
 
     if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
     {
-        if (sprite->y2 != 0)
+        if (sprite->y2 < 0)
         {
-            sprite->y2 /= 2;
-            if (sprite->y2 > -2)
-                sprite->y2++;
+            sprite->y2++;
         }
     }
     else
@@ -810,11 +804,9 @@ static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
         {
             StartSpriteAnim(sprite, 0);
         }
-        if (sprite->y2 != 0)
+        if (sprite->y2 < 0)
         {
-            sprite->y2 /= 2;
-            if (sprite->y2 > -2)
-                sprite->y2++;
+            sprite->y2++;
         }
     }
     else
@@ -841,11 +833,9 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
         {
             StartSpriteAnim(sprite, 0);
         }
-        if (sprite->y2 != 0)
+        if (sprite->y2 < 0)
         {
-            sprite->y2 /= 2;
-            if (sprite->y2 > -2)
-                sprite->y2++;
+            sprite->y2++;
         }
     }
     else
@@ -889,7 +879,6 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             {
                 StartSpriteAnim(sprite, 1);
                 sHandState = HAND_PET;
-                return;
             }
             else
             {
@@ -909,7 +898,6 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             {
                 StartSpriteAnim(sprite, 1);
                 sHandState = HAND_PET;
-                return;
             }
             else
             {
@@ -926,7 +914,6 @@ static void SpriteCB_Hand(struct Sprite *sprite)
         {
             StartSpriteAnim(sprite, 0);
             sHandState = HAND_NORMAL;
-            return;
         }
         break;
     }
@@ -990,6 +977,8 @@ static bool8 IsHandInPettingArea(struct Sprite *sprite)
                 {
                     gTasks[sprite->data[0]].tPetArea = RatPettingZones[i][4];
                     VarSet(VAR_BODY_COUNTER, 0);
+                    if (gTasks[sprite->data[0]].tPetArea == RAT_PET_BODY)
+                        sprite->subpriority = 11;
                 }
                 return TRUE;
             }
@@ -1005,6 +994,7 @@ static void StopPetting(struct Sprite *sprite)
     {
         gTasks[sprite->data[0]].tPetArea = RAT_PET_NONE;
         VarSet(VAR_BODY_COUNTER, 0);
+        sprite->subpriority = 5;
     }
 }
 
@@ -1028,11 +1018,14 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
     case RAT_PET_NONE:
         if (counter == 0)
         {
-            sprite->y2 = 0;
             StartSpriteAnim(sprite, 0);
             counter++;
             VarSet(VAR_BODY_COUNTER, counter);
             sCounter = 0;
+        }
+        if (sprite->y2 < 0)
+        {
+            sprite->y2++;
         }
         if (sCounter == sInterval)
         {
@@ -1052,6 +1045,10 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
             StartSpriteAnim(sprite, 2);
             counter++;
             VarSet(VAR_BODY_COUNTER, counter);
+        }
+        if (sprite->y2 < 0)
+        {
+            sprite->y2++;
         }
         break;
     case RAT_PET_HEAD:
