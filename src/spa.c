@@ -40,7 +40,9 @@ static void SpriteCB_Hand(struct Sprite *sprite);
 static bool8 IsHandInPettingArea(struct Sprite *sprite);
 static void StopPetting(struct Sprite *sprite);
 static bool8 IsHandOnItemsIcon(struct Sprite *sprite);
+static bool8 IsHandOnExitIcon(struct Sprite *sprite);
 static void SpriteCB_ItemsIcon(struct Sprite *sprite);
+static void SpriteCB_ExitIcon(struct Sprite *sprite);
 
 static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.lz");
 static const u32 gSpaBG_Tilemap[] = INCBIN_U32("graphics/_spa/spa_bg.bin.lz");
@@ -63,6 +65,7 @@ static const u32 gHand_Gfx[] = INCBIN_U32("graphics/_spa/hand.4bpp");
 
 static const u16 gItemsIcon_Pal[] = INCBIN_U16("graphics/_spa/items_icon.gbapal");
 static const u32 gItemsIcon_Gfx[] = INCBIN_U32("graphics/_spa/items_icon.4bpp");
+static const u32 gExitIcon_Gfx[] = INCBIN_U32("graphics/_spa/exit_icon.4bpp");
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -246,17 +249,17 @@ static const union AnimCmd * const sAnims_Hand[] =
     sAnim_HandFood,
 };
 
-static const union AnimCmd sAnim_ItemsIconPress[] =
+static const union AnimCmd sAnim_IconPress[] =
 {
     ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
     ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
     ANIMCMD_END
 };
 
-static const union AnimCmd * const sAnims_ItemsIcon[] =
+static const union AnimCmd * const sAnims_Icon[] =
 {
     sAnim_Normal,
-    sAnim_ItemsIconPress,
+    sAnim_IconPress,
 };
 
 static const struct SpriteFrameImage sPicTable_RatBodyLeft[] =
@@ -331,6 +334,12 @@ static const struct SpriteFrameImage sPicTable_ItemsIcon[] =
 {
     spa_frame(gItemsIcon_Gfx, 0, 4, 4),
     spa_frame(gItemsIcon_Gfx, 1, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_ExitIcon[] =
+{
+    spa_frame(gExitIcon_Gfx, 0, 4, 4),
+    spa_frame(gExitIcon_Gfx, 1, 4, 4),
 };
 
 static const struct OamData sOam_64x64 =
@@ -527,10 +536,21 @@ static const struct SpriteTemplate sSpriteTemplate_ItemsIcon =
     .tileTag = TAG_NONE,
     .paletteTag = TAG_ITEMS_ICON,
     .oam = &sOam_32x32,
-    .anims = sAnims_ItemsIcon,
+    .anims = sAnims_Icon,
     .images = sPicTable_ItemsIcon,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_ItemsIcon
+};
+
+static const struct SpriteTemplate sSpriteTemplate_ExitIcon =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_ITEMS_ICON,
+    .oam = &sOam_32x32,
+    .anims = sAnims_Icon,
+    .images = sPicTable_ExitIcon,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_ExitIcon
 };
 
 static const struct SpritePalette sSpritePalettes_RattataSpa[] =
@@ -659,6 +679,10 @@ static void CreateRattataSprites(u8 taskId)
     spriteId = CreateSprite(&sSpriteTemplate_ItemsIcon, 16, 16, 7);
     gSprites[spriteId].data[0] = taskId;
     VarSet(VAR_ITEMS_ICON_SPRITE_ID, spriteId);
+
+    spriteId = CreateSprite(&sSpriteTemplate_ExitIcon, 224, 16, 7);
+    gSprites[spriteId].data[0] = taskId;
+    VarSet(VAR_ITEMS_EXIT_SPRITE_ID, spriteId);
 }
 
 static void VblankCB_SpaGame(void)
@@ -896,6 +920,12 @@ static void SpriteCB_Hand(struct Sprite *sprite)
                 sprite->invisible = TRUE;
                 return;
             }
+            else if (IsHandOnExitIcon(sprite))
+            {
+                StartSpriteAnim(&gSprites[VarGet(VAR_ITEMS_EXIT_SPRITE_ID)], 1);
+                sprite->invisible = TRUE;
+                return;
+            }
         }
         else if (JOY_HELD(A_BUTTON))
         {
@@ -947,8 +977,8 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             sprite->x++;
 
         sprite->x++;
-        if (sprite->x > 232)
-            sprite->x = 232;
+        if (sprite->x > 240)
+            sprite->x = 240;
     }
     if (JOY_HELD(DPAD_LEFT))
     {
@@ -1006,6 +1036,14 @@ static void StopPetting(struct Sprite *sprite)
 static bool8 IsHandOnItemsIcon(struct Sprite *sprite)
 {
     if (sprite->x < 38 && sprite->y < 38)
+        return TRUE;
+
+    return FALSE;
+}
+
+static bool8 IsHandOnExitIcon(struct Sprite *sprite)
+{
+    if (sprite->x > 216 && sprite->y < 38)
         return TRUE;
 
     return FALSE;
@@ -1076,6 +1114,11 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
 }
 
 static void SpriteCB_ItemsIcon(struct Sprite *sprite)
+{
+
+}
+
+static void SpriteCB_ExitIcon(struct Sprite *sprite)
 {
 
 }
