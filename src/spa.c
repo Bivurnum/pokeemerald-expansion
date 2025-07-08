@@ -572,6 +572,10 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 
 // Task data.
 #define tPetArea    data[0]
+#define tShouldExit data[15]
+
+// Sprite data.
+#define sTaskId     data[0]
 
 void CB2_InitRattata(void)
 {
@@ -641,47 +645,47 @@ static void CreateRattataSprites(u8 taskId)
     u8 spriteId;
 
     spriteId = CreateSprite(&sSpriteTemplate_RatBodyLeft, 86, 73, 12);
-    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].sTaskId = taskId;
     StartSpriteAnim(&gSprites[spriteId], 1);
 
     spriteId = CreateSprite(&sSpriteTemplate_RatBodyRight, 150, 81, 12);
-    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].sTaskId = taskId;
     StartSpriteAnim(&gSprites[spriteId], 1);
 
     spriteId = CreateSprite(&sSpriteTemplate_RatTail, 80, 33, 11);
-    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_RatEarLeft, 111, 32, 10);
-    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_RatEarRight, 175, 32, 10);
-    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_RatMouth, 144, 80, 10);
-    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_RatWhiskerLeft, 88, 59, 9);
-    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_RatWhiskerRight, 199, 57, 9);
-    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_RatToes, 96, 109, 12);
-    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_RatEyes, 146, 63, 8);
-    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].sTaskId = taskId;
     gSprites[spriteId].data[2] = (Random() % 180) + 180;
 
-    spriteId = CreateSprite(&sSpriteTemplate_Hand, 220, 20, 5);
-    gSprites[spriteId].data[0] = taskId;
+    spriteId = CreateSprite(&sSpriteTemplate_Hand, 220, 52, 5);
+    gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_ItemsIcon, 16, 16, 7);
-    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].sTaskId = taskId;
     VarSet(VAR_ITEMS_ICON_SPRITE_ID, spriteId);
 
     spriteId = CreateSprite(&sSpriteTemplate_ExitIcon, 224, 16, 7);
-    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].sTaskId = taskId;
     VarSet(VAR_ITEMS_EXIT_SPRITE_ID, spriteId);
 }
 
@@ -713,6 +717,14 @@ static void Task_StartSpaGame(u8 taskId)
         AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 1, 0, NULL);
         ScheduleBgCopyTilemapToVram(0);
         gTasks[taskId].data[1]++;
+    }
+
+    if (gTasks[taskId].tShouldExit && !gPaletteFade.active)
+    {
+        ResetAllPicSprites();
+        PlayBGM(GetCurrLocationDefaultMusic()); // Play the map's default music.
+        SetMainCallback2(gMain.savedCallback);
+        DestroyTask(taskId);
     }
 }
 
@@ -887,6 +899,7 @@ static void SpriteCB_RatToes(struct Sprite *sprite)
 }
 
 #define sHandState  sprite->data[3]
+#define sTask       gTasks[sprite->sTaskId]
 
 static void SpriteCB_Hand(struct Sprite *sprite)
 {
@@ -924,6 +937,8 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             {
                 StartSpriteAnim(&gSprites[VarGet(VAR_ITEMS_EXIT_SPRITE_ID)], 1);
                 sprite->invisible = TRUE;
+                BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+                sTask.tShouldExit = TRUE;
                 return;
             }
         }
