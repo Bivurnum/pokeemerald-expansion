@@ -35,6 +35,7 @@ static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite);
 static void SpriteCB_RatWhiskerRight(struct Sprite *sprite);
 static void SpriteCB_RatToes(struct Sprite *sprite);
 static void SpriteCB_RatEyes(struct Sprite *sprite);
+static void SpriteCB_Hand(struct Sprite *sprite);
 
 static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.lz");
 static const u32 gSpaBG_Tilemap[] = INCBIN_U32("graphics/_spa/spa_bg.bin.lz");
@@ -51,6 +52,9 @@ static const u32 gRattataWhiskerLeft_Gfx[] = INCBIN_U32("graphics/_spa/rattata/r
 static const u32 gRattataWhiskerRight_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_whisker_right.4bpp");
 static const u32 gRattataToes_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_toes.4bpp");
 static const u32 gRattataEyes_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_eyes.4bpp");
+
+static const u16 gHand_Pal[] = INCBIN_U16("graphics/_spa/hand.gbapal");
+static const u32 gHand_Gfx[] = INCBIN_U32("graphics/_spa/hand.4bpp");
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -97,7 +101,7 @@ static const struct BgTemplate sBgTemplates[3] =
     },
 };
 
-static const union AnimCmd sAnim_RatNormal[] =
+static const union AnimCmd sAnim_Normal[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
     ANIMCMD_END
@@ -114,34 +118,34 @@ static const union AnimCmd sAnim_RatBodyBreathing[] =
 
 static const union AnimCmd * const sAnims_RatBodyLeft[] =
 {
-    sAnim_RatNormal,
+    sAnim_Normal,
     sAnim_RatBodyBreathing,
 };
 
 static const union AnimCmd * const sAnims_RatBodyRight[] =
 {
-    sAnim_RatNormal,
+    sAnim_Normal,
     sAnim_RatBodyBreathing,
 };
 
 static const union AnimCmd * const sAnims_RatTail[] =
 {
-    sAnim_RatNormal,
+    sAnim_Normal,
 };
 
 static const union AnimCmd * const sAnims_RatEarLeft[] =
 {
-    sAnim_RatNormal,
+    sAnim_Normal,
 };
 
 static const union AnimCmd * const sAnims_RatEarRight[] =
 {
-    sAnim_RatNormal,
+    sAnim_Normal,
 };
 
 static const union AnimCmd * const sAnims_RatMouth[] =
 {
-    sAnim_RatNormal,
+    sAnim_Normal,
 };
 
 static const union AnimCmd sAnim_RatWhiskerTwitch[] =
@@ -156,19 +160,19 @@ static const union AnimCmd sAnim_RatWhiskerTwitch[] =
 
 static const union AnimCmd * const sAnims_RatWhiskerLeft[] =
 {
-    sAnim_RatNormal,
+    sAnim_Normal,
     sAnim_RatWhiskerTwitch,
 };
 
 static const union AnimCmd * const sAnims_RatWhiskerRight[] =
 {
-    sAnim_RatNormal,
+    sAnim_Normal,
     sAnim_RatWhiskerTwitch,
 };
 
 static const union AnimCmd * const sAnims_RatToes[] =
 {
-    sAnim_RatNormal,
+    sAnim_Normal,
 };
 
 static const union AnimCmd sAnim_RatEyesBlink[] =
@@ -183,66 +187,76 @@ static const union AnimCmd sAnim_RatEyesBlink[] =
 
 static const union AnimCmd * const sAnims_RatEyes[] =
 {
-    sAnim_RatNormal,
+    sAnim_Normal,
     sAnim_RatEyesBlink,
+};
+
+static const union AnimCmd * const sAnims_Hand[] =
+{
+    sAnim_Normal,
 };
 
 static const struct SpriteFrameImage sPicTable_RatBodyLeft[] =
 {
-    treasure_score_frame(gRattataBodyLeft_Gfx, 0, 8, 8),
-    treasure_score_frame(gRattataBodyLeft_Gfx, 1, 8, 8),
+    spa_frame(gRattataBodyLeft_Gfx, 0, 8, 8),
+    spa_frame(gRattataBodyLeft_Gfx, 1, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_RatBodyRight[] =
 {
-    treasure_score_frame(gRattataBodyRight_Gfx, 0, 8, 8),
-    treasure_score_frame(gRattataBodyRight_Gfx, 1, 8, 8),
+    spa_frame(gRattataBodyRight_Gfx, 0, 8, 8),
+    spa_frame(gRattataBodyRight_Gfx, 1, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_RatTail[] =
 {
-    treasure_score_frame(gRattataTail_Gfx, 0, 8, 8),
+    spa_frame(gRattataTail_Gfx, 0, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_RatEarLeft[] =
 {
-    treasure_score_frame(gRattataEarLeft_Gfx, 0, 8, 8),
+    spa_frame(gRattataEarLeft_Gfx, 0, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_RatEarRight[] =
 {
-    treasure_score_frame(gRattataEarRight_Gfx, 0, 8, 8),
+    spa_frame(gRattataEarRight_Gfx, 0, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_RatMouth[] =
 {
-    treasure_score_frame(gRattataMouth_Gfx, 0, 8, 4),
+    spa_frame(gRattataMouth_Gfx, 0, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_RatWhiskerLeft[] =
 {
-    treasure_score_frame(gRattataWhiskerLeft_Gfx, 0, 8, 4),
-    treasure_score_frame(gRattataWhiskerLeft_Gfx, 1, 8, 4),
-    treasure_score_frame(gRattataWhiskerLeft_Gfx, 2, 8, 4),
+    spa_frame(gRattataWhiskerLeft_Gfx, 0, 8, 4),
+    spa_frame(gRattataWhiskerLeft_Gfx, 1, 8, 4),
+    spa_frame(gRattataWhiskerLeft_Gfx, 2, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_RatWhiskerRight[] =
 {
-    treasure_score_frame(gRattataWhiskerRight_Gfx, 0, 8, 4),
-    treasure_score_frame(gRattataWhiskerRight_Gfx, 1, 8, 4),
-    treasure_score_frame(gRattataWhiskerRight_Gfx, 2, 8, 4),
+    spa_frame(gRattataWhiskerRight_Gfx, 0, 8, 4),
+    spa_frame(gRattataWhiskerRight_Gfx, 1, 8, 4),
+    spa_frame(gRattataWhiskerRight_Gfx, 2, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_RatToes[] =
 {
-    treasure_score_frame(gRattataToes_Gfx, 0, 2, 1),
+    spa_frame(gRattataToes_Gfx, 0, 2, 1),
 };
 
 static const struct SpriteFrameImage sPicTable_RatEyes[] =
 {
-    treasure_score_frame(gRattataEyes_Gfx, 0, 8, 4),
-    treasure_score_frame(gRattataEyes_Gfx, 1, 8, 4),
-    treasure_score_frame(gRattataEyes_Gfx, 2, 8, 4),
+    spa_frame(gRattataEyes_Gfx, 0, 8, 4),
+    spa_frame(gRattataEyes_Gfx, 1, 8, 4),
+    spa_frame(gRattataEyes_Gfx, 2, 8, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Hand[] =
+{
+    spa_frame(gHand_Gfx, 0, 4, 4),
 };
 
 static const struct OamData sOam_64x64 =
@@ -273,6 +287,23 @@ static const struct OamData sOam_64x32 =
     .x = 0,
     .matrixNum = 0,
     .size = SPRITE_SIZE(64x32),
+    .tileNum = 0,
+    .priority = 0,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
+static const struct OamData sOam_32x32 =
+{
+    .y = DISPLAY_HEIGHT,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(32x32),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(32x32),
     .tileNum = 0,
     .priority = 0,
     .paletteNum = 0,
@@ -406,6 +437,17 @@ static const struct SpriteTemplate sSpriteTemplate_RatEyes =
     .callback = SpriteCB_RatEyes
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Hand =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_HAND,
+    .oam = &sOam_32x32,
+    .anims = sAnims_Hand,
+    .images = sPicTable_Hand,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_Hand
+};
+
 static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 {
     {
@@ -519,7 +561,7 @@ static void CreateRattataSprites(u8 taskId)
     gSprites[spriteId].data[0] = taskId;
     gSprites[spriteId].data[2] = (Random() % 180) + 180;
 
-    spriteId = CreateSprite(&sSpriteTemplate_Hand, 220, 20, 8);
+    spriteId = CreateSprite(&sSpriteTemplate_Hand, 220, 20, 7);
     gSprites[spriteId].data[0] = taskId;
 }
 
@@ -603,6 +645,34 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
 static void SpriteCB_RatToes(struct Sprite *sprite)
 {
 
+}
+
+static void SpriteCB_Hand(struct Sprite *sprite)
+{
+    if (JOY_HELD(DPAD_DOWN))
+    {
+        sprite->y++;
+        if (sprite->y > 108)
+            sprite->y = 108;
+    }
+    if (JOY_HELD(DPAD_UP))
+    {
+        sprite->y--;
+        if (sprite->y < 10)
+            sprite->y = 10;
+    }
+    if (JOY_HELD(DPAD_RIGHT))
+    {
+        sprite->x++;
+        if (sprite->x > 232)
+            sprite->x = 232;
+    }
+    if (JOY_HELD(DPAD_LEFT))
+    {
+        sprite->x--;
+        if (sprite->x < 10)
+            sprite->x = 10;
+    }
 }
 
 #define sCounter    sprite->data[1]
