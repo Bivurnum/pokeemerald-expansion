@@ -25,7 +25,7 @@ static void CreateRattataSprites(u8 taskId);
 static void VblankCB_SpaGame(void);
 static void CB2_SpaGame(void);
 static void Task_StartSpaGame(u8 taskId);
-static void Task_StartSpa(u8 taskId);
+static void Task_SpaGame(u8 taskId);
 static void SpriteCB_RatBodyLeft(struct Sprite *sprite);
 static void SpriteCB_RatBodyRight(struct Sprite *sprite);
 static void SpriteCB_RatTail(struct Sprite *sprite);
@@ -43,6 +43,7 @@ static bool8 IsHandOnItemsIcon(struct Sprite *sprite);
 static bool8 IsHandOnExitIcon(struct Sprite *sprite);
 static void SpriteCB_ItemsIcon(struct Sprite *sprite);
 static void SpriteCB_ExitIcon(struct Sprite *sprite);
+static void Task_ScriptStartSpa(u8 taskId);
 
 static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.lz");
 static const u32 gSpaBG_Tilemap[] = INCBIN_U32("graphics/_spa/spa_bg.bin.lz");
@@ -711,15 +712,15 @@ static void CB2_SpaGame(void)
 
 static void Task_StartSpaGame(u8 taskId)
 {
-    RunTextPrinters();
+    DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
+    AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 1, 0, NULL);
+    ScheduleBgCopyTilemapToVram(0);
+    gTasks[taskId].func = Task_SpaGame;
+}
 
-    if (gTasks[taskId].tCounter == 0)
-    {
-        DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
-        AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 1, 0, NULL);
-        ScheduleBgCopyTilemapToVram(0);
-        gTasks[taskId].tCounter++;
-    }
+static void Task_SpaGame(u8 taskId)
+{
+    RunTextPrinters();
 
     if (gTasks[taskId].tShouldExit && !gPaletteFade.active)
     {
@@ -1145,10 +1146,10 @@ static void SpriteCB_ExitIcon(struct Sprite *sprite)
 void Script_StartSpa(void)
 {
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
-    CreateTask(Task_StartSpa, 1);
+    CreateTask(Task_ScriptStartSpa, 1);
 }
 
-static void Task_StartSpa(u8 taskId)
+static void Task_ScriptStartSpa(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
