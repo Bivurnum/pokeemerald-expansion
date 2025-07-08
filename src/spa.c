@@ -571,7 +571,9 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 };
 
 // Task data.
-#define tPetArea    data[0]
+#define tCounter    data[0]
+#define tPetArea    data[1]
+#define tPetActive  data[2]
 #define tShouldExit data[15]
 
 // Sprite data.
@@ -596,7 +598,7 @@ void CB2_InitRattata(void)
     LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(14), PLTT_SIZE_4BPP);
     LoadUserWindowBorderGfx(0, 0x2A8, BG_PLTT_ID(13));
     LoadSpritePalettes(sSpritePalettes_RattataSpa);
-    BeginNormalPaletteFade(PALETTES_ALL, 0, 0x10, 0, RGB_BLACK);
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
 
     EnableInterrupts(DISPSTAT_VBLANK);
     SetVBlankCallback(VblankCB_SpaGame);
@@ -711,12 +713,12 @@ static void Task_StartSpaGame(u8 taskId)
 {
     RunTextPrinters();
 
-    if (gTasks[taskId].data[1] == 0)
+    if (gTasks[taskId].tCounter == 0)
     {
         DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
         AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 1, 0, NULL);
         ScheduleBgCopyTilemapToVram(0);
-        gTasks[taskId].data[1]++;
+        gTasks[taskId].tCounter++;
     }
 
     if (gTasks[taskId].tShouldExit && !gPaletteFade.active)
@@ -917,16 +919,6 @@ static void SpriteCB_Hand(struct Sprite *sprite)
     case HAND_NORMAL:
         if (JOY_NEW(A_BUTTON))
         {
-            if (IsHandInPettingArea(sprite))
-            {
-                StartSpriteAnim(sprite, 1);
-                sHandState = HAND_PET;
-            }
-            else
-            {
-                StopPetting(sprite);
-            }
-
             if (IsHandOnItemsIcon(sprite))
             {
                 StartSpriteAnim(&gSprites[VarGet(VAR_ITEMS_ICON_SPRITE_ID)], 1);
@@ -960,6 +952,11 @@ static void SpriteCB_Hand(struct Sprite *sprite)
         }
         break;
     case HAND_PET:
+        if (JOY_HELD(DPAD_ANY) && !sTask.tPetActive)
+        {
+            VarSet(VAR_BODY_COUNTER, 0);
+            sTask.tPetActive = TRUE;
+        }
         if (!JOY_HELD(A_BUTTON) || !IsHandInPettingArea(sprite))
         {
             StartSpriteAnim(sprite, 0);
@@ -1026,7 +1023,7 @@ static bool8 IsHandInPettingArea(struct Sprite *sprite)
                 if (gTasks[sprite->data[0]].tPetArea != RatPettingZones[i][4])
                 {
                     gTasks[sprite->data[0]].tPetArea = RatPettingZones[i][4];
-                    VarSet(VAR_BODY_COUNTER, 0);
+                    //VarSet(VAR_BODY_COUNTER, 0);
                     if (gTasks[sprite->data[0]].tPetArea == RAT_PET_BODY)
                         sprite->subpriority = 11;
                 }
@@ -1040,11 +1037,12 @@ static bool8 IsHandInPettingArea(struct Sprite *sprite)
 
 static void StopPetting(struct Sprite *sprite)
 {
-    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_NONE)
+    if (sTask.tPetArea != RAT_PET_NONE)
     {
-        gTasks[sprite->data[0]].tPetArea = RAT_PET_NONE;
+        sTask.tPetArea = RAT_PET_NONE;
         VarSet(VAR_BODY_COUNTER, 0);
         sprite->subpriority = 5;
+        sTask.tPetActive = FALSE;
     }
 }
 
@@ -1071,9 +1069,45 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    switch (gTasks[sprite->data[0]].tPetArea)
+    if (sTask.tPetActive)
     {
-    case RAT_PET_NONE:
+        switch (gTasks[sprite->data[0]].tPetArea)
+        {
+        case RAT_PET_NONE:
+            break;
+        case RAT_PET_BODY:
+            if (counter == 0)
+            {
+                sprite->y2 = 0;
+                StartSpriteAnim(sprite, 2);
+                counter++;
+                VarSet(VAR_BODY_COUNTER, counter);
+            }
+            if (sprite->y2 < 0)
+            {
+                sprite->y2++;
+            }
+            break;
+        case RAT_PET_HEAD:
+            if (counter == 0)
+            {
+                sprite->y2 = 0;
+                StartSpriteAnim(sprite, 2);
+                sprite->y2--;
+            }
+            if (counter < 9)
+            {
+                if (counter % 4 == 0)
+                    sprite->y2--;
+
+                counter++;
+                VarSet(VAR_BODY_COUNTER, counter);
+            }
+            break;
+        }
+    }
+    else
+    {
         if (counter == 0)
         {
             StartSpriteAnim(sprite, 0);
@@ -1095,36 +1129,6 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
         {
             sCounter++;
         }
-        break;
-    case RAT_PET_BODY:
-        if (counter == 0)
-        {
-            sprite->y2 = 0;
-            StartSpriteAnim(sprite, 2);
-            counter++;
-            VarSet(VAR_BODY_COUNTER, counter);
-        }
-        if (sprite->y2 < 0)
-        {
-            sprite->y2++;
-        }
-        break;
-    case RAT_PET_HEAD:
-        if (counter == 0)
-        {
-            sprite->y2 = 0;
-            StartSpriteAnim(sprite, 2);
-            sprite->y2--;
-        }
-        if (counter < 9)
-        {
-            if (counter % 4 == 0)
-                sprite->y2--;
-
-            counter++;
-            VarSet(VAR_BODY_COUNTER, counter);
-        }
-        break;
     }
 }
 
