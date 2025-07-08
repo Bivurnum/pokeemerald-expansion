@@ -737,6 +737,7 @@ static void SpriteCB_RatEarLeft(struct Sprite *sprite)
     {
         if (counter == 0)
         {
+            sprite->y2 = 0;
             sprite->y2--;
         }
         if (counter < 9 && counter % 4 == 0)
@@ -761,6 +762,7 @@ static void SpriteCB_RatEarRight(struct Sprite *sprite)
     {
         if (counter == 0)
         {
+            sprite->y2 = 0;
             sprite->y2--;
         }
         if (counter < 9 && counter % 4 == 0)
@@ -785,6 +787,7 @@ static void SpriteCB_RatMouth(struct Sprite *sprite)
     {
         if (counter == 0)
         {
+            sprite->y2 = 0;
             sprite->y2--;
         }
         if (counter < 9 && counter % 4 == 0)
@@ -813,6 +816,7 @@ static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
     {
         if (counter == 0)
         {
+            sprite->y2 = 0;
             sprite->y2--;
             StartSpriteAnim(sprite, 1);
         }
@@ -842,6 +846,7 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
     {
         if (counter == 0)
         {
+            sprite->y2 = 0;
             sprite->y2--;
             StartSpriteAnim(sprite, 1);
         }
@@ -1054,6 +1059,7 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
     case RAT_PET_HEAD:
         if (counter == 0)
         {
+            sprite->y2 = 0;
             StartSpriteAnim(sprite, 2);
             sprite->y2--;
         }
