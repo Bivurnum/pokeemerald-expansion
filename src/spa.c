@@ -6,6 +6,7 @@
 #include "menu.h"
 #include "overworld.h"
 #include "palette.h"
+#include "random.h"
 #include "scanline_effect.h"
 #include "sound.h"
 #include "strings.h"
@@ -33,6 +34,7 @@ static void SpriteCB_RatMouth(struct Sprite *sprite);
 static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite);
 static void SpriteCB_RatWhiskerRight(struct Sprite *sprite);
 static void SpriteCB_RatToes(struct Sprite *sprite);
+static void SpriteCB_RatEyes(struct Sprite *sprite);
 
 static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.lz");
 static const u32 gSpaBG_Tilemap[] = INCBIN_U32("graphics/_spa/spa_bg.bin.lz");
@@ -48,6 +50,7 @@ static const u32 gRattataMouth_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata
 static const u32 gRattataWhiskerLeft_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_whisker_left.4bpp");
 static const u32 gRattataWhiskerRight_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_whisker_right.4bpp");
 static const u32 gRattataToes_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_toes.4bpp");
+static const u32 gRattataEyes_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_eyes.4bpp");
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -94,113 +97,106 @@ static const struct BgTemplate sBgTemplates[3] =
     },
 };
 
-static const union AnimCmd sAnim_RatBodyLeftNormal[] =
+static const union AnimCmd sAnim_RatNormal[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
     ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_RatBodyBreathing[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 48),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 48),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 48),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 48),
+    ANIMCMD_JUMP(0)
 };
 
 static const union AnimCmd * const sAnims_RatBodyLeft[] =
 {
-    sAnim_RatBodyLeftNormal,
-};
-
-static const union AnimCmd sAnim_RatBodyRightNormal[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
-    ANIMCMD_END
+    sAnim_RatNormal,
+    sAnim_RatBodyBreathing,
 };
 
 static const union AnimCmd * const sAnims_RatBodyRight[] =
 {
-    sAnim_RatBodyRightNormal,
-};
-
-static const union AnimCmd sAnim_RatTailNormal[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
-    ANIMCMD_END
+    sAnim_RatNormal,
+    sAnim_RatBodyBreathing,
 };
 
 static const union AnimCmd * const sAnims_RatTail[] =
 {
-    sAnim_RatTailNormal,
-};
-
-static const union AnimCmd sAnim_RatEarLeftNormal[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
-    ANIMCMD_END
+    sAnim_RatNormal,
 };
 
 static const union AnimCmd * const sAnims_RatEarLeft[] =
 {
-    sAnim_RatEarLeftNormal,
-};
-
-static const union AnimCmd sAnim_RatEarRightNormal[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
-    ANIMCMD_END
+    sAnim_RatNormal,
 };
 
 static const union AnimCmd * const sAnims_RatEarRight[] =
 {
-    sAnim_RatEarRightNormal,
-};
-
-static const union AnimCmd sAnim_RatMouthNormal[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
-    ANIMCMD_END
+    sAnim_RatNormal,
 };
 
 static const union AnimCmd * const sAnims_RatMouth[] =
 {
-    sAnim_RatMouthNormal,
+    sAnim_RatNormal,
 };
 
-static const union AnimCmd sAnim_RatWhiskerLeftNormal[] =
+static const union AnimCmd sAnim_RatWhiskerTwitch[] =
 {
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 2),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
 static const union AnimCmd * const sAnims_RatWhiskerLeft[] =
 {
-    sAnim_RatWhiskerLeftNormal,
-};
-
-static const union AnimCmd sAnim_RatWhiskerRightNormal[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
-    ANIMCMD_END
+    sAnim_RatNormal,
+    sAnim_RatWhiskerTwitch,
 };
 
 static const union AnimCmd * const sAnims_RatWhiskerRight[] =
 {
-    sAnim_RatWhiskerRightNormal,
-};
-
-static const union AnimCmd sAnim_RatToesNormal[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
-    ANIMCMD_END
+    sAnim_RatNormal,
+    sAnim_RatWhiskerTwitch,
 };
 
 static const union AnimCmd * const sAnims_RatToes[] =
 {
-    sAnim_RatToesNormal,
+    sAnim_RatNormal,
+};
+
+static const union AnimCmd sAnim_RatEyesBlink[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 2),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 2),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_END
+};
+
+static const union AnimCmd * const sAnims_RatEyes[] =
+{
+    sAnim_RatNormal,
+    sAnim_RatEyesBlink,
 };
 
 static const struct SpriteFrameImage sPicTable_RatBodyLeft[] =
 {
     treasure_score_frame(gRattataBodyLeft_Gfx, 0, 8, 8),
+    treasure_score_frame(gRattataBodyLeft_Gfx, 1, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_RatBodyRight[] =
 {
     treasure_score_frame(gRattataBodyRight_Gfx, 0, 8, 8),
+    treasure_score_frame(gRattataBodyRight_Gfx, 1, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_RatTail[] =
@@ -226,16 +222,27 @@ static const struct SpriteFrameImage sPicTable_RatMouth[] =
 static const struct SpriteFrameImage sPicTable_RatWhiskerLeft[] =
 {
     treasure_score_frame(gRattataWhiskerLeft_Gfx, 0, 8, 4),
+    treasure_score_frame(gRattataWhiskerLeft_Gfx, 1, 8, 4),
+    treasure_score_frame(gRattataWhiskerLeft_Gfx, 2, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_RatWhiskerRight[] =
 {
     treasure_score_frame(gRattataWhiskerRight_Gfx, 0, 8, 4),
+    treasure_score_frame(gRattataWhiskerRight_Gfx, 1, 8, 4),
+    treasure_score_frame(gRattataWhiskerRight_Gfx, 2, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_RatToes[] =
 {
     treasure_score_frame(gRattataToes_Gfx, 0, 2, 1),
+};
+
+static const struct SpriteFrameImage sPicTable_RatEyes[] =
+{
+    treasure_score_frame(gRattataEyes_Gfx, 0, 8, 4),
+    treasure_score_frame(gRattataEyes_Gfx, 1, 8, 4),
+    treasure_score_frame(gRattataEyes_Gfx, 2, 8, 4),
 };
 
 static const struct OamData sOam_64x64 =
@@ -388,11 +395,26 @@ static const struct SpriteTemplate sSpriteTemplate_RatToes =
     .callback = SpriteCB_RatToes
 };
 
+static const struct SpriteTemplate sSpriteTemplate_RatEyes =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_RATTATA,
+    .oam = &sOam_64x32,
+    .anims = sAnims_RatEyes,
+    .images = sPicTable_RatEyes,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_RatEyes
+};
+
 static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 {
     {
         .data = gRattata_Pal,
         .tag = TAG_RATTATA
+    },
+    {
+        .data = gHand_Pal,
+        .tag = TAG_HAND
     },
     {NULL},
 };
@@ -466,9 +488,11 @@ static void CreateRattataSprites(u8 taskId)
 
     spriteId = CreateSprite(&sSpriteTemplate_RatBodyLeft, 86, 73, 12);
     gSprites[spriteId].data[0] = taskId;
+    StartSpriteAnim(&gSprites[spriteId], 1);
 
     spriteId = CreateSprite(&sSpriteTemplate_RatBodyRight, 150, 81, 12);
     gSprites[spriteId].data[0] = taskId;
+    StartSpriteAnim(&gSprites[spriteId], 1);
 
     spriteId = CreateSprite(&sSpriteTemplate_RatTail, 80, 33, 11);
     gSprites[spriteId].data[0] = taskId;
@@ -489,6 +513,13 @@ static void CreateRattataSprites(u8 taskId)
     gSprites[spriteId].data[0] = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_RatToes, 96, 109, 12);
+    gSprites[spriteId].data[0] = taskId;
+
+    spriteId = CreateSprite(&sSpriteTemplate_RatEyes, 146, 63, 8);
+    gSprites[spriteId].data[0] = taskId;
+    gSprites[spriteId].data[2] = (Random() % 180) + 180;
+
+    spriteId = CreateSprite(&sSpriteTemplate_Hand, 220, 20, 8);
     gSprites[spriteId].data[0] = taskId;
 }
 
@@ -517,7 +548,7 @@ static void Task_StartSpaGame(u8 taskId)
     if (gTasks[taskId].data[1] == 0)
     {
         DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
-        AddTextPrinterParameterized(0, FONT_NORMAL, gText_YouHaveNoBerries, 0, 1, 0, NULL);
+        AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 1, 0, NULL);
         ScheduleBgCopyTilemapToVram(0);
         gTasks[taskId].data[1]++;
     }
@@ -555,17 +586,40 @@ static void SpriteCB_RatMouth(struct Sprite *sprite)
 
 static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
 {
-
+    if (JOY_NEW(A_BUTTON) && sprite->animEnded)
+    {
+        StartSpriteAnim(sprite, 1);
+    }
 }
 
 static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
 {
-
+    if (JOY_NEW(A_BUTTON) && sprite->animEnded)
+    {
+        StartSpriteAnim(sprite, 1);
+    }
 }
 
 static void SpriteCB_RatToes(struct Sprite *sprite)
 {
 
+}
+
+#define sCounter    sprite->data[1]
+#define sInterval   sprite->data[2]
+
+static void SpriteCB_RatEyes(struct Sprite *sprite)
+{
+    if (sCounter == sInterval)
+    {
+        StartSpriteAnim(sprite, 1); // Blink.
+        sInterval = (Random() % 180) + 180; // 3 to 6 seconds.
+        sCounter = 0;
+    }
+    else
+    {
+        sCounter++;
+    }
 }
 
 void Script_StartSpa(void)
