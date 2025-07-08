@@ -38,6 +38,7 @@ static void SpriteCB_RatToes(struct Sprite *sprite);
 static void SpriteCB_RatEyes(struct Sprite *sprite);
 static void SpriteCB_Hand(struct Sprite *sprite);
 static bool8 IsHandInPettingArea(struct Sprite *sprite);
+static void StopPetting(struct Sprite *sprite);
 static bool8 IsHandOnItemsIcon(struct Sprite *sprite);
 static void SpriteCB_ItemsIcon(struct Sprite *sprite);
 
@@ -135,9 +136,19 @@ static const union AnimCmd * const sAnims_RatBodyRight[] =
     sAnim_RatBodyBreathing,
 };
 
+static const union AnimCmd sAnim_RatTailWag[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_JUMP(0)
+};
+
 static const union AnimCmd * const sAnims_RatTail[] =
 {
     sAnim_Normal,
+    sAnim_RatTailWag,
 };
 
 static const union AnimCmd * const sAnims_RatEarLeft[] =
@@ -157,12 +168,23 @@ static const union AnimCmd * const sAnims_RatMouth[] =
 
 static const union AnimCmd sAnim_RatWhiskerTwitch[] =
 {
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 32),
     ANIMCMD_FRAME(.imageValue = 1, .duration = 2),
     ANIMCMD_FRAME(.imageValue = 2, .duration = 3),
     ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
-    ANIMCMD_END
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 8),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 2),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 48),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 4),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 4),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 2),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
+    ANIMCMD_JUMP(0)
 };
 
 static const union AnimCmd * const sAnims_RatWhiskerLeft[] =
@@ -192,10 +214,17 @@ static const union AnimCmd sAnim_RatEyesBlink[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_RatEyesSmile[] =
+{
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_RatEyes[] =
 {
     sAnim_Normal,
     sAnim_RatEyesBlink,
+    sAnim_RatEyesSmile,
 };
 
 static const union AnimCmd sAnim_HandOpen[] =
@@ -245,6 +274,8 @@ static const struct SpriteFrameImage sPicTable_RatBodyRight[] =
 static const struct SpriteFrameImage sPicTable_RatTail[] =
 {
     spa_frame(gRattataTail_Gfx, 0, 8, 8),
+    spa_frame(gRattataTail_Gfx, 1, 8, 8),
+    spa_frame(gRattataTail_Gfx, 2, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_RatEarLeft[] =
@@ -286,6 +317,7 @@ static const struct SpriteFrameImage sPicTable_RatEyes[] =
     spa_frame(gRattataEyes_Gfx, 0, 8, 4),
     spa_frame(gRattataEyes_Gfx, 1, 8, 4),
     spa_frame(gRattataEyes_Gfx, 2, 8, 4),
+    spa_frame(gRattataEyes_Gfx, 3, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_Hand[] =
@@ -518,6 +550,9 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
     {NULL},
 };
 
+// Task data.
+#define tPetArea    data[0]
+
 void CB2_InitRattata(void)
 {
     u8 taskId;
@@ -669,37 +704,161 @@ static void SpriteCB_RatBodyRight(struct Sprite *sprite)
 
 static void SpriteCB_RatTail(struct Sprite *sprite)
 {
+    u16 counter = VarGet(VAR_BODY_COUNTER);
 
+    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_BODY)
+    {
+        if (counter == 0)
+        {
+            StartSpriteAnim(sprite, 0);
+        }
+    }
+    else
+    {
+        if (counter == 0)
+        {
+            StartSpriteAnim(sprite, 1);
+        }
+    }
 }
 
 static void SpriteCB_RatEarLeft(struct Sprite *sprite)
 {
+    u16 counter = VarGet(VAR_BODY_COUNTER);
 
+    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
+    {
+        if (sprite->y2 != 0)
+        {
+            sprite->y2 /= 2;
+            if (sprite->y2 > -2)
+                sprite->y2++;
+        }
+    }
+    else
+    {
+        if (counter == 0)
+        {
+            sprite->y2--;
+        }
+        if (counter < 9 && counter % 4 == 0)
+        {
+            sprite->y2--;
+        }
+    }
 }
 
 static void SpriteCB_RatEarRight(struct Sprite *sprite)
 {
+    u16 counter = VarGet(VAR_BODY_COUNTER);
 
+    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
+    {
+        if (sprite->y2 != 0)
+        {
+            sprite->y2 /= 2;
+            if (sprite->y2 > -2)
+                sprite->y2++;
+        }
+    }
+    else
+    {
+        if (counter == 0)
+        {
+            sprite->y2--;
+        }
+        if (counter < 9 && counter % 4 == 0)
+        {
+            sprite->y2--;
+        }
+    }
 }
 
 static void SpriteCB_RatMouth(struct Sprite *sprite)
 {
+    u16 counter = VarGet(VAR_BODY_COUNTER);
 
+    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
+    {
+        if (sprite->y2 != 0)
+        {
+            sprite->y2 /= 2;
+            if (sprite->y2 > -2)
+                sprite->y2++;
+        }
+    }
+    else
+    {
+        if (counter == 0)
+        {
+            sprite->y2--;
+        }
+        if (counter < 9 && counter % 4 == 0)
+        {
+            sprite->y2--;
+        }
+    }
 }
 
 static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
 {
-    if (JOY_NEW(A_BUTTON) && sprite->animEnded)
+    u16 counter = VarGet(VAR_BODY_COUNTER);
+
+    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
     {
-        StartSpriteAnim(sprite, 1);
+        if (counter == 0)
+        {
+            StartSpriteAnim(sprite, 0);
+        }
+        if (sprite->y2 != 0)
+        {
+            sprite->y2 /= 2;
+            if (sprite->y2 > -2)
+                sprite->y2++;
+        }
+    }
+    else
+    {
+        if (counter == 0)
+        {
+            sprite->y2--;
+            StartSpriteAnim(sprite, 1);
+        }
+        if (counter < 9 && counter % 4 == 0)
+        {
+            sprite->y2--;
+        }
     }
 }
 
 static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
 {
-    if (JOY_NEW(A_BUTTON) && sprite->animEnded)
+    u16 counter = VarGet(VAR_BODY_COUNTER);
+
+    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
     {
-        StartSpriteAnim(sprite, 1);
+        if (counter == 0)
+        {
+            StartSpriteAnim(sprite, 0);
+        }
+        if (sprite->y2 != 0)
+        {
+            sprite->y2 /= 2;
+            if (sprite->y2 > -2)
+                sprite->y2++;
+        }
+    }
+    else
+    {
+        if (counter == 0)
+        {
+            sprite->y2--;
+            StartSpriteAnim(sprite, 1);
+        }
+        if (counter < 9 && counter % 4 == 0)
+        {
+            sprite->y2--;
+        }
     }
 }
 
@@ -712,6 +871,66 @@ static void SpriteCB_RatToes(struct Sprite *sprite)
 
 static void SpriteCB_Hand(struct Sprite *sprite)
 {
+    if (sprite->invisible == TRUE)
+    {
+        if (JOY_NEW(B_BUTTON))
+        {
+            sprite->invisible = FALSE;
+        }
+        return;
+    }
+
+    switch (sHandState)
+    {
+    case HAND_NORMAL:
+        if (JOY_NEW(A_BUTTON))
+        {
+            if (IsHandInPettingArea(sprite))
+            {
+                StartSpriteAnim(sprite, 1);
+                sHandState = HAND_PET;
+                return;
+            }
+            else
+            {
+                StopPetting(sprite);
+            }
+
+            if (IsHandOnItemsIcon(sprite))
+            {
+                StartSpriteAnim(&gSprites[VarGet(VAR_ITEMS_ICON_SPRITE_ID)], 1);
+                sprite->invisible = TRUE;
+                return;
+            }
+        }
+        else if (JOY_HELD(A_BUTTON))
+        {
+            if (IsHandInPettingArea(sprite))
+            {
+                StartSpriteAnim(sprite, 1);
+                sHandState = HAND_PET;
+                return;
+            }
+            else
+            {
+                StopPetting(sprite);
+            }
+        }
+        else
+        {
+            StopPetting(sprite);
+        }
+        break;
+    case HAND_PET:
+        if (!JOY_HELD(A_BUTTON) || !IsHandInPettingArea(sprite))
+        {
+            StartSpriteAnim(sprite, 0);
+            sHandState = HAND_NORMAL;
+            return;
+        }
+        break;
+    }
+
     if (JOY_HELD(DPAD_DOWN))
     {
         if (JOY_HELD(B_BUTTON))
@@ -743,41 +962,50 @@ static void SpriteCB_Hand(struct Sprite *sprite)
     {
         if (JOY_HELD(B_BUTTON))
             sprite->x--;
-            
+
         sprite->x--;
         if (sprite->x < 10)
             sprite->x = 10;
     }
-
-    switch (sHandState)
-    {
-    case HAND_NORMAL:
-        if (JOY_NEW(A_BUTTON))
-        {
-            if (IsHandInPettingArea(sprite))
-            {
-                StartSpriteAnim(sprite, 1);
-                sHandState = HAND_PET;
-            }
-            else if (IsHandOnItemsIcon(sprite))
-            {
-                StartSpriteAnim(&gSprites[VarGet(VAR_ITEMS_ICON_SPRITE_ID)], 1);
-            }
-        }
-        break;
-    case HAND_PET:
-        if (!JOY_HELD(A_BUTTON))
-        {
-            StartSpriteAnim(sprite, 0);
-            sHandState = HAND_NORMAL;
-        }
-        break;
-    }
 }
+
+static const s16 RatPettingZones[][5] =
+{
+    // { MIN_X, MAX_X, MIN_Y, MAX_Y, BODY_PART }
+    { 70, 110, 49, 97, RAT_PET_BODY },
+    { 119, 167, 32, 72, RAT_PET_HEAD }
+};
 
 static bool8 IsHandInPettingArea(struct Sprite *sprite)
 {
+    u8 i;
+
+    for (i = 0; i < ARRAY_COUNT(RatPettingZones); i++)
+    {
+        if (sprite->x > RatPettingZones[i][0] && sprite->x < RatPettingZones[i][1])
+        {
+            if (sprite->y > RatPettingZones[i][2] && sprite->y < RatPettingZones[i][3])
+            {
+                if (gTasks[sprite->data[0]].tPetArea != RatPettingZones[i][4])
+                {
+                    gTasks[sprite->data[0]].tPetArea = RatPettingZones[i][4];
+                    VarSet(VAR_BODY_COUNTER, 0);
+                }
+                return TRUE;
+            }
+        }
+    }
+
     return FALSE;
+}
+
+static void StopPetting(struct Sprite *sprite)
+{
+    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_NONE)
+    {
+        gTasks[sprite->data[0]].tPetArea = RAT_PET_NONE;
+        VarSet(VAR_BODY_COUNTER, 0);
+    }
 }
 
 static bool8 IsHandOnItemsIcon(struct Sprite *sprite)
@@ -793,15 +1021,54 @@ static bool8 IsHandOnItemsIcon(struct Sprite *sprite)
 
 static void SpriteCB_RatEyes(struct Sprite *sprite)
 {
-    if (sCounter == sInterval)
+    u16 counter = VarGet(VAR_BODY_COUNTER);
+
+    switch (gTasks[sprite->data[0]].tPetArea)
     {
-        StartSpriteAnim(sprite, 1); // Blink.
-        sInterval = (Random() % 180) + 180; // 3 to 6 seconds.
-        sCounter = 0;
-    }
-    else
-    {
-        sCounter++;
+    case RAT_PET_NONE:
+        if (counter == 0)
+        {
+            sprite->y2 = 0;
+            StartSpriteAnim(sprite, 0);
+            counter++;
+            VarSet(VAR_BODY_COUNTER, counter);
+            sCounter = 0;
+        }
+        if (sCounter == sInterval)
+        {
+            StartSpriteAnim(sprite, 1); // Blink.
+            sInterval = (Random() % 180) + 180; // 3 to 6 seconds.
+            sCounter = 0;
+        }
+        else
+        {
+            sCounter++;
+        }
+        break;
+    case RAT_PET_BODY:
+        if (counter == 0)
+        {
+            sprite->y2 = 0;
+            StartSpriteAnim(sprite, 2);
+            counter++;
+            VarSet(VAR_BODY_COUNTER, counter);
+        }
+        break;
+    case RAT_PET_HEAD:
+        if (counter == 0)
+        {
+            StartSpriteAnim(sprite, 2);
+            sprite->y2--;
+        }
+        if (counter < 9)
+        {
+            if (counter % 4 == 0)
+                sprite->y2--;
+
+            counter++;
+            VarSet(VAR_BODY_COUNTER, counter);
+        }
+        break;
     }
 }
 

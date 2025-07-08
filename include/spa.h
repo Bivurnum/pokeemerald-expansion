@@ -12,6 +12,14 @@ enum HandStates
     HAND_ITEM
 };
 
+enum RatPetAreas
+{
+    RAT_PET_NONE,
+    RAT_PET_BODY,
+    RAT_PET_HEAD,
+    RAT_PET_TEETH
+};
+
 #define spa_frame(ptr, frame, width, height) {.data = (u8 *)ptr + (width * height * frame * 64)/2, .size = (width * height * 64)/2}
 
 #endif // GUARD_SPA_H
