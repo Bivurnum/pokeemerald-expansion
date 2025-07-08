@@ -1,6 +1,7 @@
 #include "global.h"
 #include "spa.h"
 #include "bg.h"
+#include "event_data.h"
 #include "gpu_regs.h"
 #include "main.h"
 #include "menu.h"
@@ -36,6 +37,9 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite);
 static void SpriteCB_RatToes(struct Sprite *sprite);
 static void SpriteCB_RatEyes(struct Sprite *sprite);
 static void SpriteCB_Hand(struct Sprite *sprite);
+static bool8 IsHandInPettingArea(struct Sprite *sprite);
+static bool8 IsHandOnItemsIcon(struct Sprite *sprite);
+static void SpriteCB_ItemsIcon(struct Sprite *sprite);
 
 static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.lz");
 static const u32 gSpaBG_Tilemap[] = INCBIN_U32("graphics/_spa/spa_bg.bin.lz");
@@ -55,6 +59,9 @@ static const u32 gRattataEyes_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_
 
 static const u16 gHand_Pal[] = INCBIN_U16("graphics/_spa/hand.gbapal");
 static const u32 gHand_Gfx[] = INCBIN_U32("graphics/_spa/hand.4bpp");
+
+static const u16 gItemsIcon_Pal[] = INCBIN_U16("graphics/_spa/items_icon.gbapal");
+static const u32 gItemsIcon_Gfx[] = INCBIN_U32("graphics/_spa/items_icon.4bpp");
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -191,9 +198,36 @@ static const union AnimCmd * const sAnims_RatEyes[] =
     sAnim_RatEyesBlink,
 };
 
+static const union AnimCmd sAnim_HandOpen[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_HandFood[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_Hand[] =
 {
     sAnim_Normal,
+    sAnim_HandOpen,
+    sAnim_HandFood,
+};
+
+static const union AnimCmd sAnim_ItemsIconPress[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
+    ANIMCMD_END
+};
+
+static const union AnimCmd * const sAnims_ItemsIcon[] =
+{
+    sAnim_Normal,
+    sAnim_ItemsIconPress,
 };
 
 static const struct SpriteFrameImage sPicTable_RatBodyLeft[] =
@@ -257,6 +291,14 @@ static const struct SpriteFrameImage sPicTable_RatEyes[] =
 static const struct SpriteFrameImage sPicTable_Hand[] =
 {
     spa_frame(gHand_Gfx, 0, 4, 4),
+    spa_frame(gHand_Gfx, 1, 4, 4),
+    spa_frame(gHand_Gfx, 2, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_ItemsIcon[] =
+{
+    spa_frame(gItemsIcon_Gfx, 0, 4, 4),
+    spa_frame(gItemsIcon_Gfx, 1, 4, 4),
 };
 
 static const struct OamData sOam_64x64 =
@@ -271,7 +313,7 @@ static const struct OamData sOam_64x64 =
     .matrixNum = 0,
     .size = SPRITE_SIZE(64x64),
     .tileNum = 0,
-    .priority = 0,
+    .priority = 1,
     .paletteNum = 0,
     .affineParam = 0,
 };
@@ -288,7 +330,7 @@ static const struct OamData sOam_64x32 =
     .matrixNum = 0,
     .size = SPRITE_SIZE(64x32),
     .tileNum = 0,
-    .priority = 0,
+    .priority = 1,
     .paletteNum = 0,
     .affineParam = 0,
 };
@@ -305,7 +347,7 @@ static const struct OamData sOam_32x32 =
     .matrixNum = 0,
     .size = SPRITE_SIZE(32x32),
     .tileNum = 0,
-    .priority = 0,
+    .priority = 1,
     .paletteNum = 0,
     .affineParam = 0,
 };
@@ -322,7 +364,7 @@ static const struct OamData sOam_16x8 =
     .matrixNum = 0,
     .size = SPRITE_SIZE(16x8),
     .tileNum = 0,
-    .priority = 0,
+    .priority = 1,
     .paletteNum = 0,
     .affineParam = 0,
 };
@@ -448,6 +490,17 @@ static const struct SpriteTemplate sSpriteTemplate_Hand =
     .callback = SpriteCB_Hand
 };
 
+static const struct SpriteTemplate sSpriteTemplate_ItemsIcon =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_ITEMS_ICON,
+    .oam = &sOam_32x32,
+    .anims = sAnims_ItemsIcon,
+    .images = sPicTable_ItemsIcon,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_ItemsIcon
+};
+
 static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 {
     {
@@ -457,6 +510,10 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
     {
         .data = gHand_Pal,
         .tag = TAG_HAND
+    },
+    {
+        .data = gItemsIcon_Pal,
+        .tag = TAG_ITEMS_ICON
     },
     {NULL},
 };
@@ -561,8 +618,12 @@ static void CreateRattataSprites(u8 taskId)
     gSprites[spriteId].data[0] = taskId;
     gSprites[spriteId].data[2] = (Random() % 180) + 180;
 
-    spriteId = CreateSprite(&sSpriteTemplate_Hand, 220, 20, 7);
+    spriteId = CreateSprite(&sSpriteTemplate_Hand, 220, 20, 5);
     gSprites[spriteId].data[0] = taskId;
+
+    spriteId = CreateSprite(&sSpriteTemplate_ItemsIcon, 16, 16, 7);
+    gSprites[spriteId].data[0] = taskId;
+    VarSet(VAR_ITEMS_ICON_SPRITE_ID, spriteId);
 }
 
 static void VblankCB_SpaGame(void)
@@ -647,32 +708,84 @@ static void SpriteCB_RatToes(struct Sprite *sprite)
 
 }
 
+#define sHandState  sprite->data[3]
+
 static void SpriteCB_Hand(struct Sprite *sprite)
 {
     if (JOY_HELD(DPAD_DOWN))
     {
+        if (JOY_HELD(B_BUTTON))
+            sprite->y++;
+
         sprite->y++;
         if (sprite->y > 108)
             sprite->y = 108;
     }
     if (JOY_HELD(DPAD_UP))
     {
+        if (JOY_HELD(B_BUTTON))
+            sprite->y--;
+
         sprite->y--;
         if (sprite->y < 10)
             sprite->y = 10;
     }
     if (JOY_HELD(DPAD_RIGHT))
     {
+        if (JOY_HELD(B_BUTTON))
+            sprite->x++;
+
         sprite->x++;
         if (sprite->x > 232)
             sprite->x = 232;
     }
     if (JOY_HELD(DPAD_LEFT))
     {
+        if (JOY_HELD(B_BUTTON))
+            sprite->x--;
+            
         sprite->x--;
         if (sprite->x < 10)
             sprite->x = 10;
     }
+
+    switch (sHandState)
+    {
+    case HAND_NORMAL:
+        if (JOY_NEW(A_BUTTON))
+        {
+            if (IsHandInPettingArea(sprite))
+            {
+                StartSpriteAnim(sprite, 1);
+                sHandState = HAND_PET;
+            }
+            else if (IsHandOnItemsIcon(sprite))
+            {
+                StartSpriteAnim(&gSprites[VarGet(VAR_ITEMS_ICON_SPRITE_ID)], 1);
+            }
+        }
+        break;
+    case HAND_PET:
+        if (!JOY_HELD(A_BUTTON))
+        {
+            StartSpriteAnim(sprite, 0);
+            sHandState = HAND_NORMAL;
+        }
+        break;
+    }
+}
+
+static bool8 IsHandInPettingArea(struct Sprite *sprite)
+{
+    return FALSE;
+}
+
+static bool8 IsHandOnItemsIcon(struct Sprite *sprite)
+{
+    if (sprite->x < 38 && sprite->y < 38)
+        return TRUE;
+
+    return FALSE;
 }
 
 #define sCounter    sprite->data[1]
@@ -690,6 +803,11 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
     {
         sCounter++;
     }
+}
+
+static void SpriteCB_ItemsIcon(struct Sprite *sprite)
+{
+
 }
 
 void Script_StartSpa(void)
