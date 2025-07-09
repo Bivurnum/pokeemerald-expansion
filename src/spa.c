@@ -753,7 +753,7 @@ static void Task_SpaGame(u8 taskId)
 
     if (gTasks[taskId].tPetActive && !JOY_HELD(DPAD_ANY))
     {
-        if (gTasks[taskId].tPetTimer == 120)
+        if (gTasks[taskId].tPetTimer == 60)
         {
             StopPetting(&gSprites[VarGet(VAR_HAND_SPRITE_ID)]);
         }
@@ -1120,8 +1120,8 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             sprite->y--;
 
         sprite->y--;
-        if (sprite->y < 10)
-            sprite->y = 10;
+        if (sprite->y < 9)
+            sprite->y = 9;
     }
     if (JOY_HELD(DPAD_RIGHT))
     {
@@ -1148,7 +1148,7 @@ static const s16 RatPettingZones[][5] =
     // { MIN_X, MAX_X, MIN_Y, MAX_Y, BODY_PART }
     { 70, 110, 49, 97, RAT_PET_BODY },
     { 119, 167, 32, 72, RAT_PET_HEAD },
-    { 64, 104, 9, 31, RAT_PET_BAD },
+    { 64, 104, 8, 31, RAT_PET_BAD },
     { 56, 72, 25, 73, RAT_PET_BAD },
     { 147, 160, 91, 104, RAT_PET_BAD }
 };
