@@ -269,10 +269,10 @@
 #define VAR_UNUSED_0x40F9                                0x40F9 // Unused Var
 #define VAR_UNUSED_0x40FA                                0x40FA // Unused Var
 #define VAR_UNUSED_0x40FB                                0x40FB // Unused Var
-#define VAR_UNUSED_0x40FC                                0x40FC // Unused Var
+#define VAR_HAND_SPRITE_ID                               0x40FC
 #define VAR_ITEMS_EXIT_SPRITE_ID                         0x40FD
-#define VAR_BODY_COUNTER                                 0x40FE
-#define VAR_ITEMS_ICON_SPRITE_ID                         0x40FF
+#define VAR_ITEMS_ICON_SPRITE_ID                         0x40FE
+#define VAR_BODY_COUNTER                                 0x40FF
 
 #define VARS_END                                         0x40FF
 #define VARS_COUNT                                       (VARS_END - VARS_START + 1)

@@ -575,6 +575,7 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 #define tCounter    data[0]
 #define tPetArea    data[1]
 #define tPetActive  data[2]
+#define tPetTimer   data[3]
 #define tShouldExit data[15]
 
 // Sprite data.
@@ -682,6 +683,7 @@ static void CreateRattataSprites(u8 taskId)
 
     spriteId = CreateSprite(&sSpriteTemplate_Hand, 220, 52, 5);
     gSprites[spriteId].sTaskId = taskId;
+    VarSet(VAR_HAND_SPRITE_ID, spriteId);
 
     spriteId = CreateSprite(&sSpriteTemplate_ItemsIcon, 16, 16, 7);
     gSprites[spriteId].sTaskId = taskId;
@@ -729,7 +731,18 @@ static void Task_SpaGame(u8 taskId)
         SetMainCallback2(gMain.savedCallback);
         DestroyTask(taskId);
     }
+
+    if (gTasks[taskId].tPetActive && !JOY_HELD(DPAD_ANY))
+    {
+        if (gTasks[taskId].tPetTimer == 120)
+        {
+            StopPetting(&gSprites[VarGet(VAR_HAND_SPRITE_ID)]);
+        }
+        gTasks[taskId].tPetTimer++;
+    }
 }
+
+#define sTask       gTasks[sprite->sTaskId]
 
 static void SpriteCB_RatBodyLeft(struct Sprite *sprite)
 {
@@ -745,7 +758,7 @@ static void SpriteCB_RatTail(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_BODY)
+    if (sTask.tPetArea != RAT_PET_BODY)
     {
         if (counter == 0)
         {
@@ -765,14 +778,7 @@ static void SpriteCB_RatEarLeft(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
-    {
-        if (sprite->y2 < 0)
-        {
-            sprite->y2++;
-        }
-    }
-    else
+    if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
     {
         if (counter == 0)
         {
@@ -782,6 +788,13 @@ static void SpriteCB_RatEarLeft(struct Sprite *sprite)
         if (counter < 9 && counter % 4 == 0)
         {
             sprite->y2--;
+        }
+    }
+    else
+    {
+        if (sprite->y2 < 0)
+        {
+            sprite->y2++;
         }
     }
 }
@@ -790,14 +803,7 @@ static void SpriteCB_RatEarRight(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
-    {
-        if (sprite->y2 < 0)
-        {
-            sprite->y2++;
-        }
-    }
-    else
+    if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
     {
         if (counter == 0)
         {
@@ -807,6 +813,13 @@ static void SpriteCB_RatEarRight(struct Sprite *sprite)
         if (counter < 9 && counter % 4 == 0)
         {
             sprite->y2--;
+        }
+    }
+    else
+    {
+        if (sprite->y2 < 0)
+        {
+            sprite->y2++;
         }
     }
 }
@@ -815,14 +828,7 @@ static void SpriteCB_RatMouth(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
-    {
-        if (sprite->y2 < 0)
-        {
-            sprite->y2++;
-        }
-    }
-    else
+    if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
     {
         if (counter == 0)
         {
@@ -832,6 +838,13 @@ static void SpriteCB_RatMouth(struct Sprite *sprite)
         if (counter < 9 && counter % 4 == 0)
         {
             sprite->y2--;
+        }
+    }
+    else
+    {
+        if (sprite->y2 < 0)
+        {
+            sprite->y2++;
         }
     }
 }
@@ -840,18 +853,7 @@ static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
-    {
-        if (counter == 0)
-        {
-            StartSpriteAnim(sprite, 0);
-        }
-        if (sprite->y2 < 0)
-        {
-            sprite->y2++;
-        }
-    }
-    else
+    if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
     {
         if (counter == 0)
         {
@@ -862,6 +864,17 @@ static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
         if (counter < 9 && counter % 4 == 0)
         {
             sprite->y2--;
+        }
+    }
+    else
+    {
+        if (counter == 0)
+        {
+            StartSpriteAnim(sprite, 0);
+        }
+        if (sprite->y2 < 0)
+        {
+            sprite->y2++;
         }
     }
 }
@@ -870,18 +883,7 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    if (gTasks[sprite->data[0]].tPetArea != RAT_PET_HEAD)
-    {
-        if (counter == 0)
-        {
-            StartSpriteAnim(sprite, 0);
-        }
-        if (sprite->y2 < 0)
-        {
-            sprite->y2++;
-        }
-    }
-    else
+    if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
     {
         if (counter == 0)
         {
@@ -892,6 +894,17 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
         if (counter < 9 && counter % 4 == 0)
         {
             sprite->y2--;
+        }
+    }
+    else
+    {
+        if (counter == 0)
+        {
+            StartSpriteAnim(sprite, 0);
+        }
+        if (sprite->y2 < 0)
+        {
+            sprite->y2++;
         }
     }
 }
@@ -902,7 +915,6 @@ static void SpriteCB_RatToes(struct Sprite *sprite)
 }
 
 #define sHandState  sprite->data[3]
-#define sTask       gTasks[sprite->sTaskId]
 
 static void SpriteCB_Hand(struct Sprite *sprite)
 {
@@ -953,10 +965,14 @@ static void SpriteCB_Hand(struct Sprite *sprite)
         }
         break;
     case HAND_PET:
-        if (JOY_HELD(DPAD_ANY) && !sTask.tPetActive)
+        if (JOY_HELD(DPAD_ANY))
         {
-            VarSet(VAR_BODY_COUNTER, 0);
-            sTask.tPetActive = TRUE;
+            sTask.tPetTimer = 0;
+            if (!sTask.tPetActive)
+            {
+                VarSet(VAR_BODY_COUNTER, 0);
+                sTask.tPetActive = TRUE;
+            }
         }
         if (!JOY_HELD(A_BUTTON) || !IsHandInPettingArea(sprite))
         {
@@ -1024,7 +1040,6 @@ static bool8 IsHandInPettingArea(struct Sprite *sprite)
                 if (gTasks[sprite->data[0]].tPetArea != RatPettingZones[i][4])
                 {
                     gTasks[sprite->data[0]].tPetArea = RatPettingZones[i][4];
-                    //VarSet(VAR_BODY_COUNTER, 0);
                     if (gTasks[sprite->data[0]].tPetArea == RAT_PET_BODY)
                         sprite->subpriority = 11;
                 }
