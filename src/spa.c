@@ -129,10 +129,18 @@ static const union AnimCmd sAnim_RatBodyBreathing[] =
     ANIMCMD_JUMP(0)
 };
 
+static const union AnimCmd sAnim_RatBodyLeftBadTouch[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_RatBodyLeft[] =
 {
     sAnim_Normal,
     sAnim_RatBodyBreathing,
+    sAnim_RatBodyLeftBadTouch,
 };
 
 static const union AnimCmd * const sAnims_RatBodyRight[] =
@@ -276,6 +284,7 @@ static const struct SpriteFrameImage sPicTable_RatBodyLeft[] =
 {
     spa_frame(gRattataBodyLeft_Gfx, 0, 8, 8),
     spa_frame(gRattataBodyLeft_Gfx, 1, 8, 8),
+    spa_frame(gRattataBodyLeft_Gfx, 2, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_RatBodyRight[] =
@@ -756,7 +765,8 @@ static void Task_SpaGame(u8 taskId)
 
 static void SpriteCB_RatBodyLeft(struct Sprite *sprite)
 {
-
+    if (sTask.tPetArea == RAT_PET_BAD && VarGet(VAR_BODY_COUNTER) == 0)
+        StartSpriteAnim(sprite, 2);
 }
 
 static void SpriteCB_RatBodyRight(struct Sprite *sprite)
@@ -768,7 +778,14 @@ static void SpriteCB_RatTail(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    if (sTask.tPetArea != RAT_PET_BODY)
+    if (sTask.tPetArea == RAT_PET_BAD)
+    {
+        if (VarGet(VAR_BODY_COUNTER) == 0)
+            sprite->invisible = TRUE;
+        else if (VarGet(VAR_BODY_COUNTER) == 60)
+            sprite->invisible = FALSE;
+    }
+    else if (sTask.tPetArea != RAT_PET_BODY)
     {
         if (counter == 0)
         {
