@@ -1148,8 +1148,9 @@ static const s16 RatPettingZones[][5] =
     // { MIN_X, MAX_X, MIN_Y, MAX_Y, BODY_PART }
     { 70, 110, 49, 97, RAT_PET_BODY },
     { 119, 167, 32, 72, RAT_PET_HEAD },
-    { 64, 104, 9, 33, RAT_PET_BAD },
-    { 56, 72, 25, 73, RAT_PET_BAD }
+    { 64, 104, 9, 31, RAT_PET_BAD },
+    { 56, 72, 25, 73, RAT_PET_BAD },
+    { 147, 160, 91, 104, RAT_PET_BAD }
 };
 
 static u8 GetCurrentPettingArea(struct Sprite *sprite)
