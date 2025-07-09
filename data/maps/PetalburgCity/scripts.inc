@@ -225,7 +225,8 @@ PetalburgCity_EventScript_GymSign::
 	end
 
 PetalburgCity_EventScript_CitySign::
-	msgbox PetalburgCity_Text_CitySign, MSGBOX_SIGN
+    lock
+    startspa
 	end
 
 PetalburgCity_EventScript_Gentleman::

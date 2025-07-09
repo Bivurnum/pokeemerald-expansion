@@ -17,7 +17,7 @@ enum RatPetAreas
     RAT_PET_NONE,
     RAT_PET_BODY,
     RAT_PET_HEAD,
-    RAT_PET_TEETH
+    RAT_PET_BAD
 };
 
 #define spa_frame(ptr, frame, width, height) {.data = (u8 *)ptr + (width * height * frame * 64)/2, .size = (width * height * 64)/2}
