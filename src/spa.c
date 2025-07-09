@@ -1229,6 +1229,7 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
         {
             sprite->y2 = 0;
             StartSpriteAnim(sprite, 3);
+            PlaySE(SE_CONTEST_CONDITION_LOSE);
             sprite->y2 = 2;
             sprite->x2 = -2;
         }
