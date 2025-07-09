@@ -765,13 +765,24 @@ static void Task_SpaGame(u8 taskId)
 
 static void SpriteCB_RatBodyLeft(struct Sprite *sprite)
 {
-    if (sTask.tPetArea == RAT_PET_BAD && VarGet(VAR_BODY_COUNTER) == 0)
-        StartSpriteAnim(sprite, 2);
+    if (sTask.tPetArea == RAT_PET_BAD)
+    {
+        if (VarGet(VAR_BODY_COUNTER) == 0)
+            StartSpriteAnim(sprite, 2);
+        else if (VarGet(VAR_BODY_COUNTER) == 60)
+            StartSpriteAnim(sprite, 1);
+    }
 }
 
 static void SpriteCB_RatBodyRight(struct Sprite *sprite)
 {
-
+    if (sTask.tPetArea == RAT_PET_BAD)
+    {
+        if (VarGet(VAR_BODY_COUNTER) == 0)
+            StartSpriteAnim(sprite, 0);
+        else if (VarGet(VAR_BODY_COUNTER) == 60)
+            StartSpriteAnim(sprite, 1);
+    }
 }
 
 static void SpriteCB_RatTail(struct Sprite *sprite)
@@ -1137,7 +1148,8 @@ static const s16 RatPettingZones[][5] =
     // { MIN_X, MAX_X, MIN_Y, MAX_Y, BODY_PART }
     { 70, 110, 49, 97, RAT_PET_BODY },
     { 119, 167, 32, 72, RAT_PET_HEAD },
-    { 64, 104, 1, 25, RAT_PET_BAD }
+    { 64, 104, 9, 33, RAT_PET_BAD },
+    { 56, 72, 25, 73, RAT_PET_BAD }
 };
 
 static u8 GetCurrentPettingArea(struct Sprite *sprite)
