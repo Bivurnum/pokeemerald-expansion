@@ -6,8 +6,8 @@
 #define TAG_ITEMS_ICON  0x1002
 #define TAG_BERRY       0x1003
 
-#define ITEM_START_Y    160
-#define ITEM_END_Y      141
+#define ITEM_START_X    -22
+#define ITEM_END_X      10
 
 #define SPA_ITEM_BIT_BERRY  0x1
 #define SPA_ITEM_BIT_CLAW   0x2

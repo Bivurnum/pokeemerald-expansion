@@ -46,8 +46,8 @@ static bool8 IsHandOnItemsIcon(struct Sprite *sprite);
 static bool8 IsHandOnExitIcon(struct Sprite *sprite);
 static void SpriteCB_ItemsIcon(struct Sprite *sprite);
 static void SpriteCB_ExitIcon(struct Sprite *sprite);
+static void SpriteCB_ItemTray(struct Sprite *sprite);
 static void SpriteCB_Selector(struct Sprite *sprite);
-static void SpriteCB_ItemsExit(struct Sprite *sprite);
 static void SpriteCB_Berry(struct Sprite *sprite);
 static void Task_ScriptStartSpa(u8 taskId);
 
@@ -73,8 +73,8 @@ static const u32 gHand_Gfx[] = INCBIN_U32("graphics/_spa/hand.4bpp");
 static const u16 gItemsIcon_Pal[] = INCBIN_U16("graphics/_spa/items_icon.gbapal");
 static const u32 gItemsIcon_Gfx[] = INCBIN_U32("graphics/_spa/items_icon.4bpp");
 static const u32 gExitIcon_Gfx[] = INCBIN_U32("graphics/_spa/exit_icon.4bpp");
+static const u32 gItemTray_Gfx[] = INCBIN_U32("graphics/_spa/item_tray.4bpp");
 static const u32 gSelector_Gfx[] = INCBIN_U32("graphics/_spa/selector.4bpp");
-static const u32 gItemsExit_Gfx[] = INCBIN_U32("graphics/_spa/items_exit.4bpp");
 
 static const u16 gBerry_Pal[] = INCBIN_U16("graphics/_spa/berry.gbapal");
 static const u32 gBerry_Gfx[] = INCBIN_U32("graphics/_spa/berry.4bpp");
@@ -290,12 +290,12 @@ static const union AnimCmd * const sAnims_Icon[] =
     sAnim_IconPress,
 };
 
-static const union AnimCmd * const sAnims_Selector[] =
+static const union AnimCmd * const sAnims_ItemTray[] =
 {
     sAnim_Normal,
 };
 
-static const union AnimCmd * const sAnims_ItemsExit[] =
+static const union AnimCmd * const sAnims_Selector[] =
 {
     sAnim_Normal,
 };
@@ -401,14 +401,14 @@ static const struct SpriteFrameImage sPicTable_ExitIcon[] =
     spa_frame(gExitIcon_Gfx, 1, 4, 4),
 };
 
+static const struct SpriteFrameImage sPicTable_ItemTray[] =
+{
+    spa_frame(gItemTray_Gfx, 0, 4, 8),
+};
+
 static const struct SpriteFrameImage sPicTable_Selector[] =
 {
     spa_frame(gSelector_Gfx, 0, 4, 4),
-};
-
-static const struct SpriteFrameImage sPicTable_ItemsExit[] =
-{
-    spa_frame(gItemsExit_Gfx, 0, 4, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_Berry[] =
@@ -446,6 +446,23 @@ static const struct OamData sOam_64x32 =
     .x = 0,
     .matrixNum = 0,
     .size = SPRITE_SIZE(64x32),
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
+static const struct OamData sOam_32x64 =
+{
+    .y = DISPLAY_HEIGHT,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(32x64),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(32x64),
     .tileNum = 0,
     .priority = 1,
     .paletteNum = 0,
@@ -646,26 +663,26 @@ static const struct SpriteTemplate sSpriteTemplate_ExitIcon =
     .callback = SpriteCB_ExitIcon
 };
 
-static const struct SpriteTemplate sSpriteTemplate_Selector =
+static const struct SpriteTemplate sSpriteTemplate_ItemTray =
 {
     .tileTag = TAG_NONE,
     .paletteTag = TAG_ITEMS_ICON,
-    .oam = &sOam_32x8,
+    .oam = &sOam_32x64,
+    .anims = sAnims_ItemTray,
+    .images = sPicTable_ItemTray,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_ItemTray
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Selector =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_HAND,
+    .oam = &sOam_32x32,
     .anims = sAnims_Selector,
     .images = sPicTable_Selector,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_Selector
-};
-
-static const struct SpriteTemplate sSpriteTemplate_ItemsExit =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = TAG_ITEMS_ICON,
-    .oam = &sOam_32x32,
-    .anims = sAnims_ItemsExit,
-    .images = sPicTable_ItemsExit,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_ItemsExit
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Berry =
@@ -901,13 +918,12 @@ static void Task_SpaGame(u8 taskId)
     }
 }
 
-static const u16 SpaItemsX[][2] =
+static const u16 SpaItemsY[][2] =
 {
-    { 44, SPA_ITEM_BIT_BERRY }, // Berry.
-    { 88, SPA_ITEM_BIT_CLAW }, // Claw.
-    { 130, SPA_ITEM_BIT_HONEY }, // Honey.
-    { 160, SPA_ITEM_BIT_ORB }, // Orb.
-    { 200, SPA_ITEM_BIT_ALWAYS } // Items Exit.
+    { 48, SPA_ITEM_BIT_BERRY }, // Berry.
+    { 80, SPA_ITEM_BIT_CLAW }, // Claw.
+    { 112, SPA_ITEM_BIT_HONEY }, // Honey.
+    { 144, SPA_ITEM_BIT_ORB }, // Orb.
 };
 
 static void Task_SpaItemChoose(u8 taskId)
@@ -917,25 +933,28 @@ static void Task_SpaItemChoose(u8 taskId)
     switch (gTasks[taskId].tItemMenuState)
     {
     case 0:
-        spriteId = CreateSprite(&sSpriteTemplate_ItemsExit, SpaItemsX[4][0], ITEM_START_Y, 0);
+        spriteId = CreateSprite(&sSpriteTemplate_Selector, -32, SpaItemsY[0][0], 0);
         gSprites[spriteId].sTaskId = taskId;
-        gSprites[spriteId].oam.priority = 0;
+
+        spriteId = CreateSprite(&sSpriteTemplate_ItemTray, ITEM_START_X, 48, 1);
+        gSprites[spriteId].sTaskId = taskId;
+        spriteId = CreateSprite(&sSpriteTemplate_ItemTray, ITEM_START_X, 112, 1);
+        gSprites[spriteId].sTaskId = taskId;
+        gSprites[spriteId].vFlip = TRUE;
 
         if (FlagGet(FLAG_SPA_OBTAINED_BERRY))
         {
-            spriteId = CreateSprite(&sSpriteTemplate_Berry, SpaItemsX[0][0], ITEM_START_Y, 0);
+            spriteId = CreateSprite(&sSpriteTemplate_Berry, ITEM_START_X, SpaItemsY[0][0], 0);
             gSprites[spriteId].sTaskId = taskId;
             gSprites[spriteId].oam.priority = 0;
+            gSprites[spriteId].x2 = 14;
         }
 
         gTasks[taskId].tItemMenuState = 1;
         break;
     case 1:
-        if (gTasks[taskId].tCounter == (ITEM_START_Y - ITEM_END_Y))
+        if (gTasks[taskId].tCounter == 16)
         {
-            spriteId = CreateSprite(&sSpriteTemplate_Selector, SpaItemsX[0][0], 125, 0);
-            gSprites[spriteId].sTaskId = taskId;
-
             gTasks[taskId].tCounter = 0;
             gTasks[taskId].tItemMenuState = 2;
         }
@@ -1237,9 +1256,6 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             if (IsHandOnItemsIcon(sprite))
             {
                 StartSpriteAnim(&gSprites[VarGet(VAR_ITEMS_ICON_SPRITE_ID)], 1);
-                FillWindowPixelBuffer(0, PIXEL_FILL(1));
-                AddTextPrinterParameterized(0, FONT_NORMAL, gText_NewLine2, 0, 1, 0, NULL);
-                ScheduleBgCopyTilemapToVram(0);
                 sTask.tItemActive = TRUE;
                 sprite->invisible = TRUE;
                 sTask.func = Task_SpaItemChoose;
@@ -1504,40 +1520,53 @@ static void SpriteCB_ExitIcon(struct Sprite *sprite)
 
 }
 
+static void SpriteCB_ItemTray(struct Sprite *sprite)
+{
+    if (sTask.tItemMenuState == 1 && sprite->x < ITEM_END_X)
+    {
+        sprite->x += 2;
+    }
+}
+
 static void SpriteCB_Selector(struct Sprite *sprite)
 {
+    if (sTask.tItemMenuState == 1 && sprite->x < 0)
+    {
+        sprite->x += 2;
+    }
+
     if (sTask.tItemMenuState == 2)
     {
         u32 i;
         s32 newPosition;
 
-        if (JOY_NEW(DPAD_RIGHT))
+        if (JOY_NEW(DPAD_DOWN))
         {
-            for (i = 1; i < 5; i++)
+            for (i = 1; i < ARRAY_COUNT(SpaItemsY); i++)
             {
                 newPosition = sprite->sSelectedItem + i;
                 if (newPosition > 4)
                     newPosition -= 5;
 
-                if (sTask.tItemFlagBits & SpaItemsX[newPosition][1])
+                if (sTask.tItemFlagBits & SpaItemsY[newPosition][1])
                 {
-                    sprite->x = SpaItemsX[newPosition][0];
+                    sprite->y = SpaItemsY[newPosition][0];
                     sprite->sSelectedItem = newPosition;
                     break;
                 }
             }
         }
-        else if (JOY_NEW(DPAD_LEFT))
+        else if (JOY_NEW(DPAD_UP))
         {
-            for (i = 1; i < 5; i++)
+            for (i = 1; i < ARRAY_COUNT(SpaItemsY); i++)
             {
                 newPosition = sprite->sSelectedItem - i;
                 if (newPosition < 0)
                     newPosition += 5;
 
-                if (sTask.tItemFlagBits & SpaItemsX[newPosition][1])
+                if (sTask.tItemFlagBits & SpaItemsY[newPosition][1])
                 {
-                    sprite->x = SpaItemsX[newPosition][0];
+                    sprite->y = SpaItemsY[newPosition][0];
                     sprite->sSelectedItem = newPosition;
                     break;
                 }
@@ -1546,11 +1575,11 @@ static void SpriteCB_Selector(struct Sprite *sprite)
 
         if (sprite->sCounter == 48)
         {
-            sprite->y2++;
+            sprite->x2++;
         }
         else if (sprite->sCounter == 96)
         {
-            sprite->y2--;
+            sprite->x2--;
             sprite->sCounter = 0;
         }
 
@@ -1558,19 +1587,11 @@ static void SpriteCB_Selector(struct Sprite *sprite)
     }
 }
 
-static void SpriteCB_ItemsExit(struct Sprite *sprite)
-{
-    if (sTask.tItemMenuState == 1 && sprite->y > ITEM_END_Y)
-    {
-        sprite->y--;
-    }
-}
-
 static void SpriteCB_Berry(struct Sprite *sprite)
 {
-    if (sTask.tItemMenuState == 1 && sprite->y > ITEM_END_Y)
+    if (sTask.tItemMenuState == 1 && sprite->x < ITEM_END_X)
     {
-        sprite->y--;
+        sprite->x += 2;
     }
 }
 
