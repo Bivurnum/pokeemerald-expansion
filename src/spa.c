@@ -3,8 +3,7 @@
 #include "bg.h"
 #include "event_data.h"
 #include "gpu_regs.h"
-#include "item_icon.h"
-//#include "item_menu_icons.h"
+#include "international_string_util.h"
 #include "main.h"
 #include "menu.h"
 #include "overworld.h"
@@ -84,10 +83,10 @@ static const struct WindowTemplate sWindowTemplates[] =
 {
     {
         .bg = 0,
-        .tilemapLeft = 3,
-        .tilemapTop = 15,
+        .tilemapLeft = 5,
+        .tilemapTop = 17,
         .width = 24,
-        .height = 4,
+        .height = 2,
         .paletteNum = 14,
         .baseBlock = 0x0200
     },
@@ -817,15 +816,16 @@ static void CreateRattataSprites(u8 taskId)
     gSprites[spriteId].sTaskId = taskId;
     gSprites[spriteId].data[2] = (Random() % 180) + 180;
 
-    spriteId = CreateSprite(&sSpriteTemplate_Hand, 225, 45, 5);
+    spriteId = CreateSprite(&sSpriteTemplate_Hand, 16, 45, 5);
     gSprites[spriteId].sTaskId = taskId;
+    gSprites[spriteId].oam.priority = 0;
     VarSet(VAR_HAND_SPRITE_ID, spriteId);
 
-    spriteId = CreateSprite(&sSpriteTemplate_ItemsIcon, 16, 16, 7);
+    spriteId = CreateSprite(&sSpriteTemplate_ItemsIcon, 16, 144, 7);
     gSprites[spriteId].sTaskId = taskId;
     VarSet(VAR_ITEMS_ICON_SPRITE_ID, spriteId);
 
-    spriteId = CreateSprite(&sSpriteTemplate_ExitIcon, 224, 16, 7);
+    spriteId = CreateSprite(&sSpriteTemplate_ExitIcon, 16, 16, 7);
     gSprites[spriteId].sTaskId = taskId;
     VarSet(VAR_ITEMS_EXIT_SPRITE_ID, spriteId);
 }
@@ -851,6 +851,7 @@ static void CB2_SpaGame(void)
 static void Task_StartSpaGame(u8 taskId)
 {
     DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
     AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 1, 0, NULL);
     FillPalette(RGB2GBA(238, 195, 154), BG_PLTT_ID(14) + 1, PLTT_SIZEOF(1));
     FillPalette(RGB2GBA(80, 50, 50), BG_PLTT_ID(14) + 2, PLTT_SIZEOF(1));
@@ -1302,8 +1303,8 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             sprite->y++;
 
         sprite->y++;
-        if (sprite->y > 108)
-            sprite->y = 108;
+        if (sprite->y > 155)
+            sprite->y = 155;
     }
     if (JOY_HELD(DPAD_UP))
     {
@@ -1386,7 +1387,7 @@ static void StopPetting(struct Sprite *sprite)
 
 static bool8 IsHandOnItemsIcon(struct Sprite *sprite)
 {
-    if (sprite->x < 38 && sprite->y < 38)
+    if (sprite->x < (gSprites[VarGet(VAR_ITEMS_ICON_SPRITE_ID)].x + 20) && sprite->y > (gSprites[VarGet(VAR_ITEMS_ICON_SPRITE_ID)].y - 7))
         return TRUE;
 
     return FALSE;
@@ -1394,7 +1395,7 @@ static bool8 IsHandOnItemsIcon(struct Sprite *sprite)
 
 static bool8 IsHandOnExitIcon(struct Sprite *sprite)
 {
-    if (sprite->x > 216 && sprite->y < 38)
+    if (sprite->x < 38 && sprite->y < 38)
         return TRUE;
 
     return FALSE;
