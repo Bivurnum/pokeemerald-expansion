@@ -3,6 +3,8 @@
 #include "bg.h"
 #include "event_data.h"
 #include "gpu_regs.h"
+#include "item_icon.h"
+//#include "item_menu_icons.h"
 #include "main.h"
 #include "menu.h"
 #include "overworld.h"
@@ -25,6 +27,7 @@ static void CreateRattataSprites(u8 taskId);
 static void VblankCB_SpaGame(void);
 static void CB2_SpaGame(void);
 static void Task_StartSpaGame(u8 taskId);
+static void SetItemFlagBits(u8 taskId);
 static void Task_SpaGame(u8 taskId);
 static void SpriteCB_RatBodyLeft(struct Sprite *sprite);
 static void SpriteCB_RatBodyRight(struct Sprite *sprite);
@@ -44,6 +47,9 @@ static bool8 IsHandOnItemsIcon(struct Sprite *sprite);
 static bool8 IsHandOnExitIcon(struct Sprite *sprite);
 static void SpriteCB_ItemsIcon(struct Sprite *sprite);
 static void SpriteCB_ExitIcon(struct Sprite *sprite);
+static void SpriteCB_Selector(struct Sprite *sprite);
+static void SpriteCB_ItemsExit(struct Sprite *sprite);
+static void SpriteCB_Berry(struct Sprite *sprite);
 static void Task_ScriptStartSpa(u8 taskId);
 
 static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.lz");
@@ -68,6 +74,11 @@ static const u32 gHand_Gfx[] = INCBIN_U32("graphics/_spa/hand.4bpp");
 static const u16 gItemsIcon_Pal[] = INCBIN_U16("graphics/_spa/items_icon.gbapal");
 static const u32 gItemsIcon_Gfx[] = INCBIN_U32("graphics/_spa/items_icon.4bpp");
 static const u32 gExitIcon_Gfx[] = INCBIN_U32("graphics/_spa/exit_icon.4bpp");
+static const u32 gSelector_Gfx[] = INCBIN_U32("graphics/_spa/selector.4bpp");
+static const u32 gItemsExit_Gfx[] = INCBIN_U32("graphics/_spa/items_exit.4bpp");
+
+static const u16 gBerry_Pal[] = INCBIN_U16("graphics/_spa/berry.gbapal");
+static const u32 gBerry_Gfx[] = INCBIN_U32("graphics/_spa/berry.4bpp");
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -280,6 +291,35 @@ static const union AnimCmd * const sAnims_Icon[] =
     sAnim_IconPress,
 };
 
+static const union AnimCmd * const sAnims_Selector[] =
+{
+    sAnim_Normal,
+};
+
+static const union AnimCmd * const sAnims_ItemsExit[] =
+{
+    sAnim_Normal,
+};
+
+static const union AnimCmd sAnim_Berry1Bite[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_Berry2Bites[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_END
+};
+
+static const union AnimCmd * const sAnims_Berry[] =
+{
+    sAnim_Normal,
+    sAnim_Berry1Bite,
+    sAnim_Berry2Bites,
+};
+
 static const struct SpriteFrameImage sPicTable_RatBodyLeft[] =
 {
     spa_frame(gRattataBodyLeft_Gfx, 0, 8, 8),
@@ -362,6 +402,23 @@ static const struct SpriteFrameImage sPicTable_ExitIcon[] =
     spa_frame(gExitIcon_Gfx, 1, 4, 4),
 };
 
+static const struct SpriteFrameImage sPicTable_Selector[] =
+{
+    spa_frame(gSelector_Gfx, 0, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_ItemsExit[] =
+{
+    spa_frame(gItemsExit_Gfx, 0, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Berry[] =
+{
+    spa_frame(gBerry_Gfx, 0, 4, 4),
+    spa_frame(gBerry_Gfx, 1, 4, 4),
+    spa_frame(gBerry_Gfx, 2, 4, 4),
+};
+
 static const struct OamData sOam_64x64 =
 {
     .y = DISPLAY_HEIGHT,
@@ -426,6 +483,23 @@ static const struct OamData sOam_16x8 =
     .size = SPRITE_SIZE(16x8),
     .tileNum = 0,
     .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
+static const struct OamData sOam_32x8 =
+{
+    .y = DISPLAY_HEIGHT,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(32x8),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(32x8),
+    .tileNum = 0,
+    .priority = 0,
     .paletteNum = 0,
     .affineParam = 0,
 };
@@ -573,6 +647,39 @@ static const struct SpriteTemplate sSpriteTemplate_ExitIcon =
     .callback = SpriteCB_ExitIcon
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Selector =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_ITEMS_ICON,
+    .oam = &sOam_32x8,
+    .anims = sAnims_Selector,
+    .images = sPicTable_Selector,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_Selector
+};
+
+static const struct SpriteTemplate sSpriteTemplate_ItemsExit =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_ITEMS_ICON,
+    .oam = &sOam_32x32,
+    .anims = sAnims_ItemsExit,
+    .images = sPicTable_ItemsExit,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_ItemsExit
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Berry =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_BERRY,
+    .oam = &sOam_32x32,
+    .anims = sAnims_Berry,
+    .images = sPicTable_Berry,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_Berry
+};
+
 static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 {
     {
@@ -587,18 +694,28 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
         .data = gItemsIcon_Pal,
         .tag = TAG_ITEMS_ICON
     },
+    {
+        .data = gBerry_Pal,
+        .tag = TAG_BERRY
+    },
     {NULL},
 };
 
 // Task data.
-#define tCounter    data[0]
-#define tPetArea    data[1]
-#define tPetActive  data[2]
-#define tPetTimer   data[3]
-#define tShouldExit data[15]
+#define tCounter        data[0]
+#define tPetArea        data[1]
+#define tPetActive      data[2]
+#define tPetTimer       data[3]
+#define tItemActive     data[4]
+#define tItemMenuState  data[5]
+#define tItemFlagBits   data[14]
+#define tShouldExit     data[15]
 
 // Sprite data.
-#define sTaskId     data[0]
+#define sTaskId         data[0]
+#define sCounter        data[1]
+#define sInterval       data[2]
+#define sSelectedItem   data[3]
 
 void CB2_InitRattata(void)
 {
@@ -735,8 +852,30 @@ static void Task_StartSpaGame(u8 taskId)
 {
     DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
     AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 1, 0, NULL);
+    FillPalette(RGB2GBA(238, 195, 154), BG_PLTT_ID(14) + 1, PLTT_SIZEOF(1));
+    FillPalette(RGB2GBA(80, 50, 50), BG_PLTT_ID(14) + 2, PLTT_SIZEOF(1));
+    FillPalette(RGB2GBA(180, 148, 117), BG_PLTT_ID(14) + 3, PLTT_SIZEOF(1));
     ScheduleBgCopyTilemapToVram(0);
+
+    SetItemFlagBits(taskId);
     gTasks[taskId].func = Task_SpaGame;
+}
+
+static void SetItemFlagBits(u8 taskId)
+{
+    gTasks[taskId].tItemFlagBits |= SPA_ITEM_BIT_ALWAYS;
+
+    if (FlagGet(FLAG_SPA_OBTAINED_BERRY))
+        gTasks[taskId].tItemFlagBits |= SPA_ITEM_BIT_BERRY;
+
+    if (FlagGet(FLAG_SPA_OBTAINED_CLAW))
+        gTasks[taskId].tItemFlagBits |= SPA_ITEM_BIT_CLAW;
+
+    if (FlagGet(FLAG_SPA_OBTAINED_HONEY))
+        gTasks[taskId].tItemFlagBits |= SPA_ITEM_BIT_HONEY;
+
+    if (FlagGet(FLAG_SPA_OBTAINED_ORB))
+        gTasks[taskId].tItemFlagBits |= SPA_ITEM_BIT_ORB;
 }
 
 static void Task_SpaGame(u8 taskId)
@@ -758,6 +897,52 @@ static void Task_SpaGame(u8 taskId)
             StopPetting(&gSprites[VarGet(VAR_HAND_SPRITE_ID)]);
         }
         gTasks[taskId].tPetTimer++;
+    }
+}
+
+static const u16 SpaItemsX[][2] =
+{
+    { 44, SPA_ITEM_BIT_BERRY }, // Berry.
+    { 88, SPA_ITEM_BIT_CLAW }, // Claw.
+    { 130, SPA_ITEM_BIT_HONEY }, // Honey.
+    { 160, SPA_ITEM_BIT_ORB }, // Orb.
+    { 200, SPA_ITEM_BIT_ALWAYS } // Items Exit.
+};
+
+static void Task_SpaItemChoose(u8 taskId)
+{
+    u8 spriteId;
+
+    switch (gTasks[taskId].tItemMenuState)
+    {
+    case 0:
+        spriteId = CreateSprite(&sSpriteTemplate_ItemsExit, SpaItemsX[4][0], ITEM_START_Y, 0);
+        gSprites[spriteId].sTaskId = taskId;
+        gSprites[spriteId].oam.priority = 0;
+
+        if (FlagGet(FLAG_SPA_OBTAINED_BERRY))
+        {
+            spriteId = CreateSprite(&sSpriteTemplate_Berry, SpaItemsX[0][0], ITEM_START_Y, 0);
+            gSprites[spriteId].sTaskId = taskId;
+            gSprites[spriteId].oam.priority = 0;
+        }
+
+        gTasks[taskId].tItemMenuState = 1;
+        break;
+    case 1:
+        if (gTasks[taskId].tCounter == (ITEM_START_Y - ITEM_END_Y))
+        {
+            spriteId = CreateSprite(&sSpriteTemplate_Selector, SpaItemsX[0][0], 125, 0);
+            gSprites[spriteId].sTaskId = taskId;
+
+            gTasks[taskId].tCounter = 0;
+            gTasks[taskId].tItemMenuState = 2;
+        }
+        else
+        {
+            gTasks[taskId].tCounter++;
+        }
+        break;
     }
 }
 
@@ -1030,7 +1215,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
 
     if (sprite->invisible == TRUE)
     {
-        if (!sTask.tShouldExit && sTask.tPetArea != RAT_PET_BAD)
+        if (!sTask.tShouldExit && sTask.tPetArea != RAT_PET_BAD && !sTask.tItemActive)
             sprite->invisible = FALSE;
 
         return;
@@ -1051,6 +1236,12 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             if (IsHandOnItemsIcon(sprite))
             {
                 StartSpriteAnim(&gSprites[VarGet(VAR_ITEMS_ICON_SPRITE_ID)], 1);
+                FillWindowPixelBuffer(0, PIXEL_FILL(1));
+                AddTextPrinterParameterized(0, FONT_NORMAL, gText_NewLine2, 0, 1, 0, NULL);
+                ScheduleBgCopyTilemapToVram(0);
+                sTask.tItemActive = TRUE;
+                sprite->invisible = TRUE;
+                sTask.func = Task_SpaItemChoose;
                 return;
             }
             else if (IsHandOnExitIcon(sprite))
@@ -1209,9 +1400,6 @@ static bool8 IsHandOnExitIcon(struct Sprite *sprite)
     return FALSE;
 }
 
-#define sCounter    sprite->data[1]
-#define sInterval   sprite->data[2]
-
 static void SpriteCB_RatEyes(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
@@ -1286,21 +1474,21 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
             StartSpriteAnim(sprite, 0);
             counter++;
             VarSet(VAR_BODY_COUNTER, counter);
-            sCounter = 0;
+            sprite->sCounter = 0;
         }
         if (sprite->y2 < 0)
         {
             sprite->y2++;
         }
-        if (sCounter == sInterval)
+        if (sprite->sCounter == sprite->sInterval)
         {
             StartSpriteAnim(sprite, 1); // Blink.
-            sInterval = (Random() % 180) + 180; // 3 to 6 seconds.
-            sCounter = 0;
+            sprite->sInterval = (Random() % 180) + 180; // 3 to 6 seconds.
+            sprite->sCounter = 0;
         }
         else
         {
-            sCounter++;
+            sprite->sCounter++;
         }
     }
 }
@@ -1313,6 +1501,76 @@ static void SpriteCB_ItemsIcon(struct Sprite *sprite)
 static void SpriteCB_ExitIcon(struct Sprite *sprite)
 {
 
+}
+
+static void SpriteCB_Selector(struct Sprite *sprite)
+{
+    if (sTask.tItemMenuState == 2)
+    {
+        u32 i;
+        s32 newPosition;
+
+        if (JOY_NEW(DPAD_RIGHT))
+        {
+            for (i = 1; i < 5; i++)
+            {
+                newPosition = sprite->sSelectedItem + i;
+                if (newPosition > 4)
+                    newPosition -= 5;
+
+                if (sTask.tItemFlagBits & SpaItemsX[newPosition][1])
+                {
+                    sprite->x = SpaItemsX[newPosition][0];
+                    sprite->sSelectedItem = newPosition;
+                    break;
+                }
+            }
+        }
+        else if (JOY_NEW(DPAD_LEFT))
+        {
+            for (i = 1; i < 5; i++)
+            {
+                newPosition = sprite->sSelectedItem - i;
+                if (newPosition < 0)
+                    newPosition += 5;
+
+                if (sTask.tItemFlagBits & SpaItemsX[newPosition][1])
+                {
+                    sprite->x = SpaItemsX[newPosition][0];
+                    sprite->sSelectedItem = newPosition;
+                    break;
+                }
+            }
+        }
+
+        if (sprite->sCounter == 48)
+        {
+            sprite->y2++;
+        }
+        else if (sprite->sCounter == 96)
+        {
+            sprite->y2--;
+            sprite->sCounter = 0;
+        }
+
+        sprite->sCounter++;
+    }
+}
+
+static void SpriteCB_ItemsExit(struct Sprite *sprite)
+{
+    if (sTask.tItemMenuState == 1 && sprite->y > ITEM_END_Y)
+    {
+        sprite->y--;
+    }
+}
+
+static void SpriteCB_Berry(struct Sprite *sprite)
+{
+    if (sTask.tItemMenuState == 1 && sprite->y > ITEM_END_Y)
+    {
+        sprite->y--;
+    }
 }
 
 void Script_StartSpa(void)

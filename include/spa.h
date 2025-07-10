@@ -4,6 +4,16 @@
 #define TAG_RATTATA     0x1000
 #define TAG_HAND        0x1001
 #define TAG_ITEMS_ICON  0x1002
+#define TAG_BERRY       0x1003
+
+#define ITEM_START_Y    160
+#define ITEM_END_Y      141
+
+#define SPA_ITEM_BIT_BERRY  0x1
+#define SPA_ITEM_BIT_CLAW   0x2
+#define SPA_ITEM_BIT_HONEY  0x4
+#define SPA_ITEM_BIT_ORB    0x8
+#define SPA_ITEM_BIT_ALWAYS 0x10
 
 enum HandStates
 {
