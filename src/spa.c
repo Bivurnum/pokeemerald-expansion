@@ -1244,6 +1244,13 @@ static void SpriteCB_Hand(struct Sprite *sprite)
     switch (sHandState)
     {
     case HAND_NORMAL:
+        if (JOY_NEW(L_BUTTON))
+        {
+            sTask.tItemActive = TRUE;
+            sprite->invisible = TRUE;
+            sTask.func = Task_SpaItemChoose;
+            return;
+        }
         if (JOY_NEW(A_BUTTON))
         {
             if (petArea == RAT_PET_BAD)
@@ -1545,8 +1552,8 @@ static void SpriteCB_Selector(struct Sprite *sprite)
             for (i = 1; i < ARRAY_COUNT(SpaItemsY); i++)
             {
                 newPosition = sprite->sSelectedItem + i;
-                if (newPosition > 4)
-                    newPosition -= 5;
+                if (newPosition > 3)
+                    newPosition -= 4;
 
                 if (sTask.tItemFlagBits & SpaItemsY[newPosition][1])
                 {
@@ -1562,7 +1569,7 @@ static void SpriteCB_Selector(struct Sprite *sprite)
             {
                 newPosition = sprite->sSelectedItem - i;
                 if (newPosition < 0)
-                    newPosition += 5;
+                    newPosition += 4;
 
                 if (sTask.tItemFlagBits & SpaItemsY[newPosition][1])
                 {
