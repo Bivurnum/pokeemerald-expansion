@@ -751,6 +751,7 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 #define sTaskId         data[0]
 #define sCounter        data[1]
 #define sInterval       data[2]
+#define sIsBiting       data[3]
 
 void CB2_InitRattata(void)
 {
@@ -1563,8 +1564,14 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
     else if (JOY_NEW(R_BUTTON))
     {
         StartSpriteAnim(sprite, 4);
+        sprite->sIsBiting = TRUE;
     }
-    else
+    else if (sprite->sIsBiting)
+    {
+        if (sprite->animEnded)
+            sprite->sIsBiting = FALSE;
+    }
+    else if (!sprite->sIsBiting)
     {
         if (counter == 0)
         {
