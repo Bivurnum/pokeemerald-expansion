@@ -942,10 +942,9 @@ static void Task_SpaItemChoose(u8 taskId)
 
         if (FlagGet(FLAG_SPA_OBTAINED_BERRY))
         {
-            spriteId = CreateSprite(&sSpriteTemplate_Berry, ITEM_START_X, SpaItemsY[0][0], 0);
+            spriteId = CreateSprite(&sSpriteTemplate_Berry, (ITEM_START_X + 14), SpaItemsY[0][0], 0);
             gSprites[spriteId].sTaskId = taskId;
             gSprites[spriteId].oam.priority = 0;
-            gSprites[spriteId].x2 = 14;
         }
 
         gTasks[taskId].tItemMenuState = 1;
@@ -1038,8 +1037,8 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
             sprite->x--;
 
         sprite->x--;
-        if (sprite->x < 10)
-            sprite->x = 10;
+        if (sprite->x < 0)
+            sprite->x = 0;
     }
 }
 
@@ -1646,7 +1645,7 @@ static void SpriteCB_Selector(struct Sprite *sprite)
 
 static void SpriteCB_Berry(struct Sprite *sprite)
 {
-    if (sTask.tItemMenuState == 1 && sprite->x < ITEM_END_X)
+    if (sTask.tItemMenuState == 1 && sprite->x < (ITEM_END_X + 14))
     {
         sprite->x += 2;
     }
