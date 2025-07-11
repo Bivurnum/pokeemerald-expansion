@@ -1660,6 +1660,11 @@ static void SpriteCB_Berry(struct Sprite *sprite)
             sTask.tItemMenuState = 11;
             DestroySprite(sprite);
         }
+        else if (JOY_NEW(L_BUTTON))
+        {
+            sTask.tItemMenuState = 0;
+            DestroySprite(sprite);
+        }
         
         MoveSpriteFromInput(sprite);
     }
