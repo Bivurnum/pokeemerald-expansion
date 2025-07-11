@@ -28,6 +28,7 @@ static void CB2_SpaGame(void);
 static void Task_StartSpaGame(u8 taskId);
 static void SetItemFlagBits(u8 taskId);
 static void Task_SpaGame(u8 taskId);
+static void MoveSpriteFromInput(struct Sprite *sprite);
 static void SpriteCB_RatBodyLeft(struct Sprite *sprite);
 static void SpriteCB_RatBodyRight(struct Sprite *sprite);
 static void SpriteCB_RatTail(struct Sprite *sprite);
@@ -724,6 +725,7 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 #define tPetTimer       data[3]
 #define tItemActive     data[4]
 #define tItemMenuState  data[5]
+#define tSelectedItem   data[6]
 #define tItemFlagBits   data[14]
 #define tShouldExit     data[15]
 
@@ -731,7 +733,6 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 #define sTaskId         data[0]
 #define sCounter        data[1]
 #define sInterval       data[2]
-#define sSelectedItem   data[3]
 
 void CB2_InitRattata(void)
 {
@@ -968,9 +969,23 @@ static void Task_SpaItemChoose(u8 taskId)
         {
             gTasks[taskId].tItemMenuState = 10;
         }
-
-
-
+        if (JOY_NEW(A_BUTTON))
+        {
+            gTasks[taskId].tItemMenuState = 3;
+        }
+        break;
+    case 3:
+        if (gTasks[taskId].tCounter == 16)
+        {
+            gTasks[taskId].tCounter = 0;
+            gTasks[taskId].tItemMenuState = 4;
+        }
+        else
+        {
+            gTasks[taskId].tCounter++;
+        }
+        break;
+    case 4:
         break;
     case 10:
         if (gTasks[taskId].tCounter == 16)
@@ -988,6 +1003,46 @@ static void Task_SpaItemChoose(u8 taskId)
         gTasks[taskId].tItemMenuState = 0;
         gTasks[taskId].func = Task_SpaGame;
         break;
+    }
+}
+
+static void MoveSpriteFromInput(struct Sprite *sprite)
+{
+    if (JOY_HELD(DPAD_DOWN))
+    {
+        if (JOY_HELD(B_BUTTON))
+            sprite->y++;
+
+        sprite->y++;
+        if (sprite->y > 155)
+            sprite->y = 155;
+    }
+    if (JOY_HELD(DPAD_UP))
+    {
+        if (JOY_HELD(B_BUTTON))
+            sprite->y--;
+
+        sprite->y--;
+        if (sprite->y < 9)
+            sprite->y = 9;
+    }
+    if (JOY_HELD(DPAD_RIGHT))
+    {
+        if (JOY_HELD(B_BUTTON))
+            sprite->x++;
+
+        sprite->x++;
+        if (sprite->x > 240)
+            sprite->x = 240;
+    }
+    if (JOY_HELD(DPAD_LEFT))
+    {
+        if (JOY_HELD(B_BUTTON))
+            sprite->x--;
+
+        sprite->x--;
+        if (sprite->x < 10)
+            sprite->x = 10;
     }
 }
 
@@ -1345,42 +1400,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
         break;
     }
 
-    if (JOY_HELD(DPAD_DOWN))
-    {
-        if (JOY_HELD(B_BUTTON))
-            sprite->y++;
-
-        sprite->y++;
-        if (sprite->y > 155)
-            sprite->y = 155;
-    }
-    if (JOY_HELD(DPAD_UP))
-    {
-        if (JOY_HELD(B_BUTTON))
-            sprite->y--;
-
-        sprite->y--;
-        if (sprite->y < 9)
-            sprite->y = 9;
-    }
-    if (JOY_HELD(DPAD_RIGHT))
-    {
-        if (JOY_HELD(B_BUTTON))
-            sprite->x++;
-
-        sprite->x++;
-        if (sprite->x > 240)
-            sprite->x = 240;
-    }
-    if (JOY_HELD(DPAD_LEFT))
-    {
-        if (JOY_HELD(B_BUTTON))
-            sprite->x--;
-
-        sprite->x--;
-        if (sprite->x < 10)
-            sprite->x = 10;
-    }
+    MoveSpriteFromInput(sprite);
 }
 
 static const s16 RatPettingZones[][5] =
@@ -1558,11 +1578,15 @@ static void SpriteCB_ItemTray(struct Sprite *sprite)
     {
         sprite->x += 2;
     }
+    else if (sTask.tItemMenuState == 3)
+    {
+        sprite->x -= 2;
+    }
     else if (sTask.tItemMenuState == 10)
     {
         sprite->x -= 2;
     }
-    else if (sTask.tItemMenuState == 11)
+    else if (sTask.tItemMenuState == 11 || sTask.tItemMenuState == 4)
     {
         DestroySprite(sprite);
     }
@@ -1583,14 +1607,14 @@ static void SpriteCB_Selector(struct Sprite *sprite)
         {
             for (i = 1; i < ARRAY_COUNT(SpaItemsY); i++)
             {
-                newPosition = sprite->sSelectedItem + i;
+                newPosition = sTask.tSelectedItem + i;
                 if (newPosition > 3)
                     newPosition -= 4;
 
                 if (sTask.tItemFlagBits & SpaItemsY[newPosition][1])
                 {
                     sprite->y = SpaItemsY[newPosition][0];
-                    sprite->sSelectedItem = newPosition;
+                    sTask.tSelectedItem = newPosition;
                     break;
                 }
             }
@@ -1599,14 +1623,14 @@ static void SpriteCB_Selector(struct Sprite *sprite)
         {
             for (i = 1; i < ARRAY_COUNT(SpaItemsY); i++)
             {
-                newPosition = sprite->sSelectedItem - i;
+                newPosition = sTask.tSelectedItem - i;
                 if (newPosition < 0)
                     newPosition += 4;
 
                 if (sTask.tItemFlagBits & SpaItemsY[newPosition][1])
                 {
                     sprite->y = SpaItemsY[newPosition][0];
-                    sprite->sSelectedItem = newPosition;
+                    sTask.tSelectedItem = newPosition;
                     break;
                 }
             }
@@ -1624,11 +1648,15 @@ static void SpriteCB_Selector(struct Sprite *sprite)
 
         sprite->sCounter++;
     }
+    else if (sTask.tItemMenuState == 3)
+    {
+        sprite->x -= 2;
+    }
     else if (sTask.tItemMenuState == 10)
     {
         sprite->x -= 2;
     }
-    else if (sTask.tItemMenuState == 11)
+    else if (sTask.tItemMenuState == 11 || sTask.tItemMenuState == 4)
     {
         DestroySprite(sprite);
     }
@@ -1639,6 +1667,20 @@ static void SpriteCB_Berry(struct Sprite *sprite)
     if (sTask.tItemMenuState == 1 && sprite->x < ITEM_END_X)
     {
         sprite->x += 2;
+    }
+    else if (sTask.tItemMenuState == 3 && sTask.tSelectedItem != 0)
+    {
+        sprite->x -= 2;
+    }
+    else if (sTask.tItemMenuState == 4)
+    {
+        if (sTask.tSelectedItem != 0 || JOY_NEW(A_BUTTON))
+        {
+            sTask.tItemMenuState = 11;
+            DestroySprite(sprite);
+        }
+        
+        MoveSpriteFromInput(sprite);
     }
     else if (sTask.tItemMenuState == 10)
     {
