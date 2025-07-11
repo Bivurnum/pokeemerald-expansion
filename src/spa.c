@@ -820,38 +820,38 @@ static void CreateRattataSprites(u8 taskId)
 {
     u8 spriteId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatBodyLeft, 86, 73, 12);
+    spriteId = CreateSprite(&sSpriteTemplate_RatBodyLeft, 94, 73, 12);
     gSprites[spriteId].sTaskId = taskId;
     StartSpriteAnim(&gSprites[spriteId], 1);
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatBodyRight, 150, 81, 12);
+    spriteId = CreateSprite(&sSpriteTemplate_RatBodyRight, 158, 81, 12);
     gSprites[spriteId].sTaskId = taskId;
     StartSpriteAnim(&gSprites[spriteId], 1);
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatTail, 80, 33, 11);
+    spriteId = CreateSprite(&sSpriteTemplate_RatTail, 88, 33, 11);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatEarLeft, 111, 32, 10);
+    spriteId = CreateSprite(&sSpriteTemplate_RatEarLeft, 119, 32, 10);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatEarRight, 175, 32, 10);
+    spriteId = CreateSprite(&sSpriteTemplate_RatEarRight, 183, 32, 10);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatMouth, 144, 80, 10);
+    spriteId = CreateSprite(&sSpriteTemplate_RatMouth, 152, 80, 10);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatWhiskerLeft, 88, 59, 9);
+    spriteId = CreateSprite(&sSpriteTemplate_RatWhiskerLeft, 96, 59, 9);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatWhiskerRight, 199, 57, 9);
+    spriteId = CreateSprite(&sSpriteTemplate_RatWhiskerRight, 207, 57, 9);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatToes, 96, 109, 12);
+    spriteId = CreateSprite(&sSpriteTemplate_RatToes, 104, 109, 12);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatEyes, 146, 63, 8);
+    spriteId = CreateSprite(&sSpriteTemplate_RatEyes, 154, 63, 8);
     gSprites[spriteId].sTaskId = taskId;
-    gSprites[spriteId].data[2] = (Random() % 180) + 180;
+    gSprites[spriteId].sInterval = (Random() % 180) + 180;
 
     spriteId = CreateSprite(&sSpriteTemplate_Hand, 16, 45, 5);
     gSprites[spriteId].sTaskId = taskId;
@@ -1431,11 +1431,11 @@ static void SpriteCB_Hand(struct Sprite *sprite)
 static const s16 RatPettingZones[][5] =
 {
     // { MIN_X, MAX_X, MIN_Y, MAX_Y, BODY_PART }
-    { 70, 110, 49, 97, RAT_PET_BODY },
-    { 119, 167, 32, 72, RAT_PET_HEAD },
-    { 64, 104, 8, 31, RAT_PET_BAD },
-    { 56, 72, 25, 73, RAT_PET_BAD },
-    { 147, 160, 91, 104, RAT_PET_BAD }
+    { 78, 118, 49, 97, RAT_PET_BODY },
+    { 127, 175, 32, 72, RAT_PET_HEAD },
+    { 72, 112, 8, 31, RAT_PET_BAD },
+    { 64, 80, 25, 73, RAT_PET_BAD },
+    { 155, 168, 91, 104, RAT_PET_BAD }
 };
 
 static u8 GetCurrentPettingArea(struct Sprite *sprite)
@@ -1661,11 +1661,11 @@ static void SpriteCB_Selector(struct Sprite *sprite)
             }
         }
 
-        if (sprite->sCounter == 48)
+        if (sprite->sCounter == 32)
         {
             sprite->x2++;
         }
-        else if (sprite->sCounter == 96)
+        else if (sprite->sCounter == 64)
         {
             sprite->x2--;
             sprite->sCounter = 0;
