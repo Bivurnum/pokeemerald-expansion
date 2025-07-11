@@ -224,12 +224,14 @@ static const union AnimCmd * const sAnims_RatWhiskerLeft[] =
 {
     sAnim_Normal,
     sAnim_RatWhiskerTwitch,
+    sAnim_RatBite,
 };
 
 static const union AnimCmd * const sAnims_RatWhiskerRight[] =
 {
     sAnim_Normal,
     sAnim_RatWhiskerTwitch,
+    sAnim_RatBite,
 };
 
 static const union AnimCmd * const sAnims_RatToes[] =
@@ -1275,6 +1277,10 @@ static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
             sprite->x2 = 0;
         }
     }
+    else if (JOY_NEW(R_BUTTON))
+    {
+        StartSpriteAnim(sprite, 2);
+    }
     else
     {
         if (counter == 0)
@@ -1318,6 +1324,10 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
             sprite->y2 = 0;
             sprite->x2 = 0;
         }
+    }
+    else if (JOY_NEW(R_BUTTON))
+    {
+        StartSpriteAnim(sprite, 2);
     }
     else
     {
