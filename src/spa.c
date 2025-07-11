@@ -1463,6 +1463,7 @@ static void AdjustToPetArea(struct Sprite *sprite, u8 area)
         sTask.tPetArea = area;
         if (sTask.tPetArea == RAT_PET_BODY)
             sprite->subpriority = 11;
+            sprite->oam.priority = 1;
     }
 }
 
@@ -1473,6 +1474,7 @@ static void StopPetting(struct Sprite *sprite)
         sTask.tPetArea = RAT_PET_NONE;
         VarSet(VAR_BODY_COUNTER, 0);
         sprite->subpriority = 5;
+        sprite->oam.priority = 0;
         sTask.tPetActive = FALSE;
         sHandState = HAND_NORMAL;
     }
