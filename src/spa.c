@@ -37,7 +37,6 @@ static void SpriteCB_RatEarRight(struct Sprite *sprite);
 static void SpriteCB_RatMouth(struct Sprite *sprite);
 static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite);
 static void SpriteCB_RatWhiskerRight(struct Sprite *sprite);
-static void SpriteCB_RatToes(struct Sprite *sprite);
 static void SpriteCB_RatEyes(struct Sprite *sprite);
 static void SpriteCB_Hand(struct Sprite *sprite);
 static u8 GetCurrentPettingArea(struct Sprite *sprite);
@@ -45,8 +44,6 @@ static void AdjustToPetArea(struct Sprite *sprite, u8 area);
 static void StopPetting(struct Sprite *sprite);
 static bool8 IsHandOnItemsIcon(struct Sprite *sprite);
 static bool8 IsHandOnExitIcon(struct Sprite *sprite);
-static void SpriteCB_ItemsIcon(struct Sprite *sprite);
-static void SpriteCB_ExitIcon(struct Sprite *sprite);
 static void SpriteCB_ItemTray(struct Sprite *sprite);
 static void SpriteCB_Selector(struct Sprite *sprite);
 static void SpriteCB_Berry(struct Sprite *sprite);
@@ -617,7 +614,7 @@ static const struct SpriteTemplate sSpriteTemplate_RatToes =
     .anims = sAnims_RatToes,
     .images = sPicTable_RatToes,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatToes
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpriteTemplate sSpriteTemplate_RatEyes =
@@ -650,7 +647,7 @@ static const struct SpriteTemplate sSpriteTemplate_ItemsIcon =
     .anims = sAnims_Icon,
     .images = sPicTable_ItemsIcon,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_ItemsIcon
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpriteTemplate sSpriteTemplate_ExitIcon =
@@ -661,7 +658,7 @@ static const struct SpriteTemplate sSpriteTemplate_ExitIcon =
     .anims = sAnims_Icon,
     .images = sPicTable_ExitIcon,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_ExitIcon
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpriteTemplate sSpriteTemplate_ItemTray =
@@ -1302,11 +1299,6 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
     }
 }
 
-static void SpriteCB_RatToes(struct Sprite *sprite)
-{
-
-}
-
 #define sHandState  sprite->data[3]
 
 static void SpriteCB_Hand(struct Sprite *sprite)
@@ -1560,16 +1552,6 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
             sprite->sCounter++;
         }
     }
-}
-
-static void SpriteCB_ItemsIcon(struct Sprite *sprite)
-{
-
-}
-
-static void SpriteCB_ExitIcon(struct Sprite *sprite)
-{
-
 }
 
 static void SpriteCB_ItemTray(struct Sprite *sprite)
