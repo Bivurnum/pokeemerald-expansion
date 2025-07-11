@@ -172,19 +172,31 @@ static const union AnimCmd * const sAnims_RatTail[] =
     sAnim_RatTailWag,
 };
 
+static const union AnimCmd sAnim_RatBite[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 8),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 4),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_RatEarLeft[] =
 {
     sAnim_Normal,
+    sAnim_RatBite,
 };
 
 static const union AnimCmd * const sAnims_RatEarRight[] =
 {
     sAnim_Normal,
+    sAnim_RatBite,
 };
 
 static const union AnimCmd * const sAnims_RatMouth[] =
 {
     sAnim_Normal,
+    sAnim_RatBite,
 };
 
 static const union AnimCmd sAnim_RatWhiskerTwitch[] =
@@ -228,22 +240,22 @@ static const union AnimCmd * const sAnims_RatToes[] =
 static const union AnimCmd sAnim_RatEyesBlink[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 2),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 2),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 2),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 2),
     ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
 static const union AnimCmd sAnim_RatEyesSmile[] =
 {
-    ANIMCMD_FRAME(.imageValue = 3, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 16),
     ANIMCMD_END
 };
 
 static const union AnimCmd sAnim_RatEyesBad[] =
 {
-    ANIMCMD_FRAME(.imageValue = 4, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
@@ -254,6 +266,7 @@ static const union AnimCmd * const sAnims_RatEyes[] =
     sAnim_RatEyesBlink,
     sAnim_RatEyesSmile,
     sAnim_RatEyesBad,
+    sAnim_RatBite,
 };
 
 static const union AnimCmd sAnim_HandOpen[] =
@@ -340,16 +353,22 @@ static const struct SpriteFrameImage sPicTable_RatTail[] =
 static const struct SpriteFrameImage sPicTable_RatEarLeft[] =
 {
     spa_frame(gRattataEarLeft_Gfx, 0, 8, 8),
+    spa_frame(gRattataEarLeft_Gfx, 1, 8, 8),
+    spa_frame(gRattataEarLeft_Gfx, 2, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_RatEarRight[] =
 {
     spa_frame(gRattataEarRight_Gfx, 0, 8, 8),
+    spa_frame(gRattataEarRight_Gfx, 1, 8, 8),
+    spa_frame(gRattataEarRight_Gfx, 2, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_RatMouth[] =
 {
     spa_frame(gRattataMouth_Gfx, 0, 8, 4),
+    spa_frame(gRattataMouth_Gfx, 1, 8, 4),
+    spa_frame(gRattataMouth_Gfx, 2, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_RatWhiskerLeft[] =
@@ -378,6 +397,8 @@ static const struct SpriteFrameImage sPicTable_RatEyes[] =
     spa_frame(gRattataEyes_Gfx, 2, 8, 4),
     spa_frame(gRattataEyes_Gfx, 3, 8, 4),
     spa_frame(gRattataEyes_Gfx, 4, 8, 4),
+    spa_frame(gRattataEyes_Gfx, 5, 8, 4),
+    spa_frame(gRattataEyes_Gfx, 6, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_Hand[] =
@@ -1123,6 +1144,10 @@ static void SpriteCB_RatEarLeft(struct Sprite *sprite)
             sprite->x2 = 0;
         }
     }
+    else if (JOY_NEW(R_BUTTON))
+    {
+        StartSpriteAnim(sprite, 1);
+    }
     else
     {
         if (sprite->y2 < 0)
@@ -1162,6 +1187,10 @@ static void SpriteCB_RatEarRight(struct Sprite *sprite)
             sprite->x2 = 0;
         }
     }
+    else if (JOY_NEW(R_BUTTON))
+    {
+        StartSpriteAnim(sprite, 1);
+    }
     else
     {
         if (sprite->y2 < 0)
@@ -1200,6 +1229,10 @@ static void SpriteCB_RatMouth(struct Sprite *sprite)
             sprite->y2 = 0;
             sprite->x2 = 0;
         }
+    }
+    else if (JOY_NEW(R_BUTTON))
+    {
+        StartSpriteAnim(sprite, 1);
     }
     else
     {
@@ -1526,6 +1559,10 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
             counter++;
             VarSet(VAR_BODY_COUNTER, counter);
         }
+    }
+    else if (JOY_NEW(R_BUTTON))
+    {
+        StartSpriteAnim(sprite, 4);
     }
     else
     {
