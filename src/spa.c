@@ -963,6 +963,31 @@ static void Task_SpaItemChoose(u8 taskId)
             gTasks[taskId].tCounter++;
         }
         break;
+    case 2:
+        if (JOY_NEW(B_BUTTON) || JOY_NEW(L_BUTTON))
+        {
+            gTasks[taskId].tItemMenuState = 10;
+        }
+
+
+
+        break;
+    case 10:
+        if (gTasks[taskId].tCounter == 16)
+        {
+            gTasks[taskId].tCounter = 0;
+            gTasks[taskId].tItemMenuState = 11;
+        }
+        else
+        {
+            gTasks[taskId].tCounter++;
+        }
+        break;
+    case 11:
+        gTasks[taskId].tItemActive = FALSE;
+        gTasks[taskId].tItemMenuState = 0;
+        gTasks[taskId].func = Task_SpaGame;
+        break;
     }
 }
 
@@ -1533,6 +1558,14 @@ static void SpriteCB_ItemTray(struct Sprite *sprite)
     {
         sprite->x += 2;
     }
+    else if (sTask.tItemMenuState == 10)
+    {
+        sprite->x -= 2;
+    }
+    else if (sTask.tItemMenuState == 11)
+    {
+        DestroySprite(sprite);
+    }
 }
 
 static void SpriteCB_Selector(struct Sprite *sprite)
@@ -1541,8 +1574,7 @@ static void SpriteCB_Selector(struct Sprite *sprite)
     {
         sprite->x += 2;
     }
-
-    if (sTask.tItemMenuState == 2)
+    else if (sTask.tItemMenuState == 2)
     {
         u32 i;
         s32 newPosition;
@@ -1592,6 +1624,14 @@ static void SpriteCB_Selector(struct Sprite *sprite)
 
         sprite->sCounter++;
     }
+    else if (sTask.tItemMenuState == 10)
+    {
+        sprite->x -= 2;
+    }
+    else if (sTask.tItemMenuState == 11)
+    {
+        DestroySprite(sprite);
+    }
 }
 
 static void SpriteCB_Berry(struct Sprite *sprite)
@@ -1599,6 +1639,14 @@ static void SpriteCB_Berry(struct Sprite *sprite)
     if (sTask.tItemMenuState == 1 && sprite->x < ITEM_END_X)
     {
         sprite->x += 2;
+    }
+    else if (sTask.tItemMenuState == 10)
+    {
+        sprite->x -= 2;
+    }
+    else if (sTask.tItemMenuState == 11)
+    {
+        DestroySprite(sprite);
     }
 }
 
