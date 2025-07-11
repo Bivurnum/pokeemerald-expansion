@@ -750,6 +750,7 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 #define tSelectedItem   data[6]
 #define tBerryBites     data[7]
 #define tIsBiting       data[8]
+#define tIsFed          data[9]
 #define tItemFlagBits   data[14]
 #define tShouldExit     data[15]
 
@@ -1486,6 +1487,9 @@ static u8 GetCurrentPettingArea(struct Sprite *sprite)
         {
             if (sprite->y > RatPettingZones[i][2] && sprite->y < RatPettingZones[i][3])
             {
+                if (!sTask.tIsFed)
+                    return RAT_PET_BAD;
+
                 return RatPettingZones[i][4];
             }
         }
@@ -1763,6 +1767,7 @@ static void SpriteCB_Berry(struct Sprite *sprite)
             {
                 sTask.tBerryBites = 0;
                 sTask.tItemMenuState = 11;
+                sTask.tIsFed = TRUE;
                 DestroySprite(sprite);
             }
 
