@@ -859,7 +859,7 @@ static void CreateRattataSprites(u8 taskId)
     gSprites[spriteId].sTaskId = taskId;
     gSprites[spriteId].sInterval = (Random() % 180) + 180;
 
-    spriteId = CreateSprite(&sSpriteTemplate_Hand, 16, 45, 5);
+    spriteId = CreateSprite(&sSpriteTemplate_Hand, 28, 45, 5);
     gSprites[spriteId].sTaskId = taskId;
     gSprites[spriteId].oam.priority = 0;
     VarSet(VAR_HAND_SPRITE_ID, spriteId);
@@ -998,6 +998,8 @@ static void Task_SpaItemChoose(u8 taskId)
         if (JOY_NEW(A_BUTTON))
         {
             gTasks[taskId].tItemMenuState = 3;
+            gSprites[VarGet(VAR_HAND_SPRITE_ID)].x = 28;
+            gSprites[VarGet(VAR_HAND_SPRITE_ID)].y = 45;
         }
         break;
     case 3:
@@ -1588,7 +1590,7 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
             struct Sprite *handSprite = &gSprites[VarGet(VAR_HAND_SPRITE_ID)];
             sprite->y2 = 0;
             sprite->x2 = 0;
-            handSprite->x = 225;
+            handSprite->x = 28;
             handSprite->y = 45;
             StartSpriteAnim(sprite, 0);
             StopPetting(handSprite);
@@ -1783,7 +1785,7 @@ static void SpriteCB_Berry(struct Sprite *sprite)
 static bool32 IsBerryInFeedingZone(void)
 {
     if (gSprites[VarGet(VAR_BERRY_SPRITE_ID)].x > 135 && gSprites[VarGet(VAR_BERRY_SPRITE_ID)].x < 170
-     && gSprites[VarGet(VAR_BERRY_SPRITE_ID)].y > 91 && gSprites[VarGet(VAR_BERRY_SPRITE_ID)].y < 110)
+     && gSprites[VarGet(VAR_BERRY_SPRITE_ID)].y > 83 && gSprites[VarGet(VAR_BERRY_SPRITE_ID)].y < 110)
     {
         return TRUE;
     }
