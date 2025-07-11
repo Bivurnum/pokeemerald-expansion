@@ -47,6 +47,7 @@ static bool8 IsHandOnExitIcon(struct Sprite *sprite);
 static void SpriteCB_ItemTray(struct Sprite *sprite);
 static void SpriteCB_Selector(struct Sprite *sprite);
 static void SpriteCB_Berry(struct Sprite *sprite);
+static bool32 IsBerryInFeedingZone(void);
 static void Task_ScriptStartSpa(u8 taskId);
 
 static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.lz");
@@ -174,6 +175,7 @@ static const union AnimCmd * const sAnims_RatTail[] =
 
 static const union AnimCmd sAnim_RatBite[] =
 {
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 32),
     ANIMCMD_FRAME(.imageValue = 1, .duration = 8),
     ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
     ANIMCMD_FRAME(.imageValue = 1, .duration = 4),
@@ -746,6 +748,8 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 #define tItemActive     data[4]
 #define tItemMenuState  data[5]
 #define tSelectedItem   data[6]
+#define tBerryBites     data[7]
+#define tIsBiting       data[8]
 #define tItemFlagBits   data[14]
 #define tShouldExit     data[15]
 
@@ -753,7 +757,7 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 #define sTaskId         data[0]
 #define sCounter        data[1]
 #define sInterval       data[2]
-#define sIsBiting       data[3]
+#define sBerryBites     data[4]
 
 void CB2_InitRattata(void)
 {
@@ -969,6 +973,8 @@ static void Task_SpaItemChoose(u8 taskId)
             spriteId = CreateSprite(&sSpriteTemplate_Berry, (ITEM_START_X + 14), SpaItemsY[0][0], 0);
             gSprites[spriteId].sTaskId = taskId;
             gSprites[spriteId].oam.priority = 0;
+            VarSet(VAR_BERRY_SPRITE_ID, spriteId);
+            StartSpriteAnim(&gSprites[spriteId], gTasks[taskId].tBerryBites);
         }
 
         gTasks[taskId].tItemMenuState = 1;
@@ -1147,9 +1153,13 @@ static void SpriteCB_RatEarLeft(struct Sprite *sprite)
             sprite->x2 = 0;
         }
     }
-    else if (JOY_NEW(R_BUTTON))
+    else if (sTask.tIsBiting && sprite->animNum != 1)
     {
         StartSpriteAnim(sprite, 1);
+    }
+    else if (!sTask.tIsBiting && sprite->animNum == 1)
+    {
+        StartSpriteAnim(sprite, 0);
     }
     else
     {
@@ -1190,9 +1200,13 @@ static void SpriteCB_RatEarRight(struct Sprite *sprite)
             sprite->x2 = 0;
         }
     }
-    else if (JOY_NEW(R_BUTTON))
+    else if (sTask.tIsBiting && sprite->animNum != 1)
     {
         StartSpriteAnim(sprite, 1);
+    }
+    else if (!sTask.tIsBiting && sprite->animNum == 1)
+    {
+        StartSpriteAnim(sprite, 0);
     }
     else
     {
@@ -1233,9 +1247,13 @@ static void SpriteCB_RatMouth(struct Sprite *sprite)
             sprite->x2 = 0;
         }
     }
-    else if (JOY_NEW(R_BUTTON))
+    else if (sTask.tIsBiting && sprite->animNum != 1)
     {
         StartSpriteAnim(sprite, 1);
+    }
+    else if (!sTask.tIsBiting && sprite->animNum == 1)
+    {
+        StartSpriteAnim(sprite, 0);
     }
     else
     {
@@ -1277,9 +1295,13 @@ static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
             sprite->x2 = 0;
         }
     }
-    else if (JOY_NEW(R_BUTTON))
+    else if (sTask.tIsBiting && sprite->animNum != 2)
     {
         StartSpriteAnim(sprite, 2);
+    }
+    else if (!sTask.tIsBiting && sprite->animNum == 2)
+    {
+        StartSpriteAnim(sprite, 0);
     }
     else
     {
@@ -1325,9 +1347,13 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
             sprite->x2 = 0;
         }
     }
-    else if (JOY_NEW(R_BUTTON))
+    else if (sTask.tIsBiting && sprite->animNum != 2)
     {
         StartSpriteAnim(sprite, 2);
+    }
+    else if (!sTask.tIsBiting && sprite->animNum == 2)
+    {
+        StartSpriteAnim(sprite, 0);
     }
     else
     {
@@ -1573,38 +1599,46 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
             VarSet(VAR_BODY_COUNTER, counter);
         }
     }
-    else if (JOY_NEW(R_BUTTON))
-    {
-        StartSpriteAnim(sprite, 4);
-        sprite->sIsBiting = TRUE;
-    }
-    else if (sprite->sIsBiting)
+    else if (sTask.tIsBiting)
     {
         if (sprite->animEnded)
-            sprite->sIsBiting = FALSE;
-    }
-    else if (!sprite->sIsBiting)
-    {
-        if (counter == 0)
         {
             StartSpriteAnim(sprite, 0);
-            counter++;
-            VarSet(VAR_BODY_COUNTER, counter);
-            sprite->sCounter = 0;
+            sTask.tIsBiting = FALSE;
+            if (IsBerryInFeedingZone())
+                sTask.tBerryBites++;
         }
-        if (sprite->y2 < 0)
+    }
+    else if (!sTask.tIsBiting)
+    {
+        if (IsBerryInFeedingZone())
         {
-            sprite->y2++;
-        }
-        if (sprite->sCounter == sprite->sInterval)
-        {
-            StartSpriteAnim(sprite, 1); // Blink.
-            sprite->sInterval = (Random() % 180) + 180; // 3 to 6 seconds.
-            sprite->sCounter = 0;
+            StartSpriteAnim(sprite, 4);
+            sTask.tIsBiting = TRUE;
         }
         else
         {
-            sprite->sCounter++;
+            if (counter == 0)
+            {
+                StartSpriteAnim(sprite, 0);
+                counter++;
+                VarSet(VAR_BODY_COUNTER, counter);
+                sprite->sCounter = 0;
+            }
+            if (sprite->y2 < 0)
+            {
+                sprite->y2++;
+            }
+            if (sprite->sCounter == sprite->sInterval)
+            {
+                StartSpriteAnim(sprite, 1); // Blink.
+                sprite->sInterval = (Random() % 180) + 180; // 3 to 6 seconds.
+                sprite->sCounter = 0;
+            }
+            else
+            {
+                sprite->sCounter++;
+            }
         }
     }
 }
@@ -1721,6 +1755,18 @@ static void SpriteCB_Berry(struct Sprite *sprite)
             sTask.tItemMenuState = 0;
             DestroySprite(sprite);
         }
+        else if (sprite->sBerryBites != sTask.tBerryBites)
+        {
+            if (sTask.tBerryBites == 3)
+            {
+                sTask.tBerryBites = 0;
+                sTask.tItemMenuState = 11;
+                DestroySprite(sprite);
+            }
+
+            sprite->sBerryBites = sTask.tBerryBites;
+            StartSpriteAnim(sprite, sprite->sBerryBites);
+        }
         
         MoveSpriteFromInput(sprite);
     }
@@ -1732,6 +1778,17 @@ static void SpriteCB_Berry(struct Sprite *sprite)
     {
         DestroySprite(sprite);
     }
+}
+
+static bool32 IsBerryInFeedingZone(void)
+{
+    if (gSprites[VarGet(VAR_BERRY_SPRITE_ID)].x > 135 && gSprites[VarGet(VAR_BERRY_SPRITE_ID)].x < 170
+     && gSprites[VarGet(VAR_BERRY_SPRITE_ID)].y > 91 && gSprites[VarGet(VAR_BERRY_SPRITE_ID)].y < 110)
+    {
+        return TRUE;
+    }
+
+    return FALSE;
 }
 
 void Script_StartSpa(void)

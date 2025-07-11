@@ -265,10 +265,10 @@
 #define VAR_SCOTT_BF_CALL_STEP_COUNTER                   0x40F5
 #define VAR_RIVAL_RAYQUAZA_CALL_STEP_COUNTER             0x40F6
 #define VAR_UNUSED_0x40F7                                0x40F7 // Unused Var
-#define VAR_UNUSED_0x40F8                                0x40F8 // Unused Var
-#define VAR_UNUSED_0x40F9                                0x40F9 // Unused Var
-#define VAR_UNUSED_0x40FA                                0x40FA // Unused Var
-#define VAR_UNUSED_0x40FB                                0x40FB // Unused Var
+#define VAR_ORB_SPRITE_ID                                0x40F8
+#define VAR_HONEY_SPRITE_ID                              0x40F9
+#define VAR_CLAW_SPRITE_ID                               0x40FA
+#define VAR_BERRY_SPRITE_ID                              0x40FB
 #define VAR_HAND_SPRITE_ID                               0x40FC
 #define VAR_ITEMS_EXIT_SPRITE_ID                         0x40FD
 #define VAR_ITEMS_ICON_SPRITE_ID                         0x40FE
