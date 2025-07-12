@@ -1027,13 +1027,37 @@ static void Task_SpaGame(u8 taskId)
             if (gTasks[taskId].tNumBadPets == 0)
             {
                 CreateSprite(&sSpriteTemplate_Angry, 165, 38, 0);
-                //gTasks[taskId].tNumBadPets = 1;
             }
         }
-        else if (VarGet(VAR_BODY_COUNTER) == 181)
+        else if (VarGet(VAR_BODY_COUNTER) == 181 && gTasks[taskId].tNumBadPets == 0)
         {
             StopPetting(&gSprites[VarGet(VAR_HAND_SPRITE_ID)]);
+            gTasks[taskId].tNumBadPets++;
         }
+        else if (VarGet(VAR_BODY_COUNTER) == 117 && gTasks[taskId].tNumBadPets == 1)
+        {
+            BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 8, RGB_RED);
+        }
+        else if (VarGet(VAR_BODY_COUNTER) > 117 && gTasks[taskId].tNumBadPets == 1)
+        {
+            if (!gPaletteFade.active)
+            {
+                BeginNormalPaletteFade(PALETTES_ALL, 1, 8, 0, RGB_RED);
+                gTasks[taskId].tPetArea = RAT_PET_NONE;
+                VarSet(VAR_BODY_COUNTER, 0);
+                gTasks[taskId].tNumBadPets = 2;
+            }
+        }
+    }
+    else if (gTasks[taskId].tNumBadPets == 2)
+    {
+        if (VarGet(VAR_BODY_COUNTER) == 32)
+        {
+            BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+            gTasks[taskId].tNumBadPets = 3;
+            gTasks[taskId].tShouldExit = TRUE;
+        }
+        VarSet(VAR_BODY_COUNTER, VarGet(VAR_BODY_COUNTER) + 1);
     }
 }
 
@@ -1477,7 +1501,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
 
     if (sprite->invisible == TRUE)
     {
-        if (!sTask.tShouldExit && sTask.tPetArea != RAT_PET_BAD && !sTask.tItemActive)
+        if (!sTask.tShouldExit && sTask.tPetArea != RAT_PET_BAD && !sTask.tItemActive && sTask.tNumBadPets != 2)
             sprite->invisible = FALSE;
 
         return;
@@ -1718,7 +1742,7 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
             StartSpriteAnim(sprite, 4);
             sTask.tIsBiting = TRUE;
         }
-        else
+        else if (sTask.tNumBadPets != 2)
         {
             if (counter == 0)
             {
