@@ -30,6 +30,17 @@ enum RatPetAreas
     RAT_PET_BAD
 };
 
+enum ItemChooseStates
+{
+    ITEM_STATE_START,
+    ITEM_STATE_TRAY_OUT,
+    ITEM_STATE_TRAY_INPUT,
+    ITEM_STATE_ITEM_SELECTED,
+    ITEM_STATE_ITEM_HELD,
+    ITEM_STATE_NO_SELECTION,
+    ITEM_STATE_END,
+};
+
 #define spa_frame(ptr, frame, width, height) {.data = (u8 *)ptr + (width * height * frame * 64)/2, .size = (width * height * 64)/2}
 
 #endif // GUARD_SPA_H

@@ -1082,7 +1082,7 @@ static void Task_SpaItemChoose(u8 taskId)
 
     switch (gTasks[taskId].tItemMenuState)
     {
-    case 0:
+    case ITEM_STATE_START:
         spriteId = CreateSprite(&sSpriteTemplate_Selector, -32, SpaItemsY[0][0], 0);
         gSprites[spriteId].sTaskId = taskId;
 
@@ -1101,58 +1101,58 @@ static void Task_SpaItemChoose(u8 taskId)
             StartSpriteAnim(&gSprites[spriteId], gTasks[taskId].tBerryBites);
         }
 
-        gTasks[taskId].tItemMenuState = 1;
+        gTasks[taskId].tItemMenuState = ITEM_STATE_TRAY_OUT;
         break;
-    case 1:
+    case ITEM_STATE_TRAY_OUT:
         if (gTasks[taskId].tCounter == 16)
         {
             gTasks[taskId].tCounter = 0;
-            gTasks[taskId].tItemMenuState = 2;
+            gTasks[taskId].tItemMenuState = ITEM_STATE_TRAY_INPUT;
         }
         else
         {
             gTasks[taskId].tCounter++;
         }
         break;
-    case 2:
+    case ITEM_STATE_TRAY_INPUT:
         if (JOY_NEW(B_BUTTON) || JOY_NEW(L_BUTTON))
         {
-            gTasks[taskId].tItemMenuState = 10;
+            gTasks[taskId].tItemMenuState = ITEM_STATE_NO_SELECTION;
         }
         if (JOY_NEW(A_BUTTON))
         {
-            gTasks[taskId].tItemMenuState = 3;
+            gTasks[taskId].tItemMenuState = ITEM_STATE_ITEM_SELECTED;
             gSprites[VarGet(VAR_HAND_SPRITE_ID)].x = 28;
             gSprites[VarGet(VAR_HAND_SPRITE_ID)].y = 45;
         }
         break;
-    case 3:
+    case ITEM_STATE_ITEM_SELECTED:
         if (gTasks[taskId].tCounter == 16)
         {
             gTasks[taskId].tCounter = 0;
-            gTasks[taskId].tItemMenuState = 4;
+            gTasks[taskId].tItemMenuState = ITEM_STATE_ITEM_HELD;
         }
         else
         {
             gTasks[taskId].tCounter++;
         }
         break;
-    case 4:
+    case ITEM_STATE_ITEM_HELD:
         break;
-    case 10:
+    case ITEM_STATE_NO_SELECTION:
         if (gTasks[taskId].tCounter == 16)
         {
             gTasks[taskId].tCounter = 0;
-            gTasks[taskId].tItemMenuState = 11;
+            gTasks[taskId].tItemMenuState = ITEM_STATE_END;
         }
         else
         {
             gTasks[taskId].tCounter++;
         }
         break;
-    case 11:
+    case ITEM_STATE_END:
         gTasks[taskId].tItemActive = FALSE;
-        gTasks[taskId].tItemMenuState = 0;
+        gTasks[taskId].tItemMenuState = ITEM_STATE_START;
         gTasks[taskId].func = Task_SpaGame;
         break;
     }
@@ -1776,19 +1776,19 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
 
 static void SpriteCB_ItemTray(struct Sprite *sprite)
 {
-    if (sTask.tItemMenuState == 1 && sprite->x < ITEM_END_X)
+    if (sTask.tItemMenuState == ITEM_STATE_TRAY_OUT && sprite->x < ITEM_END_X)
     {
         sprite->x += 2;
     }
-    else if (sTask.tItemMenuState == 3)
+    else if (sTask.tItemMenuState == ITEM_STATE_ITEM_SELECTED)
     {
         sprite->x -= 2;
     }
-    else if (sTask.tItemMenuState == 10)
+    else if (sTask.tItemMenuState == ITEM_STATE_NO_SELECTION)
     {
         sprite->x -= 2;
     }
-    else if (sTask.tItemMenuState == 11 || sTask.tItemMenuState == 4)
+    else if (sTask.tItemMenuState == ITEM_STATE_END || sTask.tItemMenuState == ITEM_STATE_ITEM_HELD)
     {
         DestroySprite(sprite);
     }
@@ -1796,11 +1796,11 @@ static void SpriteCB_ItemTray(struct Sprite *sprite)
 
 static void SpriteCB_Selector(struct Sprite *sprite)
 {
-    if (sTask.tItemMenuState == 1 && sprite->x < 0)
+    if (sTask.tItemMenuState == ITEM_STATE_TRAY_OUT && sprite->x < 0)
     {
         sprite->x += 2;
     }
-    else if (sTask.tItemMenuState == 2)
+    else if (sTask.tItemMenuState == ITEM_STATE_TRAY_INPUT)
     {
         u32 i;
         s32 newPosition;
@@ -1850,15 +1850,15 @@ static void SpriteCB_Selector(struct Sprite *sprite)
 
         sprite->sCounter++;
     }
-    else if (sTask.tItemMenuState == 3)
+    else if (sTask.tItemMenuState == ITEM_STATE_ITEM_SELECTED)
     {
         sprite->x -= 2;
     }
-    else if (sTask.tItemMenuState == 10)
+    else if (sTask.tItemMenuState == ITEM_STATE_NO_SELECTION)
     {
         sprite->x -= 2;
     }
-    else if (sTask.tItemMenuState == 11 || sTask.tItemMenuState == 4)
+    else if (sTask.tItemMenuState == ITEM_STATE_END || sTask.tItemMenuState == ITEM_STATE_ITEM_HELD)
     {
         DestroySprite(sprite);
     }
@@ -1874,24 +1874,24 @@ static void SpriteCB_Angry(struct Sprite *sprite)
 
 static void SpriteCB_Berry(struct Sprite *sprite)
 {
-    if (sTask.tItemMenuState == 1 && sprite->x < (ITEM_END_X + 14))
+    if (sTask.tItemMenuState == ITEM_STATE_TRAY_OUT && sprite->x < (ITEM_END_X + 14))
     {
         sprite->x += 2;
     }
-    else if (sTask.tItemMenuState == 3 && sTask.tSelectedItem != 0)
+    else if (sTask.tItemMenuState == ITEM_STATE_ITEM_SELECTED && sTask.tSelectedItem != 0)
     {
         sprite->x -= 2;
     }
-    else if (sTask.tItemMenuState == 4)
+    else if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD)
     {
         if (sTask.tSelectedItem != 0 || JOY_NEW(A_BUTTON))
         {
-            sTask.tItemMenuState = 11;
+            sTask.tItemMenuState = ITEM_STATE_END;
             DestroySprite(sprite);
         }
         else if (JOY_NEW(L_BUTTON))
         {
-            sTask.tItemMenuState = 0;
+            sTask.tItemMenuState = ITEM_STATE_START;
             DestroySprite(sprite);
         }
         else if (sprite->sBerryBites != sTask.tBerryBites)
@@ -1899,7 +1899,7 @@ static void SpriteCB_Berry(struct Sprite *sprite)
             if (sTask.tBerryBites == 3)
             {
                 sTask.tBerryBites = 0;
-                sTask.tItemMenuState = 11;
+                sTask.tItemMenuState = ITEM_STATE_END;
                 sTask.tIsFed = TRUE;
                 DestroySprite(sprite);
             }
@@ -1910,11 +1910,11 @@ static void SpriteCB_Berry(struct Sprite *sprite)
         
         MoveSpriteFromInput(sprite);
     }
-    else if (sTask.tItemMenuState == 10)
+    else if (sTask.tItemMenuState == ITEM_STATE_NO_SELECTION)
     {
         sprite->x -= 2;
     }
-    else if (sTask.tItemMenuState == 11)
+    else if (sTask.tItemMenuState == ITEM_STATE_END)
     {
         DestroySprite(sprite);
     }
