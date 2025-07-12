@@ -1027,7 +1027,7 @@ static void Task_SpaGame(u8 taskId)
         {
             if (gTasks[taskId].tNumBadPets == 0)
             {
-                PlayCry_ByMode(SPECIES_RATTATA, 0, CRY_MODE_GROWL_1);
+                PlayCry_ByMode(SPECIES_RATTATA, 0, CRY_MODE_ROAR_1);
                 CreateSprite(&sSpriteTemplate_Angry, 165, 38, 0);
             }
             else
@@ -1101,6 +1101,7 @@ static void Task_SpaItemChoose(u8 taskId)
             StartSpriteAnim(&gSprites[spriteId], gTasks[taskId].tBerryBites);
         }
 
+        PlaySE(SE_BALL_TRAY_ENTER);
         gTasks[taskId].tItemMenuState = ITEM_STATE_TRAY_OUT;
         break;
     case ITEM_STATE_TRAY_OUT:
@@ -1124,6 +1125,7 @@ static void Task_SpaItemChoose(u8 taskId)
             gTasks[taskId].tItemMenuState = ITEM_STATE_ITEM_SELECTED;
             gSprites[VarGet(VAR_HAND_SPRITE_ID)].x = 28;
             gSprites[VarGet(VAR_HAND_SPRITE_ID)].y = 45;
+            PlaySE(SE_SELECT);
         }
         break;
     case ITEM_STATE_ITEM_SELECTED:
@@ -1738,9 +1740,20 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
         {
             StartSpriteAnim(sprite, 0);
             sTask.tIsBiting = FALSE;
+            sprite->sCounter = 0;
             if (IsBerryInFeedingZone())
                 sTask.tBerryBites++;
         }
+        else if (sprite->sCounter == 56)
+        {
+            PlaySE(SE_M_SCRATCH);
+            sprite->sCounter++;
+        }
+        else
+        {
+            sprite->sCounter++;
+        }
+
     }
     else if (!sTask.tIsBiting)
     {
@@ -1748,6 +1761,7 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
         {
             StartSpriteAnim(sprite, 4);
             sTask.tIsBiting = TRUE;
+            sprite->sCounter = 0;
         }
         else if (sTask.tNumBadPets != 2)
         {
@@ -1941,7 +1955,7 @@ static void Task_ScriptStartSpa(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        PlayBGM(MUS_TRICK_HOUSE);
+        PlayBGM(MUS_NONE);
         SetMainCallback2(CB2_InitRattata);
         gMain.savedCallback = CB2_ReturnToField;
         DestroyTask(taskId);
