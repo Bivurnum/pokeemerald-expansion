@@ -969,6 +969,7 @@ static void Task_StartSpaGame(u8 taskId)
     ScheduleBgCopyTilemapToVram(0);
 
     SetItemFlagBits(taskId);
+    PlayCry_Normal(SPECIES_RATTATA, 0);
     gTasks[taskId].func = Task_SpaGame;
 }
 
@@ -1026,7 +1027,12 @@ static void Task_SpaGame(u8 taskId)
         {
             if (gTasks[taskId].tNumBadPets == 0)
             {
+                PlayCry_ByMode(SPECIES_RATTATA, 0, CRY_MODE_GROWL_1);
                 CreateSprite(&sSpriteTemplate_Angry, 165, 38, 0);
+            }
+            else
+            {
+                PlayCry_ByMode(SPECIES_RATTATA, 0, CRY_MODE_ROAR_1);
             }
         }
         else if (VarGet(VAR_BODY_COUNTER) == 181 && gTasks[taskId].tNumBadPets == 0)
@@ -1036,6 +1042,7 @@ static void Task_SpaGame(u8 taskId)
         }
         else if (VarGet(VAR_BODY_COUNTER) == 117 && gTasks[taskId].tNumBadPets == 1)
         {
+            PlaySE(SE_M_BITE);
             BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 8, RGB_RED);
         }
         else if (VarGet(VAR_BODY_COUNTER) > 117 && gTasks[taskId].tNumBadPets == 1)
