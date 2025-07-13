@@ -39,6 +39,7 @@ static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite);
 static void SpriteCB_RatWhiskerRight(struct Sprite *sprite);
 static void SpriteCB_RatEyes(struct Sprite *sprite);
 static void SpriteCB_Hand(struct Sprite *sprite);
+static void SpriteCB_Music(struct Sprite *sprite);
 static u8 GetCurrentPettingArea(struct Sprite *sprite);
 static void AdjustToPetArea(struct Sprite *sprite, u8 area);
 static void StopPetting(struct Sprite *sprite);
@@ -69,6 +70,7 @@ static const u32 gRattataEyes_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_
 
 static const u16 gHand_Pal[] = INCBIN_U16("graphics/_spa/hand.gbapal");
 static const u32 gHand_Gfx[] = INCBIN_U32("graphics/_spa/hand.4bpp");
+static const u32 gMusic_Gfx[] = INCBIN_U32("graphics/_spa/music.4bpp");
 
 static const u16 gItemsIcon_Pal[] = INCBIN_U16("graphics/_spa/items_icon.gbapal");
 static const u32 gItemsIcon_Gfx[] = INCBIN_U32("graphics/_spa/items_icon.4bpp");
@@ -322,6 +324,11 @@ static const union AnimCmd * const sAnims_Hand[] =
     sAnim_HandFood,
 };
 
+static const union AnimCmd * const sAnims_Music[] =
+{
+    sAnim_Normal,
+};
+
 static const union AnimCmd sAnim_IconPress[] =
 {
     ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
@@ -458,6 +465,11 @@ static const struct SpriteFrameImage sPicTable_Hand[] =
     spa_frame(gHand_Gfx, 0, 4, 4),
     spa_frame(gHand_Gfx, 1, 4, 4),
     spa_frame(gHand_Gfx, 2, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Music[] =
+{
+    spa_frame(gMusic_Gfx, 0, 4, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_ItemsIcon[] =
@@ -716,6 +728,17 @@ static const struct SpriteTemplate sSpriteTemplate_Hand =
     .images = sPicTable_Hand,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_Hand
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Music =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_HAND,
+    .oam = &sOam_32x32,
+    .anims = sAnims_Music,
+    .images = sPicTable_Music,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_Music
 };
 
 static const struct SpriteTemplate sSpriteTemplate_ItemsIcon =
@@ -1507,7 +1530,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
 
     if (sprite->invisible == TRUE)
     {
-        if (!sTask.tShouldExit && sTask.tPetArea != RAT_PET_BAD && !sTask.tItemActive && sTask.tNumBadPets != 2)
+        if (!sTask.tShouldExit && sTask.tPetArea != RAT_PET_BAD && !sTask.tItemActive && sTask.tNumBadPets != 2 && sTask.tBerryBites != 3)
             sprite->invisible = FALSE;
 
         return;
@@ -1593,6 +1616,21 @@ static void SpriteCB_Hand(struct Sprite *sprite)
     }
 
     MoveSpriteFromInput(sprite);
+}
+
+static void SpriteCB_Music(struct Sprite *sprite)
+{
+    if (sprite->sCounter == 16)
+    {
+        PlayCry_ByMode(SPECIES_RATTATA, 0, CRY_MODE_HIGH_PITCH);
+    }
+    else if (sprite->sCounter == 120)
+    {
+        sTask.tBerryBites = 0;
+        VarSet(VAR_BODY_COUNTER, 0);
+        DestroySprite(sprite);
+    }
+    sprite->sCounter++;
 }
 
 static const s16 RatPettingZones[][5] =
@@ -1754,7 +1792,16 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
     }
     else if (!sTask.tIsBiting)
     {
-        if (IsBerryInFeedingZone())
+        DebugPrintf("Counter: %u", counter);
+        if (sTask.tBerryBites == 3)
+        {
+            DebugPrintf("HERE");
+            if (counter == 1)
+            {
+                StartSpriteAnim(sprite, 2);
+            }
+        }
+        else if (IsBerryInFeedingZone())
         {
             StartSpriteAnim(sprite, 4);
             sTask.tIsBiting = TRUE;
@@ -1909,7 +1956,9 @@ static void SpriteCB_Berry(struct Sprite *sprite)
         {
             if (sTask.tBerryBites == 3)
             {
-                sTask.tBerryBites = 0;
+                u8 spriteId = CreateSprite(&sSpriteTemplate_Music, 190, 20, 0);
+                gSprites[spriteId].sTaskId = sprite->sTaskId;
+                VarSet(VAR_BODY_COUNTER, 0);
                 sTask.tItemMenuState = ITEM_STATE_END;
                 sTask.tIsFed = TRUE;
                 DestroySprite(sprite);
