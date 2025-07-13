@@ -845,6 +845,15 @@ void CB2_InitRattata(void)
     LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(14), PLTT_SIZE_4BPP);
     LoadUserWindowBorderGfx(0, 0x2A8, BG_PLTT_ID(13));
     LoadSpritePalettes(sSpritePalettes_RattataSpa);
+
+    DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 1, 0, NULL);
+    FillPalette(RGB2GBA(238, 195, 154), BG_PLTT_ID(14) + 1, PLTT_SIZEOF(1));
+    FillPalette(RGB2GBA(80, 50, 50), BG_PLTT_ID(14) + 2, PLTT_SIZEOF(1));
+    FillPalette(RGB2GBA(180, 148, 117), BG_PLTT_ID(14) + 3, PLTT_SIZEOF(1));
+    ScheduleBgCopyTilemapToVram(0);
+
     BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
 
     EnableInterrupts(DISPSTAT_VBLANK);
@@ -855,10 +864,10 @@ void CB2_InitRattata(void)
 
     ShowBg(0);
     ShowBg(2);
-    ShowBg(3);
 
     taskId = CreateTask(Task_StartSpaGame, 1);
 
+    SetItemFlagBits(taskId);
     CreateRattataSprites(taskId);
 }
 
@@ -960,15 +969,6 @@ static void CB2_SpaGame(void)
 
 static void Task_StartSpaGame(u8 taskId)
 {
-    DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
-    FillWindowPixelBuffer(0, PIXEL_FILL(1));
-    AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 1, 0, NULL);
-    FillPalette(RGB2GBA(238, 195, 154), BG_PLTT_ID(14) + 1, PLTT_SIZEOF(1));
-    FillPalette(RGB2GBA(80, 50, 50), BG_PLTT_ID(14) + 2, PLTT_SIZEOF(1));
-    FillPalette(RGB2GBA(180, 148, 117), BG_PLTT_ID(14) + 3, PLTT_SIZEOF(1));
-    ScheduleBgCopyTilemapToVram(0);
-
-    SetItemFlagBits(taskId);
     PlayCry_Normal(SPECIES_RATTATA, 0);
     gTasks[taskId].func = Task_SpaGame;
 }
@@ -993,6 +993,7 @@ static void SetItemFlagBits(u8 taskId)
 static void Task_SpaGame(u8 taskId)
 {
     RunTextPrinters();
+    VarSet(VAR_BODY_COUNTER, VarGet(VAR_BODY_COUNTER) + 1);
 
     if (gTasks[taskId].tShouldExit && !gPaletteFade.active)
     {
@@ -1004,10 +1005,6 @@ static void Task_SpaGame(u8 taskId)
 
     if (gTasks[taskId].tPetActive)
     {
-        if (gTasks[taskId].tPetArea == RAT_PET_BODY || gTasks[taskId].tPetArea == RAT_PET_HEAD)
-        {
-            VarSet(VAR_BODY_COUNTER, VarGet(VAR_BODY_COUNTER) + 1);
-        }
 
         if(!JOY_HELD(DPAD_ANY))
         {
@@ -1021,8 +1018,6 @@ static void Task_SpaGame(u8 taskId)
 
     if (gTasks[taskId].tPetArea == RAT_PET_BAD)
     {
-        VarSet(VAR_BODY_COUNTER, VarGet(VAR_BODY_COUNTER) + 1);
-
         if (VarGet(VAR_BODY_COUNTER) == 61)
         {
             if (gTasks[taskId].tNumBadPets == 0)
@@ -1064,7 +1059,6 @@ static void Task_SpaGame(u8 taskId)
             gTasks[taskId].tNumBadPets = 3;
             gTasks[taskId].tShouldExit = TRUE;
         }
-        VarSet(VAR_BODY_COUNTER, VarGet(VAR_BODY_COUNTER) + 1);
     }
 }
 
@@ -1429,7 +1423,7 @@ static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
     }
     else
     {
-        if (counter == 0)
+        if (counter == 1)
         {
             StartSpriteAnim(sprite, 0);
         }
@@ -1482,7 +1476,7 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
     }
     else
     {
-        if (counter == 0)
+        if (counter == 1)
         {
             StartSpriteAnim(sprite, 0);
         }
@@ -1765,7 +1759,7 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
         }
         else if (sTask.tNumBadPets != 2)
         {
-            if (counter == 0)
+            if (counter == 1)
             {
                 StartSpriteAnim(sprite, 0);
                 sprite->sCounter = 0;
