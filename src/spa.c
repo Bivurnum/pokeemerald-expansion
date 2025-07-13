@@ -969,8 +969,11 @@ static void CB2_SpaGame(void)
 
 static void Task_StartSpaGame(u8 taskId)
 {
-    PlayCry_Normal(SPECIES_RATTATA, 0);
-    gTasks[taskId].func = Task_SpaGame;
+    if (!gPaletteFade.active)
+    {
+        PlayCry_Normal(SPECIES_RATTATA, 0);
+        gTasks[taskId].func = Task_SpaGame;
+    }
 }
 
 static void SetItemFlagBits(u8 taskId)
