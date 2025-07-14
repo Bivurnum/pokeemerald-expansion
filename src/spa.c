@@ -1598,7 +1598,7 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
 
     if (sTask.tIsBiting && sprite->animNum != 2)
     {
-        StartSpriteAnim(sprite, 1);
+        StartSpriteAnim(sprite, 2);
     }
     else if (!sTask.tIsBiting && sprite->animNum == 2)
     {
@@ -2049,7 +2049,7 @@ static void SpriteCB_Heart(struct Sprite *sprite)
     {
         if (sprite->sHeartId == 1 && !sprite->sFadeStarted)
         {
-            BeginNormalPaletteFade(PALETTES_ALL, 6, 0, 16, RGB_BLACK);
+            BeginNormalPaletteFade(PALETTES_ALL, 4, 0, 16, RGB_BLACK);
             sprite->sFadeStarted = TRUE;
             sTask.tShouldExit = TRUE;
         }
