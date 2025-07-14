@@ -725,11 +725,11 @@ static void Task_SpaItemChoose(u8 taskId)
         }
         break;
     case ITEM_STATE_TRAY_INPUT:
-        if (JOY_NEW(B_BUTTON) || JOY_NEW(L_BUTTON))
+        if (JOY_NEW(FAST_BUTTON) || JOY_NEW(ITEM_MENU_BUTTON))
         {
             gTasks[taskId].tItemMenuState = ITEM_STATE_NO_SELECTION;
         }
-        if (JOY_NEW(A_BUTTON))
+        if (JOY_NEW(INTERACT_BUTTON))
         {
             gTasks[taskId].tItemMenuState = ITEM_STATE_ITEM_SELECTED;
             gSprites[VarGet(VAR_HAND_SPRITE_ID)].x = 28;
@@ -751,14 +751,14 @@ static void Task_SpaItemChoose(u8 taskId)
         }
         break;
     case ITEM_STATE_ITEM_HELD:
-        if (gTasks[taskId].tStatusShowing && !JOY_HELD(SELECT_BUTTON))
+        if (gTasks[taskId].tStatusShowing && !JOY_HELD(STATUS_BUTTON))
         {
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
             AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaItemInstructions, 0, 0, 0, NULL);
             gTasks[taskId].tStatusShowing = FALSE;
         }
 
-        if (JOY_NEW(SELECT_BUTTON) || (!gTasks[taskId].tStatusShowing && JOY_HELD(SELECT_BUTTON)))
+        if (JOY_NEW(STATUS_BUTTON) || (!gTasks[taskId].tStatusShowing && JOY_HELD(STATUS_BUTTON)))
         {
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
             DoSpaMonInterestedBerryText();
@@ -794,7 +794,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
 {
     if (JOY_HELD(DPAD_DOWN))
     {
-        if (JOY_HELD(B_BUTTON))
+        if (JOY_HELD(FAST_BUTTON))
             sprite->y++;
 
         sprite->y++;
@@ -803,7 +803,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
     }
     if (JOY_HELD(DPAD_UP))
     {
-        if (JOY_HELD(B_BUTTON))
+        if (JOY_HELD(FAST_BUTTON))
             sprite->y--;
 
         sprite->y--;
@@ -812,7 +812,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
     }
     if (JOY_HELD(DPAD_RIGHT))
     {
-        if (JOY_HELD(B_BUTTON))
+        if (JOY_HELD(FAST_BUTTON))
             sprite->x++;
 
         sprite->x++;
@@ -821,7 +821,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
     }
     if (JOY_HELD(DPAD_LEFT))
     {
-        if (JOY_HELD(B_BUTTON))
+        if (JOY_HELD(FAST_BUTTON))
             sprite->x--;
 
         sprite->x--;
@@ -851,14 +851,14 @@ static void SpriteCB_Hand(struct Sprite *sprite)
         return;
     }
 
-    if (sTask.tStatusShowing && !JOY_HELD(SELECT_BUTTON))
+    if (sTask.tStatusShowing && !JOY_HELD(STATUS_BUTTON))
     {
         FillWindowPixelBuffer(0, PIXEL_FILL(1));
         AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
         sTask.tStatusShowing = FALSE;
     }
 
-    if (JOY_NEW(SELECT_BUTTON) || (!sTask.tStatusShowing && JOY_HELD(SELECT_BUTTON)))
+    if (JOY_NEW(STATUS_BUTTON) || (!sTask.tStatusShowing && JOY_HELD(STATUS_BUTTON)))
     {
         FillWindowPixelBuffer(0, PIXEL_FILL(1));
         DoSpaMonStatusText(sTask.tIsFed);
@@ -869,7 +869,14 @@ static void SpriteCB_Hand(struct Sprite *sprite)
     switch (sHandState)
     {
     case HAND_NORMAL:
-        if (JOY_NEW(L_BUTTON))
+        if (JOY_NEW(EXIT_BUTTON))
+        {
+            sprite->invisible = TRUE;
+            BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+            sTask.tShouldExit = TRUE;
+            return;
+        }
+        if (JOY_NEW(ITEM_MENU_BUTTON))
         {
             sTask.tItemActive = TRUE;
             sprite->invisible = TRUE;
@@ -877,7 +884,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             sTask.func = Task_SpaItemChoose;
             return;
         }
-        if (JOY_NEW(A_BUTTON))
+        if (JOY_NEW(INTERACT_BUTTON))
         {
             if (petArea == SPA_PET_BAD)
             {
@@ -905,7 +912,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
                 return;
             }
         }
-        else if (JOY_HELD(A_BUTTON))
+        else if (JOY_HELD(INTERACT_BUTTON))
         {
             if (petArea)
             {
@@ -931,6 +938,15 @@ static void SpriteCB_Hand(struct Sprite *sprite)
         }
         break;
     case HAND_PET:
+        if (JOY_NEW(EXIT_BUTTON))
+        {
+            sprite->invisible = TRUE;
+            StopPetting(sprite);
+            BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+            sTask.tShouldExit = TRUE;
+            return;
+        }
+
         if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
         {
             u8 spaMon = VarGet(VAR_SPA_MON);
@@ -951,7 +967,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             DoSpaMonSatisfiedText();
             sprite->invisible = TRUE;
         }
-        else if (!JOY_HELD(A_BUTTON) || !petArea)
+        else if (!JOY_HELD(INTERACT_BUTTON) || !petArea)
         {
             StartSpriteAnim(sprite, 0);
             StopPetting(sprite);
@@ -1194,7 +1210,7 @@ static void SpriteCB_Berry(struct Sprite *sprite)
     }
     else if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD)
     {
-        if (sTask.tSelectedItem != 0 || JOY_NEW(A_BUTTON))
+        if (sTask.tSelectedItem != 0 || JOY_NEW(INTERACT_BUTTON))
         {
             sTask.tItemMenuState = ITEM_STATE_END;
             DestroySprite(sprite);

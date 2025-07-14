@@ -29,6 +29,12 @@
 #define sTask       gTasks[sprite->sTaskId]
 #define sHandState  sprite->data[3]
 
+#define INTERACT_BUTTON     A_BUTTON
+#define FAST_BUTTON         B_BUTTON
+#define ITEM_MENU_BUTTON    L_BUTTON
+#define STATUS_BUTTON       R_BUTTON
+#define EXIT_BUTTON         SELECT_BUTTON
+
 #define TAG_HAND        0x1000
 #define TAG_ITEMS_ICON  0x1001
 #define TAG_BERRY       0x1002
