@@ -1258,14 +1258,14 @@ static void SpriteCB_RatTail(struct Sprite *sprite)
     }
     else if (sTask.tPetArea != RAT_PET_BODY)
     {
-        if (counter == 0)
+        if (counter == 1)
         {
             StartSpriteAnim(sprite, 0);
         }
     }
     else
     {
-        if (counter == 0)
+        if (counter == 1)
         {
             StartSpriteAnim(sprite, 1);
         }
@@ -1620,7 +1620,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
 
 static void SpriteCB_Music(struct Sprite *sprite)
 {
-    if (sprite->sCounter == 16)
+    if (sprite->sCounter == 10)
     {
         PlayCry_ByMode(SPECIES_RATTATA, 0, CRY_MODE_HIGH_PITCH);
     }
