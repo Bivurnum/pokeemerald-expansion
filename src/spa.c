@@ -884,6 +884,7 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 #define tIsFed          data[9]
 #define tNumBadPets     data[10]
 #define tPetScore       data[11]
+#define tStatusShowing  data[12]
 #define tItemFlagBits   data[14]
 #define tShouldExit     data[15]
 
@@ -918,7 +919,7 @@ void CB2_InitRattata(void)
 
     DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
-    AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 1, 0, NULL);
+    AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
     FillPalette(RGB2GBA(238, 195, 154), BG_PLTT_ID(14) + 1, PLTT_SIZEOF(1));
     FillPalette(RGB2GBA(80, 50, 50), BG_PLTT_ID(14) + 2, PLTT_SIZEOF(1));
     FillPalette(RGB2GBA(180, 148, 117), BG_PLTT_ID(14) + 3, PLTT_SIZEOF(1));
@@ -1173,6 +1174,8 @@ static void Task_SpaItemChoose(u8 taskId)
     case ITEM_STATE_TRAY_OUT:
         if (gTasks[taskId].tCounter == 16)
         {
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaItemSelectInstructions, 0, 0, 0, NULL);
             gTasks[taskId].tCounter = 0;
             gTasks[taskId].tItemMenuState = ITEM_STATE_TRAY_INPUT;
         }
@@ -1197,6 +1200,8 @@ static void Task_SpaItemChoose(u8 taskId)
     case ITEM_STATE_ITEM_SELECTED:
         if (gTasks[taskId].tCounter == 16)
         {
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaItemInstructions, 0, 0, 0, NULL);
             gTasks[taskId].tCounter = 0;
             gTasks[taskId].tItemMenuState = ITEM_STATE_ITEM_HELD;
         }
@@ -1206,6 +1211,20 @@ static void Task_SpaItemChoose(u8 taskId)
         }
         break;
     case ITEM_STATE_ITEM_HELD:
+        if (gTasks[taskId].tStatusShowing && !JOY_HELD(SELECT_BUTTON))
+        {
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaItemInstructions, 0, 0, 0, NULL);
+            gTasks[taskId].tStatusShowing = FALSE;
+        }
+
+        if (JOY_NEW(SELECT_BUTTON) || (!gTasks[taskId].tStatusShowing && JOY_HELD(SELECT_BUTTON)))
+        {
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataInterestedBerry, 0, 0, 0, NULL);
+
+            gTasks[taskId].tStatusShowing = TRUE;
+        }
         break;
     case ITEM_STATE_NO_SELECTION:
         if (gTasks[taskId].tCounter == 16)
@@ -1219,6 +1238,11 @@ static void Task_SpaItemChoose(u8 taskId)
         }
         break;
     case ITEM_STATE_END:
+        if (gTasks[taskId].tBerryBites != 3)
+        {
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
+        }
         gTasks[taskId].tItemActive = FALSE;
         gTasks[taskId].tItemMenuState = ITEM_STATE_START;
         gTasks[taskId].func = Task_SpaGame;
@@ -1620,6 +1644,24 @@ static void SpriteCB_Hand(struct Sprite *sprite)
         return;
     }
 
+    if (sTask.tStatusShowing && !JOY_HELD(SELECT_BUTTON))
+    {
+        FillWindowPixelBuffer(0, PIXEL_FILL(1));
+        AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
+        sTask.tStatusShowing = FALSE;
+    }
+
+    if (JOY_NEW(SELECT_BUTTON) || (!sTask.tStatusShowing && JOY_HELD(SELECT_BUTTON)))
+    {
+        FillWindowPixelBuffer(0, PIXEL_FILL(1));
+        if (sTask.tIsFed)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataAtEase, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 0, 0, NULL);
+
+        sTask.tStatusShowing = TRUE;
+    }
+
     switch (sHandState)
     {
     case HAND_NORMAL:
@@ -1627,6 +1669,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
         {
             sTask.tItemActive = TRUE;
             sprite->invisible = TRUE;
+
             sTask.func = Task_SpaItemChoose;
             return;
         }
@@ -1637,6 +1680,12 @@ static void SpriteCB_Hand(struct Sprite *sprite)
                 sTask.tPetArea = RAT_PET_BAD;
                 VarSet(VAR_BODY_COUNTER, 0);
                 sprite->invisible = TRUE;
+                FillWindowPixelBuffer(0, PIXEL_FILL(1));
+                if (sTask.tIsFed)
+                    AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataBadTouch, 0, 0, 0, NULL);
+                else
+                    AddTextPrinterParameterized(0, FONT_NARROW, gText_RattataBadPet, 0, 0, 0, NULL);
+
                 return;
             }
             if (IsHandOnItemsIcon(sprite))
@@ -1736,6 +1785,8 @@ static void SpriteCB_Music(struct Sprite *sprite)
     {
         sTask.tBerryBites = 0;
         VarSet(VAR_BODY_COUNTER, 0);
+        FillWindowPixelBuffer(0, PIXEL_FILL(1));
+        AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
         DestroySprite(sprite);
     }
     sprite->sCounter++;
@@ -2039,6 +2090,8 @@ static void SpriteCB_Angry(struct Sprite *sprite)
 {
     if (sprite->animEnded)
     {
+        FillWindowPixelBuffer(0, PIXEL_FILL(1));
+        AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
         DestroySprite(sprite);
     }
 }
@@ -2091,6 +2144,8 @@ static void SpriteCB_Berry(struct Sprite *sprite)
                 VarSet(VAR_BODY_COUNTER, 0);
                 sTask.tItemMenuState = ITEM_STATE_END;
                 sTask.tIsFed = TRUE;
+                FillWindowPixelBuffer(0, PIXEL_FILL(1));
+                AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataEnjoyedSnack, 0, 0, 0, NULL);
                 DestroySprite(sprite);
             }
 

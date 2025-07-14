@@ -2426,6 +2426,14 @@ extern const u8 gText_Rename[]; // change nickname from summary screen
 // Switch Caught Mon into Party
 extern const u8 gText_CannotSendMonToBoxHM[];
 
+extern const u8 gText_SpaInstructions[];
+extern const u8 gText_SpaItemSelectInstructions[];
+extern const u8 gText_SpaItemInstructions[];
 extern const u8 gText_RattataWary[];
+extern const u8 gText_RattataAtEase[];
+extern const u8 gText_RattataBadTouch[];
+extern const u8 gText_RattataBadPet[];
+extern const u8 gText_RattataInterestedBerry[];
+extern const u8 gText_RattataEnjoyedSnack[];
 
 #endif // GUARD_STRINGS_H
