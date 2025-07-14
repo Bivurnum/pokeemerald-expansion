@@ -891,7 +891,10 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 #define sTaskId         data[0]
 #define sCounter        data[1]
 #define sInterval       data[2]
-#define sBerryBites     data[4]
+#define sHeartOffset    data[3]
+#define sHeartId        data[4]
+#define sFadeStarted    data[5]
+#define sBerryBites     data[6]
 
 void CB2_InitRattata(void)
 {
@@ -1681,10 +1684,24 @@ static void SpriteCB_Hand(struct Sprite *sprite)
     case HAND_PET:
         if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
         {
-            u8 spriteId = CreateSprite(&sSpriteTemplate_Heart, 130, 30, 0);
+            u8 spriteId = CreateSprite(&sSpriteTemplate_Heart, 130, 40, 0);
             gSprites[spriteId].sTaskId = sprite->sTaskId;
+            gSprites[spriteId].sHeartOffset = Random() % 120;
+            gSprites[spriteId].sCounter = gSprites[spriteId].sHeartOffset;
+            gSprites[spriteId].sHeartId = 1;
 
-            //VarSet(VAR_BODY_COUNTER, 0);
+            spriteId = CreateSprite(&sSpriteTemplate_Heart, 150, 35, 0);
+            gSprites[spriteId].sTaskId = sprite->sTaskId;
+            gSprites[spriteId].sHeartOffset = Random() % 120;
+            gSprites[spriteId].sCounter = gSprites[spriteId].sHeartOffset;
+            gSprites[spriteId].sHeartId = 2;
+
+            spriteId = CreateSprite(&sSpriteTemplate_Heart, 170, 45, 0);
+            gSprites[spriteId].sTaskId = sprite->sTaskId;
+            gSprites[spriteId].sHeartOffset = Random() % 120;
+            gSprites[spriteId].sCounter = gSprites[spriteId].sHeartOffset;
+            gSprites[spriteId].sHeartId = 3;
+
             sprite->invisible = TRUE;
         }
         else if (!JOY_HELD(A_BUTTON) || !petArea)
@@ -2027,15 +2044,18 @@ static void SpriteCB_Angry(struct Sprite *sprite)
 
 static void SpriteCB_Heart(struct Sprite *sprite)
 {
-    if (sprite->sCounter == 180)
+    if (sprite->sCounter == (180 + sprite->sHeartOffset))
     {
-        BeginNormalPaletteFade(PALETTES_ALL, 6, 0, 16, RGB_BLACK);
-        sTask.tShouldExit = TRUE;
-        DestroySprite(sprite);
+        if (sprite->sHeartId == 1 && !sprite->sFadeStarted)
+        {
+            BeginNormalPaletteFade(PALETTES_ALL, 6, 0, 16, RGB_BLACK);
+            sprite->sFadeStarted = TRUE;
+            sTask.tShouldExit = TRUE;
+        }
     }
     sprite->sCounter++;
-    sprite->x2 = Cos((sprite->sCounter % 32), 64);
-    if (sprite->sCounter % 3 == 0)
+    sprite->x2 = Sin2(0 - sprite->sCounter * 3) / 512;
+    if (sprite->sCounter % 4 == 0)
         sprite->y--;
 }
 
