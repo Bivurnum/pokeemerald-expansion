@@ -2645,3 +2645,9 @@
     callnative Script_StartSpa
     waitstate
     .endm
+
+    @ Start rattata spa game.
+    .macro rattataspa
+    setvar VAR_SPA_MON 0
+    startspa
+    .endm

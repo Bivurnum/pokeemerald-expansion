@@ -92,7 +92,7 @@ PetalburgCity_EventScript_Boy::
 
 PetalburgCity_EventScript_WallysMom::
     lock
-    startspa
+    rattataspa
     releaseall
 	end
 
@@ -226,7 +226,7 @@ PetalburgCity_EventScript_GymSign::
 
 PetalburgCity_EventScript_CitySign::
     lock
-    startspa
+    rattataspa
 	end
 
 PetalburgCity_EventScript_Gentleman::
