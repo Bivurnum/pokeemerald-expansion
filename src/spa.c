@@ -11,6 +11,7 @@
 #include "random.h"
 #include "scanline_effect.h"
 #include "sound.h"
+#include "spa_rattata.h"
 #include "strings.h"
 #include "task.h"
 #include "text.h"
@@ -23,22 +24,16 @@
 
 static void ResetForMinigame1(void);
 static void ResetForMinigame2(void);
-static void CreateRattataSprites(u8 taskId);
+static void LoadMonSpritePalettes(void);
+static void CreateSpaSprites(u8 taskId);
+static void CreateSpaMonSprites(u8 taskId);
 static void VblankCB_SpaGame(void);
 static void CB2_SpaGame(void);
 static void Task_StartSpaGame(u8 taskId);
+static void PlaySpaMonCry(u8 mode);
 static void SetItemFlagBits(u8 taskId);
 static void Task_SpaGame(u8 taskId);
 static void MoveSpriteFromInput(struct Sprite *sprite);
-static void SpriteCB_RatBodyLeft(struct Sprite *sprite);
-static void SpriteCB_RatBodyRight(struct Sprite *sprite);
-static void SpriteCB_RatTail(struct Sprite *sprite);
-static void SpriteCB_RatEarLeft(struct Sprite *sprite);
-static void SpriteCB_RatEarRight(struct Sprite *sprite);
-static void SpriteCB_RatMouth(struct Sprite *sprite);
-static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite);
-static void SpriteCB_RatWhiskerRight(struct Sprite *sprite);
-static void SpriteCB_RatEyes(struct Sprite *sprite);
 static void SpriteCB_Hand(struct Sprite *sprite);
 static void SpriteCB_Music(struct Sprite *sprite);
 static u8 GetCurrentPettingArea(struct Sprite *sprite);
@@ -51,24 +46,11 @@ static void SpriteCB_Selector(struct Sprite *sprite);
 static void SpriteCB_Angry(struct Sprite *sprite);
 static void SpriteCB_Heart(struct Sprite *sprite);
 static void SpriteCB_Berry(struct Sprite *sprite);
-static bool32 IsBerryInFeedingZone(void);
 static void Task_ScriptStartSpa(u8 taskId);
 
 static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.lz");
 static const u32 gSpaBG_Tilemap[] = INCBIN_U32("graphics/_spa/spa_bg.bin.lz");
 static const u16 gSpaBG_Pal[] = INCBIN_U16("graphics/_spa/spa_bg.gbapal");
-
-static const u16 gRattata_Pal[] = INCBIN_U16("graphics/_spa/rattata/rattata_body_left.gbapal");
-static const u32 gRattataBodyLeft_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_body_left.4bpp");
-static const u32 gRattataBodyRight_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_body_right.4bpp");
-static const u32 gRattataTail_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_tail.4bpp");
-static const u32 gRattataEarLeft_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_ear_left.4bpp");
-static const u32 gRattataEarRight_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_ear_right.4bpp");
-static const u32 gRattataMouth_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_mouth.4bpp");
-static const u32 gRattataWhiskerLeft_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_whisker_left.4bpp");
-static const u32 gRattataWhiskerRight_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_whisker_right.4bpp");
-static const u32 gRattataToes_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_toes.4bpp");
-static const u32 gRattataEyes_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_eyes.4bpp");
 
 static const u16 gHand_Pal[] = INCBIN_U16("graphics/_spa/hand.gbapal");
 static const u32 gHand_Gfx[] = INCBIN_U32("graphics/_spa/hand.4bpp");
@@ -134,196 +116,6 @@ static const union AnimCmd sAnim_Normal[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
     ANIMCMD_END
-};
-
-static const union AnimCmd sAnim_RatBodyBreathing[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 48),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 48),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 48),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 48),
-    ANIMCMD_JUMP(0)
-};
-
-static const union AnimCmd sAnim_RatBodyLeftBadTouch[] =
-{
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
-    ANIMCMD_END
-};
-
-static const union AnimCmd * const sAnims_RatBodyLeft[] =
-{
-    sAnim_Normal,
-    sAnim_RatBodyBreathing,
-    sAnim_RatBodyLeftBadTouch,
-};
-
-static const union AnimCmd * const sAnims_RatBodyRight[] =
-{
-    sAnim_Normal,
-    sAnim_RatBodyBreathing,
-};
-
-static const union AnimCmd sAnim_RatTailWag[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
-    ANIMCMD_JUMP(0)
-};
-
-static const union AnimCmd * const sAnims_RatTail[] =
-{
-    sAnim_Normal,
-    sAnim_RatTailWag,
-};
-
-static const union AnimCmd sAnim_RatBite[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 32),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 8),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 4),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sAnim_RatSmile[] =
-{
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
-    ANIMCMD_END
-};
-
-static const union AnimCmd * const sAnims_RatEarLeft[] =
-{
-    sAnim_Normal,
-    sAnim_RatBite,
-    sAnim_RatSmile,
-};
-
-static const union AnimCmd * const sAnims_RatEarRight[] =
-{
-    sAnim_Normal,
-    sAnim_RatBite,
-    sAnim_RatSmile,
-};
-
-static const union AnimCmd * const sAnims_RatMouth[] =
-{
-    sAnim_Normal,
-    sAnim_RatBite,
-    sAnim_RatSmile,
-};
-
-static const union AnimCmd sAnim_RatWhiskerTwitch[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 32),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 2),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 8),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 2),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 48),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 4),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 4),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 60),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 2),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
-    ANIMCMD_JUMP(0)
-};
-
-static const union AnimCmd * const sAnims_RatWhiskerLeft[] =
-{
-    sAnim_Normal,
-    sAnim_RatWhiskerTwitch,
-    sAnim_RatBite,
-    sAnim_RatSmile,
-};
-
-static const union AnimCmd * const sAnims_RatWhiskerRight[] =
-{
-    sAnim_Normal,
-    sAnim_RatWhiskerTwitch,
-    sAnim_RatBite,
-    sAnim_RatSmile,
-};
-
-static const union AnimCmd * const sAnims_RatToes[] =
-{
-    sAnim_Normal,
-};
-
-static const union AnimCmd sAnim_RatEyesBlink[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
-    ANIMCMD_FRAME(.imageValue = 3, .duration = 2),
-    ANIMCMD_FRAME(.imageValue = 4, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 3, .duration = 2),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sAnim_RatEyesJoy[] =
-{
-    ANIMCMD_FRAME(.imageValue = 5, .duration = 16),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sAnim_RatEyesBad[] =
-{
-    ANIMCMD_FRAME(.imageValue = 6, .duration = 60),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sAnim_RatEyesBiteGood[] =
-{
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 32),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 8),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 4),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sAnim_RatEyesAngry[] =
-{
-    ANIMCMD_FRAME(.imageValue = 7, .duration = 16),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sAnim_RatEyesBiteBad[] =
-{
-    ANIMCMD_FRAME(.imageValue = 7, .duration = 32),
-    ANIMCMD_FRAME(.imageValue = 8, .duration = 8),
-    ANIMCMD_FRAME(.imageValue = 9, .duration = 16),
-    ANIMCMD_FRAME(.imageValue = 8, .duration = 4),
-    ANIMCMD_FRAME(.imageValue = 7, .duration = 1),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sAnim_RatEyesSmile[] =
-{
-    ANIMCMD_FRAME(.imageValue = 10, .duration = 16),
-    ANIMCMD_END
-};
-
-static const union AnimCmd * const sAnims_RatEyes[] =
-{
-    sAnim_Normal,
-    sAnim_RatEyesBlink,
-    sAnim_RatEyesJoy,
-    sAnim_RatEyesBad,
-    sAnim_RatEyesBiteGood,
-    sAnim_RatEyesAngry,
-    sAnim_RatEyesBiteBad,
-    sAnim_RatEyesSmile,
 };
 
 static const union AnimCmd sAnim_HandOpen[] =
@@ -412,81 +204,6 @@ static const union AnimCmd * const sAnims_Berry[] =
     sAnim_Berry2Bites,
 };
 
-static const struct SpriteFrameImage sPicTable_RatBodyLeft[] =
-{
-    spa_frame(gRattataBodyLeft_Gfx, 0, 8, 8),
-    spa_frame(gRattataBodyLeft_Gfx, 1, 8, 8),
-    spa_frame(gRattataBodyLeft_Gfx, 2, 8, 8),
-};
-
-static const struct SpriteFrameImage sPicTable_RatBodyRight[] =
-{
-    spa_frame(gRattataBodyRight_Gfx, 0, 8, 8),
-    spa_frame(gRattataBodyRight_Gfx, 1, 8, 8),
-};
-
-static const struct SpriteFrameImage sPicTable_RatTail[] =
-{
-    spa_frame(gRattataTail_Gfx, 0, 8, 8),
-    spa_frame(gRattataTail_Gfx, 1, 8, 8),
-    spa_frame(gRattataTail_Gfx, 2, 8, 8),
-};
-
-static const struct SpriteFrameImage sPicTable_RatEarLeft[] =
-{
-    spa_frame(gRattataEarLeft_Gfx, 0, 8, 8),
-    spa_frame(gRattataEarLeft_Gfx, 1, 8, 8),
-    spa_frame(gRattataEarLeft_Gfx, 2, 8, 8),
-};
-
-static const struct SpriteFrameImage sPicTable_RatEarRight[] =
-{
-    spa_frame(gRattataEarRight_Gfx, 0, 8, 8),
-    spa_frame(gRattataEarRight_Gfx, 1, 8, 8),
-    spa_frame(gRattataEarRight_Gfx, 2, 8, 8),
-};
-
-static const struct SpriteFrameImage sPicTable_RatMouth[] =
-{
-    spa_frame(gRattataMouth_Gfx, 0, 8, 4),
-    spa_frame(gRattataMouth_Gfx, 1, 8, 4),
-    spa_frame(gRattataMouth_Gfx, 2, 8, 4),
-};
-
-static const struct SpriteFrameImage sPicTable_RatWhiskerLeft[] =
-{
-    spa_frame(gRattataWhiskerLeft_Gfx, 0, 8, 4),
-    spa_frame(gRattataWhiskerLeft_Gfx, 1, 8, 4),
-    spa_frame(gRattataWhiskerLeft_Gfx, 2, 8, 4),
-};
-
-static const struct SpriteFrameImage sPicTable_RatWhiskerRight[] =
-{
-    spa_frame(gRattataWhiskerRight_Gfx, 0, 8, 4),
-    spa_frame(gRattataWhiskerRight_Gfx, 1, 8, 4),
-    spa_frame(gRattataWhiskerRight_Gfx, 2, 8, 4),
-};
-
-static const struct SpriteFrameImage sPicTable_RatToes[] =
-{
-    spa_frame(gRattataToes_Gfx, 0, 2, 1),
-};
-
-static const struct SpriteFrameImage sPicTable_RatEyes[] =
-{
-    spa_frame(gRattataEyes_Gfx, 0, 8, 4),
-    spa_frame(gRattataEyes_Gfx, 1, 8, 4),
-    spa_frame(gRattataEyes_Gfx, 2, 8, 4),
-    spa_frame(gRattataEyes_Gfx, 3, 8, 4),
-    spa_frame(gRattataEyes_Gfx, 4, 8, 4),
-    spa_frame(gRattataEyes_Gfx, 5, 8, 4),
-    spa_frame(gRattataEyes_Gfx, 6, 8, 4),
-    spa_frame(gRattataEyes_Gfx, 7, 8, 4),
-    spa_frame(gRattataEyes_Gfx, 8, 8, 4),
-    spa_frame(gRattataEyes_Gfx, 9, 8, 4),
-    spa_frame(gRattataEyes_Gfx, 10, 8, 4),
-};
-
 static const struct SpriteFrameImage sPicTable_Hand[] =
 {
     spa_frame(gHand_Gfx, 0, 4, 4),
@@ -537,218 +254,6 @@ static const struct SpriteFrameImage sPicTable_Berry[] =
     spa_frame(gBerry_Gfx, 0, 4, 4),
     spa_frame(gBerry_Gfx, 1, 4, 4),
     spa_frame(gBerry_Gfx, 2, 4, 4),
-};
-
-static const struct OamData sOam_64x64 =
-{
-    .y = DISPLAY_HEIGHT,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(64x64),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(64x64),
-    .tileNum = 0,
-    .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
-};
-
-static const struct OamData sOam_64x32 =
-{
-    .y = DISPLAY_HEIGHT,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(64x32),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(64x32),
-    .tileNum = 0,
-    .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
-};
-
-static const struct OamData sOam_32x64 =
-{
-    .y = DISPLAY_HEIGHT,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(32x64),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(32x64),
-    .tileNum = 0,
-    .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
-};
-
-static const struct OamData sOam_32x32 =
-{
-    .y = DISPLAY_HEIGHT,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(32x32),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(32x32),
-    .tileNum = 0,
-    .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
-};
-
-static const struct OamData sOam_16x8 =
-{
-    .y = DISPLAY_HEIGHT,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(16x8),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(16x8),
-    .tileNum = 0,
-    .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
-};
-
-static const struct OamData sOam_32x8 =
-{
-    .y = DISPLAY_HEIGHT,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(32x8),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(32x8),
-    .tileNum = 0,
-    .priority = 0,
-    .paletteNum = 0,
-    .affineParam = 0,
-};
-
-static const struct SpriteTemplate sSpriteTemplate_RatBodyLeft =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = TAG_RATTATA,
-    .oam = &sOam_64x64,
-    .anims = sAnims_RatBodyLeft,
-    .images = sPicTable_RatBodyLeft,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatBodyLeft
-};
-
-static const struct SpriteTemplate sSpriteTemplate_RatBodyRight =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = TAG_RATTATA,
-    .oam = &sOam_64x64,
-    .anims = sAnims_RatBodyRight,
-    .images = sPicTable_RatBodyRight,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatBodyRight
-};
-
-static const struct SpriteTemplate sSpriteTemplate_RatTail =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = TAG_RATTATA,
-    .oam = &sOam_64x64,
-    .anims = sAnims_RatTail,
-    .images = sPicTable_RatTail,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatTail
-};
-
-static const struct SpriteTemplate sSpriteTemplate_RatEarLeft =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = TAG_RATTATA,
-    .oam = &sOam_64x64,
-    .anims = sAnims_RatEarLeft,
-    .images = sPicTable_RatEarLeft,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatEarLeft
-};
-
-static const struct SpriteTemplate sSpriteTemplate_RatEarRight =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = TAG_RATTATA,
-    .oam = &sOam_64x64,
-    .anims = sAnims_RatEarRight,
-    .images = sPicTable_RatEarRight,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatEarRight
-};
-
-static const struct SpriteTemplate sSpriteTemplate_RatMouth =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = TAG_RATTATA,
-    .oam = &sOam_64x32,
-    .anims = sAnims_RatMouth,
-    .images = sPicTable_RatMouth,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatMouth
-};
-
-static const struct SpriteTemplate sSpriteTemplate_RatWhiskerLeft =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = TAG_RATTATA,
-    .oam = &sOam_64x32,
-    .anims = sAnims_RatWhiskerLeft,
-    .images = sPicTable_RatWhiskerLeft,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatWhiskerLeft
-};
-
-static const struct SpriteTemplate sSpriteTemplate_RatWhiskerRight =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = TAG_RATTATA,
-    .oam = &sOam_64x32,
-    .anims = sAnims_RatWhiskerRight,
-    .images = sPicTable_RatWhiskerRight,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatWhiskerRight
-};
-
-static const struct SpriteTemplate sSpriteTemplate_RatToes =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = TAG_RATTATA,
-    .oam = &sOam_16x8,
-    .anims = sAnims_RatToes,
-    .images = sPicTable_RatToes,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
-};
-
-static const struct SpriteTemplate sSpriteTemplate_RatEyes =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = TAG_RATTATA,
-    .oam = &sOam_64x32,
-    .anims = sAnims_RatEyes,
-    .images = sPicTable_RatEyes,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatEyes
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Hand =
@@ -850,12 +355,8 @@ static const struct SpriteTemplate sSpriteTemplate_Berry =
     .callback = SpriteCB_Berry
 };
 
-static const struct SpritePalette sSpritePalettes_RattataSpa[] =
+static const struct SpritePalette sSpritePalettes_Spa[] =
 {
-    {
-        .data = gRattata_Pal,
-        .tag = TAG_RATTATA
-    },
     {
         .data = gHand_Pal,
         .tag = TAG_HAND
@@ -871,33 +372,7 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
     {NULL},
 };
 
-// Task data.
-#define tCounter        data[0]
-#define tPetArea        data[1]
-#define tPetActive      data[2]
-#define tPetTimer       data[3]
-#define tItemActive     data[4]
-#define tItemMenuState  data[5]
-#define tSelectedItem   data[6]
-#define tBerryBites     data[7]
-#define tIsBiting       data[8]
-#define tIsFed          data[9]
-#define tNumBadPets     data[10]
-#define tPetScore       data[11]
-#define tStatusShowing  data[12]
-#define tItemFlagBits   data[14]
-#define tShouldExit     data[15]
-
-// Sprite data.
-#define sTaskId         data[0]
-#define sCounter        data[1]
-#define sInterval       data[2]
-#define sHeartOffset    data[3]
-#define sHeartId        data[4]
-#define sFadeStarted    data[5]
-#define sBerryBites     data[6]
-
-void CB2_InitRattata(void)
+void CB2_InitSpa(void)
 {
     u8 taskId;
 
@@ -915,7 +390,8 @@ void CB2_InitRattata(void)
     LoadPalette(gSpaBG_Pal, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
     LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(14), PLTT_SIZE_4BPP);
     LoadUserWindowBorderGfx(0, 0x2A8, BG_PLTT_ID(13));
-    LoadSpritePalettes(sSpritePalettes_RattataSpa);
+    LoadSpritePalettes(sSpritePalettes_Spa);
+    LoadMonSpritePalettes();
 
     DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
@@ -939,7 +415,7 @@ void CB2_InitRattata(void)
     taskId = CreateTask(Task_StartSpaGame, 1);
 
     SetItemFlagBits(taskId);
-    CreateRattataSprites(taskId);
+    CreateSpaSprites(taskId);
 }
 
 static void ResetForMinigame1(void)
@@ -969,42 +445,19 @@ static void ResetForMinigame2(void)
     ResetAllPicSprites();
 }
 
-static void CreateRattataSprites(u8 taskId)
+static void LoadMonSpritePalettes(void)
+{
+    switch (VarGet(VAR_SPA_MON))
+    {
+    case SPA_RATTATA:
+        LoadSpritePalettes(sSpritePalettes_SpaRattata);
+        break;
+    }
+}
+
+static void CreateSpaSprites(u8 taskId)
 {
     u8 spriteId;
-
-    spriteId = CreateSprite(&sSpriteTemplate_RatEyes, 154, 63, 8);
-    gSprites[spriteId].sTaskId = taskId;
-    gSprites[spriteId].sInterval = (Random() % 180) + 180;
-
-    spriteId = CreateSprite(&sSpriteTemplate_RatBodyLeft, 94, 73, 12);
-    gSprites[spriteId].sTaskId = taskId;
-    StartSpriteAnim(&gSprites[spriteId], 1);
-
-    spriteId = CreateSprite(&sSpriteTemplate_RatBodyRight, 158, 81, 12);
-    gSprites[spriteId].sTaskId = taskId;
-    StartSpriteAnim(&gSprites[spriteId], 1);
-
-    spriteId = CreateSprite(&sSpriteTemplate_RatTail, 88, 33, 11);
-    gSprites[spriteId].sTaskId = taskId;
-
-    spriteId = CreateSprite(&sSpriteTemplate_RatEarLeft, 119, 32, 10);
-    gSprites[spriteId].sTaskId = taskId;
-
-    spriteId = CreateSprite(&sSpriteTemplate_RatEarRight, 183, 32, 10);
-    gSprites[spriteId].sTaskId = taskId;
-
-    spriteId = CreateSprite(&sSpriteTemplate_RatMouth, 152, 80, 10);
-    gSprites[spriteId].sTaskId = taskId;
-
-    spriteId = CreateSprite(&sSpriteTemplate_RatWhiskerLeft, 96, 59, 9);
-    gSprites[spriteId].sTaskId = taskId;
-
-    spriteId = CreateSprite(&sSpriteTemplate_RatWhiskerRight, 207, 57, 9);
-    gSprites[spriteId].sTaskId = taskId;
-
-    spriteId = CreateSprite(&sSpriteTemplate_RatToes, 104, 109, 12);
-    gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_Hand, 28, 45, 5);
     gSprites[spriteId].sTaskId = taskId;
@@ -1018,6 +471,18 @@ static void CreateRattataSprites(u8 taskId)
     spriteId = CreateSprite(&sSpriteTemplate_ExitIcon, 16, 16, 7);
     gSprites[spriteId].sTaskId = taskId;
     VarSet(VAR_ITEMS_EXIT_SPRITE_ID, spriteId);
+
+    CreateSpaMonSprites(taskId);
+}
+
+static void CreateSpaMonSprites(u8 taskId)
+{
+    switch (VarGet(VAR_SPA_MON))
+    {
+    case SPA_RATTATA:
+        CreateRattataSprites(taskId);
+        break;
+    }
 }
 
 static void VblankCB_SpaGame(void)
@@ -1042,15 +507,33 @@ static void Task_StartSpaGame(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        PlayCry_Normal(SPECIES_RATTATA, 0);
+        PlaySpaMonCry(CRY_MODE_NORMAL);
         gTasks[taskId].func = Task_SpaGame;
+    }
+}
+
+static void PlaySpaMonCry(u8 mode)
+{
+    switch (VarGet(VAR_SPA_MON))
+    {
+    case SPA_RATTATA:
+        PlayCry_ByMode(SPECIES_RATTATA, 0, mode);
+        break;
+    }
+}
+
+static void PlaySpaMonAttackSE(void)
+{
+    switch (VarGet(VAR_SPA_MON))
+    {
+    case SPA_RATTATA:
+        PlaySE(SE_M_BITE);
+        break;
     }
 }
 
 static void SetItemFlagBits(u8 taskId)
 {
-    gTasks[taskId].tItemFlagBits |= SPA_ITEM_BIT_ALWAYS;
-
     if (FlagGet(FLAG_SPA_OBTAINED_BERRY))
         gTasks[taskId].tItemFlagBits |= SPA_ITEM_BIT_BERRY;
 
@@ -1063,6 +546,11 @@ static void SetItemFlagBits(u8 taskId)
     if (FlagGet(FLAG_SPA_OBTAINED_ORB))
         gTasks[taskId].tItemFlagBits |= SPA_ITEM_BIT_ORB;
 }
+
+static const s16 AngryPos[][2] =
+{
+    [SPA_RATTATA] = { 165, 38},
+};
 
 static void Task_SpaGame(u8 taskId)
 {
@@ -1089,19 +577,15 @@ static void Task_SpaGame(u8 taskId)
         }
     }
 
-    if (gTasks[taskId].tPetArea == RAT_PET_BAD)
+    if (gTasks[taskId].tPetArea == SPA_PET_BAD)
     {
         if (VarGet(VAR_BODY_COUNTER) == 61)
         {
+            u8 spaMon = VarGet(VAR_SPA_MON);
+
+            PlaySpaMonCry(CRY_MODE_ROAR_1);
             if (gTasks[taskId].tNumBadPets == 0)
-            {
-                PlayCry_ByMode(SPECIES_RATTATA, 0, CRY_MODE_ROAR_1);
-                CreateSprite(&sSpriteTemplate_Angry, 165, 38, 0);
-            }
-            else
-            {
-                PlayCry_ByMode(SPECIES_RATTATA, 0, CRY_MODE_ROAR_1);
-            }
+                CreateSprite(&sSpriteTemplate_Angry, AngryPos[spaMon][0], AngryPos[spaMon][1], 0);
         }
         else if (VarGet(VAR_BODY_COUNTER) == 181 && gTasks[taskId].tNumBadPets == 0)
         {
@@ -1110,7 +594,7 @@ static void Task_SpaGame(u8 taskId)
         }
         else if (VarGet(VAR_BODY_COUNTER) == 117 && gTasks[taskId].tNumBadPets == 1)
         {
-            PlaySE(SE_M_BITE);
+            PlaySpaMonAttackSE();
             BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 8, RGB_RED);
         }
         else if (VarGet(VAR_BODY_COUNTER) > 117 && gTasks[taskId].tNumBadPets == 1)
@@ -1118,7 +602,7 @@ static void Task_SpaGame(u8 taskId)
             if (!gPaletteFade.active)
             {
                 BeginNormalPaletteFade(PALETTES_ALL, 1, 8, 0, RGB_RED);
-                gTasks[taskId].tPetArea = RAT_PET_NONE;
+                gTasks[taskId].tPetArea = SPA_PET_NONE;
                 VarSet(VAR_BODY_COUNTER, 0);
                 gTasks[taskId].tNumBadPets = 2;
             }
@@ -1132,6 +616,62 @@ static void Task_SpaGame(u8 taskId)
             gTasks[taskId].tNumBadPets = 3;
             gTasks[taskId].tShouldExit = TRUE;
         }
+    }
+}
+
+static void DoSpaMonInterestedBerryText(void)
+{
+    switch (VarGet(VAR_SPA_MON))
+    {
+    case SPA_RATTATA:
+        AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataInterestedBerry, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+static void DoSpaMonStatusText(bool8 isFed)
+{
+    switch (VarGet(VAR_SPA_MON))
+    {
+    case SPA_RATTATA:
+        if (isFed)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataAtEase, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+static void DoSpaMonBadTouchText(bool8 isFed)
+{
+    switch (VarGet(VAR_SPA_MON))
+    {
+    case SPA_RATTATA:
+        if (isFed)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataBadTouch, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NARROW, gText_RattataBadPet, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+static void DoSpaMonSatisfiedText(void)
+{
+    switch (VarGet(VAR_SPA_MON))
+    {
+    case SPA_RATTATA:
+        AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataSatisfied, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+static void DoSpaMonEnjoyedSnackText(void)
+{
+    switch (VarGet(VAR_SPA_MON))
+    {
+    case SPA_RATTATA:
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataEnjoyedSnack, 0, 0, 0, NULL);
+        break;
     }
 }
 
@@ -1221,7 +761,7 @@ static void Task_SpaItemChoose(u8 taskId)
         if (JOY_NEW(SELECT_BUTTON) || (!gTasks[taskId].tStatusShowing && JOY_HELD(SELECT_BUTTON)))
         {
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataInterestedBerry, 0, 0, 0, NULL);
+            DoSpaMonInterestedBerryText();
 
             gTasks[taskId].tStatusShowing = TRUE;
         }
@@ -1290,347 +830,14 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
     }
 }
 
-#define sTask       gTasks[sprite->sTaskId]
-
-static void SpriteCB_RatBodyLeft(struct Sprite *sprite)
+static const s16 HeartPos[][3][2] =
 {
-    if (sTask.tPetArea == RAT_PET_BAD)
-    {
-        DebugPrintf("%u", VarGet(VAR_BODY_COUNTER));
-        if (VarGet(VAR_BODY_COUNTER) == 1)
-            StartSpriteAnim(sprite, 2);
-        else if (VarGet(VAR_BODY_COUNTER) == 60)
-            StartSpriteAnim(sprite, 1);
+    [SPA_RATTATA] = {
+        { 130, 40 },
+        { 150, 35 },
+        { 170, 45 },
     }
-}
-
-static void SpriteCB_RatBodyRight(struct Sprite *sprite)
-{
-    if (sTask.tPetArea == RAT_PET_BAD)
-    {
-        if (VarGet(VAR_BODY_COUNTER) == 1)
-            StartSpriteAnim(sprite, 0);
-        else if (VarGet(VAR_BODY_COUNTER) == 60)
-            StartSpriteAnim(sprite, 1);
-    }
-}
-
-static void SpriteCB_RatTail(struct Sprite *sprite)
-{
-    u16 counter = VarGet(VAR_BODY_COUNTER);
-
-    if (sTask.tPetArea == RAT_PET_BAD)
-    {
-        if (VarGet(VAR_BODY_COUNTER) == 1)
-            sprite->invisible = TRUE;
-        else if (VarGet(VAR_BODY_COUNTER) == 60)
-            sprite->invisible = FALSE;
-    }
-    else if (sTask.tPetArea != RAT_PET_BODY)
-    {
-        if (counter == 1)
-        {
-            StartSpriteAnim(sprite, 0);
-        }
-    }
-    else
-    {
-        if (counter == 1)
-        {
-            StartSpriteAnim(sprite, 1);
-        }
-    }
-}
-
-static void SpriteCB_RatEarLeft(struct Sprite *sprite)
-{
-    u16 counter = VarGet(VAR_BODY_COUNTER);
-
-    if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
-    {
-        if (sprite->animNum != 2)
-            StartSpriteAnim(sprite, 2);
-
-        return;
-    }
-    else if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
-    {
-        if (counter == 1)
-        {
-            sprite->y2 = 0;
-            sprite->y2--;
-        }
-        if (counter < 10 && counter % 4 == 0)
-        {
-            sprite->y2--;
-        }
-    }
-    else if (sTask.tPetArea == RAT_PET_BAD)
-    {
-        if (counter == 1)
-        {
-            sprite->y2 = 0;
-            sprite->y2 = 2;
-            sprite->x2 = -2;
-        }
-        else if (counter == 60)
-        {
-            sprite->y2 = 0;
-            sprite->x2 = 0;
-        }
-    }
-    else
-    {
-        if (sprite->y2 < 0)
-        {
-            sprite->y2++;
-        }
-    }
-    
-    if (sTask.tIsBiting && sprite->animNum != 1)
-    {
-        StartSpriteAnim(sprite, 1);
-    }
-    else if (!sTask.tIsBiting && sprite->animNum == 1)
-    {
-        StartSpriteAnim(sprite, 0);
-    }
-}
-
-static void SpriteCB_RatEarRight(struct Sprite *sprite)
-{
-    u16 counter = VarGet(VAR_BODY_COUNTER);
-
-    if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
-    {
-        if (sprite->animNum != 2)
-            StartSpriteAnim(sprite, 2);
-
-        return;
-    }
-    else if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
-    {
-        if (counter == 1)
-        {
-            sprite->y2 = 0;
-            sprite->y2--;
-        }
-        if (counter < 10 && counter % 4 == 0)
-        {
-            sprite->y2--;
-        }
-    }
-    else if (sTask.tPetArea == RAT_PET_BAD)
-    {
-        if (counter == 1)
-        {
-            sprite->y2 = 0;
-            sprite->y2 = 2;
-            sprite->x2 = -2;
-        }
-        else if (counter == 60)
-        {
-            sprite->y2 = 0;
-            sprite->x2 = 0;
-        }
-    }
-    else
-    {
-        if (sprite->y2 < 0)
-        {
-            sprite->y2++;
-        }
-    }
-    
-    if (sTask.tIsBiting && sprite->animNum != 1)
-    {
-        StartSpriteAnim(sprite, 1);
-    }
-    else if (!sTask.tIsBiting && sprite->animNum == 1)
-    {
-        StartSpriteAnim(sprite, 0);
-    }
-}
-
-static void SpriteCB_RatMouth(struct Sprite *sprite)
-{
-    u16 counter = VarGet(VAR_BODY_COUNTER);
-
-    if (sTask.tPetScore > 0 && sTask.tPetScore < SPA_PET_SCORE_TARGET)
-        sTask.tPetScore--;
-
-    if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
-    {
-        if (sprite->animNum != 2)
-            StartSpriteAnim(sprite, 2);
-
-        return;
-    }
-    else if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
-    {
-        if (counter == 1)
-        {
-            sprite->y2 = 0;
-            sprite->y2--;
-        }
-        if (counter < 10 && counter % 4 == 0)
-        {
-            sprite->y2--;
-        }
-    }
-    else if (sTask.tPetArea == RAT_PET_BAD)
-    {
-        if (counter == 1)
-        {
-            sprite->y2 = 0;
-            sprite->y2 = 2;
-            sprite->x2 = -2;
-        }
-        else if (counter == 60)
-        {
-            sprite->y2 = 0;
-            sprite->x2 = 0;
-        }
-    }
-    else
-    {
-        if (sprite->y2 < 0)
-        {
-            sprite->y2++;
-        }
-    }
-    
-    if (sTask.tIsBiting && sprite->animNum != 1)
-    {
-        StartSpriteAnim(sprite, 1);
-    }
-    else if (!sTask.tIsBiting && sprite->animNum == 1)
-    {
-        StartSpriteAnim(sprite, 0);
-    }
-}
-
-static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
-{
-    u16 counter = VarGet(VAR_BODY_COUNTER);
-
-    if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
-    {
-        if (sprite->animNum != 3)
-            StartSpriteAnim(sprite, 3);
-
-        return;
-    }
-    else if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
-    {
-        if (counter == 1)
-        {
-            sprite->y2 = 0;
-            sprite->y2--;
-            StartSpriteAnim(sprite, 1);
-        }
-        if (counter < 10 && counter % 4 == 0)
-        {
-            sprite->y2--;
-        }
-    }
-    else if (sTask.tPetArea == RAT_PET_BAD)
-    {
-        if (counter == 1)
-        {
-            sprite->y2 = 0;
-            sprite->y2 = 2;
-            sprite->x2 = -2;
-        }
-        else if (counter == 60)
-        {
-            sprite->y2 = 0;
-            sprite->x2 = 0;
-        }
-    }
-    else
-    {
-        if (counter == 1)
-        {
-            StartSpriteAnim(sprite, 0);
-        }
-        if (sprite->y2 < 0)
-        {
-            sprite->y2++;
-        }
-    }
-    
-    if (sTask.tIsBiting && sprite->animNum != 2)
-    {
-        StartSpriteAnim(sprite, 2);
-    }
-    else if (!sTask.tIsBiting && sprite->animNum == 2)
-    {
-        StartSpriteAnim(sprite, 0);
-    }
-}
-
-static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
-{
-    u16 counter = VarGet(VAR_BODY_COUNTER);
-
-    if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
-    {
-        if (sprite->animNum != 3)
-            StartSpriteAnim(sprite, 3);
-
-        return;
-    }
-    else if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
-    {
-        if (counter == 1)
-        {
-            sprite->y2 = 0;
-            sprite->y2--;
-            StartSpriteAnim(sprite, 1);
-        }
-        if (counter < 10 && counter % 4 == 0)
-        {
-            sprite->y2--;
-        }
-    }
-    else if (sTask.tPetArea == RAT_PET_BAD)
-    {
-        if (counter == 1)
-        {
-            sprite->y2 = 0;
-            sprite->y2 = 2;
-            sprite->x2 = -2;
-        }
-        else if (counter == 60)
-        {
-            sprite->y2 = 0;
-            sprite->x2 = 0;
-        }
-    }
-    else
-    {
-        if (counter == 1)
-        {
-            StartSpriteAnim(sprite, 0);
-        }
-        if (sprite->y2 < 0)
-        {
-            sprite->y2++;
-        }
-    }
-
-    if (sTask.tIsBiting && sprite->animNum != 2)
-    {
-        StartSpriteAnim(sprite, 2);
-    }
-    else if (!sTask.tIsBiting && sprite->animNum == 2)
-    {
-        StartSpriteAnim(sprite, 0);
-    }
-}
-
-#define sHandState  sprite->data[3]
+};
 
 static void SpriteCB_Hand(struct Sprite *sprite)
 {
@@ -1638,7 +845,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
 
     if (sprite->invisible == TRUE)
     {
-        if (!sTask.tShouldExit && sTask.tPetArea != RAT_PET_BAD && !sTask.tItemActive && sTask.tNumBadPets != 2 && sTask.tBerryBites != 3 && sTask.tPetScore < SPA_PET_SCORE_TARGET)
+        if (!sTask.tShouldExit && sTask.tPetArea != SPA_PET_BAD && !sTask.tItemActive && sTask.tNumBadPets != 2 && sTask.tBerryBites != 3 && sTask.tPetScore < SPA_PET_SCORE_TARGET)
             sprite->invisible = FALSE;
 
         return;
@@ -1654,10 +861,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
     if (JOY_NEW(SELECT_BUTTON) || (!sTask.tStatusShowing && JOY_HELD(SELECT_BUTTON)))
     {
         FillWindowPixelBuffer(0, PIXEL_FILL(1));
-        if (sTask.tIsFed)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataAtEase, 0, 0, 0, NULL);
-        else
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 0, 0, NULL);
+        DoSpaMonStatusText(sTask.tIsFed);
 
         sTask.tStatusShowing = TRUE;
     }
@@ -1675,17 +879,13 @@ static void SpriteCB_Hand(struct Sprite *sprite)
         }
         if (JOY_NEW(A_BUTTON))
         {
-            if (petArea == RAT_PET_BAD)
+            if (petArea == SPA_PET_BAD)
             {
-                sTask.tPetArea = RAT_PET_BAD;
+                sTask.tPetArea = SPA_PET_BAD;
                 VarSet(VAR_BODY_COUNTER, 0);
                 sprite->invisible = TRUE;
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
-                if (sTask.tIsFed)
-                    AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataBadTouch, 0, 0, 0, NULL);
-                else
-                    AddTextPrinterParameterized(0, FONT_NARROW, gText_RattataBadPet, 0, 0, 0, NULL);
-
+                DoSpaMonBadTouchText(sTask.tIsFed);
                 return;
             }
             if (IsHandOnItemsIcon(sprite))
@@ -1709,9 +909,9 @@ static void SpriteCB_Hand(struct Sprite *sprite)
         {
             if (petArea)
             {
-                if (petArea == RAT_PET_BAD)
+                if (petArea == SPA_PET_BAD)
                 {
-                    sTask.tPetArea = RAT_PET_BAD;
+                    sTask.tPetArea = SPA_PET_BAD;
                     VarSet(VAR_BODY_COUNTER, 0);
                     sprite->invisible = TRUE;
                     return;
@@ -1733,25 +933,22 @@ static void SpriteCB_Hand(struct Sprite *sprite)
     case HAND_PET:
         if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
         {
-            u8 spriteId = CreateSprite(&sSpriteTemplate_Heart, 130, 40, 0);
-            gSprites[spriteId].sTaskId = sprite->sTaskId;
-            gSprites[spriteId].sHeartOffset = Random() % 120;
-            gSprites[spriteId].sCounter = gSprites[spriteId].sHeartOffset;
-            gSprites[spriteId].sHeartId = 1;
+            u8 spaMon = VarGet(VAR_SPA_MON);
+            u8 spriteId;
+            u8 i;
 
-            spriteId = CreateSprite(&sSpriteTemplate_Heart, 150, 35, 0);
-            gSprites[spriteId].sTaskId = sprite->sTaskId;
-            gSprites[spriteId].sHeartOffset = Random() % 120;
-            gSprites[spriteId].sCounter = gSprites[spriteId].sHeartOffset;
-            gSprites[spriteId].sHeartId = 2;
+            for (i = 0; i < 3; i++)
+            {
+                spriteId = CreateSprite(&sSpriteTemplate_Heart, HeartPos[spaMon][i][0], HeartPos[spaMon][i][1], 0);
+                gSprites[spriteId].sTaskId = sprite->sTaskId;
+                gSprites[spriteId].sHeartOffset = Random() % 120;
+                gSprites[spriteId].sCounter = gSprites[spriteId].sHeartOffset;
+                gSprites[spriteId].sHeartId = i + 1;
+            }
 
-            spriteId = CreateSprite(&sSpriteTemplate_Heart, 170, 45, 0);
-            gSprites[spriteId].sTaskId = sprite->sTaskId;
-            gSprites[spriteId].sHeartOffset = Random() % 120;
-            gSprites[spriteId].sCounter = gSprites[spriteId].sHeartOffset;
-            gSprites[spriteId].sHeartId = 3;
-
-            PlayCry_ByMode(SPECIES_RATTATA, 0, CRY_MODE_GROWL_1);
+            PlaySpaMonCry(CRY_MODE_GROWL_1);
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            DoSpaMonSatisfiedText();
             sprite->invisible = TRUE;
         }
         else if (!JOY_HELD(A_BUTTON) || !petArea)
@@ -1779,7 +976,7 @@ static void SpriteCB_Music(struct Sprite *sprite)
 {
     if (sprite->sCounter == 10)
     {
-        PlayCry_ByMode(SPECIES_RATTATA, 0, CRY_MODE_HIGH_PITCH);
+        PlaySpaMonCry(CRY_MODE_HIGH_PITCH);
     }
     else if (sprite->sCounter == 120)
     {
@@ -1792,43 +989,48 @@ static void SpriteCB_Music(struct Sprite *sprite)
     sprite->sCounter++;
 }
 
-static const s16 RatPettingZones[][5] =
+const s16 PettingZones[][5][5] =
 {
     // { MIN_X, MAX_X, MIN_Y, MAX_Y, BODY_PART }
-    { 78, 118, 49, 97, RAT_PET_BODY },
-    { 127, 175, 32, 72, RAT_PET_HEAD },
-    { 72, 112, 8, 31, RAT_PET_BAD },
-    { 64, 80, 25, 73, RAT_PET_BAD },
-    { 155, 168, 91, 104, RAT_PET_BAD }
+
+    [SPA_RATTATA] =
+    {
+        { 78, 118, 49, 97, SPA_PET_BODY },
+        { 127, 175, 32, 72, SPA_PET_HEAD },
+        { 72, 112, 8, 31, SPA_PET_BAD },
+        { 64, 80, 25, 73, SPA_PET_BAD },
+        { 155, 168, 91, 104, SPA_PET_BAD }
+    }
 };
 
 static u8 GetCurrentPettingArea(struct Sprite *sprite)
 {
     u8 i;
+    u8 spaMon = VarGet(VAR_SPA_MON);
 
-    for (i = 0; i < ARRAY_COUNT(RatPettingZones); i++)
+    for (i = 0; i < ARRAY_COUNT(PettingZones[spaMon]); i++)
     {
-        if (sprite->x > RatPettingZones[i][0] && sprite->x < RatPettingZones[i][1])
+        if (sprite->x > PettingZones[spaMon][i][0] && sprite->x < PettingZones[spaMon][i][1])
         {
-            if (sprite->y > RatPettingZones[i][2] && sprite->y < RatPettingZones[i][3])
+            if (sprite->y > PettingZones[spaMon][i][2] && sprite->y < PettingZones[spaMon][i][3])
             {
                 if (!sTask.tIsFed)
-                    return RAT_PET_BAD;
+                    return SPA_PET_BAD;
 
-                return RatPettingZones[i][4];
+                return PettingZones[spaMon][i][4];
             }
         }
     }
 
-    return RAT_PET_NONE;
+    return SPA_PET_NONE;
 }
 
 static void AdjustToPetArea(struct Sprite *sprite, u8 area)
 {
-    if (sTask.tPetArea != area && area != RAT_PET_BAD)
+    if (sTask.tPetArea != area && area != SPA_PET_BAD)
     {
         sTask.tPetArea = area;
-        if (sTask.tPetArea == RAT_PET_BODY)
+        if (sTask.tPetArea == SPA_PET_BODY)
             sprite->subpriority = 11;
             sprite->oam.priority = 1;
     }
@@ -1836,9 +1038,9 @@ static void AdjustToPetArea(struct Sprite *sprite, u8 area)
 
 static void StopPetting(struct Sprite *sprite)
 {
-    if (sTask.tPetArea != RAT_PET_NONE)
+    if (sTask.tPetArea != SPA_PET_NONE)
     {
-        sTask.tPetArea = RAT_PET_NONE;
+        sTask.tPetArea = SPA_PET_NONE;
         VarSet(VAR_BODY_COUNTER, 0);
         sprite->subpriority = 5;
         sprite->oam.priority = 0;
@@ -1861,139 +1063,6 @@ static bool8 IsHandOnExitIcon(struct Sprite *sprite)
         return TRUE;
 
     return FALSE;
-}
-
-static void SpriteCB_RatEyes(struct Sprite *sprite)
-{
-    u16 counter = VarGet(VAR_BODY_COUNTER);
-
-    if (sTask.tPetActive)
-    {
-        if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
-        {
-            if (sprite->animNum != 7)
-                StartSpriteAnim(sprite, 7);
-
-            return;
-        }
-        switch (sTask.tPetArea)
-        {
-        case RAT_PET_NONE:
-            break;
-        case RAT_PET_BODY:
-            if (counter == 1)
-            {
-                sprite->y2 = 0;
-                StartSpriteAnim(sprite, 2);
-            }
-            if (sprite->y2 < 0)
-            {
-                sprite->y2++;
-            }
-            break;
-        case RAT_PET_HEAD:
-            if (counter == 1)
-            {
-                sprite->y2 = 0;
-                StartSpriteAnim(sprite, 2);
-                sprite->y2--;
-            }
-            if (counter < 10 && counter % 4 == 0)
-            {
-                sprite->y2--;
-            }
-            break;
-        }
-    }
-    else if (sTask.tPetArea == RAT_PET_BAD)
-    {
-        if (counter == 1)
-        {
-            sprite->y2 = 0;
-            StartSpriteAnim(sprite, 3);
-            PlaySE(SE_CONTEST_CONDITION_LOSE);
-            sprite->y2 = 2;
-            sprite->x2 = -2;
-        }
-        else if (counter == 60)
-        {
-            sprite->y2 = 0;
-            sprite->x2 = 0;
-            gSprites[VarGet(VAR_HAND_SPRITE_ID)].x = 28;
-            gSprites[VarGet(VAR_HAND_SPRITE_ID)].y = 45;
-            StartSpriteAnim(sprite, 5);
-
-            if (sTask.tNumBadPets == 1)
-            {
-                StartSpriteAnim(sprite, 6);
-                sTask.tIsBiting = TRUE;
-            }
-        }
-        else if (sTask.tIsBiting)
-        {
-            if (sprite->animEnded)
-                sTask.tIsBiting = FALSE;
-        }
-    }
-    else if (sTask.tIsBiting)
-    {
-        if (sprite->animEnded)
-        {
-            StartSpriteAnim(sprite, 0);
-            sTask.tIsBiting = FALSE;
-            sprite->sCounter = 0;
-            if (IsBerryInFeedingZone())
-                sTask.tBerryBites++;
-        }
-        else if (sprite->sCounter == 56)
-        {
-            PlaySE(SE_M_SCRATCH);
-            sprite->sCounter++;
-        }
-        else
-        {
-            sprite->sCounter++;
-        }
-
-    }
-    else if (!sTask.tIsBiting)
-    {
-        if (sTask.tBerryBites == 3)
-        {
-            if (counter == 1)
-            {
-                StartSpriteAnim(sprite, 2);
-            }
-        }
-        else if (IsBerryInFeedingZone())
-        {
-            StartSpriteAnim(sprite, 4);
-            sTask.tIsBiting = TRUE;
-            sprite->sCounter = 0;
-        }
-        else if (sTask.tNumBadPets != 2)
-        {
-            if (counter == 1)
-            {
-                StartSpriteAnim(sprite, 0);
-                sprite->sCounter = 0;
-            }
-            if (sprite->y2 < 0)
-            {
-                sprite->y2++;
-            }
-            if (sprite->sCounter == sprite->sInterval)
-            {
-                StartSpriteAnim(sprite, 1); // Blink.
-                sprite->sInterval = (Random() % 180) + 180; // 3 to 6 seconds.
-                sprite->sCounter = 0;
-            }
-            else
-            {
-                sprite->sCounter++;
-            }
-        }
-    }
 }
 
 static void SpriteCB_ItemTray(struct Sprite *sprite)
@@ -2145,7 +1214,7 @@ static void SpriteCB_Berry(struct Sprite *sprite)
                 sTask.tItemMenuState = ITEM_STATE_END;
                 sTask.tIsFed = TRUE;
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
-                AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataEnjoyedSnack, 0, 0, 0, NULL);
+                DoSpaMonEnjoyedSnackText();
                 DestroySprite(sprite);
             }
 
@@ -2165,10 +1234,22 @@ static void SpriteCB_Berry(struct Sprite *sprite)
     }
 }
 
-static bool32 IsBerryInFeedingZone(void)
+static const s16 FeedingZones[][2][2] =
 {
-    if (gSprites[VarGet(VAR_BERRY_SPRITE_ID)].x > 135 && gSprites[VarGet(VAR_BERRY_SPRITE_ID)].x < 170
-     && gSprites[VarGet(VAR_BERRY_SPRITE_ID)].y > 83 && gSprites[VarGet(VAR_BERRY_SPRITE_ID)].y < 110)
+    [SPA_RATTATA] =
+    {
+        { 135, 170 },
+        { 83, 110 }
+    }
+};
+
+bool32 IsBerryInFeedingZone(void)
+{
+    u8 spaMon = VarGet(VAR_SPA_MON);
+    u8 berrySprite = VarGet(VAR_BERRY_SPRITE_ID);
+
+    if (gSprites[berrySprite].x > FeedingZones[spaMon][0][0] && gSprites[berrySprite].x < FeedingZones[spaMon][0][1] 
+     && gSprites[berrySprite].y > FeedingZones[spaMon][1][0]  && gSprites[berrySprite].y < FeedingZones[spaMon][1][1] )
     {
         return TRUE;
     }
@@ -2187,7 +1268,7 @@ static void Task_ScriptStartSpa(u8 taskId)
     if (!gPaletteFade.active)
     {
         PlayBGM(MUS_NONE);
-        SetMainCallback2(CB2_InitRattata);
+        SetMainCallback2(CB2_InitSpa);
         gMain.savedCallback = CB2_ReturnToField;
         DestroyTask(taskId);
     }

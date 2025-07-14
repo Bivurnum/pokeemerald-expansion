@@ -264,7 +264,7 @@
 #define VAR_ROXANNE_CALL_STEP_COUNTER                    0x40F4
 #define VAR_SCOTT_BF_CALL_STEP_COUNTER                   0x40F5
 #define VAR_RIVAL_RAYQUAZA_CALL_STEP_COUNTER             0x40F6
-#define VAR_UNUSED_0x40F7                                0x40F7 // Unused Var
+#define VAR_SPA_MON                                      0x40F7
 #define VAR_ORB_SPRITE_ID                                0x40F8
 #define VAR_HONEY_SPRITE_ID                              0x40F9
 #define VAR_CLAW_SPRITE_ID                               0x40FA

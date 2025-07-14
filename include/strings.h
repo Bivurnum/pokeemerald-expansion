@@ -2435,5 +2435,6 @@ extern const u8 gText_RattataBadTouch[];
 extern const u8 gText_RattataBadPet[];
 extern const u8 gText_RattataInterestedBerry[];
 extern const u8 gText_RattataEnjoyedSnack[];
+extern const u8 gText_RattataSatisfied[];
 
 #endif // GUARD_STRINGS_H
