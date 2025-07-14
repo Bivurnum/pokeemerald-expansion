@@ -1702,6 +1702,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             gSprites[spriteId].sCounter = gSprites[spriteId].sHeartOffset;
             gSprites[spriteId].sHeartId = 3;
 
+            PlayCry_ByMode(SPECIES_RATTATA, 0, CRY_MODE_GROWL_1);
             sprite->invisible = TRUE;
         }
         else if (!JOY_HELD(A_BUTTON) || !petArea)
