@@ -16,6 +16,7 @@
 #include "text.h"
 #include "text_window.h"
 #include "trainer_pokemon_sprites.h"
+#include "trig.h"
 #include "window.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
@@ -48,6 +49,7 @@ static bool8 IsHandOnExitIcon(struct Sprite *sprite);
 static void SpriteCB_ItemTray(struct Sprite *sprite);
 static void SpriteCB_Selector(struct Sprite *sprite);
 static void SpriteCB_Angry(struct Sprite *sprite);
+static void SpriteCB_Heart(struct Sprite *sprite);
 static void SpriteCB_Berry(struct Sprite *sprite);
 static bool32 IsBerryInFeedingZone(void);
 static void Task_ScriptStartSpa(u8 taskId);
@@ -78,6 +80,7 @@ static const u32 gExitIcon_Gfx[] = INCBIN_U32("graphics/_spa/exit_icon.4bpp");
 static const u32 gItemTray_Gfx[] = INCBIN_U32("graphics/_spa/item_tray.4bpp");
 static const u32 gSelector_Gfx[] = INCBIN_U32("graphics/_spa/selector.4bpp");
 static const u32 gAngry_Gfx[] = INCBIN_U32("graphics/_spa/angry.4bpp");
+static const u32 gHeart_Gfx[] = INCBIN_U32("graphics/_spa/heart.4bpp");
 
 static const u16 gBerry_Pal[] = INCBIN_U16("graphics/_spa/berry.gbapal");
 static const u32 gBerry_Gfx[] = INCBIN_U32("graphics/_spa/berry.4bpp");
@@ -187,22 +190,31 @@ static const union AnimCmd sAnim_RatBite[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_RatSmile[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_RatEarLeft[] =
 {
     sAnim_Normal,
     sAnim_RatBite,
+    sAnim_RatSmile,
 };
 
 static const union AnimCmd * const sAnims_RatEarRight[] =
 {
     sAnim_Normal,
     sAnim_RatBite,
+    sAnim_RatSmile,
 };
 
 static const union AnimCmd * const sAnims_RatMouth[] =
 {
     sAnim_Normal,
     sAnim_RatBite,
+    sAnim_RatSmile,
 };
 
 static const union AnimCmd sAnim_RatWhiskerTwitch[] =
@@ -231,6 +243,7 @@ static const union AnimCmd * const sAnims_RatWhiskerLeft[] =
     sAnim_Normal,
     sAnim_RatWhiskerTwitch,
     sAnim_RatBite,
+    sAnim_RatSmile,
 };
 
 static const union AnimCmd * const sAnims_RatWhiskerRight[] =
@@ -238,6 +251,7 @@ static const union AnimCmd * const sAnims_RatWhiskerRight[] =
     sAnim_Normal,
     sAnim_RatWhiskerTwitch,
     sAnim_RatBite,
+    sAnim_RatSmile,
 };
 
 static const union AnimCmd * const sAnims_RatToes[] =
@@ -255,7 +269,7 @@ static const union AnimCmd sAnim_RatEyesBlink[] =
     ANIMCMD_END
 };
 
-static const union AnimCmd sAnim_RatEyesSmile[] =
+static const union AnimCmd sAnim_RatEyesJoy[] =
 {
     ANIMCMD_FRAME(.imageValue = 5, .duration = 16),
     ANIMCMD_END
@@ -294,15 +308,22 @@ static const union AnimCmd sAnim_RatEyesBiteBad[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_RatEyesSmile[] =
+{
+    ANIMCMD_FRAME(.imageValue = 10, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_RatEyes[] =
 {
     sAnim_Normal,
     sAnim_RatEyesBlink,
-    sAnim_RatEyesSmile,
+    sAnim_RatEyesJoy,
     sAnim_RatEyesBad,
     sAnim_RatEyesBiteGood,
     sAnim_RatEyesAngry,
     sAnim_RatEyesBiteBad,
+    sAnim_RatEyesSmile,
 };
 
 static const union AnimCmd sAnim_HandOpen[] =
@@ -365,6 +386,11 @@ static const union AnimCmd sAnim_Angry[] =
 static const union AnimCmd * const sAnims_Angry[] =
 {
     sAnim_Angry,
+};
+
+static const union AnimCmd * const sAnims_Heart[] =
+{
+    sAnim_Normal,
 };
 
 static const union AnimCmd sAnim_Berry1Bite[] =
@@ -458,6 +484,7 @@ static const struct SpriteFrameImage sPicTable_RatEyes[] =
     spa_frame(gRattataEyes_Gfx, 7, 8, 4),
     spa_frame(gRattataEyes_Gfx, 8, 8, 4),
     spa_frame(gRattataEyes_Gfx, 9, 8, 4),
+    spa_frame(gRattataEyes_Gfx, 10, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_Hand[] =
@@ -498,6 +525,11 @@ static const struct SpriteFrameImage sPicTable_Angry[] =
 {
     spa_frame(gAngry_Gfx, 0, 4, 4),
     spa_frame(gAngry_Gfx, 1, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Heart[] =
+{
+    spa_frame(gHeart_Gfx, 0, 4, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_Berry[] =
@@ -796,6 +828,17 @@ static const struct SpriteTemplate sSpriteTemplate_Angry =
     .callback = SpriteCB_Angry
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Heart =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_ITEMS_ICON,
+    .oam = &sOam_32x32,
+    .anims = sAnims_Heart,
+    .images = sPicTable_Heart,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_Heart
+};
+
 static const struct SpriteTemplate sSpriteTemplate_Berry =
 {
     .tileTag = TAG_NONE,
@@ -840,6 +883,7 @@ static const struct SpritePalette sSpritePalettes_RattataSpa[] =
 #define tIsBiting       data[8]
 #define tIsFed          data[9]
 #define tNumBadPets     data[10]
+#define tPetScore       data[11]
 #define tItemFlagBits   data[14]
 #define tShouldExit     data[15]
 
@@ -1029,9 +1073,8 @@ static void Task_SpaGame(u8 taskId)
         DestroyTask(taskId);
     }
 
-    if (gTasks[taskId].tPetActive)
+    if (gTasks[taskId].tPetActive && gTasks[taskId].tPetScore < SPA_PET_SCORE_TARGET)
     {
-
         if(!JOY_HELD(DPAD_ANY))
         {
             if (gTasks[taskId].tPetTimer == 60)
@@ -1276,7 +1319,14 @@ static void SpriteCB_RatEarLeft(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
+    if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
+    {
+        if (sprite->animNum != 2)
+            StartSpriteAnim(sprite, 2);
+
+        return;
+    }
+    else if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
     {
         if (counter == 1)
         {
@@ -1324,7 +1374,14 @@ static void SpriteCB_RatEarRight(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
+    if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
+    {
+        if (sprite->animNum != 2)
+            StartSpriteAnim(sprite, 2);
+
+        return;
+    }
+    else if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
     {
         if (counter == 1)
         {
@@ -1372,7 +1429,17 @@ static void SpriteCB_RatMouth(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
+    if (sTask.tPetScore > 0 && sTask.tPetScore < SPA_PET_SCORE_TARGET)
+        sTask.tPetScore--;
+
+    if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
+    {
+        if (sprite->animNum != 2)
+            StartSpriteAnim(sprite, 2);
+
+        return;
+    }
+    else if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
     {
         if (counter == 1)
         {
@@ -1420,7 +1487,14 @@ static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
+    if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
+    {
+        if (sprite->animNum != 3)
+            StartSpriteAnim(sprite, 3);
+
+        return;
+    }
+    else if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
     {
         if (counter == 1)
         {
@@ -1473,7 +1547,14 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_BODY_COUNTER);
 
-    if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
+    if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
+    {
+        if (sprite->animNum != 3)
+            StartSpriteAnim(sprite, 3);
+
+        return;
+    }
+    else if (sTask.tPetActive && sTask.tPetArea == RAT_PET_HEAD)
     {
         if (counter == 1)
         {
@@ -1514,7 +1595,7 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
 
     if (sTask.tIsBiting && sprite->animNum != 2)
     {
-        StartSpriteAnim(sprite, 2);
+        StartSpriteAnim(sprite, 1);
     }
     else if (!sTask.tIsBiting && sprite->animNum == 2)
     {
@@ -1530,7 +1611,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
 
     if (sprite->invisible == TRUE)
     {
-        if (!sTask.tShouldExit && sTask.tPetArea != RAT_PET_BAD && !sTask.tItemActive && sTask.tNumBadPets != 2 && sTask.tBerryBites != 3)
+        if (!sTask.tShouldExit && sTask.tPetArea != RAT_PET_BAD && !sTask.tItemActive && sTask.tNumBadPets != 2 && sTask.tBerryBites != 3 && sTask.tPetScore < SPA_PET_SCORE_TARGET)
             sprite->invisible = FALSE;
 
         return;
@@ -1598,13 +1679,22 @@ static void SpriteCB_Hand(struct Sprite *sprite)
         }
         break;
     case HAND_PET:
-        if (!JOY_HELD(A_BUTTON) || !petArea)
+        if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
+        {
+            u8 spriteId = CreateSprite(&sSpriteTemplate_Heart, 130, 30, 0);
+            gSprites[spriteId].sTaskId = sprite->sTaskId;
+
+            //VarSet(VAR_BODY_COUNTER, 0);
+            sprite->invisible = TRUE;
+        }
+        else if (!JOY_HELD(A_BUTTON) || !petArea)
         {
             StartSpriteAnim(sprite, 0);
             StopPetting(sprite);
         }
         else if (JOY_HELD(DPAD_ANY))
         {
+            sTask.tPetScore += 4;
             sTask.tPetTimer = 0;
             if (!sTask.tPetActive)
             {
@@ -1710,6 +1800,13 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
 
     if (sTask.tPetActive)
     {
+        if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
+        {
+            if (sprite->animNum != 7)
+                StartSpriteAnim(sprite, 7);
+
+            return;
+        }
         switch (sTask.tPetArea)
         {
         case RAT_PET_NONE:
@@ -1792,10 +1889,8 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
     }
     else if (!sTask.tIsBiting)
     {
-        DebugPrintf("Counter: %u", counter);
         if (sTask.tBerryBites == 3)
         {
-            DebugPrintf("HERE");
             if (counter == 1)
             {
                 StartSpriteAnim(sprite, 2);
@@ -1928,6 +2023,20 @@ static void SpriteCB_Angry(struct Sprite *sprite)
     {
         DestroySprite(sprite);
     }
+}
+
+static void SpriteCB_Heart(struct Sprite *sprite)
+{
+    if (sprite->sCounter == 180)
+    {
+        BeginNormalPaletteFade(PALETTES_ALL, 6, 0, 16, RGB_BLACK);
+        sTask.tShouldExit = TRUE;
+        DestroySprite(sprite);
+    }
+    sprite->sCounter++;
+    sprite->x2 = Cos((sprite->sCounter % 32), 64);
+    if (sprite->sCounter % 3 == 0)
+        sprite->y--;
 }
 
 static void SpriteCB_Berry(struct Sprite *sprite)

@@ -15,6 +15,8 @@
 #define SPA_ITEM_BIT_ORB    0x8
 #define SPA_ITEM_BIT_ALWAYS 0x10
 
+#define SPA_PET_SCORE_TARGET    700
+
 enum HandStates
 {
     HAND_NORMAL,
