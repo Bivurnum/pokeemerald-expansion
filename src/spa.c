@@ -1080,6 +1080,11 @@ const s16 PettingZones[][5][5] =
         { 72, 112, 8, 31, SPA_PET_BAD },
         { 64, 80, 25, 73, SPA_PET_BAD },
         { 155, 168, 91, 104, SPA_PET_BAD }
+    },
+    [SPA_TEDDIURSA] =
+    {
+        { 117, 165, 70, 118, SPA_PET_BODY },
+        { 108, 164, 24, 74, SPA_PET_HEAD },
     }
 };
 
