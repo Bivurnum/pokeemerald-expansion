@@ -13,6 +13,7 @@ static const u32 gTeddiursaHeadRight_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa
 static const u32 gTeddiursaBody_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_body.4bpp");
 static const u32 gTeddiursaTail_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_tail.4bpp");
 static const u32 gTeddiursaFoot_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_foot.4bpp");
+static const u32 gTeddiursaEars_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_ears.4bpp");
 
 static const union AnimCmd sAnim_Normal[] =
 {
@@ -45,6 +46,11 @@ static const union AnimCmd * const sAnims_TeddyFoot[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd * const sAnims_TeddyEars[] =
+{
+    sAnim_Normal,
+};
+
 static const struct SpriteFrameImage sPicTable_TeddyHeadLeft[] =
 {
     spa_frame(gTeddiursaHeadLeft_Gfx, 0, 8, 8),
@@ -68,6 +74,11 @@ static const struct SpriteFrameImage sPicTable_TeddyTail[] =
 static const struct SpriteFrameImage sPicTable_TeddyFoot[] =
 {
     spa_frame(gTeddiursaFoot_Gfx, 0, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_TeddyEars[] =
+{
+    spa_frame(gTeddiursaEars_Gfx, 0, 8, 8),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_TeddyHeadLeft =
@@ -125,6 +136,17 @@ static const struct SpriteTemplate sSpriteTemplate_TeddyFoot =
     .callback = SpriteCallbackDummy
 };
 
+static const struct SpriteTemplate sSpriteTemplate_TeddyEars =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_TEDDIURSA,
+    .oam = &sOam_64x64,
+    .anims = sAnims_TeddyEars,
+    .images = sPicTable_TeddyEars,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
 const struct SpritePalette sSpritePalettes_SpaTeddiursa[] =
 {
     {
@@ -150,5 +172,8 @@ void CreateTeddiursaSprites(u8 taskId)
     gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyFoot, 100, 104, 11);
+    gSprites[spriteId].sTaskId = taskId;
+
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyEars, 130, 27, 8);
     gSprites[spriteId].sTaskId = taskId;
 }
