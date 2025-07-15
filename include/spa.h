@@ -125,6 +125,13 @@ static const struct OamData sOam_32x8 =
     .priority = 0,
 };
 
+static const struct OamData sOam_16x16 =
+{
+    .shape = SPRITE_SHAPE(16x16),
+    .size = SPRITE_SIZE(16x16),
+    .priority = 1,
+};
+
 #define spa_frame(ptr, frame, width, height) {.data = (u8 *)ptr + (width * height * frame * 64)/2, .size = (width * height * 64)/2}
 
 #endif // GUARD_SPA_H
