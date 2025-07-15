@@ -54,19 +54,50 @@ static const union AnimCmd * const sAnims_TeddyEars[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd sAnim_EyeMad[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_EyeHappy[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_TeddyEye[] =
 {
     sAnim_Normal,
+    sAnim_EyeMad,
+    sAnim_EyeHappy,
+};
+
+static const union AnimCmd sAnim_MouthHappyOpen[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_END
 };
 
 static const union AnimCmd * const sAnims_TeddyMouth[] =
 {
     sAnim_Normal,
+    sAnim_MouthHappyOpen,
+};
+
+static const union AnimCmd sAnim_ArmScratch[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 63),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 63),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 63),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 63),
+    ANIMCMD_JUMP(0)
 };
 
 static const union AnimCmd * const sAnims_TeddyArm[] =
 {
     sAnim_Normal,
+    sAnim_ArmScratch,
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyHeadLeft[] =
@@ -102,16 +133,20 @@ static const struct SpriteFrameImage sPicTable_TeddyEars[] =
 static const struct SpriteFrameImage sPicTable_TeddyEye[] =
 {
     spa_frame(gTeddiursaEye_Gfx, 0, 2, 2),
+    spa_frame(gTeddiursaEye_Gfx, 1, 2, 2),
+    spa_frame(gTeddiursaEye_Gfx, 2, 2, 2),
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyMouth[] =
 {
     spa_frame(gTeddiursaMouth_Gfx, 0, 2, 2),
+    spa_frame(gTeddiursaMouth_Gfx, 1, 2, 2),
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyArm[] =
 {
     spa_frame(gTeddiursaArm_Gfx, 0, 8, 8),
+    spa_frame(gTeddiursaArm_Gfx, 1, 8, 8),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_TeddyHeadLeft =
@@ -234,7 +269,7 @@ void CreateTeddiursaSprites(u8 taskId)
     spriteId = CreateSprite(&sSpriteTemplate_TeddyBody, 133, 94, 10);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_TeddyTail, 140, 112, 9);
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyTail, 142, 112, 9);
     gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyFoot, 100, 104, 11);
@@ -245,10 +280,13 @@ void CreateTeddiursaSprites(u8 taskId)
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyEye, 115, 50, 8);
     gSprites[spriteId].sTaskId = taskId;
+    StartSpriteAnim(&gSprites[spriteId], 2);
 
-    spriteId = CreateSprite(&sSpriteTemplate_TeddyMouth, 107, 64, 8);
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyMouth, 106, 63, 8);
     gSprites[spriteId].sTaskId = taskId;
+    StartSpriteAnim(&gSprites[spriteId], 1);
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyArm, 109, 80, 9);
     gSprites[spriteId].sTaskId = taskId;
+    StartSpriteAnim(&gSprites[spriteId], 1);
 }
