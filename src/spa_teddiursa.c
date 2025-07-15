@@ -12,6 +12,7 @@ static const u32 gTeddiursaHeadLeft_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/
 static const u32 gTeddiursaHeadRight_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_head_right.4bpp");
 static const u32 gTeddiursaBody_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_body.4bpp");
 static const u32 gTeddiursaTail_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_tail.4bpp");
+static const u32 gTeddiursaFoot_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_foot.4bpp");
 
 static const union AnimCmd sAnim_Normal[] =
 {
@@ -39,6 +40,11 @@ static const union AnimCmd * const sAnims_TeddyTail[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd * const sAnims_TeddyFoot[] =
+{
+    sAnim_Normal,
+};
+
 static const struct SpriteFrameImage sPicTable_TeddyHeadLeft[] =
 {
     spa_frame(gTeddiursaHeadLeft_Gfx, 0, 8, 8),
@@ -57,6 +63,11 @@ static const struct SpriteFrameImage sPicTable_TeddyBody[] =
 static const struct SpriteFrameImage sPicTable_TeddyTail[] =
 {
     spa_frame(gTeddiursaTail_Gfx, 0, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_TeddyFoot[] =
+{
+    spa_frame(gTeddiursaFoot_Gfx, 0, 4, 4),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_TeddyHeadLeft =
@@ -103,6 +114,17 @@ static const struct SpriteTemplate sSpriteTemplate_TeddyTail =
     .callback = SpriteCallbackDummy
 };
 
+static const struct SpriteTemplate sSpriteTemplate_TeddyFoot =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_TEDDIURSA,
+    .oam = &sOam_32x32,
+    .anims = sAnims_TeddyFoot,
+    .images = sPicTable_TeddyFoot,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
 const struct SpritePalette sSpritePalettes_SpaTeddiursa[] =
 {
     {
@@ -115,15 +137,18 @@ void CreateTeddiursaSprites(u8 taskId)
 {
     u8 spriteId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_TeddyHeadLeft, 100, 48, 10);
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyHeadLeft, 100, 48, 9);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_TeddyHeadRight, 164, 48, 10);
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyHeadRight, 164, 48, 9);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_TeddyBody, 133, 94, 11);
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyBody, 133, 94, 10);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_TeddyTail, 140, 112, 10);
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyTail, 140, 112, 9);
+    gSprites[spriteId].sTaskId = taskId;
+
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyFoot, 100, 104, 11);
     gSprites[spriteId].sTaskId = taskId;
 }
