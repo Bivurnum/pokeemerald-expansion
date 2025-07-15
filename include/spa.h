@@ -85,104 +85,44 @@ bool32 IsBerryInFeedingZone(void);
 
 static const struct OamData sOam_64x64 =
 {
-    .y = DISPLAY_HEIGHT,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(64x64),
-    .x = 0,
-    .matrixNum = 0,
     .size = SPRITE_SIZE(64x64),
-    .tileNum = 0,
     .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
 };
 
 static const struct OamData sOam_64x32 =
 {
-    .y = DISPLAY_HEIGHT,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(64x32),
-    .x = 0,
-    .matrixNum = 0,
     .size = SPRITE_SIZE(64x32),
-    .tileNum = 0,
     .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
 };
 
 static const struct OamData sOam_32x64 =
 {
-    .y = DISPLAY_HEIGHT,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(32x64),
-    .x = 0,
-    .matrixNum = 0,
     .size = SPRITE_SIZE(32x64),
-    .tileNum = 0,
     .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
 };
 
 static const struct OamData sOam_32x32 =
 {
-    .y = DISPLAY_HEIGHT,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(32x32),
-    .x = 0,
-    .matrixNum = 0,
     .size = SPRITE_SIZE(32x32),
-    .tileNum = 0,
     .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
 };
 
 static const struct OamData sOam_16x8 =
 {
-    .y = DISPLAY_HEIGHT,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(16x8),
-    .x = 0,
-    .matrixNum = 0,
     .size = SPRITE_SIZE(16x8),
-    .tileNum = 0,
     .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
 };
 
 static const struct OamData sOam_32x8 =
 {
-    .y = DISPLAY_HEIGHT,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(32x8),
-    .x = 0,
-    .matrixNum = 0,
     .size = SPRITE_SIZE(32x8),
-    .tileNum = 0,
     .priority = 0,
-    .paletteNum = 0,
-    .affineParam = 0,
 };
 
 #define spa_frame(ptr, frame, width, height) {.data = (u8 *)ptr + (width * height * frame * 64)/2, .size = (width * height * 64)/2}
