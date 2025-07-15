@@ -1304,10 +1304,10 @@ const u8 gText_CannotSendMonToBoxHM[] = _("Cannot send that mon to the box,\nbec
 const u8 gText_SpaInstructions[] = _("{A_BUTTON} : Interact     hold{B_BUTTON} : Fast     hold{R_BUTTON} : Status");
 const u8 gText_SpaItemSelectInstructions[] = _("{DPAD_UPDOWN} : Move            {A_BUTTON} : Select            {B_BUTTON} : Exit");
 const u8 gText_SpaItemInstructions[] = _("{A_BUTTON} : Put Away     hold{B_BUTTON} : Fast     hold{R_BUTTON} : Status");
+const u8 gText_GeneralBadTouch[] = _("It doesn't like to be touched there!");
 
 const u8 gText_RattataWary[] = _("Rattata is watching warily.");
 const u8 gText_RattataAtEase[] = _("Rattata seems to be more at ease.");
-const u8 gText_RattataBadTouch[] = _("It doesn't like to be touched there!");
 const u8 gText_RattataBadPet[] = _("It doesn't trust you enough to pet it.");
 const u8 gText_RattataInterestedBerry[] = _("It seems interested in the berry.");
 const u8 gText_RattataEnjoyedSnack[] = _("Rattata enjoyed the snack!");
@@ -1317,3 +1317,4 @@ const u8 gText_TeddiursaStruggle[] = _("Teddiursa seems to be struggling.");
 const u8 gText_TeddiursaGrateful[] = _("Teddiursa appears grateful.");
 const u8 gText_TeddiursaNoInterest[] = _("Teddiursa shows no interest.");
 const u8 gText_TeddiursaPretend[] = _("It is pretending not to show interest.");
+const u8 gText_TeddiursaBadPet[] = _("It doesn't want to be touched right now.");

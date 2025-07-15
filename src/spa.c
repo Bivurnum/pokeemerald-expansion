@@ -697,15 +697,21 @@ static void DoSpaMonStatusText(bool8 isSatisfied)
     }
 }
 
-static void DoSpaMonBadTouchText(bool8 isFed)
+static void DoSpaMonBadTouchText(bool8 isSatisfied)
 {
     switch (VarGet(VAR_SPA_MON))
     {
     case SPA_RATTATA:
-        if (isFed)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataBadTouch, 0, 0, 0, NULL);
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_GeneralBadTouch, 0, 0, 0, NULL);
         else
             AddTextPrinterParameterized(0, FONT_NARROW, gText_RattataBadPet, 0, 0, 0, NULL);
+        break;
+    case SPA_TEDDIURSA:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_GeneralBadTouch, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NARROW, gText_TeddiursaBadPet, 0, 0, 0, NULL);
         break;
     }
 }
