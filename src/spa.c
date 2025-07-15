@@ -1389,6 +1389,11 @@ static const s16 FeedingZones[][2][2] =
     {
         { 135, 170 },
         { 83, 110 }
+    },
+    [SPA_TEDDIURSA] =
+    {
+        { 60, 80 },
+        { 60, 110 }
     }
 };
 
