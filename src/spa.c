@@ -900,6 +900,11 @@ static const s16 HeartPos[][3][2] =
         { 130, 40 },
         { 150, 35 },
         { 170, 45 },
+    },
+    [SPA_TEDDIURSA] = {
+        { 110, 40 },
+        { 130, 35 },
+        { 150, 45 },
     }
 };
 
@@ -1115,7 +1120,7 @@ static void AdjustToPetArea(struct Sprite *sprite, u8 area)
     if (sTask.tPetArea != area && area != SPA_PET_BAD)
     {
         sTask.tPetArea = area;
-        if (sTask.tPetArea == SPA_PET_BODY)
+        if (sTask.tPetArea == SPA_PET_BODY && VarGet(VAR_SPA_MON) == 0)
             sprite->subpriority = 11;
             sprite->oam.priority = 1;
     }
