@@ -1318,3 +1318,5 @@ const u8 gText_TeddiursaGrateful[] = _("Teddiursa appears grateful.");
 const u8 gText_TeddiursaNoInterest[] = _("Teddiursa shows no interest.");
 const u8 gText_TeddiursaPretend[] = _("It is pretending not to show interest.");
 const u8 gText_TeddiursaBadPet[] = _("It doesn't want to be touched right now.");
+const u8 gText_TeddiursaSatisfied[] = _("Teddiursa is completely satisfied!");
+const u8 gText_TeddiursaEnjoyedSnack[] = _("Teddiursa enjoyed the snack!");

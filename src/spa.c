@@ -723,6 +723,9 @@ static void DoSpaMonSatisfiedText(void)
     case SPA_RATTATA:
         AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataSatisfied, 0, 0, 0, NULL);
         break;
+    case SPA_TEDDIURSA:
+        AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaSatisfied, 0, 0, 0, NULL);
+        break;
     }
 }
 
@@ -732,6 +735,9 @@ static void DoSpaMonEnjoyedSnackText(void)
     {
     case SPA_RATTATA:
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataEnjoyedSnack, 0, 0, 0, NULL);
+        break;
+    case SPA_TEDDIURSA:
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaEnjoyedSnack, 0, 0, 0, NULL);
         break;
     }
 }
