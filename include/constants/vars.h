@@ -272,7 +272,7 @@
 #define VAR_HAND_SPRITE_ID                               0x40FC
 #define VAR_ITEMS_EXIT_SPRITE_ID                         0x40FD
 #define VAR_ITEMS_ICON_SPRITE_ID                         0x40FE
-#define VAR_BODY_COUNTER                                 0x40FF
+#define VAR_SPA_COUNTER                                  0x40FF
 
 #define VARS_END                                         0x40FF
 #define VARS_COUNT                                       (VARS_END - VARS_START + 1)

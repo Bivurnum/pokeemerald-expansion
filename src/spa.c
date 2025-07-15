@@ -526,6 +526,9 @@ static void PlaySpaMonCry(u8 mode)
     case SPA_RATTATA:
         PlayCry_ByMode(SPECIES_RATTATA, 0, mode);
         break;
+    case SPA_TEDDIURSA:
+        PlayCry_ByMode(SPECIES_TEDDIURSA, 0, mode);
+        break;
     }
 }
 
@@ -535,6 +538,9 @@ static void PlaySpaMonAttackSE(void)
     {
     case SPA_RATTATA:
         PlaySE(SE_M_BITE);
+        break;
+    case SPA_TEDDIURSA:
+        PlaySE(SE_M_SCRATCH);
         break;
     }
 }
@@ -557,12 +563,13 @@ static void SetItemFlagBits(u8 taskId)
 static const s16 AngryPos[][2] =
 {
     [SPA_RATTATA] = { 165, 38},
+    [SPA_TEDDIURSA] = { 155, 40},
 };
 
 static void Task_SpaGame(u8 taskId)
 {
     RunTextPrinters();
-    VarSet(VAR_BODY_COUNTER, VarGet(VAR_BODY_COUNTER) + 1);
+    VarSet(VAR_SPA_COUNTER, VarGet(VAR_SPA_COUNTER) + 1);
 
     if (gTasks[taskId].tShouldExit && !gPaletteFade.active)
     {
@@ -586,7 +593,7 @@ static void Task_SpaGame(u8 taskId)
 
     if (gTasks[taskId].tPetArea == SPA_PET_BAD)
     {
-        if (VarGet(VAR_BODY_COUNTER) == 61)
+        if (VarGet(VAR_SPA_COUNTER) == 61)
         {
             u8 spaMon = VarGet(VAR_SPA_MON);
 
@@ -594,30 +601,30 @@ static void Task_SpaGame(u8 taskId)
             if (gTasks[taskId].tNumBadPets == 0)
                 CreateSprite(&sSpriteTemplate_Angry, AngryPos[spaMon][0], AngryPos[spaMon][1], 0);
         }
-        else if (VarGet(VAR_BODY_COUNTER) == 181 && gTasks[taskId].tNumBadPets == 0)
+        else if (VarGet(VAR_SPA_COUNTER) == 181 && gTasks[taskId].tNumBadPets == 0)
         {
             StopPetting(&gSprites[VarGet(VAR_HAND_SPRITE_ID)]);
             gTasks[taskId].tNumBadPets++;
         }
-        else if (VarGet(VAR_BODY_COUNTER) == 117 && gTasks[taskId].tNumBadPets == 1)
+        else if (VarGet(VAR_SPA_COUNTER) == 117 && gTasks[taskId].tNumBadPets == 1)
         {
             PlaySpaMonAttackSE();
             BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 8, RGB_RED);
         }
-        else if (VarGet(VAR_BODY_COUNTER) > 117 && gTasks[taskId].tNumBadPets == 1)
+        else if (VarGet(VAR_SPA_COUNTER) > 117 && gTasks[taskId].tNumBadPets == 1)
         {
             if (!gPaletteFade.active)
             {
                 BeginNormalPaletteFade(PALETTES_ALL, 1, 8, 0, RGB_RED);
                 gTasks[taskId].tPetArea = SPA_PET_NONE;
-                VarSet(VAR_BODY_COUNTER, 0);
+                VarSet(VAR_SPA_COUNTER, 0);
                 gTasks[taskId].tNumBadPets = 2;
             }
         }
     }
     else if (gTasks[taskId].tNumBadPets == 2)
     {
-        if (VarGet(VAR_BODY_COUNTER) == 32)
+        if (VarGet(VAR_SPA_COUNTER) == 32)
         {
             BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
             gTasks[taskId].tNumBadPets = 3;
@@ -626,25 +633,37 @@ static void Task_SpaGame(u8 taskId)
     }
 }
 
-static void DoSpaMonInterestedBerryText(void)
+static void DoSpaMonBerryText(bool8 isSatisfied)
 {
     switch (VarGet(VAR_SPA_MON))
     {
     case SPA_RATTATA:
         AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataInterestedBerry, 0, 0, 0, NULL);
         break;
+    case SPA_TEDDIURSA:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaPretend, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaNoInterest, 0, 0, 0, NULL);
+        break;
     }
 }
 
-static void DoSpaMonStatusText(bool8 isFed)
+static void DoSpaMonStatusText(bool8 isSatisfied)
 {
     switch (VarGet(VAR_SPA_MON))
     {
     case SPA_RATTATA:
-        if (isFed)
+        if (isSatisfied)
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataAtEase, 0, 0, 0, NULL);
         else
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 0, 0, NULL);
+        break;
+    case SPA_TEDDIURSA:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaGrateful, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaStruggle, 0, 0, 0, NULL);
         break;
     }
 }
@@ -768,7 +787,7 @@ static void Task_SpaItemChoose(u8 taskId)
         if (JOY_NEW(STATUS_BUTTON) || (!gTasks[taskId].tStatusShowing && JOY_HELD(STATUS_BUTTON)))
         {
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            DoSpaMonInterestedBerryText();
+            DoSpaMonBerryText(gTasks[taskId].tIsSatisfied);
 
             gTasks[taskId].tStatusShowing = TRUE;
         }
@@ -868,7 +887,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
     if (JOY_NEW(STATUS_BUTTON) || (!sTask.tStatusShowing && JOY_HELD(STATUS_BUTTON)))
     {
         FillWindowPixelBuffer(0, PIXEL_FILL(1));
-        DoSpaMonStatusText(sTask.tIsFed);
+        DoSpaMonStatusText(sTask.tIsSatisfied);
 
         sTask.tStatusShowing = TRUE;
     }
@@ -896,10 +915,10 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             if (petArea == SPA_PET_BAD)
             {
                 sTask.tPetArea = SPA_PET_BAD;
-                VarSet(VAR_BODY_COUNTER, 0);
+                VarSet(VAR_SPA_COUNTER, 0);
                 sprite->invisible = TRUE;
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
-                DoSpaMonBadTouchText(sTask.tIsFed);
+                DoSpaMonBadTouchText(sTask.tIsSatisfied);
                 return;
             }
             if (IsHandOnItemsIcon(sprite))
@@ -926,7 +945,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
                 if (petArea == SPA_PET_BAD)
                 {
                     sTask.tPetArea = SPA_PET_BAD;
-                    VarSet(VAR_BODY_COUNTER, 0);
+                    VarSet(VAR_SPA_COUNTER, 0);
                     sprite->invisible = TRUE;
                     return;
                 }
@@ -985,7 +1004,7 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             sTask.tPetTimer = 0;
             if (!sTask.tPetActive)
             {
-                VarSet(VAR_BODY_COUNTER, 0);
+                VarSet(VAR_SPA_COUNTER, 0);
                 sTask.tPetActive = TRUE;
             }
         }
@@ -1004,7 +1023,7 @@ static void SpriteCB_Music(struct Sprite *sprite)
     else if (sprite->sCounter == 120)
     {
         sTask.tBerryBites = 0;
-        VarSet(VAR_BODY_COUNTER, 0);
+        VarSet(VAR_SPA_COUNTER, 0);
         FillWindowPixelBuffer(0, PIXEL_FILL(1));
         AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
         DestroySprite(sprite);
@@ -1037,7 +1056,7 @@ static u8 GetCurrentPettingArea(struct Sprite *sprite)
         {
             if (sprite->y > PettingZones[spaMon][i][2] && sprite->y < PettingZones[spaMon][i][3])
             {
-                if (!sTask.tIsFed)
+                if (!sTask.tIsSatisfied)
                     return SPA_PET_BAD;
 
                 return PettingZones[spaMon][i][4];
@@ -1064,7 +1083,7 @@ static void StopPetting(struct Sprite *sprite)
     if (sTask.tPetArea != SPA_PET_NONE)
     {
         sTask.tPetArea = SPA_PET_NONE;
-        VarSet(VAR_BODY_COUNTER, 0);
+        VarSet(VAR_SPA_COUNTER, 0);
         sprite->subpriority = 5;
         sprite->oam.priority = 0;
         sTask.tPetActive = FALSE;
@@ -1233,9 +1252,9 @@ static void SpriteCB_Berry(struct Sprite *sprite)
             {
                 u8 spriteId = CreateSprite(&sSpriteTemplate_Music, 190, 20, 0);
                 gSprites[spriteId].sTaskId = sprite->sTaskId;
-                VarSet(VAR_BODY_COUNTER, 0);
+                VarSet(VAR_SPA_COUNTER, 0);
                 sTask.tItemMenuState = ITEM_STATE_END;
-                sTask.tIsFed = TRUE;
+                sTask.tIsSatisfied = TRUE;
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
                 DoSpaMonEnjoyedSnackText();
                 DestroySprite(sprite);

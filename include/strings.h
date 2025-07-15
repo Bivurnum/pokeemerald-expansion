@@ -2429,6 +2429,7 @@ extern const u8 gText_CannotSendMonToBoxHM[];
 extern const u8 gText_SpaInstructions[];
 extern const u8 gText_SpaItemSelectInstructions[];
 extern const u8 gText_SpaItemInstructions[];
+
 extern const u8 gText_RattataWary[];
 extern const u8 gText_RattataAtEase[];
 extern const u8 gText_RattataBadTouch[];
@@ -2436,5 +2437,10 @@ extern const u8 gText_RattataBadPet[];
 extern const u8 gText_RattataInterestedBerry[];
 extern const u8 gText_RattataEnjoyedSnack[];
 extern const u8 gText_RattataSatisfied[];
+
+extern const u8 gText_TeddiursaStruggle[];
+extern const u8 gText_TeddiursaGrateful[];
+extern const u8 gText_TeddiursaNoInterest[];
+extern const u8 gText_TeddiursaPretend[];
 
 #endif // GUARD_STRINGS_H

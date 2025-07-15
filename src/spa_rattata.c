@@ -460,9 +460,9 @@ static void SpriteCB_RatBodyLeft(struct Sprite *sprite)
 {
     if (sTask.tPetArea == SPA_PET_BAD)
     {
-        if (VarGet(VAR_BODY_COUNTER) == 1)
+        if (VarGet(VAR_SPA_COUNTER) == 1)
             StartSpriteAnim(sprite, 2);
-        else if (VarGet(VAR_BODY_COUNTER) == 60)
+        else if (VarGet(VAR_SPA_COUNTER) == 60)
             StartSpriteAnim(sprite, 1);
     }
 }
@@ -471,22 +471,22 @@ static void SpriteCB_RatBodyRight(struct Sprite *sprite)
 {
     if (sTask.tPetArea == SPA_PET_BAD)
     {
-        if (VarGet(VAR_BODY_COUNTER) == 1)
+        if (VarGet(VAR_SPA_COUNTER) == 1)
             StartSpriteAnim(sprite, 0);
-        else if (VarGet(VAR_BODY_COUNTER) == 60)
+        else if (VarGet(VAR_SPA_COUNTER) == 60)
             StartSpriteAnim(sprite, 1);
     }
 }
 
 static void SpriteCB_RatTail(struct Sprite *sprite)
 {
-    u16 counter = VarGet(VAR_BODY_COUNTER);
+    u16 counter = VarGet(VAR_SPA_COUNTER);
 
     if (sTask.tPetArea == SPA_PET_BAD)
     {
-        if (VarGet(VAR_BODY_COUNTER) == 1)
+        if (VarGet(VAR_SPA_COUNTER) == 1)
             sprite->invisible = TRUE;
-        else if (VarGet(VAR_BODY_COUNTER) == 60)
+        else if (VarGet(VAR_SPA_COUNTER) == 60)
             sprite->invisible = FALSE;
     }
     else if (sTask.tPetArea != SPA_PET_BODY)
@@ -507,7 +507,7 @@ static void SpriteCB_RatTail(struct Sprite *sprite)
 
 static void SpriteCB_RatEarLeft(struct Sprite *sprite)
 {
-    u16 counter = VarGet(VAR_BODY_COUNTER);
+    u16 counter = VarGet(VAR_SPA_COUNTER);
 
     if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
     {
@@ -562,7 +562,7 @@ static void SpriteCB_RatEarLeft(struct Sprite *sprite)
 
 static void SpriteCB_RatEarRight(struct Sprite *sprite)
 {
-    u16 counter = VarGet(VAR_BODY_COUNTER);
+    u16 counter = VarGet(VAR_SPA_COUNTER);
 
     if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
     {
@@ -617,7 +617,7 @@ static void SpriteCB_RatEarRight(struct Sprite *sprite)
 
 static void SpriteCB_RatMouth(struct Sprite *sprite)
 {
-    u16 counter = VarGet(VAR_BODY_COUNTER);
+    u16 counter = VarGet(VAR_SPA_COUNTER);
 
     if (sTask.tPetScore > 0 && sTask.tPetScore < SPA_PET_SCORE_TARGET)
         sTask.tPetScore--;
@@ -675,7 +675,7 @@ static void SpriteCB_RatMouth(struct Sprite *sprite)
 
 static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
 {
-    u16 counter = VarGet(VAR_BODY_COUNTER);
+    u16 counter = VarGet(VAR_SPA_COUNTER);
 
     if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
     {
@@ -735,7 +735,7 @@ static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
 
 static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
 {
-    u16 counter = VarGet(VAR_BODY_COUNTER);
+    u16 counter = VarGet(VAR_SPA_COUNTER);
 
     if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
     {
@@ -795,7 +795,7 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
 
 static void SpriteCB_RatEyes(struct Sprite *sprite)
 {
-    u16 counter = VarGet(VAR_BODY_COUNTER);
+    u16 counter = VarGet(VAR_SPA_COUNTER);
 
     if (sTask.tPetActive)
     {

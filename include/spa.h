@@ -11,7 +11,7 @@
 #define tSelectedItem   data[6]
 #define tBerryBites     data[7]
 #define tIsBiting       data[8]
-#define tIsFed          data[9]
+#define tIsSatisfied    data[9]
 #define tNumBadPets     data[10]
 #define tPetScore       data[11]
 #define tStatusShowing  data[12]
