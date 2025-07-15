@@ -199,6 +199,6 @@ void CreateTeddiursaSprites(u8 taskId)
     spriteId = CreateSprite(&sSpriteTemplate_TeddyEars, 130, 27, 8);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_TeddyEye, 115, 49, 8);
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyEye, 115, 50, 8);
     gSprites[spriteId].sTaskId = taskId;
 }
