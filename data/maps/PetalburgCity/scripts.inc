@@ -226,7 +226,7 @@ PetalburgCity_EventScript_GymSign::
 
 PetalburgCity_EventScript_CitySign::
     lock
-    rattataspa
+    teddiursaspa
 	end
 
 PetalburgCity_EventScript_Gentleman::

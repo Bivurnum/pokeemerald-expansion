@@ -2651,3 +2651,9 @@
     setvar VAR_SPA_MON 0
     startspa
     .endm
+
+    @ Start teddiursa spa game.
+    .macro teddiursaspa
+    setvar VAR_SPA_MON 1
+    startspa
+    .endm

@@ -51,7 +51,8 @@
 
 enum SpaMons
 {
-    SPA_RATTATA
+    SPA_RATTATA,
+    SPA_TEDDIURSA
 };
 
 enum HandStates

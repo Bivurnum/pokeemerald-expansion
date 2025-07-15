@@ -12,6 +12,7 @@
 #include "scanline_effect.h"
 #include "sound.h"
 #include "spa_rattata.h"
+#include "spa_teddiursa.h"
 #include "strings.h"
 #include "task.h"
 #include "text.h"
@@ -452,6 +453,9 @@ static void LoadMonSpritePalettes(void)
     case SPA_RATTATA:
         LoadSpritePalettes(sSpritePalettes_SpaRattata);
         break;
+    case SPA_TEDDIURSA:
+        LoadSpritePalettes(sSpritePalettes_SpaTeddiursa);
+        break;
     }
 }
 
@@ -481,6 +485,9 @@ static void CreateSpaMonSprites(u8 taskId)
     {
     case SPA_RATTATA:
         CreateRattataSprites(taskId);
+        break;
+    case SPA_TEDDIURSA:
+        CreateTeddiursaSprites(taskId);
         break;
     }
 }
