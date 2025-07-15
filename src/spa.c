@@ -47,6 +47,7 @@ static void SpriteCB_Selector(struct Sprite *sprite);
 static void SpriteCB_Angry(struct Sprite *sprite);
 static void SpriteCB_Heart(struct Sprite *sprite);
 static void SpriteCB_Berry(struct Sprite *sprite);
+static void SpriteCB_Claw(struct Sprite *sprite);
 static void Task_ScriptStartSpa(u8 taskId);
 
 static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.lz");
@@ -67,6 +68,9 @@ static const u32 gHeart_Gfx[] = INCBIN_U32("graphics/_spa/heart.4bpp");
 
 static const u16 gBerry_Pal[] = INCBIN_U16("graphics/_spa/berry.gbapal");
 static const u32 gBerry_Gfx[] = INCBIN_U32("graphics/_spa/berry.4bpp");
+
+static const u16 gClaw_Pal[] = INCBIN_U16("graphics/_spa/claw.gbapal");
+static const u32 gClaw_Gfx[] = INCBIN_U32("graphics/_spa/claw.4bpp");
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -205,6 +209,11 @@ static const union AnimCmd * const sAnims_Berry[] =
     sAnim_Berry2Bites,
 };
 
+static const union AnimCmd * const sAnims_Claw[] =
+{
+    sAnim_Normal,
+};
+
 static const struct SpriteFrameImage sPicTable_Hand[] =
 {
     spa_frame(gHand_Gfx, 0, 4, 4),
@@ -255,6 +264,11 @@ static const struct SpriteFrameImage sPicTable_Berry[] =
     spa_frame(gBerry_Gfx, 0, 4, 4),
     spa_frame(gBerry_Gfx, 1, 4, 4),
     spa_frame(gBerry_Gfx, 2, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Claw[] =
+{
+    spa_frame(gClaw_Gfx, 0, 4, 4),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Hand =
@@ -356,6 +370,17 @@ static const struct SpriteTemplate sSpriteTemplate_Berry =
     .callback = SpriteCB_Berry
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Claw =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_CLAW,
+    .oam = &sOam_32x32,
+    .anims = sAnims_Claw,
+    .images = sPicTable_Claw,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_Claw
+};
+
 static const struct SpritePalette sSpritePalettes_Spa[] =
 {
     {
@@ -369,6 +394,10 @@ static const struct SpritePalette sSpritePalettes_Spa[] =
     {
         .data = gBerry_Pal,
         .tag = TAG_BERRY
+    },
+    {
+        .data = gClaw_Pal,
+        .tag = TAG_CLAW
     },
     {NULL},
 };
@@ -701,12 +730,12 @@ static void DoSpaMonEnjoyedSnackText(void)
     }
 }
 
-static const u16 SpaItemsY[][2] =
+static const u16 SpaItemsY[][3] =
 {
-    { 48, SPA_ITEM_BIT_BERRY }, // Berry.
-    { 80, SPA_ITEM_BIT_CLAW }, // Claw.
-    { 112, SPA_ITEM_BIT_HONEY }, // Honey.
-    { 144, SPA_ITEM_BIT_ORB }, // Orb.
+    { 48, SPA_ITEM_BIT_BERRY, VAR_BERRY_SPRITE_ID }, // Berry.
+    { 65, SPA_ITEM_BIT_CLAW, VAR_CLAW_SPRITE_ID }, // Claw.
+    { 112, SPA_ITEM_BIT_HONEY, VAR_HONEY_SPRITE_ID }, // Honey.
+    { 144, SPA_ITEM_BIT_ORB, VAR_ORB_SPRITE_ID }, // Orb.
 };
 
 static void Task_SpaItemChoose(u8 taskId)
@@ -732,6 +761,14 @@ static void Task_SpaItemChoose(u8 taskId)
             gSprites[spriteId].oam.priority = 0;
             VarSet(VAR_BERRY_SPRITE_ID, spriteId);
             StartSpriteAnim(&gSprites[spriteId], gTasks[taskId].tBerryBites);
+        }
+
+        if (FlagGet(FLAG_SPA_OBTAINED_CLAW))
+        {
+            spriteId = CreateSprite(&sSpriteTemplate_Claw, (ITEM_START_X), SpaItemsY[1][0], 0);
+            gSprites[spriteId].sTaskId = taskId;
+            gSprites[spriteId].oam.priority = 0;
+            VarSet(VAR_CLAW_SPRITE_ID, spriteId);
         }
 
         PlaySE(SE_BALL_TRAY_ENTER);
@@ -809,6 +846,7 @@ static void Task_SpaItemChoose(u8 taskId)
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
             AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
         }
+        gTasks[taskId].tSelectedItem = 0;
         gTasks[taskId].tItemActive = FALSE;
         gTasks[taskId].tItemMenuState = ITEM_STATE_START;
         gTasks[taskId].func = Task_SpaGame;
@@ -1149,6 +1187,8 @@ static void SpriteCB_Selector(struct Sprite *sprite)
                 if (sTask.tItemFlagBits & SpaItemsY[newPosition][1])
                 {
                     sprite->y = SpaItemsY[newPosition][0];
+                    gSprites[VarGet(SpaItemsY[newPosition][2])].x += 14;
+                    gSprites[VarGet(SpaItemsY[sTask.tSelectedItem][2])].x -= 14;
                     sTask.tSelectedItem = newPosition;
                     break;
                 }
@@ -1165,6 +1205,8 @@ static void SpriteCB_Selector(struct Sprite *sprite)
                 if (sTask.tItemFlagBits & SpaItemsY[newPosition][1])
                 {
                     sprite->y = SpaItemsY[newPosition][0];
+                    gSprites[VarGet(SpaItemsY[newPosition][2])].x += 14;
+                    gSprites[VarGet(SpaItemsY[sTask.tSelectedItem][2])].x -= 14;
                     sTask.tSelectedItem = newPosition;
                     break;
                 }
@@ -1236,7 +1278,11 @@ static void SpriteCB_Berry(struct Sprite *sprite)
     }
     else if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD)
     {
-        if (sTask.tSelectedItem != 0 || JOY_NEW(INTERACT_BUTTON))
+        if (sTask.tSelectedItem != 0)
+        {
+            DestroySprite(sprite);
+        }
+        if (JOY_NEW(INTERACT_BUTTON))
         {
             sTask.tItemMenuState = ITEM_STATE_END;
             DestroySprite(sprite);
@@ -1262,6 +1308,45 @@ static void SpriteCB_Berry(struct Sprite *sprite)
 
             sprite->sBerryBites = sTask.tBerryBites;
             StartSpriteAnim(sprite, sprite->sBerryBites);
+        }
+        
+        MoveSpriteFromInput(sprite);
+    }
+    else if (sTask.tItemMenuState == ITEM_STATE_NO_SELECTION)
+    {
+        sprite->x -= 2;
+    }
+    else if (sTask.tItemMenuState == ITEM_STATE_END)
+    {
+        DestroySprite(sprite);
+    }
+}
+
+static void SpriteCB_Claw(struct Sprite *sprite)
+{
+    if (sTask.tItemMenuState == ITEM_STATE_TRAY_OUT && sprite->x < ITEM_END_X)
+    {
+        sprite->x += 2;
+    }
+    else if (sTask.tItemMenuState == ITEM_STATE_ITEM_SELECTED && sTask.tSelectedItem != 1)
+    {
+        sprite->x -= 2;
+    }
+    else if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD)
+    {
+        if (sTask.tSelectedItem != 1)
+        {
+            DestroySprite(sprite);
+        }
+        if (JOY_NEW(INTERACT_BUTTON))
+        {
+            sTask.tItemMenuState = ITEM_STATE_END;
+            DestroySprite(sprite);
+        }
+        else if (JOY_NEW(L_BUTTON))
+        {
+            sTask.tItemMenuState = ITEM_STATE_START;
+            DestroySprite(sprite);
         }
         
         MoveSpriteFromInput(sprite);
