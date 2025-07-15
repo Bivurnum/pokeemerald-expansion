@@ -66,11 +66,18 @@ static const union AnimCmd sAnim_EyeHappy[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_EyeShutBad[] =
+{
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_TeddyEye[] =
 {
     sAnim_Normal,
     sAnim_EyeMad,
     sAnim_EyeHappy,
+    sAnim_EyeShutBad,
 };
 
 static const union AnimCmd sAnim_MouthHappyOpen[] =
@@ -88,8 +95,6 @@ static const union AnimCmd * const sAnims_TeddyMouth[] =
 static const union AnimCmd sAnim_ArmScratch[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 63),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 63),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 63),
     ANIMCMD_FRAME(.imageValue = 1, .duration = 63),
     ANIMCMD_JUMP(0)
 };
@@ -135,6 +140,7 @@ static const struct SpriteFrameImage sPicTable_TeddyEye[] =
     spa_frame(gTeddiursaEye_Gfx, 0, 2, 2),
     spa_frame(gTeddiursaEye_Gfx, 1, 2, 2),
     spa_frame(gTeddiursaEye_Gfx, 2, 2, 2),
+    spa_frame(gTeddiursaEye_Gfx, 3, 2, 2),
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyMouth[] =
@@ -280,11 +286,10 @@ void CreateTeddiursaSprites(u8 taskId)
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyEye, 115, 50, 8);
     gSprites[spriteId].sTaskId = taskId;
-    StartSpriteAnim(&gSprites[spriteId], 2);
+    StartSpriteAnim(&gSprites[spriteId], 3);
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyMouth, 106, 63, 8);
     gSprites[spriteId].sTaskId = taskId;
-    StartSpriteAnim(&gSprites[spriteId], 1);
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyArm, 109, 80, 9);
     gSprites[spriteId].sTaskId = taskId;
