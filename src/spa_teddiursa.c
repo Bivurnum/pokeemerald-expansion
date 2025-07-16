@@ -86,17 +86,28 @@ static const union AnimCmd sAnim_MouthHappyOpen[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_MouthO[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_TeddyMouth[] =
 {
     sAnim_Normal,
     sAnim_MouthHappyOpen,
+    sAnim_MouthO,
 };
 
 static const union AnimCmd sAnim_ArmScratch[] =
 {
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 63),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 63),
-    ANIMCMD_JUMP(0)
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 12),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 12),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 16),
+    ANIMCMD_JUMP(2)
 };
 
 static const union AnimCmd * const sAnims_TeddyArm[] =
@@ -147,12 +158,16 @@ static const struct SpriteFrameImage sPicTable_TeddyMouth[] =
 {
     spa_frame(gTeddiursaMouth_Gfx, 0, 2, 2),
     spa_frame(gTeddiursaMouth_Gfx, 1, 2, 2),
+    spa_frame(gTeddiursaMouth_Gfx, 2, 2, 2),
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyArm[] =
 {
     spa_frame(gTeddiursaArm_Gfx, 0, 8, 8),
     spa_frame(gTeddiursaArm_Gfx, 1, 8, 8),
+    spa_frame(gTeddiursaArm_Gfx, 2, 8, 8),
+    spa_frame(gTeddiursaArm_Gfx, 3, 8, 8),
+    spa_frame(gTeddiursaArm_Gfx, 4, 8, 8),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_TeddyHeadLeft =
@@ -290,8 +305,9 @@ void CreateTeddiursaSprites(u8 taskId)
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyMouth, 106, 63, 8);
     gSprites[spriteId].sTaskId = taskId;
+    StartSpriteAnim(&gSprites[spriteId], 2);
 
-    spriteId = CreateSprite(&sSpriteTemplate_TeddyArm, 109, 80, 9);
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyArm, 109, 81, 9);
     gSprites[spriteId].sTaskId = taskId;
     StartSpriteAnim(&gSprites[spriteId], 1);
 }
