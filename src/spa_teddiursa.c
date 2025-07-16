@@ -17,6 +17,7 @@ static const u32 gTeddiursaEars_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/tedd
 static const u32 gTeddiursaEye_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_eye.4bpp");
 static const u32 gTeddiursaMouth_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_mouth.4bpp");
 static const u32 gTeddiursaArm_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_arm.4bpp");
+static const u32 gTeddiursaItch_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_itch.4bpp");
 
 static const union AnimCmd sAnim_Normal[] =
 {
@@ -116,6 +117,11 @@ static const union AnimCmd * const sAnims_TeddyArm[] =
     sAnim_ArmScratch,
 };
 
+static const union AnimCmd * const sAnims_TeddyItch[] =
+{
+    sAnim_Normal,
+};
+
 static const struct SpriteFrameImage sPicTable_TeddyHeadLeft[] =
 {
     spa_frame(gTeddiursaHeadLeft_Gfx, 0, 8, 8),
@@ -168,6 +174,11 @@ static const struct SpriteFrameImage sPicTable_TeddyArm[] =
     spa_frame(gTeddiursaArm_Gfx, 2, 8, 8),
     spa_frame(gTeddiursaArm_Gfx, 3, 8, 8),
     spa_frame(gTeddiursaArm_Gfx, 4, 8, 8),
+};
+
+static const struct SpriteFrameImage sPicTable_TeddyItch[] =
+{
+    spa_frame(gTeddiursaItch_Gfx, 0, 4, 4),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_TeddyHeadLeft =
@@ -269,6 +280,17 @@ static const struct SpriteTemplate sSpriteTemplate_TeddyArm =
     .callback = SpriteCallbackDummy
 };
 
+static const struct SpriteTemplate sSpriteTemplate_TeddyItch =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_TEDDIURSA,
+    .oam = &sOam_32x32,
+    .anims = sAnims_TeddyItch,
+    .images = sPicTable_TeddyItch,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
 const struct SpritePalette sSpritePalettes_SpaTeddiursa[] =
 {
     {
@@ -307,7 +329,10 @@ void CreateTeddiursaSprites(u8 taskId)
     gSprites[spriteId].sTaskId = taskId;
     StartSpriteAnim(&gSprites[spriteId], 2);
 
-    spriteId = CreateSprite(&sSpriteTemplate_TeddyArm, 109, 81, 9);
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyArm, 109, 81, 8);
     gSprites[spriteId].sTaskId = taskId;
     StartSpriteAnim(&gSprites[spriteId], 1);
+
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyItch, 141, 92, 9);
+    gSprites[spriteId].sTaskId = taskId;
 }

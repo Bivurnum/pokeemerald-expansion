@@ -745,9 +745,9 @@ static void DoSpaMonEnjoyedSnackText(void)
 static const u16 SpaItemsY[][3] =
 {
     { 48, SPA_ITEM_BIT_BERRY, VAR_BERRY_SPRITE_ID }, // Berry.
-    { 65, SPA_ITEM_BIT_CLAW, VAR_CLAW_SPRITE_ID }, // Claw.
-    { 112, SPA_ITEM_BIT_HONEY, VAR_HONEY_SPRITE_ID }, // Honey.
-    { 144, SPA_ITEM_BIT_ORB, VAR_ORB_SPRITE_ID }, // Orb.
+    { 69, SPA_ITEM_BIT_CLAW, VAR_CLAW_SPRITE_ID }, // Claw.
+    { 90, SPA_ITEM_BIT_HONEY, VAR_HONEY_SPRITE_ID }, // Honey.
+    { 112, SPA_ITEM_BIT_ORB, VAR_ORB_SPRITE_ID }, // Orb.
 };
 
 static void Task_SpaItemChoose(u8 taskId)
