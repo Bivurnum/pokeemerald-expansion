@@ -1313,7 +1313,7 @@ const u8 gText_RattataInterestedBerry[] = _("It seems interested in the berry.")
 const u8 gText_RattataEnjoyedSnack[] = _("Rattata enjoyed the snack!");
 const u8 gText_RattataSatisfied[] = _("Rattata is completely satisfied!");
 
-const u8 gText_TeddiursaStruggle[] = _("Teddiursa seems to be struggling.");
+const u8 gText_TeddiursaItchy[] = _("Teddiursa looks itchy!");
 const u8 gText_TeddiursaGrateful[] = _("Teddiursa appears grateful.");
 const u8 gText_TeddiursaNoInterest[] = _("Teddiursa shows no interest.");
 const u8 gText_TeddiursaPretend[] = _("It is pretending not to show interest.");

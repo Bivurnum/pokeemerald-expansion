@@ -692,7 +692,7 @@ static void DoSpaMonStatusText(bool8 isSatisfied)
         if (isSatisfied)
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaGrateful, 0, 0, 0, NULL);
         else
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaStruggle, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaItchy, 0, 0, 0, NULL);
         break;
     }
 }

@@ -2438,7 +2438,7 @@ extern const u8 gText_RattataInterestedBerry[];
 extern const u8 gText_RattataEnjoyedSnack[];
 extern const u8 gText_RattataSatisfied[];
 
-extern const u8 gText_TeddiursaStruggle[];
+extern const u8 gText_TeddiursaItchy[];
 extern const u8 gText_TeddiursaGrateful[];
 extern const u8 gText_TeddiursaNoInterest[];
 extern const u8 gText_TeddiursaPretend[];
