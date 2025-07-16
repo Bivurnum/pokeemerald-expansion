@@ -1,11 +1,19 @@
 #include "global.h"
 #include "spa_teddiursa.h"
 #include "event_data.h"
+#include "gpu_regs.h"
+#include "main.h"
+#include "palette.h"
 #include "random.h"
 #include "sound.h"
 #include "spa.h"
 #include "task.h"
+#include "trig.h"
+#include "constants/rgb.h"
 #include "constants/songs.h"
+
+static void SpriteCB_TeddyItch(struct Sprite *sprite);
+static bool32 IsClawInItchArea(void);
 
 static const u16 gTeddiursa_Pal[] = INCBIN_U16("graphics/_spa/teddiursa/teddiursa_head_left.gbapal");
 static const u32 gTeddiursaHeadLeft_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_head_left.4bpp");
@@ -17,6 +25,8 @@ static const u32 gTeddiursaEars_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/tedd
 static const u32 gTeddiursaEye_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_eye.4bpp");
 static const u32 gTeddiursaMouth_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_mouth.4bpp");
 static const u32 gTeddiursaArm_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_arm.4bpp");
+
+static const u16 gTeddiursaItch_Pal[] = INCBIN_U16("graphics/_spa/teddiursa/teddiursa_itch.gbapal");
 static const u32 gTeddiursaItch_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_itch.4bpp");
 
 static const union AnimCmd sAnim_Normal[] =
@@ -283,12 +293,12 @@ static const struct SpriteTemplate sSpriteTemplate_TeddyArm =
 static const struct SpriteTemplate sSpriteTemplate_TeddyItch =
 {
     .tileTag = TAG_NONE,
-    .paletteTag = TAG_TEDDIURSA,
+    .paletteTag = TAG_ITCH,
     .oam = &sOam_32x32,
     .anims = sAnims_TeddyItch,
     .images = sPicTable_TeddyItch,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
+    .callback = SpriteCB_TeddyItch
 };
 
 const struct SpritePalette sSpritePalettes_SpaTeddiursa[] =
@@ -297,6 +307,11 @@ const struct SpritePalette sSpritePalettes_SpaTeddiursa[] =
         .data = gTeddiursa_Pal,
         .tag = TAG_TEDDIURSA
     },
+    {
+        .data = gTeddiursaItch_Pal,
+        .tag = TAG_ITCH
+    },
+    {NULL},
 };
 
 void CreateTeddiursaSprites(u8 taskId)
@@ -335,4 +350,75 @@ void CreateTeddiursaSprites(u8 taskId)
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyItch, 141, 92, 9);
     gSprites[spriteId].sTaskId = taskId;
+}
+
+struct FadeColors
+{
+    u16 color1;
+    u16 color2;
+    u8 colorIndex;
+};
+
+static const struct FadeColors sFadeColors[] = {
+/*
+    {
+        .color1 = RGB2GBA(, , ),
+        .color2 = RGB2GBA(, , ),
+        .colorIndex = 
+    }
+*/
+    {
+        .color1 = RGB2GBA(230, 148, 92),
+        .color2 = RGB2GBA(200, 130, 82),
+        .colorIndex = 1
+    },
+    {
+        .color1 = RGB2GBA(230, 148, 92),
+        .color2 = RGB2GBA(206, 132, 84),
+        .colorIndex = 2
+    },
+    {
+        .color1 = RGB2GBA(230, 148, 92),
+        .color2 = RGB2GBA(214, 138, 86),
+        .colorIndex = 3
+    }
+};
+
+static void SpriteCB_TeddyItch(struct Sprite *sprite)
+{
+    if (sTask.tItemActive && sTask.tSelectedItem == 1)
+    {
+        if (IsClawInItchArea())
+        {
+            VarSet(VAR_SPA_COUNTER, 0);
+            if (JOY_HELD(DPAD_ANY))
+            {
+                sTask.tSatisfScore++;
+                if (sTask.tSatisfScore % 15 == 0)
+                {
+                    if (sprite->sItchFadeCount < 16)
+                        sprite->sItchFadeCount++;
+                        
+                    BlendPalettes(1 << (IndexOfSpritePaletteTag(TAG_ITCH) + 16), sprite->sItchFadeCount, RGB2GBA(230, 148, 92));
+                }
+            }
+        }
+        else
+        {
+
+        }
+    }
+}
+
+static bool32 IsClawInItchArea(void)
+{
+    u8 clawSprite = VarGet(VAR_CLAW_SPRITE_ID);
+
+    if (gSprites[clawSprite].x > 139 && gSprites[clawSprite].x < 161 
+     && gSprites[clawSprite].y > 90  && gSprites[clawSprite].y < 107 )
+    {
+        return TRUE;
+    }
+
+    return FALSE;
 }

@@ -416,6 +416,7 @@ const struct SpritePalette sSpritePalettes_SpaRattata[] =
         .data = gRattata_Pal,
         .tag = TAG_RATTATA
     },
+    {NULL},
 };
 
 void CreateRattataSprites(u8 taskId)

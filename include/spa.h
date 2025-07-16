@@ -15,6 +15,7 @@
 #define tNumBadPets     data[10]
 #define tPetScore       data[11]
 #define tStatusShowing  data[12]
+#define tSatisfScore    data[13]
 #define tItemFlagBits   data[14]
 #define tShouldExit     data[15]
 
@@ -22,6 +23,7 @@
 #define sTaskId         data[0]
 #define sCounter        data[1]
 #define sInterval       data[2]
+#define sItchFadeCount  data[3]
 #define sHeartOffset    data[3]
 #define sHeartId        data[4]
 #define sFadeStarted    data[5]
