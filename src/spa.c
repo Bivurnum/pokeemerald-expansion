@@ -664,6 +664,7 @@ static void Task_SpaGame(u8 taskId)
 
 static void DoSpaMonBerryText(bool8 isSatisfied)
 {
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
     switch (VarGet(VAR_SPA_MON))
     {
     case SPA_RATTATA:
@@ -680,6 +681,7 @@ static void DoSpaMonBerryText(bool8 isSatisfied)
 
 static void DoSpaMonStatusText(bool8 isSatisfied)
 {
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
     switch (VarGet(VAR_SPA_MON))
     {
     case SPA_RATTATA:
@@ -699,6 +701,7 @@ static void DoSpaMonStatusText(bool8 isSatisfied)
 
 static void DoSpaMonBadTouchText(bool8 isSatisfied)
 {
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
     switch (VarGet(VAR_SPA_MON))
     {
     case SPA_RATTATA:
@@ -718,6 +721,7 @@ static void DoSpaMonBadTouchText(bool8 isSatisfied)
 
 static void DoSpaMonSatisfiedText(void)
 {
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
     switch (VarGet(VAR_SPA_MON))
     {
     case SPA_RATTATA:
@@ -731,6 +735,7 @@ static void DoSpaMonSatisfiedText(void)
 
 static void DoSpaMonEnjoyedSnackText(void)
 {
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
     switch (VarGet(VAR_SPA_MON))
     {
     case SPA_RATTATA:
@@ -740,6 +745,12 @@ static void DoSpaMonEnjoyedSnackText(void)
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaEnjoyedSnack, 0, 0, 0, NULL);
         break;
     }
+}
+
+static void DoSpaMonFeelsBetterText(void)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    AddTextPrinterParameterized(0, FONT_NORMAL, gText_FeelsBetter, 0, 0, 0, NULL);
 }
 
 static const u16 SpaItemsY[][3] =
@@ -835,7 +846,6 @@ static void Task_SpaItemChoose(u8 taskId)
 
         if (JOY_NEW(STATUS_BUTTON) || (!gTasks[taskId].tStatusShowing && JOY_HELD(STATUS_BUTTON)))
         {
-            FillWindowPixelBuffer(0, PIXEL_FILL(1));
             DoSpaMonBerryText(gTasks[taskId].tIsSatisfied);
 
             gTasks[taskId].tStatusShowing = TRUE;
@@ -853,11 +863,6 @@ static void Task_SpaItemChoose(u8 taskId)
         }
         break;
     case ITEM_STATE_END:
-        if (gTasks[taskId].tBerryBites != 3)
-        {
-            FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
-        }
         gTasks[taskId].tSelectedItem = 0;
         gTasks[taskId].tItemActive = FALSE;
         gTasks[taskId].tItemMenuState = ITEM_STATE_START;
@@ -933,7 +938,11 @@ static void SpriteCB_Hand(struct Sprite *sprite)
          && sTask.tBerryBites != 3
          && sTask.tPetScore < SPA_PET_SCORE_TARGET
          && !(sTask.tIsSatisfied && sTask.tSatisfScore != 0))
+        {
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
             sprite->invisible = FALSE;
+        }
 
         return;
     }
@@ -947,7 +956,6 @@ static void SpriteCB_Hand(struct Sprite *sprite)
 
     if (JOY_NEW(STATUS_BUTTON) || (!sTask.tStatusShowing && JOY_HELD(STATUS_BUTTON)))
     {
-        FillWindowPixelBuffer(0, PIXEL_FILL(1));
         DoSpaMonStatusText(sTask.tIsSatisfied);
 
         sTask.tStatusShowing = TRUE;
@@ -978,7 +986,6 @@ static void SpriteCB_Hand(struct Sprite *sprite)
                 sTask.tPetArea = SPA_PET_BAD;
                 VarSet(VAR_SPA_COUNTER, 0);
                 sprite->invisible = TRUE;
-                FillWindowPixelBuffer(0, PIXEL_FILL(1));
                 DoSpaMonBadTouchText(sTask.tIsSatisfied);
                 return;
             }
@@ -1050,7 +1057,6 @@ static void SpriteCB_Hand(struct Sprite *sprite)
             }
 
             PlaySpaMonCry(CRY_MODE_GROWL_1);
-            FillWindowPixelBuffer(0, PIXEL_FILL(1));
             DoSpaMonSatisfiedText();
             sprite->invisible = TRUE;
         }
@@ -1295,6 +1301,12 @@ static void SpriteCB_Heart(struct Sprite *sprite)
         sprite->y--;
 }
 
+static const s16 MusicPos[][2] =
+{
+    [SPA_RATTATA] = { 190, 20 },
+    [SPA_TEDDIURSA] = { 156, 20 },
+};
+
 static void SpriteCB_Berry(struct Sprite *sprite)
 {
     if (sTask.tItemMenuState == ITEM_STATE_TRAY_OUT && sprite->x < (ITEM_END_X + 14))
@@ -1326,12 +1338,12 @@ static void SpriteCB_Berry(struct Sprite *sprite)
         {
             if (sTask.tBerryBites == 3)
             {
-                u8 spriteId = CreateSprite(&sSpriteTemplate_Music, 190, 20, 0);
+                u8 spaMon = VarGet(VAR_SPA_MON);
+                u8 spriteId = CreateSprite(&sSpriteTemplate_Music, MusicPos[spaMon][0], MusicPos[spaMon][1], 0);
                 gSprites[spriteId].sTaskId = sprite->sTaskId;
                 VarSet(VAR_SPA_COUNTER, 0);
                 sTask.tItemMenuState = ITEM_STATE_END;
                 sTask.tIsSatisfied = TRUE;
-                FillWindowPixelBuffer(0, PIXEL_FILL(1));
                 DoSpaMonEnjoyedSnackText();
                 DestroySprite(sprite);
             }
@@ -1370,11 +1382,11 @@ static void SpriteCB_Claw(struct Sprite *sprite)
         }
         if (sTask.tIsSatisfied && sTask.tSatisfScore != 0)
         {
-            u8 spriteId = CreateSprite(&sSpriteTemplate_Music, 190, 20, 0);
+            u8 spaMon = VarGet(VAR_SPA_MON);
+            u8 spriteId = CreateSprite(&sSpriteTemplate_Music, MusicPos[spaMon][0], MusicPos[spaMon][1], 0);
             gSprites[spriteId].sTaskId = sprite->sTaskId;
             VarSet(VAR_SPA_COUNTER, 0);
-            FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            DoSpaMonEnjoyedSnackText();
+            DoSpaMonFeelsBetterText();
             sTask.tItemMenuState = ITEM_STATE_END;
             DestroySprite(sprite);
         }
@@ -1385,6 +1397,7 @@ static void SpriteCB_Claw(struct Sprite *sprite)
         }
         else if (JOY_NEW(L_BUTTON))
         {
+            sTask.tSelectedItem = 0;
             sTask.tItemMenuState = ITEM_STATE_START;
             DestroySprite(sprite);
         }

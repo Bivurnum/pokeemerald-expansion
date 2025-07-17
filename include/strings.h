@@ -2430,6 +2430,7 @@ extern const u8 gText_SpaInstructions[];
 extern const u8 gText_SpaItemSelectInstructions[];
 extern const u8 gText_SpaItemInstructions[];
 extern const u8 gText_GeneralBadTouch[];
+extern const u8 gText_FeelsBetter[];
 
 extern const u8 gText_RattataWary[];
 extern const u8 gText_RattataAtEase[];

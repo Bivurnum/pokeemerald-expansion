@@ -1305,6 +1305,7 @@ const u8 gText_SpaInstructions[] = _("{A_BUTTON} : Interact     hold{B_BUTTON} :
 const u8 gText_SpaItemSelectInstructions[] = _("{DPAD_UPDOWN} : Move            {A_BUTTON} : Select            {B_BUTTON} : Exit");
 const u8 gText_SpaItemInstructions[] = _("{A_BUTTON} : Put Away     hold{B_BUTTON} : Fast     hold{R_BUTTON} : Status");
 const u8 gText_GeneralBadTouch[] = _("It doesn't like to be touched there!");
+const u8 gText_FeelsBetter[] = _("That feels much better!");
 
 const u8 gText_RattataWary[] = _("Rattata is watching warily.");
 const u8 gText_RattataAtEase[] = _("Rattata seems to be more at ease.");
