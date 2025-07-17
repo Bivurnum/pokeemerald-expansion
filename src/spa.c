@@ -926,7 +926,13 @@ static void SpriteCB_Hand(struct Sprite *sprite)
 
     if (sprite->invisible == TRUE)
     {
-        if (!sTask.tShouldExit && sTask.tPetArea != SPA_PET_BAD && !sTask.tItemActive && sTask.tNumBadPets != 2 && sTask.tBerryBites != 3 && sTask.tPetScore < SPA_PET_SCORE_TARGET)
+        if (!sTask.tShouldExit
+         && sTask.tPetArea != SPA_PET_BAD
+         && !sTask.tItemActive
+         && sTask.tNumBadPets != 2
+         && sTask.tBerryBites != 3
+         && sTask.tPetScore < SPA_PET_SCORE_TARGET
+         && !(sTask.tIsSatisfied && sTask.tSatisfScore != 0))
             sprite->invisible = FALSE;
 
         return;
@@ -1078,6 +1084,7 @@ static void SpriteCB_Music(struct Sprite *sprite)
     else if (sprite->sCounter == 120)
     {
         sTask.tBerryBites = 0;
+        sTask.tSatisfScore = 0;
         VarSet(VAR_SPA_COUNTER, 0);
         FillWindowPixelBuffer(0, PIXEL_FILL(1));
         AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
@@ -1311,6 +1318,7 @@ static void SpriteCB_Berry(struct Sprite *sprite)
         }
         else if (JOY_NEW(L_BUTTON))
         {
+            sTask.tSelectedItem = 0;
             sTask.tItemMenuState = ITEM_STATE_START;
             DestroySprite(sprite);
         }
@@ -1358,6 +1366,16 @@ static void SpriteCB_Claw(struct Sprite *sprite)
     {
         if (sTask.tSelectedItem != 1)
         {
+            DestroySprite(sprite);
+        }
+        if (sTask.tIsSatisfied && sTask.tSatisfScore != 0)
+        {
+            u8 spriteId = CreateSprite(&sSpriteTemplate_Music, 190, 20, 0);
+            gSprites[spriteId].sTaskId = sprite->sTaskId;
+            VarSet(VAR_SPA_COUNTER, 0);
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            DoSpaMonEnjoyedSnackText();
+            sTask.tItemMenuState = ITEM_STATE_END;
             DestroySprite(sprite);
         }
         if (JOY_NEW(INTERACT_BUTTON))

@@ -12,6 +12,9 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+static void SpriteCB_TeddyEye(struct Sprite *sprite);
+static void SpriteCB_TeddyMouth(struct Sprite *sprite);
+static void SpriteCB_TeddyArm(struct Sprite *sprite);
 static void SpriteCB_TeddyItch(struct Sprite *sprite);
 static bool32 IsClawInItchArea(void);
 
@@ -103,11 +106,18 @@ static const union AnimCmd sAnim_MouthO[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_MouthFrown[] =
+{
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_TeddyMouth[] =
 {
     sAnim_Normal,
     sAnim_MouthHappyOpen,
     sAnim_MouthO,
+    sAnim_MouthFrown,
 };
 
 static const union AnimCmd sAnim_ArmScratch[] =
@@ -121,10 +131,18 @@ static const union AnimCmd sAnim_ArmScratch[] =
     ANIMCMD_JUMP(2)
 };
 
+static const union AnimCmd sAnim_ArmScratchToNormal[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 12),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 12),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_TeddyArm[] =
 {
     sAnim_Normal,
     sAnim_ArmScratch,
+    sAnim_ArmScratchToNormal,
 };
 
 static const union AnimCmd * const sAnims_TeddyItch[] =
@@ -175,6 +193,7 @@ static const struct SpriteFrameImage sPicTable_TeddyMouth[] =
     spa_frame(gTeddiursaMouth_Gfx, 0, 2, 2),
     spa_frame(gTeddiursaMouth_Gfx, 1, 2, 2),
     spa_frame(gTeddiursaMouth_Gfx, 2, 2, 2),
+    spa_frame(gTeddiursaMouth_Gfx, 3, 2, 2),
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyArm[] =
@@ -265,7 +284,7 @@ static const struct SpriteTemplate sSpriteTemplate_TeddyEye =
     .anims = sAnims_TeddyEye,
     .images = sPicTable_TeddyEye,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
+    .callback = SpriteCB_TeddyEye
 };
 
 static const struct SpriteTemplate sSpriteTemplate_TeddyMouth =
@@ -276,7 +295,7 @@ static const struct SpriteTemplate sSpriteTemplate_TeddyMouth =
     .anims = sAnims_TeddyMouth,
     .images = sPicTable_TeddyMouth,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
+    .callback = SpriteCB_TeddyMouth
 };
 
 static const struct SpriteTemplate sSpriteTemplate_TeddyArm =
@@ -287,7 +306,7 @@ static const struct SpriteTemplate sSpriteTemplate_TeddyArm =
     .anims = sAnims_TeddyArm,
     .images = sPicTable_TeddyArm,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
+    .callback = SpriteCB_TeddyArm
 };
 
 static const struct SpriteTemplate sSpriteTemplate_TeddyItch =
@@ -342,7 +361,7 @@ void CreateTeddiursaSprites(u8 taskId)
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyMouth, 106, 63, 8);
     gSprites[spriteId].sTaskId = taskId;
-    StartSpriteAnim(&gSprites[spriteId], 2);
+    StartSpriteAnim(&gSprites[spriteId], 3);
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyArm, 109, 81, 8);
     gSprites[spriteId].sTaskId = taskId;
@@ -384,28 +403,123 @@ static const struct FadeColors sFadeColors[] = {
     }
 };
 
-static void SpriteCB_TeddyItch(struct Sprite *sprite)
+static void SpriteCB_TeddyEye(struct Sprite *sprite)
 {
-    if (sTask.tItemActive && sTask.tSelectedItem == 1)
+    if (sTask.tIsSatisfied && sTask.tSatisfScore != 0)
+    {
+        StartSpriteAnimIfDifferent(sprite, 2);
+    }
+    else if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD && sTask.tSelectedItem == 1)
     {
         if (IsClawInItchArea())
         {
-            VarSet(VAR_SPA_COUNTER, 0);
+            if (JOY_HELD(DPAD_ANY))
+            {
+                sprite->sCounter = 0;
+                StartSpriteAnimIfDifferent(sprite, 2);
+            }
+            if (sprite->sCounter == 60)
+            {
+                StartSpriteAnimIfDifferent(sprite, 0);
+            }
+        }
+        else
+        {
+            StartSpriteAnimIfDifferent(sprite, 0);
+        }
+        sprite->sCounter++;
+    }
+    else if (sTask.tIsSatisfied)
+    {
+        StartSpriteAnimIfDifferent(sprite, 0);
+    }
+    else
+    {
+        StartSpriteAnimIfDifferent(sprite, 3);
+    }
+}
+
+static void SpriteCB_TeddyMouth(struct Sprite *sprite)
+{
+    if (sTask.tIsSatisfied && sTask.tSatisfScore != 0)
+    {
+        StartSpriteAnimIfDifferent(sprite, 1);
+    }
+    else if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD && sTask.tSelectedItem == 1)
+    {
+        if (IsClawInItchArea())
+        {
+            if (JOY_HELD(DPAD_ANY))
+            {
+                sprite->sCounter = 0;
+                StartSpriteAnimIfDifferent(sprite, 2);
+            }
+            if (sprite->sCounter == 60)
+            {
+                StartSpriteAnimIfDifferent(sprite, 0);
+            }
+        }
+        else
+        {
+            StartSpriteAnimIfDifferent(sprite, 0);
+        }
+        sprite->sCounter++;
+    }
+    else if (sTask.tIsSatisfied)
+    {
+        StartSpriteAnimIfDifferent(sprite, 0);
+    }
+    else
+    {
+        StartSpriteAnimIfDifferent(sprite, 3);
+    }
+}
+
+static void SpriteCB_TeddyArm(struct Sprite *sprite)
+{
+    if (sTask.tIsSatisfied && sTask.tSatisfScore != 0)
+    {
+        
+    }
+    else if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD && sTask.tSelectedItem == 1)
+    {
+        StartSpriteAnimIfDifferent(sprite, 2);
+    }
+    else if (sTask.tIsSatisfied)
+    {
+        StartSpriteAnimIfDifferent(sprite, 0);
+    }
+    else
+    {
+        StartSpriteAnimIfDifferent(sprite, 1);
+    }
+}
+
+static void SpriteCB_TeddyItch(struct Sprite *sprite)
+{
+    if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD && sTask.tSelectedItem == 1)
+    {
+        if (IsClawInItchArea())
+        {
             if (JOY_HELD(DPAD_ANY))
             {
                 sTask.tSatisfScore++;
                 if (sTask.tSatisfScore % 15 == 0)
                 {
                     if (sprite->sItchFadeCount < 16)
+                    {
                         sprite->sItchFadeCount++;
-                        
+                    }
+                    else
+                    {
+                        sTask.tIsSatisfied = TRUE;
+                        DestroySprite(sprite);
+                        return;
+                    }
+
                     BlendPalettes(1 << (IndexOfSpritePaletteTag(TAG_ITCH) + 16), sprite->sItchFadeCount, RGB2GBA(230, 148, 92));
                 }
             }
-        }
-        else
-        {
-
         }
     }
 }
@@ -414,8 +528,8 @@ static bool32 IsClawInItchArea(void)
 {
     u8 clawSprite = VarGet(VAR_CLAW_SPRITE_ID);
 
-    if (gSprites[clawSprite].x > 139 && gSprites[clawSprite].x < 161 
-     && gSprites[clawSprite].y > 90  && gSprites[clawSprite].y < 107 )
+    if (gSprites[clawSprite].x > 135 && gSprites[clawSprite].x < 165 
+     && gSprites[clawSprite].y > 86  && gSprites[clawSprite].y < 108 )
     {
         return TRUE;
     }
