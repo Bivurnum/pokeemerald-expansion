@@ -142,9 +142,16 @@ static const union AnimCmd * const sAnims_Hand[] =
     sAnim_HandFood,
 };
 
+static const union AnimCmd sAnim_MusicFlipped[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_Music[] =
 {
     sAnim_Normal,
+    sAnim_MusicFlipped,
 };
 
 static const union AnimCmd sAnim_IconPress[] =
@@ -224,6 +231,7 @@ static const struct SpriteFrameImage sPicTable_Hand[] =
 static const struct SpriteFrameImage sPicTable_Music[] =
 {
     spa_frame(gMusic_Gfx, 0, 4, 4),
+    spa_frame(gMusic_Gfx, 1, 4, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_ItemsIcon[] =
@@ -1301,10 +1309,10 @@ static void SpriteCB_Heart(struct Sprite *sprite)
         sprite->y--;
 }
 
-static const s16 MusicPos[][2] =
+static const s16 MusicPos[][3] =
 {
-    [SPA_RATTATA] = { 190, 20 },
-    [SPA_TEDDIURSA] = { 156, 20 },
+    [SPA_RATTATA] = { 190, 20, 0 },
+    [SPA_TEDDIURSA] = { 84, 26, 1 },
 };
 
 static void SpriteCB_Berry(struct Sprite *sprite)
@@ -1341,6 +1349,7 @@ static void SpriteCB_Berry(struct Sprite *sprite)
                 u8 spaMon = VarGet(VAR_SPA_MON);
                 u8 spriteId = CreateSprite(&sSpriteTemplate_Music, MusicPos[spaMon][0], MusicPos[spaMon][1], 0);
                 gSprites[spriteId].sTaskId = sprite->sTaskId;
+                StartSpriteAnim(&gSprites[spriteId], MusicPos[spaMon][2]);
                 VarSet(VAR_SPA_COUNTER, 0);
                 sTask.tItemMenuState = ITEM_STATE_END;
                 sTask.tIsSatisfied = TRUE;
@@ -1385,6 +1394,7 @@ static void SpriteCB_Claw(struct Sprite *sprite)
             u8 spaMon = VarGet(VAR_SPA_MON);
             u8 spriteId = CreateSprite(&sSpriteTemplate_Music, MusicPos[spaMon][0], MusicPos[spaMon][1], 0);
             gSprites[spriteId].sTaskId = sprite->sTaskId;
+            StartSpriteAnim(&gSprites[spriteId], MusicPos[spaMon][2]);
             VarSet(VAR_SPA_COUNTER, 0);
             DoSpaMonFeelsBetterText();
             sTask.tItemMenuState = ITEM_STATE_END;
