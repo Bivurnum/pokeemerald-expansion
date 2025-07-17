@@ -2446,5 +2446,7 @@ extern const u8 gText_TeddiursaPretend[];
 extern const u8 gText_TeddiursaBadPet[];
 extern const u8 gText_TeddiursaSatisfied[];
 extern const u8 gText_TeddiursaEnjoyedSnack[];
+extern const u8 gText_TeddiursaWondersClaw[];
+extern const u8 gText_TeddiursaLikesScratches[];
 
 #endif // GUARD_STRINGS_H

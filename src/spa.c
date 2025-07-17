@@ -687,6 +687,20 @@ static void DoSpaMonBerryText(bool8 isSatisfied)
     }
 }
 
+static void DoSpaMonClawText(bool8 isSatisfied)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    switch (VarGet(VAR_SPA_MON))
+    {
+    case SPA_TEDDIURSA:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaLikesScratches, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaWondersClaw, 0, 0, 0, NULL);
+        break;
+    }
+}
+
 static void DoSpaMonStatusText(bool8 isSatisfied)
 {
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
@@ -850,13 +864,6 @@ static void Task_SpaItemChoose(u8 taskId)
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
             AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaItemInstructions, 0, 0, 0, NULL);
             gTasks[taskId].tStatusShowing = FALSE;
-        }
-
-        if (JOY_NEW(STATUS_BUTTON) || (!gTasks[taskId].tStatusShowing && JOY_HELD(STATUS_BUTTON)))
-        {
-            DoSpaMonBerryText(gTasks[taskId].tIsSatisfied);
-
-            gTasks[taskId].tStatusShowing = TRUE;
         }
         break;
     case ITEM_STATE_NO_SELECTION:
@@ -1317,6 +1324,12 @@ static const s16 MusicPos[][3] =
 
 static void SpriteCB_Berry(struct Sprite *sprite)
 {
+    if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD && (JOY_NEW(STATUS_BUTTON) || (!sTask.tStatusShowing && JOY_HELD(STATUS_BUTTON))))
+    {
+        DoSpaMonBerryText(sTask.tIsSatisfied);
+        sTask.tStatusShowing = TRUE;
+    }
+
     if (sTask.tItemMenuState == ITEM_STATE_TRAY_OUT && sprite->x < (ITEM_END_X + 14))
     {
         sprite->x += 2;
@@ -1375,6 +1388,12 @@ static void SpriteCB_Berry(struct Sprite *sprite)
 
 static void SpriteCB_Claw(struct Sprite *sprite)
 {
+    if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD && (JOY_NEW(STATUS_BUTTON) || (!sTask.tStatusShowing && JOY_HELD(STATUS_BUTTON))))
+    {
+        DoSpaMonClawText(sTask.tIsSatisfied);
+        sTask.tStatusShowing = TRUE;
+    }
+
     if (sTask.tItemMenuState == ITEM_STATE_TRAY_OUT && sprite->x < ITEM_END_X)
     {
         sprite->x += 2;
