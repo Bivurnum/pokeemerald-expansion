@@ -86,12 +86,23 @@ static const union AnimCmd sAnim_EyeShutBad[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_EyesBlink[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 4),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_TeddyEye[] =
 {
     sAnim_Normal,
     sAnim_EyeMad,
     sAnim_EyeHappy,
     sAnim_EyeShutBad,
+    sAnim_EyesBlink,
 };
 
 static const union AnimCmd sAnim_MouthHappyOpen[] =
@@ -122,8 +133,8 @@ static const union AnimCmd * const sAnims_TeddyMouth[] =
 
 static const union AnimCmd sAnim_ArmScratch[] =
 {
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 12),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 12),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 8),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 8),
     ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 16),
     ANIMCMD_FRAME(.imageValue = 4, .duration = 16),
@@ -133,8 +144,8 @@ static const union AnimCmd sAnim_ArmScratch[] =
 
 static const union AnimCmd sAnim_ArmScratchToNormal[] =
 {
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 12),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 12),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 8),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 8),
     ANIMCMD_END
 };
 
@@ -186,6 +197,8 @@ static const struct SpriteFrameImage sPicTable_TeddyEye[] =
     spa_frame(gTeddiursaEye_Gfx, 1, 2, 2),
     spa_frame(gTeddiursaEye_Gfx, 2, 2, 2),
     spa_frame(gTeddiursaEye_Gfx, 3, 2, 2),
+    spa_frame(gTeddiursaEye_Gfx, 4, 2, 2),
+    spa_frame(gTeddiursaEye_Gfx, 5, 2, 2),
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyMouth[] =
@@ -346,7 +359,7 @@ void CreateTeddiursaSprites(u8 taskId)
     spriteId = CreateSprite(&sSpriteTemplate_TeddyBody, 133, 94, 10);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_TeddyTail, 142, 112, 9);
+    spriteId = CreateSprite(&sSpriteTemplate_TeddyTail, 142, 112, 7);
     gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyFoot, 100, 104, 11);
@@ -358,6 +371,7 @@ void CreateTeddiursaSprites(u8 taskId)
     spriteId = CreateSprite(&sSpriteTemplate_TeddyEye, 115, 50, 8);
     gSprites[spriteId].sTaskId = taskId;
     StartSpriteAnim(&gSprites[spriteId], 3);
+    gSprites[spriteId].sInterval = (Random() % 180) + 180;
 
     spriteId = CreateSprite(&sSpriteTemplate_TeddyMouth, 106, 63, 8);
     gSprites[spriteId].sTaskId = taskId;
@@ -405,6 +419,8 @@ static const struct FadeColors sFadeColors[] = {
 
 static void SpriteCB_TeddyEye(struct Sprite *sprite)
 {
+    //u16 counter = VarGet(VAR_SPA_COUNTER);
+
     if (sTask.tIsSatisfied && sTask.tSatisfScore != 0)
     {
         StartSpriteAnimIfDifferent(sprite, 2);
@@ -420,22 +436,48 @@ static void SpriteCB_TeddyEye(struct Sprite *sprite)
             }
             if (sprite->sCounter == 60)
             {
-                StartSpriteAnimIfDifferent(sprite, 0);
+                if (sprite->animNum != 0 && sprite->animNum != 4)
+                {
+                    sprite->sBlinkCounter = 0;
+                    StartSpriteAnim(sprite, 0);
+                }
             }
         }
         else
         {
-            StartSpriteAnimIfDifferent(sprite, 0);
+            if (sprite->animNum != 0 && sprite->animNum != 4)
+            {
+                sprite->sBlinkCounter = 0;
+                StartSpriteAnim(sprite, 0);
+            }
         }
         sprite->sCounter++;
     }
     else if (sTask.tIsSatisfied)
     {
-        StartSpriteAnimIfDifferent(sprite, 0);
+        if (sprite->animNum != 0 && sprite->animNum != 4)
+        {
+            sprite->sBlinkCounter = 0;
+            StartSpriteAnim(sprite, 0);
+        }
     }
     else
     {
         StartSpriteAnimIfDifferent(sprite, 3);
+    }
+
+    if (sprite->animNum == 0 || sprite->animNum == 4)
+    {
+        if (sprite->sBlinkCounter == sprite->sInterval)
+        {
+            StartSpriteAnim(sprite, 4); // Blink.
+            sprite->sInterval = (Random() % 180) + 180; // 3 to 6 seconds.
+            sprite->sBlinkCounter = 0;
+        }
+        else
+        {
+            sprite->sBlinkCounter++;
+        }
     }
 }
 

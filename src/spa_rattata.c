@@ -900,28 +900,28 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
         {
             StartSpriteAnim(sprite, 4);
             sTask.tIsBiting = TRUE;
-            sprite->sCounter = 0;
+            sprite->sBlinkCounter = 0;
         }
         else if (sTask.tNumBadPets != 2)
         {
             if (counter == 1)
             {
                 StartSpriteAnim(sprite, 0);
-                sprite->sCounter = 0;
+                sprite->sBlinkCounter = 0;
             }
             if (sprite->y2 < 0)
             {
                 sprite->y2++;
             }
-            if (sprite->sCounter == sprite->sInterval)
+            if (sprite->sBlinkCounter == sprite->sInterval)
             {
                 StartSpriteAnim(sprite, 1); // Blink.
                 sprite->sInterval = (Random() % 180) + 180; // 3 to 6 seconds.
-                sprite->sCounter = 0;
+                sprite->sBlinkCounter = 0;
             }
             else
             {
-                sprite->sCounter++;
+                sprite->sBlinkCounter++;
             }
         }
     }
