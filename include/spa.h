@@ -10,7 +10,7 @@
 #define tItemMenuState  data[5]
 #define tSelectedItem   data[6]
 #define tBerryBites     data[7]
-#define tIsBiting       data[8]
+#define tIsBitingOrAttacking       data[8]
 #define tIsSatisfied    data[9]
 #define tNumBadPets     data[10]
 #define tPetScore       data[11]

@@ -34,6 +34,7 @@ static void Task_StartSpaGame(u8 taskId);
 static void PlaySpaMonCry(u8 mode);
 static void SetItemFlagBits(u8 taskId);
 static void Task_SpaGame(u8 taskId);
+static void CheckSpaExit(u8 taskId);
 static void MoveSpriteFromInput(struct Sprite *sprite);
 static void SpriteCB_Hand(struct Sprite *sprite);
 static void SpriteCB_Music(struct Sprite *sprite);
@@ -605,16 +606,9 @@ static const s16 AngryPos[][2] =
 
 static void Task_SpaGame(u8 taskId)
 {
-    RunTextPrinters();
-    VarSet(VAR_SPA_COUNTER, VarGet(VAR_SPA_COUNTER) + 1);
+    CheckSpaExit(taskId);
 
-    if (gTasks[taskId].tShouldExit && !gPaletteFade.active)
-    {
-        ResetAllPicSprites();
-        PlayBGM(GetCurrLocationDefaultMusic()); // Play the map's default music.
-        SetMainCallback2(gMain.savedCallback);
-        DestroyTask(taskId);
-    }
+    VarSet(VAR_SPA_COUNTER, VarGet(VAR_SPA_COUNTER) + 1);
 
     if (gTasks[taskId].tPetActive && gTasks[taskId].tPetScore < SPA_PET_SCORE_TARGET)
     {
@@ -667,6 +661,17 @@ static void Task_SpaGame(u8 taskId)
             gTasks[taskId].tNumBadPets = 3;
             gTasks[taskId].tShouldExit = TRUE;
         }
+    }
+}
+
+static void CheckSpaExit(u8 taskId)
+{
+    if (gTasks[taskId].tShouldExit && !gPaletteFade.active)
+    {
+        ResetAllPicSprites();
+        PlayBGM(GetCurrLocationDefaultMusic()); // Play the map's default music.
+        SetMainCallback2(gMain.savedCallback);
+        DestroyTask(taskId);
     }
 }
 

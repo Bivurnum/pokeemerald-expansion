@@ -551,11 +551,11 @@ static void SpriteCB_RatEarLeft(struct Sprite *sprite)
         }
     }
     
-    if (sTask.tIsBiting && sprite->animNum != 1)
+    if (sTask.tIsBitingOrAttacking && sprite->animNum != 1)
     {
         StartSpriteAnim(sprite, 1);
     }
-    else if (!sTask.tIsBiting && sprite->animNum == 1)
+    else if (!sTask.tIsBitingOrAttacking && sprite->animNum == 1)
     {
         StartSpriteAnim(sprite, 0);
     }
@@ -606,11 +606,11 @@ static void SpriteCB_RatEarRight(struct Sprite *sprite)
         }
     }
     
-    if (sTask.tIsBiting && sprite->animNum != 1)
+    if (sTask.tIsBitingOrAttacking && sprite->animNum != 1)
     {
         StartSpriteAnim(sprite, 1);
     }
-    else if (!sTask.tIsBiting && sprite->animNum == 1)
+    else if (!sTask.tIsBitingOrAttacking && sprite->animNum == 1)
     {
         StartSpriteAnim(sprite, 0);
     }
@@ -664,11 +664,11 @@ static void SpriteCB_RatMouth(struct Sprite *sprite)
         }
     }
     
-    if (sTask.tIsBiting && sprite->animNum != 1)
+    if (sTask.tIsBitingOrAttacking && sprite->animNum != 1)
     {
         StartSpriteAnim(sprite, 1);
     }
-    else if (!sTask.tIsBiting && sprite->animNum == 1)
+    else if (!sTask.tIsBitingOrAttacking && sprite->animNum == 1)
     {
         StartSpriteAnim(sprite, 0);
     }
@@ -724,11 +724,11 @@ static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
         }
     }
     
-    if (sTask.tIsBiting && sprite->animNum != 2)
+    if (sTask.tIsBitingOrAttacking && sprite->animNum != 2)
     {
         StartSpriteAnim(sprite, 2);
     }
-    else if (!sTask.tIsBiting && sprite->animNum == 2)
+    else if (!sTask.tIsBitingOrAttacking && sprite->animNum == 2)
     {
         StartSpriteAnim(sprite, 0);
     }
@@ -784,11 +784,11 @@ static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
         }
     }
 
-    if (sTask.tIsBiting && sprite->animNum != 2)
+    if (sTask.tIsBitingOrAttacking && sprite->animNum != 2)
     {
         StartSpriteAnim(sprite, 2);
     }
-    else if (!sTask.tIsBiting && sprite->animNum == 2)
+    else if (!sTask.tIsBitingOrAttacking && sprite->animNum == 2)
     {
         StartSpriteAnim(sprite, 0);
     }
@@ -857,21 +857,21 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
             if (sTask.tNumBadPets == 1)
             {
                 StartSpriteAnim(sprite, 6);
-                sTask.tIsBiting = TRUE;
+                sTask.tIsBitingOrAttacking = TRUE;
             }
         }
-        else if (sTask.tIsBiting)
+        else if (sTask.tIsBitingOrAttacking)
         {
             if (sprite->animEnded)
-                sTask.tIsBiting = FALSE;
+                sTask.tIsBitingOrAttacking = FALSE;
         }
     }
-    else if (sTask.tIsBiting)
+    else if (sTask.tIsBitingOrAttacking)
     {
         if (sprite->animEnded)
         {
             StartSpriteAnim(sprite, 0);
-            sTask.tIsBiting = FALSE;
+            sTask.tIsBitingOrAttacking = FALSE;
             sprite->sCounter = 0;
             if (IsBerryInFeedingZone())
                 sTask.tBerryBites++;
@@ -887,7 +887,7 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
         }
 
     }
-    else if (!sTask.tIsBiting)
+    else if (!sTask.tIsBitingOrAttacking)
     {
         if (sTask.tBerryBites == 3)
         {
@@ -899,7 +899,7 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
         else if (IsBerryInFeedingZone())
         {
             StartSpriteAnim(sprite, 4);
-            sTask.tIsBiting = TRUE;
+            sTask.tIsBitingOrAttacking = TRUE;
             sprite->sBlinkCounter = 0;
         }
         else if (sTask.tNumBadPets != 2)

@@ -149,11 +149,19 @@ static const union AnimCmd sAnim_ArmScratchToNormal[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_ArmBadTouch[] =
+{
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_TeddyArm[] =
 {
     sAnim_Normal,
     sAnim_ArmScratch,
     sAnim_ArmScratchToNormal,
+    sAnim_ArmBadTouch,
 };
 
 static const union AnimCmd * const sAnims_TeddyItch[] =
@@ -216,6 +224,7 @@ static const struct SpriteFrameImage sPicTable_TeddyArm[] =
     spa_frame(gTeddiursaArm_Gfx, 2, 8, 8),
     spa_frame(gTeddiursaArm_Gfx, 3, 8, 8),
     spa_frame(gTeddiursaArm_Gfx, 4, 8, 8),
+    spa_frame(gTeddiursaArm_Gfx, 5, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyItch[] =
@@ -419,7 +428,7 @@ static const struct FadeColors sFadeColors[] = {
 
 static void SpriteCB_TeddyEye(struct Sprite *sprite)
 {
-    //u16 counter = VarGet(VAR_SPA_COUNTER);
+    u16 counter = VarGet(VAR_SPA_COUNTER);
 
     if (sTask.tIsSatisfied && sTask.tSatisfScore != 0)
     {
@@ -453,6 +462,51 @@ static void SpriteCB_TeddyEye(struct Sprite *sprite)
         }
         sprite->sCounter++;
     }
+    else if (sTask.tPetActive)
+    {
+        if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
+        {
+            if (sprite->animNum != 2)
+                StartSpriteAnim(sprite, 2);
+
+            return;
+        }
+        switch (sTask.tPetArea)
+        {
+        case SPA_PET_NONE:
+            break;
+        case SPA_PET_BODY:
+            if (counter == 1)
+                StartSpriteAnim(sprite, 2);
+            break;
+        case SPA_PET_HEAD:
+            if (counter == 1)
+                StartSpriteAnim(sprite, 2);
+            break;
+        }
+    }
+    else if (sTask.tPetArea == SPA_PET_BAD)
+    {
+        if (counter == 1)
+        {
+            StartSpriteAnim(sprite, 3);
+            PlaySE(SE_CONTEST_CONDITION_LOSE);
+        }
+        else if (counter == 60)
+        {
+            StartSpriteAnim(sprite, 1);
+
+            if (sTask.tNumBadPets == 1)
+            {
+                sTask.tIsBitingOrAttacking = TRUE;
+            }
+        }
+        else if (sTask.tIsBitingOrAttacking)
+        {
+            if (sprite->animEnded)
+                sTask.tIsBitingOrAttacking = FALSE;
+        }
+    }
     else if (sTask.tIsSatisfied)
     {
         if (sprite->animNum != 0 && sprite->animNum != 4)
@@ -483,6 +537,8 @@ static void SpriteCB_TeddyEye(struct Sprite *sprite)
 
 static void SpriteCB_TeddyMouth(struct Sprite *sprite)
 {
+    u16 counter = VarGet(VAR_SPA_COUNTER);
+
     if (sTask.tIsSatisfied && sTask.tSatisfScore != 0)
     {
         StartSpriteAnimIfDifferent(sprite, 1);
@@ -507,6 +563,46 @@ static void SpriteCB_TeddyMouth(struct Sprite *sprite)
         }
         sprite->sCounter++;
     }
+    else if (sTask.tPetActive)
+    {
+        if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
+        {
+            if (sprite->animNum != 1)
+                StartSpriteAnim(sprite, 1);
+
+            return;
+        }
+        switch (sTask.tPetArea)
+        {
+        case SPA_PET_NONE:
+            break;
+        case SPA_PET_BODY:
+            if (counter == 1)
+                StartSpriteAnim(sprite, 2);
+            break;
+        case SPA_PET_HEAD:
+            if (counter == 1)
+                StartSpriteAnim(sprite, 2);
+            break;
+        }
+    }
+    else if (sTask.tPetArea == SPA_PET_BAD)
+    {
+        if (counter == 1)
+        {
+            StartSpriteAnim(sprite, 2);
+            PlaySE(SE_CONTEST_CONDITION_LOSE);
+        }
+        else if (counter == 60)
+        {
+            StartSpriteAnim(sprite, 3);
+
+            if (sTask.tNumBadPets == 1)
+            {
+                StartSpriteAnim(sprite, 3);
+            }
+        }
+    }
     else if (sTask.tIsSatisfied)
     {
         StartSpriteAnimIfDifferent(sprite, 0);
@@ -530,6 +626,13 @@ static void SpriteCB_TeddyArm(struct Sprite *sprite)
     else if (sTask.tIsSatisfied)
     {
         StartSpriteAnimIfDifferent(sprite, 0);
+    }
+    else if (sTask.tPetArea == SPA_PET_BAD)
+    {
+        if (VarGet(VAR_SPA_COUNTER) == 1)
+            StartSpriteAnim(sprite, 3);
+        else if (VarGet(VAR_SPA_COUNTER) == 60)
+            StartSpriteAnim(sprite, 0);
     }
     else
     {
