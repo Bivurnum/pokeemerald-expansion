@@ -156,12 +156,22 @@ static const union AnimCmd sAnim_ArmBadTouch[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_ArmAttack[] =
+{
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 52),
+    ANIMCMD_FRAME(.imageValue = 7, .duration = 4),
+    ANIMCMD_FRAME(.imageValue = 8, .duration = 4),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_TeddyArm[] =
 {
     sAnim_Normal,
     sAnim_ArmScratch,
     sAnim_ArmScratchToNormal,
     sAnim_ArmBadTouch,
+    sAnim_ArmAttack,
 };
 
 static const union AnimCmd * const sAnims_TeddyItch[] =
@@ -225,6 +235,9 @@ static const struct SpriteFrameImage sPicTable_TeddyArm[] =
     spa_frame(gTeddiursaArm_Gfx, 3, 8, 8),
     spa_frame(gTeddiursaArm_Gfx, 4, 8, 8),
     spa_frame(gTeddiursaArm_Gfx, 5, 8, 8),
+    spa_frame(gTeddiursaArm_Gfx, 6, 8, 8),
+    spa_frame(gTeddiursaArm_Gfx, 7, 8, 8),
+    spa_frame(gTeddiursaArm_Gfx, 8, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyItch[] =
@@ -501,11 +514,15 @@ static void SpriteCB_TeddyEye(struct Sprite *sprite)
                 sTask.tIsBitingOrAttacking = TRUE;
             }
         }
-        else if (sTask.tIsBitingOrAttacking)
+        else if (sTask.tIsBitingOrAttacking && sTask.tNumBadPets != 1)
         {
             if (sprite->animEnded)
                 sTask.tIsBitingOrAttacking = FALSE;
         }
+    }
+    else if (sTask.tIsBitingOrAttacking)
+    {
+        return;
     }
     else if (sTask.tIsSatisfied)
     {
@@ -615,6 +632,8 @@ static void SpriteCB_TeddyMouth(struct Sprite *sprite)
 
 static void SpriteCB_TeddyArm(struct Sprite *sprite)
 {
+    u16 counter = VarGet(VAR_SPA_COUNTER);
+
     if (sTask.tIsSatisfied && sTask.tSatisfScore != 0)
     {
         
@@ -629,10 +648,21 @@ static void SpriteCB_TeddyArm(struct Sprite *sprite)
     }
     else if (sTask.tPetArea == SPA_PET_BAD)
     {
-        if (VarGet(VAR_SPA_COUNTER) == 1)
+        if (counter == 1)
             StartSpriteAnim(sprite, 3);
-        else if (VarGet(VAR_SPA_COUNTER) == 60)
+        else if (counter == 60)
+        {
             StartSpriteAnim(sprite, 0);
+
+            if (sTask.tNumBadPets == 1)
+            {
+                StartSpriteAnim(sprite, 4);
+            }
+        }
+    }
+    else if (sTask.tIsBitingOrAttacking)
+    {
+        return;
     }
     else
     {
