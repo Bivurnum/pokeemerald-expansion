@@ -95,6 +95,12 @@ PetalburgCity_EventScript_WallysMom::
     rattataspa
     releaseall
 	end
+    
+PetalburgCity_EventScript_Psyduck::
+    lock
+    psyduckspa
+    releaseall
+    end
 
 PetalburgCity_Movement_WalkToWallyHousePlayer:
 	delay_8

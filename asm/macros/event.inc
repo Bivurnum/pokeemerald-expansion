@@ -2657,3 +2657,9 @@
     setvar VAR_SPA_MON 1
     startspa
     .endm
+
+    @ Start psyduck spa game.
+    .macro psyduckspa
+    setvar VAR_SPA_MON 2
+    startspa
+    .endm
