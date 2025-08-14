@@ -11,6 +11,7 @@
 #include "random.h"
 #include "scanline_effect.h"
 #include "sound.h"
+#include "spa_psyduck.h"
 #include "spa_rattata.h"
 #include "spa_teddiursa.h"
 #include "strings.h"
@@ -494,6 +495,9 @@ static void LoadMonSpritePalettes(void)
     case SPA_TEDDIURSA:
         LoadSpritePalettes(sSpritePalettes_SpaTeddiursa);
         break;
+    case SPA_PSYDUCK:
+        LoadSpritePalettes(sSpritePalettes_SpaPsyduck);
+        break;
     }
 }
 
@@ -526,6 +530,9 @@ static void CreateSpaMonSprites(u8 taskId)
         break;
     case SPA_TEDDIURSA:
         CreateTeddiursaSprites(taskId);
+        break;
+    case SPA_PSYDUCK:
+        CreatePsyduckSprites(taskId);
         break;
     }
 }

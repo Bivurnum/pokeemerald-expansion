@@ -407,38 +407,6 @@ void CreateTeddiursaSprites(u8 taskId)
     gSprites[spriteId].sTaskId = taskId;
 }
 
-struct FadeColors
-{
-    u16 color1;
-    u16 color2;
-    u8 colorIndex;
-};
-
-static const struct FadeColors sFadeColors[] = {
-/*
-    {
-        .color1 = RGB2GBA(, , ),
-        .color2 = RGB2GBA(, , ),
-        .colorIndex = 
-    }
-*/
-    {
-        .color1 = RGB2GBA(230, 148, 92),
-        .color2 = RGB2GBA(200, 130, 82),
-        .colorIndex = 1
-    },
-    {
-        .color1 = RGB2GBA(230, 148, 92),
-        .color2 = RGB2GBA(206, 132, 84),
-        .colorIndex = 2
-    },
-    {
-        .color1 = RGB2GBA(230, 148, 92),
-        .color2 = RGB2GBA(214, 138, 86),
-        .colorIndex = 3
-    }
-};
-
 static void SpriteCB_TeddyEye(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_SPA_COUNTER);
