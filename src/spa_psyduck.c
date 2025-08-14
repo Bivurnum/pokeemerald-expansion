@@ -317,6 +317,7 @@ void CreatePsyduckSprites(u8 taskId)
     if (FlagGet(FLAG_SPA_PSYDUCK_SATISFIED))
     {
         gTasks[taskId].tIsSatisfied = TRUE;
+        StartSpriteAnim(&gSprites[spriteId], 0);
         gSprites[spriteId].x2 = 0;
     }
     else
