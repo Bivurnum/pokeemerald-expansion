@@ -23,6 +23,7 @@ static const u32 gPsyduckBodyRight_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psy
 static const u32 gPsyduckTail_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_tail.4bpp");
 static const u32 gPsyduckFoot_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_foot.4bpp");
 static const u32 gPsyduckArmFront_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_arm_front.4bpp");
+static const u32 gPsyduckArmBack_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_arm_back.4bpp");
 
 static const union AnimCmd sAnim_Normal[] =
 {
@@ -75,7 +76,19 @@ static const union AnimCmd * const sAnims_PsyduckFoot[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd sAnim_ArmFrontScared[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_PsyduckArmFront[] =
+{
+    sAnim_Normal,
+    sAnim_ArmFrontScared,
+};
+
+static const union AnimCmd * const sAnims_PsyduckArmBack[] =
 {
     sAnim_Normal,
 };
@@ -128,6 +141,12 @@ static const struct SpriteFrameImage sPicTable_PsyduckFoot[] =
 static const struct SpriteFrameImage sPicTable_PsyduckArmFront[] =
 {
     spa_frame(gPsyduckArmFront_Gfx, 0, 8, 8),
+    spa_frame(gPsyduckArmFront_Gfx, 1, 8, 8),
+};
+
+static const struct SpriteFrameImage sPicTable_PsyduckArmBack[] =
+{
+    spa_frame(gPsyduckArmBack_Gfx, 0, 4, 4),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_PsyduckHeadLeft =
@@ -240,6 +259,17 @@ static const struct SpriteTemplate sSpriteTemplate_PsyduckArmFront =
     .callback = SpriteCallbackDummy
 };
 
+static const struct SpriteTemplate sSpriteTemplate_PsyduckArmBack =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_PSYDUCK,
+    .oam = &sOam_32x32,
+    .anims = sAnims_PsyduckArmBack,
+    .images = sPicTable_PsyduckArmBack,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
 const struct SpritePalette sSpritePalettes_SpaPsyduck[] =
 {
     {
@@ -268,10 +298,10 @@ void CreatePsyduckSprites(u8 taskId)
     spriteId = CreateSprite(&sSpriteTemplate_PsyduckEyes, 89, 73, 6);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_PsyduckBodyLeft, 128, 66, 10);
+    spriteId = CreateSprite(&sSpriteTemplate_PsyduckBodyLeft, 128, 67, 10);
     gSprites[spriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_PsyduckBodyRight, 192, 66, 10);
+    spriteId = CreateSprite(&sSpriteTemplate_PsyduckBodyRight, 192, 67, 10);
     gSprites[spriteId].sTaskId = taskId;
 
     spriteId = CreateSprite(&sSpriteTemplate_PsyduckTail, 180, 33, 9);
@@ -282,4 +312,16 @@ void CreatePsyduckSprites(u8 taskId)
 
     spriteId = CreateSprite(&sSpriteTemplate_PsyduckArmFront, 138, 92, 5);
     gSprites[spriteId].sTaskId = taskId;
+    StartSpriteAnim(&gSprites[spriteId], 1);
+    gSprites[spriteId].x2 = -16;
+    if (FlagGet(FLAG_SPA_PSYDUCK_SATISFIED))
+    {
+        gTasks[taskId].tIsSatisfied = TRUE;
+        gSprites[spriteId].x2 = 0;
+    }
+    else
+    {
+        spriteId = CreateSprite(&sSpriteTemplate_PsyduckArmBack, 57, 78, 5);
+        gSprites[spriteId].sTaskId = taskId;
+    }
 }
