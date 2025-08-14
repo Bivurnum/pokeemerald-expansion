@@ -51,9 +51,16 @@ static const union AnimCmd * const sAnims_PsyduckHair[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd sAnim_EyesScared[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_PsyduckEyes[] =
 {
     sAnim_Normal,
+    sAnim_EyesScared,
 };
 
 static const union AnimCmd * const sAnims_PsyduckBodyLeft[] =
@@ -116,6 +123,7 @@ static const struct SpriteFrameImage sPicTable_PsyduckHair[] =
 static const struct SpriteFrameImage sPicTable_PsyduckEyes[] =
 {
     spa_frame(gPsyduckEyes_Gfx, 0, 8, 4),
+    spa_frame(gPsyduckEyes_Gfx, 1, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_PsyduckBodyLeft[] =
@@ -297,6 +305,10 @@ void CreatePsyduckSprites(u8 taskId)
 
     spriteId = CreateSprite(&sSpriteTemplate_PsyduckEyes, 89, 73, 6);
     gSprites[spriteId].sTaskId = taskId;
+    if (!FlagGet(FLAG_SPA_PSYDUCK_SATISFIED))
+    {
+        StartSpriteAnim(&gSprites[spriteId], 1);
+    }
 
     spriteId = CreateSprite(&sSpriteTemplate_PsyduckBodyLeft, 128, 67, 10);
     gSprites[spriteId].sTaskId = taskId;
@@ -312,16 +324,16 @@ void CreatePsyduckSprites(u8 taskId)
 
     spriteId = CreateSprite(&sSpriteTemplate_PsyduckArmFront, 138, 92, 5);
     gSprites[spriteId].sTaskId = taskId;
-    StartSpriteAnim(&gSprites[spriteId], 1);
-    gSprites[spriteId].x2 = -16;
     if (FlagGet(FLAG_SPA_PSYDUCK_SATISFIED))
     {
         gTasks[taskId].tIsSatisfied = TRUE;
         StartSpriteAnim(&gSprites[spriteId], 0);
-        gSprites[spriteId].x2 = 0;
     }
     else
     {
+        StartSpriteAnim(&gSprites[spriteId], 1);
+        gSprites[spriteId].x2 = -16;
+
         spriteId = CreateSprite(&sSpriteTemplate_PsyduckArmBack, 57, 78, 5);
         gSprites[spriteId].sTaskId = taskId;
     }
