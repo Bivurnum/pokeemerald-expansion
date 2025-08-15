@@ -45,6 +45,7 @@
 #define TAG_ITEMS_ICON  0x1001
 #define TAG_BERRY       0x1002
 #define TAG_CLAW        0x1003
+#define TAG_HONEY       0x1004
 
 #define ITEM_START_X    -22
 #define ITEM_END_X      10

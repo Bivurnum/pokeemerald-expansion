@@ -50,6 +50,7 @@ static void SpriteCB_Angry(struct Sprite *sprite);
 static void SpriteCB_Heart(struct Sprite *sprite);
 static void SpriteCB_Berry(struct Sprite *sprite);
 static void SpriteCB_Claw(struct Sprite *sprite);
+static void SpriteCB_Honey(struct Sprite *sprite);
 static void Task_ScriptStartSpa(u8 taskId);
 
 static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.lz");
@@ -73,6 +74,9 @@ static const u32 gBerry_Gfx[] = INCBIN_U32("graphics/_spa/berry.4bpp");
 
 static const u16 gClaw_Pal[] = INCBIN_U16("graphics/_spa/claw.gbapal");
 static const u32 gClaw_Gfx[] = INCBIN_U32("graphics/_spa/claw.4bpp");
+
+static const u16 gHoney_Pal[] = INCBIN_U16("graphics/_spa/honey.gbapal");
+static const u32 gHoney_Gfx[] = INCBIN_U32("graphics/_spa/honey.4bpp");
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -223,6 +227,39 @@ static const union AnimCmd * const sAnims_Claw[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd sAnim_Honey1Bug[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_Honey2Bugs[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_Honey3Bugs[] =
+{
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 16),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_Honey4Bugs[] =
+{
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 16),
+    ANIMCMD_END
+};
+
+static const union AnimCmd * const sAnims_Honey[] =
+{
+    sAnim_Normal,
+    sAnim_Honey1Bug,
+    sAnim_Honey2Bugs,
+    sAnim_Honey3Bugs,
+    sAnim_Honey4Bugs,
+};
+
 static const struct SpriteFrameImage sPicTable_Hand[] =
 {
     spa_frame(gHand_Gfx, 0, 4, 4),
@@ -279,6 +316,15 @@ static const struct SpriteFrameImage sPicTable_Berry[] =
 static const struct SpriteFrameImage sPicTable_Claw[] =
 {
     spa_frame(gClaw_Gfx, 0, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Honey[] =
+{
+    spa_frame(gHoney_Gfx, 0, 4, 4),
+    spa_frame(gHoney_Gfx, 1, 4, 4),
+    spa_frame(gHoney_Gfx, 2, 4, 4),
+    spa_frame(gHoney_Gfx, 3, 4, 4),
+    spa_frame(gHoney_Gfx, 4, 4, 4),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Hand =
@@ -391,6 +437,17 @@ static const struct SpriteTemplate sSpriteTemplate_Claw =
     .callback = SpriteCB_Claw
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Honey =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_HONEY,
+    .oam = &sOam_32x32,
+    .anims = sAnims_Honey,
+    .images = sPicTable_Honey,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_Honey
+};
+
 static const struct SpritePalette sSpritePalettes_Spa[] =
 {
     {
@@ -408,6 +465,10 @@ static const struct SpritePalette sSpritePalettes_Spa[] =
     {
         .data = gClaw_Pal,
         .tag = TAG_CLAW
+    },
+    {
+        .data = gHoney_Pal,
+        .tag = TAG_HONEY
     },
     {NULL},
 };
@@ -696,6 +757,9 @@ static void DoSpaMonBerryText(bool8 isSatisfied)
         else
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaNoInterest, 0, 0, 0, NULL);
         break;
+    case SPA_PSYDUCK:
+        AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckNoInterest, 0, 0, 0, NULL);
+        break;
     }
 }
 
@@ -709,6 +773,23 @@ static void DoSpaMonClawText(bool8 isSatisfied)
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaLikesScratches, 0, 0, 0, NULL);
         else
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaWondersClaw, 0, 0, 0, NULL);
+        break;
+    case SPA_PSYDUCK:
+        AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckNoInterest, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+static void DoSpaMonHoneyText(bool8 isSatisfied)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    switch (VarGet(VAR_SPA_MON))
+    {
+    case SPA_PSYDUCK:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckNoInterest, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_HoneyLooksSticky, 0, 0, 0, NULL);
         break;
     }
 }
@@ -729,6 +810,12 @@ static void DoSpaMonStatusText(bool8 isSatisfied)
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaGrateful, 0, 0, 0, NULL);
         else
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaItchy, 0, 0, 0, NULL);
+        break;
+    case SPA_PSYDUCK:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckUneasy, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckInfested, 0, 0, 0, NULL);
         break;
     }
 }
@@ -826,6 +913,14 @@ static void Task_SpaItemChoose(u8 taskId)
             gSprites[spriteId].sTaskId = taskId;
             gSprites[spriteId].oam.priority = 0;
             VarSet(VAR_CLAW_SPRITE_ID, spriteId);
+        }
+
+        if (FlagGet(FLAG_SPA_OBTAINED_HONEY))
+        {
+            spriteId = CreateSprite(&sSpriteTemplate_Honey, (ITEM_START_X), SpaItemsY[2][0], 0);
+            gSprites[spriteId].sTaskId = taskId;
+            gSprites[spriteId].oam.priority = 0;
+            VarSet(VAR_HONEY_SPRITE_ID, spriteId);
         }
 
         PlaySE(SE_BALL_TRAY_ENTER);
@@ -1431,6 +1526,63 @@ static void SpriteCB_Claw(struct Sprite *sprite)
             sTask.tItemMenuState = ITEM_STATE_END;
             DestroySprite(sprite);
         }
+        if (JOY_NEW(INTERACT_BUTTON))
+        {
+            sTask.tItemMenuState = ITEM_STATE_END;
+            DestroySprite(sprite);
+        }
+        else if (JOY_NEW(L_BUTTON))
+        {
+            sTask.tSelectedItem = 0;
+            sTask.tItemMenuState = ITEM_STATE_START;
+            DestroySprite(sprite);
+        }
+        
+        MoveSpriteFromInput(sprite);
+    }
+    else if (sTask.tItemMenuState == ITEM_STATE_NO_SELECTION)
+    {
+        sprite->x -= 2;
+    }
+    else if (sTask.tItemMenuState == ITEM_STATE_END)
+    {
+        DestroySprite(sprite);
+    }
+}
+
+static void SpriteCB_Honey(struct Sprite *sprite)
+{
+    if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD && (JOY_NEW(STATUS_BUTTON) || (!sTask.tStatusShowing && JOY_HELD(STATUS_BUTTON))))
+    {
+        DoSpaMonHoneyText(sTask.tIsSatisfied);
+        sTask.tStatusShowing = TRUE;
+    }
+
+    if (sTask.tItemMenuState == ITEM_STATE_TRAY_OUT && sprite->x < ITEM_END_X)
+    {
+        sprite->x += 2;
+    }
+    else if (sTask.tItemMenuState == ITEM_STATE_ITEM_SELECTED && sTask.tSelectedItem != 2)
+    {
+        sprite->x -= 2;
+    }
+    else if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD)
+    {
+        if (sTask.tSelectedItem != 2)
+        {
+            DestroySprite(sprite);
+        }
+        /*if (sTask.tIsSatisfied && sTask.tSatisfScore != 0)
+        {
+            u8 spaMon = VarGet(VAR_SPA_MON);
+            u8 spriteId = CreateSprite(&sSpriteTemplate_Music, MusicPos[spaMon][0], MusicPos[spaMon][1], 0);
+            gSprites[spriteId].sTaskId = sprite->sTaskId;
+            StartSpriteAnim(&gSprites[spriteId], MusicPos[spaMon][2]);
+            VarSet(VAR_SPA_COUNTER, 0);
+            DoSpaMonFeelsBetterText();
+            sTask.tItemMenuState = ITEM_STATE_END;
+            DestroySprite(sprite);
+        }*/
         if (JOY_NEW(INTERACT_BUTTON))
         {
             sTask.tItemMenuState = ITEM_STATE_END;

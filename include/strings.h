@@ -2431,6 +2431,7 @@ extern const u8 gText_SpaItemSelectInstructions[];
 extern const u8 gText_SpaItemInstructions[];
 extern const u8 gText_GeneralBadTouch[];
 extern const u8 gText_FeelsBetter[];
+extern const u8 gText_HoneyLooksSticky[];
 
 extern const u8 gText_RattataWary[];
 extern const u8 gText_RattataAtEase[];
@@ -2448,5 +2449,9 @@ extern const u8 gText_TeddiursaSatisfied[];
 extern const u8 gText_TeddiursaEnjoyedSnack[];
 extern const u8 gText_TeddiursaWondersClaw[];
 extern const u8 gText_TeddiursaLikesScratches[];
+
+extern const u8 gText_PsyduckNoInterest[];
+extern const u8 gText_PsyduckInfested[];
+extern const u8 gText_PsyduckUneasy[];
 
 #endif // GUARD_STRINGS_H
