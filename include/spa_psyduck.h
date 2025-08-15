@@ -6,6 +6,18 @@
 
 #define MAX_BUGS        4
 
+enum BugDirections {
+    BUG_NONE,
+    BUG_NORTH,
+    BUG_EAST,
+    BUG_SOUTH,
+    BUG_WEST,
+    BUG_NE,
+    BUG_SE,
+    BUG_SW,
+    BUG_NW
+};
+
 void CreatePsyduckSprites(u8 taskId);
 
 extern const struct SpritePalette sSpritePalettes_SpaPsyduck[];

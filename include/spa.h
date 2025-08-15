@@ -28,6 +28,7 @@
 #define sHeartOffset    data[3]
 #define sHeartId        data[4]
 #define sBlinkCounter   data[4]
+#define sBugDirection   data[3]
 #define sFadeStarted    data[5]
 #define sBerryBites     data[6]
 #define sTask       gTasks[sprite->sTaskId]

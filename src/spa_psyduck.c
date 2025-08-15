@@ -104,7 +104,16 @@ static const union AnimCmd * const sAnims_PsyduckArmBack[] =
     sAnim_Normal,
 };
 
-static const union AnimCmd sAnim_BugCrawl[] =
+static const union AnimCmd sAnim_BugNorth[] =
+{
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 10, .vFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 10, .vFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 10, .vFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 10, .vFlip = TRUE),
+    ANIMCMD_JUMP(0)
+};
+
+static const union AnimCmd sAnim_BugEast[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 10),
     ANIMCMD_FRAME(.imageValue = 1, .duration = 10),
@@ -113,10 +122,71 @@ static const union AnimCmd sAnim_BugCrawl[] =
     ANIMCMD_JUMP(0)
 };
 
+static const union AnimCmd sAnim_BugSouth[] =
+{
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 10),
+    ANIMCMD_JUMP(0)
+};
+
+static const union AnimCmd sAnim_BugWest[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 10, .hFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 10, .hFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 10, .hFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 10, .hFlip = TRUE),
+    ANIMCMD_JUMP(0)
+};
+
+static const union AnimCmd sAnim_BugNE[] =
+{
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 10, .vFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 10, .vFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 10, .vFlip = TRUE),
+    ANIMCMD_JUMP(0)
+};
+
+static const union AnimCmd sAnim_BugSE[] =
+{
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 10),
+    ANIMCMD_JUMP(0)
+};
+
+static const union AnimCmd sAnim_BugSW[] =
+{
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 10, .hFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 10, .hFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 10, .hFlip = TRUE),
+    ANIMCMD_JUMP(0)
+};
+
+static const union AnimCmd sAnim_BugNW[] =
+{
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 10, .vFlip = TRUE, .hFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 10, .vFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 10, .vFlip = TRUE, .hFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 10, .hFlip = TRUE),
+    ANIMCMD_JUMP(0)
+};
+
 static const union AnimCmd * const sAnims_Bug[] =
 {
     sAnim_Normal,
-    sAnim_BugCrawl,
+    sAnim_BugNorth,
+    sAnim_BugEast,
+    sAnim_BugSouth,
+    sAnim_BugWest,
+    sAnim_BugNE,
+    sAnim_BugSE,
+    sAnim_BugSW,
+    sAnim_BugNW,
 };
 
 static const struct SpriteFrameImage sPicTable_PsyduckHeadLeft[] =
@@ -393,9 +463,9 @@ void CreatePsyduckSprites(u8 taskId)
             spriteId = CreateSprite(&sSpriteTemplate_Bug, sBugStartPos[i][0], sBugStartPos[i][1], 4);
             gSprites[spriteId].sTaskId = taskId;
             gSprites[spriteId].sBugId = i;
-            StartSpriteAnim(&gSprites[spriteId], 1);
+            gSprites[spriteId].sBugDirection = (Random32() % 8) + 1;
+            StartSpriteAnim(&gSprites[spriteId], gSprites[spriteId].sBugDirection);
         }
-
     }
 }
 
