@@ -4,7 +4,12 @@
 #define TAG_PSYDUCK     0x2000
 #define TAG_BUGS        0x2001
 
-#define MAX_BUGS        4
+#define MAX_BUGS            4
+#define BUG_BOUND_WIDTH     45
+#define BUG_BOUND_HEIGHT    35
+#define BUG_MIN_MOVE        4
+#define BUG_MAX_MOVE        9
+#define BUG_MOVE_DELAY      8
 
 enum BugDirections {
     BUG_NONE,
