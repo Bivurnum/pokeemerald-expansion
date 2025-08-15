@@ -492,7 +492,7 @@ static void SpriteCB_Bug(struct Sprite *sprite)
             if (honeyAnimNum > 4)
                 honeyAnimNum = 4;
 
-            // PlaySE
+            PlaySE(SE_PUDDLE);
             StartSpriteAnim(&gSprites[VarGet(VAR_HONEY_SPRITE_ID)], honeyAnimNum);
             FlagSet(FLAG_SPA_PSYDUCK_BUG_0 + sprite->sBugId);
             DestroySprite(sprite);
