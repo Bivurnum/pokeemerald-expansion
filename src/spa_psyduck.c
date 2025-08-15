@@ -479,6 +479,26 @@ static const s16 sBugBoundCoords[MAX_BUGS][2] = {
 
 static void SpriteCB_Bug(struct Sprite *sprite)
 {
+    if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD && sTask.tSelectedItem == 2)
+    {
+        u16 HoneyX = gSprites[VarGet(VAR_HONEY_SPRITE_ID)].x;
+        u16 HoneyY = gSprites[VarGet(VAR_HONEY_SPRITE_ID)].y;
+
+        if ((sprite->x > (HoneyX - 8) && sprite->x < (HoneyX + 8))
+         && (sprite->y > (HoneyY - 8) && sprite->y < (HoneyY + 8)))
+        {
+            u8 honeyAnimNum = gSprites[VarGet(VAR_HONEY_SPRITE_ID)].animNum + 1;
+
+            if (honeyAnimNum > 4)
+                honeyAnimNum = 4;
+
+            // PlaySE
+            StartSpriteAnim(&gSprites[VarGet(VAR_HONEY_SPRITE_ID)], honeyAnimNum);
+            FlagSet(FLAG_SPA_PSYDUCK_BUG_0 + sprite->sBugId);
+            DestroySprite(sprite);
+        }
+    }
+
     if (sprite->x <= sBugBoundCoords[sprite->sBugId][0])
     {
         sprite->x++;

@@ -917,10 +917,19 @@ static void Task_SpaItemChoose(u8 taskId)
 
         if (FlagGet(FLAG_SPA_OBTAINED_HONEY))
         {
+            u8 numBugs = 0;
+            u8 i;
+
             spriteId = CreateSprite(&sSpriteTemplate_Honey, (ITEM_START_X), SpaItemsY[2][0], 0);
             gSprites[spriteId].sTaskId = taskId;
             gSprites[spriteId].oam.priority = 0;
             VarSet(VAR_HONEY_SPRITE_ID, spriteId);
+            for (i = 0; i < MAX_BUGS; i++)
+            {
+                if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i))
+                    numBugs++;
+            }
+            StartSpriteAnim(&gSprites[spriteId], numBugs);
         }
 
         PlaySE(SE_BALL_TRAY_ENTER);
