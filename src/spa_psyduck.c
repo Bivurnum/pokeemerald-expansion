@@ -12,6 +12,8 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+static void SpriteCB_Bug(struct Sprite *sprite);
+
 static const u16 gPsyduck_Pal[] = INCBIN_U16("graphics/_spa/psyduck/psyduck_head_left.gbapal");
 static const u32 gPsyduckHeadLeft_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_head_left.4bpp");
 static const u32 gPsyduckHeadRight_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_head_right.4bpp");
@@ -24,6 +26,8 @@ static const u32 gPsyduckTail_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_
 static const u32 gPsyduckFoot_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_foot.4bpp");
 static const u32 gPsyduckArmFront_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_arm_front.4bpp");
 static const u32 gPsyduckArmBack_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_arm_back.4bpp");
+
+static const u32 gBug_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/bug.4bpp");
 
 static const union AnimCmd sAnim_Normal[] =
 {
@@ -100,6 +104,21 @@ static const union AnimCmd * const sAnims_PsyduckArmBack[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd sAnim_BugCrawl[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 10),
+    ANIMCMD_JUMP(0)
+};
+
+static const union AnimCmd * const sAnims_Bug[] =
+{
+    sAnim_Normal,
+    sAnim_BugCrawl,
+};
+
 static const struct SpriteFrameImage sPicTable_PsyduckHeadLeft[] =
 {
     spa_frame(gPsyduckHeadLeft_Gfx, 0, 4, 8),
@@ -155,6 +174,17 @@ static const struct SpriteFrameImage sPicTable_PsyduckArmFront[] =
 static const struct SpriteFrameImage sPicTable_PsyduckArmBack[] =
 {
     spa_frame(gPsyduckArmBack_Gfx, 0, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Bug[] =
+{
+    spa_frame(gBug_Gfx, 0, 2, 2),
+    spa_frame(gBug_Gfx, 1, 2, 2),
+    spa_frame(gBug_Gfx, 2, 2, 2),
+    spa_frame(gBug_Gfx, 3, 2, 2),
+    spa_frame(gBug_Gfx, 4, 2, 2),
+    spa_frame(gBug_Gfx, 5, 2, 2),
+    spa_frame(gBug_Gfx, 6, 2, 2),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_PsyduckHeadLeft =
@@ -278,6 +308,17 @@ static const struct SpriteTemplate sSpriteTemplate_PsyduckArmBack =
     .callback = SpriteCallbackDummy
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Bug =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_PSYDUCK,
+    .oam = &sOam_16x16,
+    .anims = sAnims_Bug,
+    .images = sPicTable_Bug,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_Bug
+};
+
 const struct SpritePalette sSpritePalettes_SpaPsyduck[] =
 {
     {
@@ -287,9 +328,16 @@ const struct SpritePalette sSpritePalettes_SpaPsyduck[] =
     {NULL},
 };
 
+static const s16 sBugStartPos[MAX_BUGS][2] = {
+    [0] = { 92, 64 },
+    [1] = { 176, 74 },
+    [2] = { 162, 50 },
+    [3] = { 150, 82 }
+};
+
 void CreatePsyduckSprites(u8 taskId)
 {
-    u8 spriteId;
+    u8 spriteId, i;
 
     spriteId = CreateSprite(&sSpriteTemplate_PsyduckHeadLeft, 72, 77, 8);
     gSprites[spriteId].sTaskId = taskId;
@@ -336,5 +384,22 @@ void CreatePsyduckSprites(u8 taskId)
 
         spriteId = CreateSprite(&sSpriteTemplate_PsyduckArmBack, 57, 78, 5);
         gSprites[spriteId].sTaskId = taskId;
+
+        for (i = 0; i < MAX_BUGS; i++)
+        {
+            if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i))
+                continue;
+
+            spriteId = CreateSprite(&sSpriteTemplate_Bug, sBugStartPos[i][0], sBugStartPos[i][1], 4);
+            gSprites[spriteId].sTaskId = taskId;
+            gSprites[spriteId].sBugId = i;
+            StartSpriteAnim(&gSprites[spriteId], 1);
+        }
+
     }
+}
+
+static void SpriteCB_Bug(struct Sprite *sprite)
+{
+
 }
