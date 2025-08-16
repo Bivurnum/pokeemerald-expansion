@@ -65,10 +65,17 @@ static const union AnimCmd sAnim_EyesScared[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_EyesHappy[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_PsyduckEyes[] =
 {
     sAnim_Normal,
     sAnim_EyesScared,
+    sAnim_EyesHappy,
 };
 
 static const union AnimCmd * const sAnims_PsyduckBodyLeft[] =
@@ -226,6 +233,7 @@ static const struct SpriteFrameImage sPicTable_PsyduckEyes[] =
 {
     spa_frame(gPsyduckEyes_Gfx, 0, 8, 4),
     spa_frame(gPsyduckEyes_Gfx, 1, 8, 4),
+    spa_frame(gPsyduckEyes_Gfx, 2, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_PsyduckBodyLeft[] =
