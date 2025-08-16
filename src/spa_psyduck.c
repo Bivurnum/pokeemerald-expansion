@@ -161,10 +161,10 @@ static const union AnimCmd * const sAnims_PsyduckArmBack[] =
 
 static const union AnimCmd sAnim_BugNorth[] =
 {
-    ANIMCMD_FRAME(.imageValue = 3, .duration = 10, .vFlip = TRUE),
-    ANIMCMD_FRAME(.imageValue = 4, .duration = 10, .vFlip = TRUE),
-    ANIMCMD_FRAME(.imageValue = 3, .duration = 10, .vFlip = TRUE),
-    ANIMCMD_FRAME(.imageValue = 5, .duration = 10, .vFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 12, .duration = 10,),
+    ANIMCMD_FRAME(.imageValue = 11, .duration = 10,),
+    ANIMCMD_FRAME(.imageValue = 12, .duration = 10,),
+    ANIMCMD_FRAME(.imageValue = 13, .duration = 10,),
     ANIMCMD_JUMP(0)
 };
 
@@ -173,61 +173,61 @@ static const union AnimCmd sAnim_BugEast[] =
     ANIMCMD_FRAME(.imageValue = 0, .duration = 10),
     ANIMCMD_FRAME(.imageValue = 1, .duration = 10),
     ANIMCMD_FRAME(.imageValue = 0, .duration = 10),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 15, .duration = 10),
     ANIMCMD_JUMP(0)
 };
 
 static const union AnimCmd sAnim_BugSouth[] =
 {
-    ANIMCMD_FRAME(.imageValue = 3, .duration = 10),
     ANIMCMD_FRAME(.imageValue = 4, .duration = 10),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 10),
     ANIMCMD_FRAME(.imageValue = 5, .duration = 10),
     ANIMCMD_JUMP(0)
 };
 
 static const union AnimCmd sAnim_BugWest[] =
 {
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 10, .hFlip = TRUE),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 10, .hFlip = TRUE),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 10, .hFlip = TRUE),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 10, .hFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 8, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 7, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 8, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 9, .duration = 10),
     ANIMCMD_JUMP(0)
 };
 
 static const union AnimCmd sAnim_BugNE[] =
 {
-    ANIMCMD_FRAME(.imageValue = 6, .duration = 10, .vFlip = TRUE),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 10),
-    ANIMCMD_FRAME(.imageValue = 6, .duration = 10, .vFlip = TRUE),
-    ANIMCMD_FRAME(.imageValue = 4, .duration = 10, .vFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 14, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 13, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 14, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 15, .duration = 10),
     ANIMCMD_JUMP(0)
 };
 
 static const union AnimCmd sAnim_BugSE[] =
 {
-    ANIMCMD_FRAME(.imageValue = 6, .duration = 10),
     ANIMCMD_FRAME(.imageValue = 2, .duration = 10),
-    ANIMCMD_FRAME(.imageValue = 6, .duration = 10),
-    ANIMCMD_FRAME(.imageValue = 4, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 10),
     ANIMCMD_JUMP(0)
 };
 
 static const union AnimCmd sAnim_BugSW[] =
 {
-    ANIMCMD_FRAME(.imageValue = 6, .duration = 10, .hFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 10),
     ANIMCMD_FRAME(.imageValue = 5, .duration = 10),
-    ANIMCMD_FRAME(.imageValue = 6, .duration = 10, .hFlip = TRUE),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 10, .hFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 7, .duration = 10),
     ANIMCMD_JUMP(0)
 };
 
 static const union AnimCmd sAnim_BugNW[] =
 {
-    ANIMCMD_FRAME(.imageValue = 6, .duration = 10, .vFlip = TRUE, .hFlip = TRUE),
-    ANIMCMD_FRAME(.imageValue = 5, .duration = 10, .vFlip = TRUE),
-    ANIMCMD_FRAME(.imageValue = 6, .duration = 10, .vFlip = TRUE, .hFlip = TRUE),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 10, .hFlip = TRUE),
+    ANIMCMD_FRAME(.imageValue = 10, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 9, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 10, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 11, .duration = 10),
     ANIMCMD_JUMP(0)
 };
 
@@ -317,6 +317,15 @@ static const struct SpriteFrameImage sPicTable_Bug[] =
     spa_frame(gBug_Gfx, 4, 2, 2),
     spa_frame(gBug_Gfx, 5, 2, 2),
     spa_frame(gBug_Gfx, 6, 2, 2),
+    spa_frame(gBug_Gfx, 7, 2, 2),
+    spa_frame(gBug_Gfx, 8, 2, 2),
+    spa_frame(gBug_Gfx, 9, 2, 2),
+    spa_frame(gBug_Gfx, 10, 2, 2),
+    spa_frame(gBug_Gfx, 11, 2, 2),
+    spa_frame(gBug_Gfx, 12, 2, 2),
+    spa_frame(gBug_Gfx, 13, 2, 2),
+    spa_frame(gBug_Gfx, 14, 2, 2),
+    spa_frame(gBug_Gfx, 15, 2, 2),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_PsyduckHeadLeft =
@@ -444,7 +453,7 @@ static const struct SpriteTemplate sSpriteTemplate_Bug =
 {
     .tileTag = TAG_NONE,
     .paletteTag = TAG_PSYDUCK,
-    .oam = &sOam_16x16,
+    .oam = &sOam_16x16_Affine,
     .anims = sAnims_Bug,
     .images = sPicTable_Bug,
     .affineAnims = gDummySpriteAffineAnimTable,
