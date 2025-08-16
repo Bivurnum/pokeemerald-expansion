@@ -1260,8 +1260,8 @@ const s16 PettingZones[][5][5] =
     },
     [SPA_PSYDUCK] =
     {
-        { 124, 195, 47, 94, SPA_PET_BODY },
-        { 69, 125, 60, 94, SPA_PET_HEAD },
+        { 126, 195, 47, 94, SPA_PET_BODY },
+        { 69, 124, 60, 94, SPA_PET_HEAD },
     }
 };
 
