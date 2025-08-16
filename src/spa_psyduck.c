@@ -12,6 +12,9 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+static void SpriteCB_Eyes(struct Sprite *sprite);
+static void SpriteCB_ArmFront(struct Sprite *sprite);
+static void SpriteCB_ArmBack(struct Sprite *sprite);
 static void SpriteCB_Bug(struct Sprite *sprite);
 static void MoveBug(struct Sprite *sprite);
 
@@ -310,7 +313,7 @@ static const struct SpriteTemplate sSpriteTemplate_PsyduckEyes =
     .anims = sAnims_PsyduckEyes,
     .images = sPicTable_PsyduckEyes,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
+    .callback = SpriteCB_Eyes
 };
 
 static const struct SpriteTemplate sSpriteTemplate_PsyduckBodyLeft =
@@ -365,7 +368,7 @@ static const struct SpriteTemplate sSpriteTemplate_PsyduckArmFront =
     .anims = sAnims_PsyduckArmFront,
     .images = sPicTable_PsyduckArmFront,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
+    .callback = SpriteCB_ArmFront
 };
 
 static const struct SpriteTemplate sSpriteTemplate_PsyduckArmBack =
@@ -376,7 +379,7 @@ static const struct SpriteTemplate sSpriteTemplate_PsyduckArmBack =
     .anims = sAnims_PsyduckArmBack,
     .images = sPicTable_PsyduckArmBack,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
+    .callback = SpriteCB_ArmBack
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Bug =
@@ -459,7 +462,10 @@ void CreatePsyduckSprites(u8 taskId)
         for (i = 0; i < MAX_BUGS; i++)
         {
             if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i))
+            {
+                gTasks[taskId].tSatisfScore++;
                 continue;
+            }
 
             spriteId = CreateSprite(&sSpriteTemplate_Bug, sBugStartPos[i][0], sBugStartPos[i][1], 4);
             gSprites[spriteId].sTaskId = taskId;
@@ -467,6 +473,34 @@ void CreatePsyduckSprites(u8 taskId)
             gSprites[spriteId].sBugDirection = (Random32() % 8) + 1;
             StartSpriteAnim(&gSprites[spriteId], gSprites[spriteId].sBugDirection);
         }
+    }
+}
+
+static void SpriteCB_Eyes(struct Sprite *sprite)
+{
+    if (sTask.tSatisfScore == 4 && !sprite->sPsyRelax)
+    {
+        StartSpriteAnim(sprite, 0);
+        sprite->sPsyRelax = TRUE;
+    }
+}
+
+static void SpriteCB_ArmFront(struct Sprite *sprite)
+{
+    if (sTask.tSatisfScore == 4 && !sprite->sPsyRelax)
+    {
+        sprite->x2 = 0;
+        StartSpriteAnim(sprite, 0);
+        sprite->sPsyRelax = TRUE;
+    }
+}
+
+static void SpriteCB_ArmBack(struct Sprite *sprite)
+{
+    if (sTask.tSatisfScore == 4 && !sprite->sPsyRelax)
+    {
+        DestroySprite(sprite);
+        sprite->sPsyRelax = TRUE;
     }
 }
 
@@ -495,6 +529,7 @@ static void SpriteCB_Bug(struct Sprite *sprite)
             PlaySE(SE_PUDDLE);
             StartSpriteAnim(&gSprites[VarGet(VAR_HONEY_SPRITE_ID)], honeyAnimNum);
             FlagSet(FLAG_SPA_PSYDUCK_BUG_0 + sprite->sBugId);
+            sTask.tSatisfScore++;
             DestroySprite(sprite);
         }
     }

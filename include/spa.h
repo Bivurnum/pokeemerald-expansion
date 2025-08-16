@@ -25,6 +25,7 @@
 #define sInterval       data[2]
 #define sItchFadeCount  data[3]
 #define sBugId          data[3]
+#define sPsyRelax       data[3]
 #define sHeartOffset    data[3]
 #define sHeartId        data[4]
 #define sBlinkCounter   data[4]

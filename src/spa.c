@@ -926,7 +926,7 @@ static void Task_SpaItemChoose(u8 taskId)
             VarSet(VAR_HONEY_SPRITE_ID, spriteId);
             for (i = 0; i < MAX_BUGS; i++)
             {
-                if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i))
+                if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i) && !FlagGet(FLAG_SPA_BUG_0_EATEN + i))
                     numBugs++;
             }
             StartSpriteAnim(&gSprites[spriteId], numBugs);
@@ -1580,6 +1580,10 @@ static void SpriteCB_Honey(struct Sprite *sprite)
         if (sTask.tSelectedItem != 2)
         {
             DestroySprite(sprite);
+        }
+        if (!FlagGet(FLAG_SPA_PSYDUCK_SATISFIED) && sTask.tSatisfScore == 4)
+        {
+            FlagSet(FLAG_SPA_PSYDUCK_SATISFIED);
         }
         /*if (sTask.tIsSatisfied && sTask.tSatisfScore != 0)
         {
