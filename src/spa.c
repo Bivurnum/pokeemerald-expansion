@@ -1056,6 +1056,11 @@ static const s16 HeartPos[][3][2] =
         { 110, 40 },
         { 130, 35 },
         { 150, 45 },
+    },
+    [SPA_PSYDUCK] = {
+        { 70, 50 },
+        { 90, 45 },
+        { 110, 55 },
     }
 };
 
@@ -1252,7 +1257,7 @@ const s16 PettingZones[][5][5] =
     },
     [SPA_PSYDUCK] =
     {
-        { 125, 195, 47, 94, SPA_PET_BODY },
+        { 124, 195, 47, 94, SPA_PET_BODY },
         { 69, 125, 60, 94, SPA_PET_HEAD },
     }
 };
@@ -1285,8 +1290,10 @@ static void AdjustToPetArea(struct Sprite *sprite, u8 area)
     {
         sTask.tPetArea = area;
         if (sTask.tPetArea == SPA_PET_BODY && VarGet(VAR_SPA_MON) == SPA_RATTATA)
+        {
             sprite->subpriority = 11;
             sprite->oam.priority = 1;
+        }
     }
 }
 
