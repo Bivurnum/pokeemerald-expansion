@@ -73,11 +73,18 @@ static const union AnimCmd sAnim_EyesMusic[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_EyesHappy[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_PsyduckEyes[] =
 {
     sAnim_Normal,
     sAnim_EyesScared,
     sAnim_EyesMusic,
+    sAnim_EyesHappy,
 };
 
 static const union AnimCmd * const sAnims_PsyduckBodyLeft[] =
@@ -499,10 +506,43 @@ void CreatePsyduckSprites(u8 taskId)
 
 static void SpriteCB_Eyes(struct Sprite *sprite)
 {
+    u16 counter = VarGet(VAR_SPA_COUNTER);
+
     if (sTask.tSatisfScore == 4 && !sprite->sPsyRelax)
     {
         StartSpriteAnim(sprite, 2);
         sprite->sPsyRelax = TRUE;
+    }
+    else if (sTask.tPetActive)
+    {
+        if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
+        {
+            if (sprite->animNum != 3)
+                StartSpriteAnim(sprite, 3);
+
+            return;
+        }
+        switch (sTask.tPetArea)
+        {
+        case SPA_PET_NONE:
+            break;
+        case SPA_PET_BODY:
+            if (counter == 1)
+            {
+                StartSpriteAnim(sprite, 3);
+            }
+            break;
+        case SPA_PET_HEAD:
+            if (counter == 1)
+            {
+                StartSpriteAnim(sprite, 3);
+            }
+            break;
+        }
+    }
+    else if (FlagGet(FLAG_SPA_PSYDUCK_SATISFIED) && sTask.tBerryBites != 3)
+    {
+        StartSpriteAnimIfDifferent(sprite, 0);
     }
 }
 
