@@ -635,6 +635,9 @@ static void PlaySpaMonCry(u8 mode)
     case SPA_TEDDIURSA:
         PlayCry_ByMode(SPECIES_TEDDIURSA, 0, mode);
         break;
+    case SPA_PSYDUCK:
+        PlayCry_ByMode(SPECIES_PSYDUCK, 0, mode);
+        break;
     }
 }
 

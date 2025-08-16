@@ -97,10 +97,19 @@ static const union AnimCmd sAnim_ArmFrontScared[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_ArmFrontFromScared[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_PsyduckArmFront[] =
 {
     sAnim_Normal,
     sAnim_ArmFrontScared,
+    sAnim_ArmFrontFromScared,
 };
 
 static const union AnimCmd * const sAnims_PsyduckArmBack[] =
@@ -243,6 +252,8 @@ static const struct SpriteFrameImage sPicTable_PsyduckArmFront[] =
 {
     spa_frame(gPsyduckArmFront_Gfx, 0, 8, 8),
     spa_frame(gPsyduckArmFront_Gfx, 1, 8, 8),
+    spa_frame(gPsyduckArmFront_Gfx, 2, 8, 8),
+    spa_frame(gPsyduckArmFront_Gfx, 3, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_PsyduckArmBack[] =
@@ -490,7 +501,7 @@ static void SpriteCB_ArmFront(struct Sprite *sprite)
     if (sTask.tSatisfScore == 4 && !sprite->sPsyRelax)
     {
         sprite->x2 = 0;
-        StartSpriteAnim(sprite, 0);
+        StartSpriteAnim(sprite, 2);
         sprite->sPsyRelax = TRUE;
     }
 }
