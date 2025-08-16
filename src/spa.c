@@ -1249,6 +1249,11 @@ const s16 PettingZones[][5][5] =
     {
         { 117, 165, 70, 118, SPA_PET_BODY },
         { 108, 164, 24, 74, SPA_PET_HEAD },
+    },
+    [SPA_PSYDUCK] =
+    {
+        { 125, 195, 47, 94, SPA_PET_BODY },
+        { 69, 125, 60, 94, SPA_PET_HEAD },
     }
 };
 
@@ -1279,7 +1284,7 @@ static void AdjustToPetArea(struct Sprite *sprite, u8 area)
     if (sTask.tPetArea != area && area != SPA_PET_BAD)
     {
         sTask.tPetArea = area;
-        if (sTask.tPetArea == SPA_PET_BODY && VarGet(VAR_SPA_MON) == 0)
+        if (sTask.tPetArea == SPA_PET_BODY && VarGet(VAR_SPA_MON) == SPA_RATTATA)
             sprite->subpriority = 11;
             sprite->oam.priority = 1;
     }
@@ -1604,6 +1609,7 @@ static void SpriteCB_Honey(struct Sprite *sprite)
 
         if (sTask.tBerryBites == 3)
         {
+            sTask.tIsSatisfied = TRUE;
             u8 spaMon = VarGet(VAR_SPA_MON);
             u8 spriteId = CreateSprite(&sSpriteTemplate_Music, MusicPos[spaMon][0], MusicPos[spaMon][1], 0);
             gSprites[spriteId].sTaskId = sprite->sTaskId;
