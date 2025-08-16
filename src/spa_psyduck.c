@@ -12,6 +12,7 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+static void SpriteCB_Hair(struct Sprite *sprite);
 static void SpriteCB_Eyes(struct Sprite *sprite);
 static void SpriteCB_Tail(struct Sprite *sprite);
 static void SpriteCB_ArmFront(struct Sprite *sprite);
@@ -55,9 +56,19 @@ static const union AnimCmd * const sAnims_PsyduckBill[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd sAnim_HairWiggle[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
+    ANIMCMD_JUMP(0)
+};
+
 static const union AnimCmd * const sAnims_PsyduckHair[] =
 {
     sAnim_Normal,
+    sAnim_HairWiggle,
 };
 
 static const union AnimCmd sAnim_EyesScared[] =
@@ -247,6 +258,8 @@ static const struct SpriteFrameImage sPicTable_PsyduckBill[] =
 static const struct SpriteFrameImage sPicTable_PsyduckHair[] =
 {
     spa_frame(gPsyduckHair_Gfx, 0, 4, 4),
+    spa_frame(gPsyduckHair_Gfx, 1, 4, 4),
+    spa_frame(gPsyduckHair_Gfx, 2, 4, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_PsyduckEyes[] =
@@ -343,7 +356,7 @@ static const struct SpriteTemplate sSpriteTemplate_PsyduckHair =
     .anims = sAnims_PsyduckHair,
     .images = sPicTable_PsyduckHair,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
+    .callback = SpriteCB_Hair
 };
 
 static const struct SpriteTemplate sSpriteTemplate_PsyduckEyes =
@@ -514,6 +527,30 @@ void CreatePsyduckSprites(u8 taskId)
             gSprites[spriteId].sBugDirection = (Random32() % 8) + 1;
             StartSpriteAnim(&gSprites[spriteId], gSprites[spriteId].sBugDirection);
         }
+    }
+}
+
+static void SpriteCB_Hair(struct Sprite *sprite)
+{
+    u16 counter = VarGet(VAR_SPA_COUNTER);
+
+    if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
+    {
+        StartSpriteAnimIfDifferent(sprite, 0);
+
+        return;
+    }
+
+    if (sTask.tPetActive && sTask.tPetArea == SPA_PET_HEAD)
+    {
+        if (counter == 1)
+        {
+            StartSpriteAnim(sprite, 1);
+        }
+    }
+    else
+    {
+        StartSpriteAnimIfDifferent(sprite, 0);
     }
 }
 
