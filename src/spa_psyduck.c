@@ -7,8 +7,12 @@
 #include "random.h"
 #include "sound.h"
 #include "spa.h"
+#include "strings.h"
 #include "task.h"
+#include "text.h"
+#include "text_window.h"
 #include "trig.h"
+#include "window.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
@@ -648,6 +652,8 @@ static const s16 sBugBoundCoords[MAX_BUGS][2] = {
 
 static void SpriteCB_Bug(struct Sprite *sprite)
 {
+    u16 counter = VarGet(VAR_SPA_COUNTER);
+
     if (sTask.tItemMenuState == ITEM_STATE_ITEM_HELD && sTask.tSelectedItem == 2)
     {
         u16 HoneyX = gSprites[VarGet(VAR_HONEY_SPRITE_ID)].x;
@@ -667,6 +673,51 @@ static void SpriteCB_Bug(struct Sprite *sprite)
             sTask.tSatisfScore++;
             DestroySprite(sprite);
         }
+    }
+
+    if (sTask.tPetArea == SPA_PET_BAD)
+    {
+        if (sTask.tNumBadPets == 0)
+        {
+            if (counter == 1)
+            {
+                struct Sprite *handSprite = &gSprites[VarGet(VAR_HAND_SPRITE_ID)];
+
+                switch (sprite->sBugId)
+                {
+                case 0:
+                    sprite->x2 =+ (handSprite->x - sprite->x - 6);
+                    sprite->y2 =+ (handSprite->y - sprite->y - 6);
+                    break;
+                case 1:
+                    sprite->x2 =+ (handSprite->x - sprite->x - 6);
+                    sprite->y2 =+ (handSprite->y - sprite->y + 6);
+                    break;
+                case 2:
+                    sprite->x2 =+ (handSprite->x - sprite->x + 6);
+                    sprite->y2 =+ (handSprite->y - sprite->y - 6);
+                    break;
+                case 3:
+                    sprite->x2 =+ (handSprite->x - sprite->x + 6);
+                    sprite->y2 =+ (handSprite->y - sprite->y + 6);
+                    break;
+                }
+
+                FillWindowPixelBuffer(0, PIXEL_FILL(1));
+                AddTextPrinterParameterized(0, FONT_NORMAL, gText_OuchBugsBite, 0, 0, 0, NULL);
+            }
+            else if (counter == 180)
+            {
+                sprite->x2 = 0;
+                sprite->y2 = 0;
+            }
+        }
+        else
+        {
+
+        }
+
+        return;
     }
 
     if (sprite->x <= sBugBoundCoords[sprite->sBugId][0])

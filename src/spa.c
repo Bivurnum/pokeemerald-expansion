@@ -699,8 +699,10 @@ static void Task_SpaGame(u8 taskId)
         {
             u8 spaMon = VarGet(VAR_SPA_MON);
 
-            PlaySpaMonCry(CRY_MODE_ROAR_1);
-            if (gTasks[taskId].tNumBadPets == 0)
+            if (VarGet(VAR_SPA_MON) != SPA_PSYDUCK)
+                PlaySpaMonCry(CRY_MODE_ROAR_1);
+                
+            if (gTasks[taskId].tNumBadPets == 0 && VarGet(VAR_SPA_MON) != SPA_PSYDUCK)
                 CreateSprite(&sSpriteTemplate_Angry, AngryPos[spaMon][0], AngryPos[spaMon][1], 0);
         }
         else if (VarGet(VAR_SPA_COUNTER) == 181 && gTasks[taskId].tNumBadPets == 0)
