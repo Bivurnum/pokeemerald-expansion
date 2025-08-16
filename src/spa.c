@@ -1068,6 +1068,9 @@ static void SpriteCB_Hand(struct Sprite *sprite)
 {
     u8 petArea = GetCurrentPettingArea(sprite);
 
+    if (sTask.tPetScore > 0 && sTask.tPetScore < SPA_PET_SCORE_TARGET)
+        sTask.tPetScore--;
+
     if (sprite->invisible == TRUE)
     {
         if (!sTask.tShouldExit

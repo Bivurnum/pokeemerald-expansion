@@ -624,9 +624,6 @@ static void SpriteCB_RatMouth(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_SPA_COUNTER);
 
-    if (sTask.tPetScore > 0 && sTask.tPetScore < SPA_PET_SCORE_TARGET)
-        sTask.tPetScore--;
-
     if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
     {
         if (sprite->animNum != 2)
