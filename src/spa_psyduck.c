@@ -491,8 +491,16 @@ static void SpriteCB_Eyes(struct Sprite *sprite)
 {
     if (sTask.tSatisfScore == 4 && !sprite->sPsyRelax)
     {
-        StartSpriteAnim(sprite, 0);
-        sprite->sPsyRelax = TRUE;
+        if (sprite->sCounter == 0)
+        {
+            StartSpriteAnim(sprite, 0);
+            sprite->sCounter++;
+        }
+        else if (sprite->animEnded)
+        {
+            sTask.tBerryBites = 3;
+            sprite->sPsyRelax = TRUE;
+        }
     }
 }
 

@@ -1439,6 +1439,7 @@ static const s16 MusicPos[][3] =
 {
     [SPA_RATTATA] = { 190, 20, 0 },
     [SPA_TEDDIURSA] = { 84, 26, 1 },
+    [SPA_PSYDUCK] = { 54, 30, 1 },
 };
 
 static void SpriteCB_Berry(struct Sprite *sprite)
@@ -1588,17 +1589,6 @@ static void SpriteCB_Honey(struct Sprite *sprite)
         {
             FlagSet(FLAG_SPA_PSYDUCK_SATISFIED);
         }
-        /*if (sTask.tIsSatisfied && sTask.tSatisfScore != 0)
-        {
-            u8 spaMon = VarGet(VAR_SPA_MON);
-            u8 spriteId = CreateSprite(&sSpriteTemplate_Music, MusicPos[spaMon][0], MusicPos[spaMon][1], 0);
-            gSprites[spriteId].sTaskId = sprite->sTaskId;
-            StartSpriteAnim(&gSprites[spriteId], MusicPos[spaMon][2]);
-            VarSet(VAR_SPA_COUNTER, 0);
-            DoSpaMonFeelsBetterText();
-            sTask.tItemMenuState = ITEM_STATE_END;
-            DestroySprite(sprite);
-        }*/
         if (JOY_NEW(INTERACT_BUTTON))
         {
             sTask.tItemMenuState = ITEM_STATE_END;
@@ -1608,6 +1598,18 @@ static void SpriteCB_Honey(struct Sprite *sprite)
         {
             sTask.tSelectedItem = 0;
             sTask.tItemMenuState = ITEM_STATE_START;
+            DestroySprite(sprite);
+        }
+
+        if (sTask.tBerryBites == 3)
+        {
+            u8 spaMon = VarGet(VAR_SPA_MON);
+            u8 spriteId = CreateSprite(&sSpriteTemplate_Music, MusicPos[spaMon][0], MusicPos[spaMon][1], 0);
+            gSprites[spriteId].sTaskId = sprite->sTaskId;
+            StartSpriteAnim(&gSprites[spriteId], MusicPos[spaMon][2]);
+            VarSet(VAR_SPA_COUNTER, 0);
+            sTask.tItemMenuState = ITEM_STATE_END;
+            DoSpaMonEnjoyedSnackText();
             DestroySprite(sprite);
         }
         
