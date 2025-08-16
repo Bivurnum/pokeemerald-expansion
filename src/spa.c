@@ -1439,7 +1439,7 @@ static const s16 MusicPos[][3] =
 {
     [SPA_RATTATA] = { 190, 20, 0 },
     [SPA_TEDDIURSA] = { 84, 26, 1 },
-    [SPA_PSYDUCK] = { 54, 30, 1 },
+    [SPA_PSYDUCK] = { 64, 37, 1 },
 };
 
 static void SpriteCB_Berry(struct Sprite *sprite)
@@ -1587,6 +1587,7 @@ static void SpriteCB_Honey(struct Sprite *sprite)
         }
         if (!FlagGet(FLAG_SPA_PSYDUCK_SATISFIED) && sTask.tSatisfScore == 4)
         {
+            sTask.tBerryBites = 3;
             FlagSet(FLAG_SPA_PSYDUCK_SATISFIED);
         }
         if (JOY_NEW(INTERACT_BUTTON))

@@ -65,9 +65,11 @@ static const union AnimCmd sAnim_EyesScared[] =
     ANIMCMD_END
 };
 
-static const union AnimCmd sAnim_EyesHappy[] =
+static const union AnimCmd sAnim_EyesMusic[] =
 {
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
     ANIMCMD_END
 };
 
@@ -75,7 +77,7 @@ static const union AnimCmd * const sAnims_PsyduckEyes[] =
 {
     sAnim_Normal,
     sAnim_EyesScared,
-    sAnim_EyesHappy,
+    sAnim_EyesMusic,
 };
 
 static const union AnimCmd * const sAnims_PsyduckBodyLeft[] =
@@ -499,16 +501,8 @@ static void SpriteCB_Eyes(struct Sprite *sprite)
 {
     if (sTask.tSatisfScore == 4 && !sprite->sPsyRelax)
     {
-        if (sprite->sCounter == 0)
-        {
-            StartSpriteAnim(sprite, 0);
-            sprite->sCounter++;
-        }
-        else if (sprite->animEnded)
-        {
-            sTask.tBerryBites = 3;
-            sprite->sPsyRelax = TRUE;
-        }
+        StartSpriteAnim(sprite, 2);
+        sprite->sPsyRelax = TRUE;
     }
 }
 
