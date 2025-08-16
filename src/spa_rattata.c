@@ -482,6 +482,13 @@ static void SpriteCB_RatBodyRight(struct Sprite *sprite)
 static void SpriteCB_RatTail(struct Sprite *sprite)
 {
     u16 counter = VarGet(VAR_SPA_COUNTER);
+    
+    if (sTask.tPetScore >= SPA_PET_SCORE_TARGET)
+    {
+        StartSpriteAnimIfDifferent(sprite, 0);
+
+        return;
+    }
 
     if (sTask.tPetArea == SPA_PET_BAD)
     {
@@ -490,19 +497,16 @@ static void SpriteCB_RatTail(struct Sprite *sprite)
         else if (VarGet(VAR_SPA_COUNTER) == 60)
             sprite->invisible = FALSE;
     }
-    else if (sTask.tPetArea != SPA_PET_BODY)
-    {
-        if (counter == 1)
-        {
-            StartSpriteAnim(sprite, 0);
-        }
-    }
-    else
+    else if (sTask.tPetActive && sTask.tPetArea == SPA_PET_BODY)
     {
         if (counter == 1)
         {
             StartSpriteAnim(sprite, 1);
         }
+    }
+    else
+    {
+        StartSpriteAnimIfDifferent(sprite, 0);
     }
 }
 
