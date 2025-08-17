@@ -621,6 +621,11 @@ static void SpriteCB_Eyes(struct Sprite *sprite)
             break;
         }
     }
+    else if (sTask.tPetArea == SPA_PET_BAD)
+    {
+        if (counter == 1 && sTask.tNumBadPets == 0)
+            PlaySE(SE_M_BITE);
+    }
     else if (FlagGet(FLAG_SPA_PSYDUCK_SATISFIED) && sTask.tBerryBites != 3)
     {
         StartSpriteAnimIfDifferent(sprite, 0);
