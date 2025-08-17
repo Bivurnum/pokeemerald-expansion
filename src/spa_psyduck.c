@@ -244,6 +244,24 @@ static const union AnimCmd * const sAnims_Bug[] =
     sAnim_BugNW,
 };
 
+static const union AffineAnimCmd sAffineAnim_None[] =
+{
+    AFFINEANIMCMD_FRAME(256, 256, 0, 0),
+    AFFINEANIMCMD_END
+};
+
+static const union AffineAnimCmd sAffineAnim_BugsJump[] =
+{
+    AFFINEANIMCMD_FRAME(16, 16, 0, 45),
+    AFFINEANIMCMD_END
+};
+
+static const union AffineAnimCmd * const sAffineAnims_Bugs[] =
+{
+    sAffineAnim_None,
+    sAffineAnim_BugsJump
+};
+
 static const struct SpriteFrameImage sPicTable_PsyduckHeadLeft[] =
 {
     spa_frame(gPsyduckHeadLeft_Gfx, 0, 4, 8),
@@ -456,7 +474,7 @@ static const struct SpriteTemplate sSpriteTemplate_Bug =
     .oam = &sOam_16x16_Affine,
     .anims = sAnims_Bug,
     .images = sPicTable_Bug,
-    .affineAnims = gDummySpriteAffineAnimTable,
+    .affineAnims = sAffineAnims_Bugs,
     .callback = SpriteCB_Bug
 };
 
@@ -723,7 +741,31 @@ static void SpriteCB_Bug(struct Sprite *sprite)
         }
         else
         {
-
+            if (counter == 1)
+            {
+                FillWindowPixelBuffer(0, PIXEL_FILL(1));
+                AddTextPrinterParameterized(0, FONT_NORMAL, gText_BugsAttacking, 0, 0, 0, NULL);
+            }
+            if (counter == 20)
+            {
+                StartSpriteAffineAnim(sprite, 1);
+            }
+            if (counter >= 20 && counter < 30)
+            {
+                sprite->y2 -= 2;
+            }
+            else if (counter >= 30 && counter < 40)
+            {
+                sprite->y2--;
+            }
+            else if (counter >= 45 && counter < 55)
+            {
+                sprite->y2++;
+            }
+            else if (counter >= 55 && counter < 65)
+            {
+                sprite->y2 += 2;
+            }
         }
 
         return;

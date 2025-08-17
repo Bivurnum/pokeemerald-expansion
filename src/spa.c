@@ -651,6 +651,9 @@ static void PlaySpaMonAttackSE(void)
     case SPA_TEDDIURSA:
         PlaySE(SE_M_SCRATCH);
         break;
+    case SPA_PSYDUCK:
+        PlaySE(SE_M_CUT);
+        break;
     }
 }
 
@@ -695,34 +698,68 @@ static void Task_SpaGame(u8 taskId)
 
     if (gTasks[taskId].tPetArea == SPA_PET_BAD)
     {
-        if (VarGet(VAR_SPA_COUNTER) == 61)
+        if (gTasks[taskId].tNumBadPets == 0)
         {
-            u8 spaMon = VarGet(VAR_SPA_MON);
-
-            if (VarGet(VAR_SPA_MON) != SPA_PSYDUCK)
-                PlaySpaMonCry(CRY_MODE_ROAR_1);
-                
-            if (gTasks[taskId].tNumBadPets == 0 && VarGet(VAR_SPA_MON) != SPA_PSYDUCK)
-                CreateSprite(&sSpriteTemplate_Angry, AngryPos[spaMon][0], AngryPos[spaMon][1], 0);
-        }
-        else if (VarGet(VAR_SPA_COUNTER) == 181 && gTasks[taskId].tNumBadPets == 0)
-        {
-            StopPetting(&gSprites[VarGet(VAR_HAND_SPRITE_ID)]);
-            gTasks[taskId].tNumBadPets++;
-        }
-        else if (VarGet(VAR_SPA_COUNTER) == 117 && gTasks[taskId].tNumBadPets == 1)
-        {
-            PlaySpaMonAttackSE();
-            BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 8, RGB_RED);
-        }
-        else if (VarGet(VAR_SPA_COUNTER) > 117 && gTasks[taskId].tNumBadPets == 1)
-        {
-            if (!gPaletteFade.active)
+            if (VarGet(VAR_SPA_COUNTER) == 61)
             {
-                BeginNormalPaletteFade(PALETTES_ALL, 1, 8, 0, RGB_RED);
-                gTasks[taskId].tPetArea = SPA_PET_NONE;
-                VarSet(VAR_SPA_COUNTER, 0);
-                gTasks[taskId].tNumBadPets = 2;
+                u8 spaMon = VarGet(VAR_SPA_MON);
+
+                if (VarGet(VAR_SPA_MON) != SPA_PSYDUCK)
+                    PlaySpaMonCry(CRY_MODE_ROAR_1);
+
+                if (gTasks[taskId].tNumBadPets == 0 && VarGet(VAR_SPA_MON) != SPA_PSYDUCK)
+                    CreateSprite(&sSpriteTemplate_Angry, AngryPos[spaMon][0], AngryPos[spaMon][1], 0);
+            }
+            else if (VarGet(VAR_SPA_COUNTER) == 181)
+            {
+                StopPetting(&gSprites[VarGet(VAR_HAND_SPRITE_ID)]);
+                gTasks[taskId].tNumBadPets++;
+            }
+        }
+        else
+        {
+            if (VarGet(VAR_SPA_MON) == SPA_PSYDUCK)
+            {
+                if (VarGet(VAR_SPA_COUNTER) == 34)
+                {
+                    PlaySpaMonAttackSE();
+                }
+                else if (VarGet(VAR_SPA_COUNTER) == 50)
+                {
+                    BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 8, RGB_RED);
+                }
+                else if (VarGet(VAR_SPA_COUNTER) > 50)
+                {
+                    if (!gPaletteFade.active)
+                    {
+                        BeginNormalPaletteFade(PALETTES_ALL, 1, 8, 0, RGB_RED);
+                        gTasks[taskId].tPetArea = SPA_PET_NONE;
+                        VarSet(VAR_SPA_COUNTER, 0);
+                        gTasks[taskId].tNumBadPets = 2;
+                    }
+                }
+            }
+            else
+            {
+                if (VarGet(VAR_SPA_COUNTER) == 61)
+                {
+                    PlaySpaMonCry(CRY_MODE_ROAR_1);
+                }
+                else if (VarGet(VAR_SPA_COUNTER) == 117)
+                {
+                    PlaySpaMonAttackSE();
+                    BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 8, RGB_RED);
+                }
+                else if (VarGet(VAR_SPA_COUNTER) > 117)
+                {
+                    if (!gPaletteFade.active)
+                    {
+                        BeginNormalPaletteFade(PALETTES_ALL, 1, 8, 0, RGB_RED);
+                        gTasks[taskId].tPetArea = SPA_PET_NONE;
+                        VarSet(VAR_SPA_COUNTER, 0);
+                        gTasks[taskId].tNumBadPets = 2;
+                    }
+                }
             }
         }
     }

@@ -1308,6 +1308,7 @@ const u8 gText_GeneralBadTouch[] = _("It doesn't like to be touched there!");
 const u8 gText_FeelsBetter[] = _("That feels much better!");
 const u8 gText_HoneyLooksSticky[] = _("The honey looks very sticky.");
 const u8 gText_OuchBugsBite[] = _("Ouch! Those bugs bite!");
+const u8 gText_BugsAttacking[] = _("The bugs are attacking!");
 
 const u8 gText_RattataWary[] = _("Rattata is watching warily.");
 const u8 gText_RattataAtEase[] = _("Rattata seems to be more at ease.");

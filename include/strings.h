@@ -2433,6 +2433,7 @@ extern const u8 gText_GeneralBadTouch[];
 extern const u8 gText_FeelsBetter[];
 extern const u8 gText_HoneyLooksSticky[];
 extern const u8 gText_OuchBugsBite[];
+extern const u8 gText_BugsAttacking[];
 
 extern const u8 gText_RattataWary[];
 extern const u8 gText_RattataAtEase[];
