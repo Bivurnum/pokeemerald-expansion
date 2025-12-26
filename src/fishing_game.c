@@ -803,7 +803,7 @@ void Task_InitOWFishingMinigame(u8 taskId)
     }
 
     tilemapBuffer = AllocZeroed(GetDecompressedDataSize(gFishingGameOWBG_Gfx));
-    LZDecompressWram(gFishingGameOWBG_Gfx, tilemapBuffer);
+    DecompressDataWithHeaderWram(gFishingGameOWBG_Gfx, tilemapBuffer);
     CopyToBgTilemapBuffer(0, gFishingGameOWBG_Tilemap, 0, 0);
     CopyBgTilemapBufferToVram(0);
     LoadPalette(gFishingGameOWBG_Pal, BG_PLTT_ID(13), PLTT_SIZE_4BPP);
@@ -2255,8 +2255,9 @@ void Task_DoReturnToFieldFishTreasure(u8 taskId)
                 {
                     PlaySE(SE_SELECT);
 
-                    switch (GetPocketByItemId(gSpecialVar_ItemId))
+                    switch (GetItemPocket(gSpecialVar_ItemId))
                     {
+                        default:
                         case POCKET_ITEMS:
                             StringCopy(gStringVar3, gText_Items);
                             break;
