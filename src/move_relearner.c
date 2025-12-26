@@ -160,23 +160,21 @@ enum {
 #define GFXTAG_UI       5525
 #define PALTAG_UI       5526
 
-#define MAX_RELEARNER_MOVES max(MAX_LEVEL_UP_MOVES, 25)
-
 static EWRAM_DATA struct
 {
     u8 state;
-    u8 heartSpriteIds[16];                               /*0x001*/
-    u16 movesToLearn[MAX_RELEARNER_MOVES];               /*0x01A*/
-    u8 partyMon;                                         /*0x044*/
-    u8 moveSlot;                                         /*0x045*/
-    struct ListMenuItem menuItems[MAX_RELEARNER_MOVES];  /*0x0E8*/
-    u8 numMenuChoices;                                   /*0x110*/
-    u8 numToShowAtOnce;                                  /*0x111*/
-    u8 moveListMenuTask;                                 /*0x112*/
-    u8 moveListScrollArrowTask;                          /*0x113*/
-    u8 moveDisplayArrowTask;                             /*0x114*/
-    u16 scrollOffset;                                    /*0x116*/
-    u8 categoryIconSpriteId;                             /*0x117*/
+    u8 heartSpriteIds[16];                                   /*0x001*/
+    u16 movesToLearn[MAX_RELEARNER_MOVES];                   /*0x01A*/
+    u8 partyMon;                                             /*0x044*/
+    u8 moveSlot;                                             /*0x045*/
+    struct ListMenuItem menuItems[MAX_RELEARNER_MOVES + 1];  /*0x0E8*/
+    u8 numMenuChoices;                                       /*0x110*/
+    u8 numToShowAtOnce;                                      /*0x111*/
+    u8 moveListMenuTask;                                     /*0x112*/
+    u8 moveListScrollArrowTask;                              /*0x113*/
+    u8 moveDisplayArrowTask;                                 /*0x114*/
+    u16 scrollOffset;                                        /*0x116*/
+    u8 categoryIconSpriteId;                                 /*0x117*/
 } *sMoveRelearnerStruct = {0};
 
 static EWRAM_DATA struct {
@@ -735,10 +733,10 @@ static void DoMoveRelearnerMain(void)
             }
             else
             {
-                u16 moveId = GetMonData(&gPlayerParty[sMoveRelearnerStruct->partyMon], MON_DATA_MOVE1 + sMoveRelearnerStruct->moveSlot);
+                u16 move = GetMonData(&gPlayerParty[sMoveRelearnerStruct->partyMon], MON_DATA_MOVE1 + sMoveRelearnerStruct->moveSlot);
                 u8 originalPP = GetMonData(&gPlayerParty[sMoveRelearnerStruct->partyMon], MON_DATA_PP1 + sMoveRelearnerStruct->moveSlot);
-                
-                StringCopy(gStringVar3, GetMoveName(moveId));
+
+                StringCopy(gStringVar3, GetMoveName(move));
                 RemoveMonPPBonus(&gPlayerParty[sMoveRelearnerStruct->partyMon], sMoveRelearnerStruct->moveSlot);
                 SetMonMoveSlot(&gPlayerParty[sMoveRelearnerStruct->partyMon], GetCurrentSelectedMove(), sMoveRelearnerStruct->moveSlot);
                 u8 newPP = GetMonData(&gPlayerParty[sMoveRelearnerStruct->partyMon], MON_DATA_PP1 + sMoveRelearnerStruct->moveSlot);
@@ -957,19 +955,19 @@ static void CreateLearnableMovesList(void)
     sMoveRelearnerStruct->numToShowAtOnce = LoadMoveRelearnerMovesList(sMoveRelearnerStruct->menuItems, sMoveRelearnerStruct->numMenuChoices);
 }
 
-void MoveRelearnerShowHideHearts(s32 moveId)
+void MoveRelearnerShowHideHearts(s32 move)
 {
     u16 numHearts;
     u16 i;
 
-    if (!sMoveRelearnerMenuSate.showContestInfo || moveId == LIST_CANCEL)
+    if (!sMoveRelearnerMenuSate.showContestInfo || move == LIST_CANCEL)
     {
         for (i = 0; i < 16; i++)
             gSprites[sMoveRelearnerStruct->heartSpriteIds[i]].invisible = TRUE;
     }
     else
     {
-        numHearts = (u8)(gContestEffects[gMovesInfo[moveId].contestEffect].appeal / 10);
+        numHearts = (u8)(gContestEffects[GetMoveContestEffect(move)].appeal / 10);
 
         if (numHearts == 0xFF)
             numHearts = 0;
@@ -983,7 +981,7 @@ void MoveRelearnerShowHideHearts(s32 moveId)
             gSprites[sMoveRelearnerStruct->heartSpriteIds[i]].invisible = FALSE;
         }
 
-        numHearts = (u8)(gContestEffects[gMovesInfo[moveId].contestEffect].jam / 10);
+        numHearts = (u8)(gContestEffects[GetMoveContestEffect(move)].jam / 10);
 
         if (numHearts == 0xFF)
             numHearts = 0;
@@ -1007,7 +1005,6 @@ void MoveRelearnerShowHideCategoryIcon(s32 moveId)
             DestroySprite(&gSprites[sMoveRelearnerStruct->categoryIconSpriteId]);
 
         sMoveRelearnerStruct->categoryIconSpriteId = 0xFF;
-        gSprites[sMoveRelearnerStruct->categoryIconSpriteId].invisible = TRUE;
     }
     else
     {

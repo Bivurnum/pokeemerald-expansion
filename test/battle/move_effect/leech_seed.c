@@ -3,7 +3,7 @@
 
 ASSUMPTIONS
 {
-    ASSUME(gMovesInfo[MOVE_LEECH_SEED].effect == EFFECT_LEECH_SEED);
+    ASSUME(GetMoveEffect(MOVE_LEECH_SEED) == EFFECT_LEECH_SEED);
 }
 
 SINGLE_BATTLE_TEST("Leech Seed doesn't affect Grass-type Pokémon")
@@ -58,22 +58,33 @@ SINGLE_BATTLE_TEST("Leech Seed recovery is prevented by Heal Block")
     }
 }
 
-SINGLE_BATTLE_TEST("Leech Seed recovery will drain the hp of user if leech seeded mon has Liquid Ooze")
+DOUBLE_BATTLE_TEST("Leech Seed will drain HP based on speed of the drained mon")
 {
-    s16 damage;
-    s16 healed;
-
     GIVEN {
-        PLAYER(SPECIES_WYNAUT);
-        OPPONENT(SPECIES_TENTACOOL) { Ability(ABILITY_LIQUID_OOZE); }
+        PLAYER(SPECIES_WYNAUT) { Speed(1); }
+        PLAYER(SPECIES_WOBBUFFET) { Speed(2); }
+        OPPONENT(SPECIES_WYNAUT) { Speed(3); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(4); }
     } WHEN {
-        TURN { MOVE(player, MOVE_LEECH_SEED); }
+        TURN { 
+            MOVE(playerLeft, MOVE_LEECH_SEED, target: opponentLeft); 
+            MOVE(playerRight, MOVE_LEECH_SEED, target: opponentRight); 
+            MOVE(opponentLeft, MOVE_LEECH_SEED, target: playerLeft); 
+            MOVE(opponentRight, MOVE_LEECH_SEED, target: playerRight); 
+        }
     } SCENE {
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_LEECH_SEED, player);
-        HP_BAR(opponent, captureDamage: &damage);
-        HP_BAR(player, captureDamage: &healed);
-    } THEN {
-        EXPECT_EQ(damage, healed);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_LEECH_SEED, opponentRight);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_LEECH_SEED, opponentLeft);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_LEECH_SEED, playerRight);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_LEECH_SEED, playerLeft);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_LEECH_SEED_DRAIN, opponentRight);
+        HP_BAR(opponentRight);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_LEECH_SEED_DRAIN, opponentLeft);
+        HP_BAR(opponentLeft);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_LEECH_SEED_DRAIN, playerRight);
+        HP_BAR(playerRight);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_LEECH_SEED_DRAIN, playerLeft);
+        HP_BAR(playerLeft);
     }
 }
 
