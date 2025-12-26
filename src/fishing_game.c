@@ -17,6 +17,7 @@
 #include "field_control_avatar.h"
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
+#include "fishing.h"
 #include "gpu_regs.h"
 #include "international_string_util.h"
 #include "item.h"
