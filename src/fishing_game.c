@@ -17,6 +17,7 @@
 #include "field_control_avatar.h"
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
+#include "field_weather.h"
 #include "fishing.h"
 #include "gpu_regs.h"
 #include "international_string_util.h"
@@ -2163,6 +2164,7 @@ void Task_DoReturnToFieldFishTreasure(u8 taskId)
                 }
                 else
                 {
+                    UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(TAG_FISHING_BAR), TRUE);
                     spriteId = CreateSprite(&sSpriteTemplate_Treasure, TREASURE_POST_GAME_X, TREASURE_POST_GAME_Y, 1);
                     spriteData.sTaskId = taskId;
                     TreasureSpriteId = spriteId;
