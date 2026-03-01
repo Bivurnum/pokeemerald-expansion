@@ -639,7 +639,7 @@ static const u8 *GetInteractedWaterScript(struct MapPosition *position, u8 metat
 {
     // Does this need a define for the surf elevation (1) check?
     // Can be used in sElevationToSubpriority and other places too
-    u8 objectEventId = GetObjectEventIdByPosition(position->x, position->y, 1);
+    u8 objectEventId = GetObjectEventIdByPosition(position->x, position->y, ELEVATION_SURF);
     if (IsPlayerFacingSurfableFishableWater() == TRUE && ShouldRunDefaultOWEScript(objectEventId))
     {
         gSpecialVar_LastTalked = gObjectEvents[objectEventId].localId;

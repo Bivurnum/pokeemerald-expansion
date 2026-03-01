@@ -807,10 +807,8 @@ static bool32 TrySelectTileForOWE(s32* outX, s32* outY)
             return FALSE;
     }
 
-
-    // 0 is change of elevation, 15 is multiple elevation e.g. bridges
-    // Causes weird interaction issues so just don't let mons spawn here
-    if (elevation == 0 || elevation == 15)
+    // These elevations cause weird interactions, so spawns are prevented.
+    if (elevation == ELEVATION_TRANSITION || elevation == ELEVATION_MULTI_LEVEL)
         return FALSE;
 
     tileBehavior = MapGridGetMetatileBehaviorAt(x, y);
