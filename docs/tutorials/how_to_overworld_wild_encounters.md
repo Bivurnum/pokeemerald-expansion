@@ -17,7 +17,7 @@ However, Manual OWEs do not have to be defined fully, leaving any of the level, 
 Assuming the following `graphicsId` have `.trainerType` set to `TRAINER_TYPE_OW_WILD_ENCOUNTER`;
 - `SPECIES_EEVEE` will result in an Eevee with a randomised level, gender and shinyness, using the default encounter script.
 - `OBJ_EVENT_GFX_SPECIES(NONE)` will result in a male randomised species of randomised level, gender and shinyness, using the default encounter script.
-- `OBJ_EVENT_GFX_SPECIES_SHINY_FEMALE(PIKACHU)` will result in a female, shiny randomised species with randomised level and gender, using the default encounter script.
+- `OBJ_EVENT_GFX_SPECIES_SHINY_FEMALE(NONE)` will result in a female, shiny randomised species with randomised level and gender, using the default encounter script.
 
 As level and species are potentially taken from the Wild Encounter Header, there is an `assertf` to let developers know when an invalid value is used. If the resultant level is invalid, it will be set to `MIN_LEVEL` (1). If the species is invalid, a replacement object will be created using `OBJ_EVENT_GFX_BOY_1`, this will not be an OWE of any kind.
 
