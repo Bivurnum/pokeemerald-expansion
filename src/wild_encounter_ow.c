@@ -233,6 +233,7 @@ void OverworldWildEncounters_CB(void)
     u32 graphicsId = GetGraphicsIdForOWE(&speciesId, &isShiny, &isFemale, &level, &indexRoamerOutbreak, x, y);
 
     if (speciesId == SPECIES_NONE
+     || (WE_OWE_SPECIAL_ONLY && indexRoamerOutbreak == OWE_NON_ROAMER_OUTBREAK)
      || !IsWildLevelAllowedByRepel(GetOWEEncounterLevel(level))
      || !IsAbilityAllowingEncounter(GetOWEEncounterLevel(level))
      || !CheckCanLoadOWE(speciesId, isFemale, isShiny, x, y))
