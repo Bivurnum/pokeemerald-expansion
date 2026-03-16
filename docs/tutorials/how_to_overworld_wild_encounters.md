@@ -21,8 +21,7 @@ Assuming the following `graphicsId` have `.trainerType` set to `TRAINER_TYPE_OW_
 
 As level and species are potentially taken from the Wild Encounter Header, there is an `assertf` to let developers know when an invalid value is used. If the resultant level is invalid, it will be set to `MIN_LEVEL` (1). If the species is invalid, a replacement object will be created using `OBJ_EVENT_GFX_BOY_1`, this will not be an OWE of any kind.
 
-No matter how much of a Manual OWE is defined, it is considered a high priority OWE, and treated as a regular object event in all ways other than ones outlined above. They will always spawn, regardless of level of abilties of player Pokémon. However, they cannot be special spawns.
-> Check above statement, may have been changed.
+No matter how much of a Manual OWE is defined, it is considered a high priority OWE, and treated as a regular object event in all ways other than ones outlined above. They will always spawn, regardless of level or abilties of player Pokémon. However, they cannot be special spawns.
 
 > Flags are set when removed.
 
@@ -31,7 +30,7 @@ Special spawns can be one of three types, in decreasing priority: A Roamer, Feeb
 - If a Roamer is on the route and is able to spawn, then it may appear where a Generated OWE would.
 - If any OWE spawns on a tile where a Feebas special fishing spot is, it may appear is a Feebas (only if `WE_OWE_FEEBAS_SPOTS` is TRUE).
 - If a Generated OWE spawns on a route that has a mass outbreak occuring, it may spawn as an encounter from that mass outbreak.
-> OWE_MAX_ROAMERS
+`OWE_MAX_ROAMERS` limits the max number of total roamers to 253 in order to fit the relevant info within the `ObjectEvent` struct.
 
 ### Restricted Despawning
 There are three configs that can be used to restrict the despawning of Generated OWEs.
@@ -42,15 +41,21 @@ There are three configs that can be used to restrict the despawning of Generated
 
 None of these three configs can prevent the forceful despawning of OWEs to free up limited resources, as is explained in the next section.
 
-
 ## High Priority and Low Priority OWEs
 Low Priority OWEs may not be spawned or even be destroyed in certain situations. There are palettes and object tiles checks to prevent these from spawning if it would fail, as well as similar checks for number of event objects, palettes and object tiles. These checks will despawn the oldest of Low Priority OWEs when other objects event are attempting to be spawned and Low Priority OWEs are using these resources. Low Priority OWEs may also be destroyed by NPC object events colliding with them due to their movements or the OWE being in the way of a trainer interaction. High priority OWEs are treated as regular objects and will not be destroyed in the ways outlined above, but may cause the destruction of Generated OWEs and will not face spawning restrictions.
 These despawn conditions will overwrite the restrictive despawns mentioned above.
 
 ## Encountering an OWE
-Collision between Player and OWE or Interacting with one. Can also interact with an OWE in the water even when the player is not.
-### Encounter Types
+Any collision between the player and the OWE will start an encounter. An encounter will also start if the player interacts with the OWE with the A button.
+
+If the `WE_OWE_APPROACH_FOR_BATTLE` config is `TRUE`, the OWE will take steps to be right next to the player before the battle begins. Otherwise, the objects will be frozen and the battle will start immediately.
+
+A player on land is able to interact with an OWE in the water.
+
 ## Repel and Lure Behaviours
+Repels will prevent the spawning of generated OWEs that are a lower level than the player's lead Pokemon. Lower level generated OWEs that have already been spawned will be immediately despawned when a repel is used. Existing generated OWEs can also be despawned if the player switches a higher level Pokemon to the front of the party if a repel is already active.
+
+Lures increasse the frequency of generated OWE spawning.
 
 ## OWE Behaviour Types
 The behaviors that these OWEs have is set up to be customizable for each individual species. By default, every species is set to `OWE_IGNORE_PLAYER`. To add a different behavior to a species, find their species struct in their `gen_X_families.h` file in the `src/data/pokemon/species_info` folder and add a `.overworldEncounterBehavior = <BEHAVIOR>` to it. `<BEHAVIOR>` should be replaced with the behavior you want them to use. For example, if I wanted to add the `OWE_FLEE_PLAYER_NORMAL` behavior to Mudkip I would open `gen_3_families.h`, find the struct for `SPECIES_MUDKIP`, and add `.overworldEncounterBehavior = OWE_FLEE_PLAYER_NORMAL` to the end of it like so:
@@ -89,15 +94,24 @@ While OWE objects can be given any movement type, there are several different cu
 - `MOVEMENT_TYPE_DESPAWN_OWE` will make the OWE do a very brief animation of surprise and then instantly despawn when it notices the player.
 
 ### Restricted Movements
+There are two configs that can restrict the movement of OWEs. Both are `TRUE` by default.
+- `WE_OWE_RESTRICT_METATILE` will restrict OWE movement to the metatile type they spawned on. For example, if an OWE spawns in a grass patch they will not be able to leave that grass patch.
+- `WE_OWE_RESTRICT_MAP` will prevent OWEs from leaving the map that they were spawned in.
+
+Regardless of configs, OWEs cannot move from water onto land, or vice versa.
+
 ### How Data is Saved
+Some existing members of the `ObjectEvent` struct have been repurposed for OWEs. This has no effect on the existing functionality outside of OWEs.
+
 ```
 struct ObjectEvent
 {
     …
-    u8 trainerRange_berryTreeId; // Also stores level for Overworld Encounters.
+    u8 warpArrowSpriteId;        // Stores roamer status for Overworld Encounters, as well as some bit flags.
     …
-    u8 directionSequenceIndex; // Also stores roamer status for Overworld Encounters.
-    u8 playerCopyableMovement; // COPY_MOVE_*   Also stores age for Overworld Encounters.
+    u8 trainerRange_berryTreeId; // Stores the level for Overworld Encounters.
+    …
+    u8 playerCopyableMovement;   // Stores the age for Overworld Encounters.
     …
 }
 ```
