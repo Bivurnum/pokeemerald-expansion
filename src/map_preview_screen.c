@@ -2,7 +2,10 @@
 #include "event_data.h"
 #include "field_screen_effect.h"
 #include "field_weather.h"
+#include "fldeff.h"
 #include "gpu_regs.h"
+#include "io_reg.h"
+#include "main.h"
 #include "malloc.h"
 #include "map_preview_screen.h"
 #include "menu.h"
@@ -12,10 +15,11 @@
 #include "script.h"
 #include "string_util.h"
 #include "constants/region_map_sections.h"
+#include "constants/rgb.h"
 
 static EWRAM_DATA bool8 sHasVisitedMapBefore = FALSE;
 
-#if IS_FRLG
+//#if IS_FRLG
 
 static EWRAM_DATA bool8 sAllocedBg0TilemapBuffer = FALSE;
 
@@ -87,21 +91,21 @@ static const u8 sAlteringCaveMapPreviewTilemap[] = INCBIN_U8("graphics/map_previ
 
 static const struct MapPreviewScreen sMapPreviewScreenData[MPS_COUNT] = {
     [MPS_VIRIDIAN_FOREST] = {
-        .mapsec = MAPSEC_VIRIDIAN_FOREST,
+        .mapsec = MAPSEC_PETALBURG_WOODS,
         .type = MPS_TYPE_FOREST,
-        .flagId = FLAG_WORLD_MAP_VIRIDIAN_FOREST,
+        .flagId = FLAG_TEMP_5,
         .tilesptr = sViridianForestMapPreviewTiles,
         .tilemapptr = sViridianForestMapPreviewTilemap,
         .palptr = sViridianForestMapPreviewPalette
     },
     [MPS_MT_MOON] = {
-        .mapsec = MAPSEC_MT_MOON,
+        .mapsec = MAPSEC_RUSTURF_TUNNEL,
         .type = MPS_TYPE_CAVE,
         .flagId = FLAG_WORLD_MAP_MT_MOON_1F,
         .tilesptr = sMtMoonMapPreviewTiles,
         .tilemapptr = sMtMoonMapPreviewTilemap,
         .palptr = sMtMoonMapPreviewPalette
-    },
+    },/*
     [MPS_DIGLETTS_CAVE] = {
         .mapsec = MAPSEC_DIGLETTS_CAVE,
         .type = MPS_TYPE_CAVE,
@@ -309,7 +313,7 @@ static const struct MapPreviewScreen sMapPreviewScreenData[MPS_COUNT] = {
         .tilesptr = sMoneanChamberMapPreviewTiles,
         .tilemapptr = sMoneanChamberMapPreviewTilemap,
         .palptr = sMoneanChamberMapPreviewPalette
-    }
+    }*/
 };
 
 static const struct WindowTemplate sMapNameWindow = {
@@ -320,6 +324,16 @@ static const struct WindowTemplate sMapNameWindow = {
     .height = 2,
     .paletteNum = 14,
     .baseBlock = 0x1C2
+};
+
+static const struct WindowTemplate sMapNameWindowLarge = {
+    .bg = 0,
+    .tilemapLeft = 0,
+    .tilemapTop = 0,
+    .width = 22,
+    .height = 2,
+    .paletteNum = 14,
+    .baseBlock = 0x259
 };
 
 static const struct BgTemplate sMapPreviewBgTemplate[1] = {
@@ -382,20 +396,24 @@ void MapPreview_LoadGfx(mapsec_u8_t mapsec)
     idx = GetMapPreviewScreenIdx(mapsec);
     if (idx != MPS_COUNT)
     {
-       ResetTempTileDataBuffers();
-       LoadPalette(sMapPreviewScreenData[idx].palptr, BG_PLTT_ID(13), 3 * PLTT_SIZE_4BPP);
-       DecompressAndCopyTileDataToVram(0, sMapPreviewScreenData[idx].tilesptr, 0, 0, 0);
-       if (GetBgTilemapBuffer(0) == NULL)
-       {
-           SetBgTilemapBuffer(0, Alloc(BG_SCREEN_SIZE));
-           sAllocedBg0TilemapBuffer = TRUE;
-       }
-       else
-       {
-           sAllocedBg0TilemapBuffer = FALSE;
-       }
-       CopyToBgTilemapBuffer(0, sMapPreviewScreenData[idx].tilemapptr, 0, 0x000);
-       CopyBgTilemapBufferToVram(0);
+        ResetTempTileDataBuffers();
+        if (sMapPreviewScreenData[idx].usesAllPalettes == TRUE)
+            LoadPalette(sMapPreviewScreenData[idx].palptr, BG_PLTT_ID(0), 16 * PLTT_SIZE_4BPP);
+        else
+            LoadPalette(sMapPreviewScreenData[idx].palptr, BG_PLTT_ID(13), 3 * PLTT_SIZE_4BPP);
+
+        DecompressAndCopyTileDataToVram(0, sMapPreviewScreenData[idx].tilesptr, 0, 0, 0);
+        if (GetBgTilemapBuffer(0) == NULL)
+        {
+            SetBgTilemapBuffer(0, Alloc(BG_SCREEN_SIZE));
+            sAllocedBg0TilemapBuffer = TRUE;
+        }
+        else
+        {
+            sAllocedBg0TilemapBuffer = FALSE;
+        }
+        CopyToBgTilemapBuffer(0, sMapPreviewScreenData[idx].tilemapptr, 0, 0x000);
+        CopyBgTilemapBufferToVram(0);
     }
 }
 
@@ -411,6 +429,14 @@ void MapPreview_Unload(s32 windowId)
 bool32 MapPreview_IsGfxLoadFinished(void)
 {
     return FreeTempTileDataBuffersIfPossible();
+}
+
+bool32 CanDoMapPreviewForest(void)
+{
+    if (OW_OBJECT_VANILLA_SHADOWS || OW_SHADOW_INTENSITY == 16)
+        return TRUE;
+
+    return FALSE;
 }
 
 void MapPreview_StartForestTransition(mapsec_u8_t mapsec)
@@ -440,6 +466,7 @@ u16 MapPreview_CreateMapNameWindow(mapsec_u8_t mapsec)
 {
     u16 windowId;
     u32 xctr;
+    s32 stringWidth;
     #ifdef BUGFIX
     // Fixes access violations indicated below.
     u8 color[3];
@@ -447,28 +474,109 @@ u16 MapPreview_CreateMapNameWindow(mapsec_u8_t mapsec)
     u8 color[0];
     #endif
 
-    windowId = AddWindow(&sMapNameWindow);
+    GetMapName(gStringVar4, mapsec, 0);
+    // Use a longer window size if the map name is too long to fit.
+    stringWidth = GetStringWidth(FONT_NORMAL, gStringVar4, 0);
+    if (stringWidth > 104)
+    {
+        windowId = AddWindow(&sMapNameWindowLarge);
+        xctr = 177 - stringWidth;
+    }
+    else
+    {
+        xctr = 104 - stringWidth;
+        windowId = AddWindow(&sMapNameWindow);
+    }
     FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
     PutWindowTilemap(windowId);
     color[0] = TEXT_COLOR_WHITE; // Access violation
     color[1] = TEXT_COLOR_RED; // Access violation
     color[2] = TEXT_COLOR_LIGHT_GRAY; // Access violation
-    GetMapName(gStringVar4, mapsec, 0);
-    xctr = 104 - GetStringWidth(FONT_NORMAL, gStringVar4, 0);
     AddTextPrinterParameterized4(windowId, FONT_NORMAL, xctr / 2, 2, 0, 0, color/* Access violation */, -1, gStringVar4);
     return windowId;
 }
 
+void RunMapPreviewScreen(u8 mapSecId)
+{
+    u8 taskId = CreateTask(Task_MapPreviewScreen_0, 0);
+    gTasks[taskId].data[3] = mapSecId;
+}
+
+void Task_MapPreviewScreen_0(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    switch (data[0])
+    {
+    case 0:
+        SetWordTaskArg(taskId, 5, (uintptr_t)gMain.vblankCallback);
+        SetVBlankCallback(NULL);
+        MapPreview_InitBgs();
+        MapPreview_LoadGfx(data[3]);
+        BlendPalettes(PALETTES_ALL, 0x10, RGB_WHITE);
+        data[0]++;
+        break;
+    case 1:
+        if (!MapPreview_IsGfxLoadFinished())
+        {
+            data[4] = MapPreview_CreateMapNameWindow(data[3]);
+            CopyWindowToVram(data[4], COPYWIN_FULL);
+            data[0]++;
+        }
+        break;
+    case 2:
+        if (!IsDma3ManagerBusyWithBgCopy())
+        {
+            BeginNormalPaletteFade(PALETTES_ALL, -1, 16, 0, RGB_WHITE);
+            SetVBlankCallback((IntrCallback)GetWordTaskArg(taskId, 5));
+            data[0]++;
+        }
+        break;
+    case 3:
+        if (!UpdatePaletteFade())
+        {
+            data[2] = MapPreview_GetDuration(data[3]);
+            data[0]++;
+        }
+        break;
+    case 4:
+        data[1]++;
+        if (data[1] > data[2] || JOY_NEW(B_BUTTON))
+        {
+            if (MapHasPreviewScreen_HandleQLState2(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE)
+            {
+                BeginNormalPaletteFade(PALETTES_ALL, -2, 0, 16, RGB_WHITE);
+            }
+            else {
+                BeginNormalPaletteFade(PALETTES_ALL, MPS_BASIC_FADE_SPEED, 0, 16, RGB_BLACK);
+            }
+            data[0]++;
+        }
+        break;
+    case 5:
+        if (!UpdatePaletteFade())
+        {
+            int i;
+            for (i = 0; i < 16; i++)
+            {
+                data[i] = 0;
+            }
+            MapPreview_Unload(data[4]);
+            if (MapHasPreviewScreen_HandleQLState2(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE)
+            {
+                gTasks[taskId].func = Task_EnterCaveTransition2;
+            }
+            else
+            {
+                SetMainCallback2(gMain.savedCallback);
+            }
+        }
+        break;
+    }
+}
+
 bool32 ForestMapPreviewScreenIsRunning(void)
 {
-    if (FuncIsActiveTask(Task_RunMapPreviewScreenForest) == TRUE)
-    {
-        return FALSE;
-    }
-    else
-    {
-        return TRUE;
-    }
+    return FuncIsActiveTask(Task_RunMapPreviewScreenForest);
 }
 
 static void Task_RunMapPreviewScreenForest(u8 taskId)
@@ -501,6 +609,13 @@ static void Task_RunMapPreviewScreenForest(u8 taskId)
         break;
     case 3:
         data[1]++;
+        if (JOY_NEW(START_BUTTON | SELECT_BUTTON))
+        {
+            FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 32, 32);
+            CopyBgTilemapBufferToVram(0);
+            data[0] = 5;
+            break;
+        }
         if (data[1] > data[10])
         {
             data[1] = 0;
@@ -527,7 +642,7 @@ static void Task_RunMapPreviewScreenForest(u8 taskId)
         }
         data[1] = (data[1] + 1) % 3;
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(data[8], data[9]));
-        if (data[8] == 0 && data[9] == 16)
+        if ((data[8] == 0 && data[9] == 16) || JOY_NEW(START_BUTTON | SELECT_BUTTON))
         {
             FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 32, 32);
             CopyBgTilemapBufferToVram(0);
@@ -599,7 +714,7 @@ u16 MapPreview_GetDuration(mapsec_u8_t mapsec)
     }
 }
 
-#endif // IS_FRLG
+//#endif // IS_FRLG
 
 void MapPreview_SetFlag(u16 flagId)
 {
