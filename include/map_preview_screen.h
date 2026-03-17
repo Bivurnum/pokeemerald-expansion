@@ -64,7 +64,6 @@ bool32 MapHasPreviewScreen_HandleQLState2(mapsec_u8_t mapsec, u8 type);
 void MapPreview_InitBgs(void);
 void MapPreview_LoadGfx(mapsec_u8_t mapsec);
 bool32 MapPreview_IsGfxLoadFinished(void);
-bool32 CanDoMapPreviewForest(void);
 void MapPreview_Unload(s32 windowId);
 void MapPreview_StartForestTransition(mapsec_u8_t mapsec);
 void RunMapPreviewScreen(u8 mapsecId);

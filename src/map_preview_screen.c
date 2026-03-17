@@ -91,21 +91,21 @@ static const u8 sAlteringCaveMapPreviewTilemap[] = INCBIN_U8("graphics/map_previ
 
 static const struct MapPreviewScreen sMapPreviewScreenData[MPS_COUNT] = {
     [MPS_VIRIDIAN_FOREST] = {
-        .mapsec = MAPSEC_PETALBURG_WOODS,
+        .mapsec = MAPSEC_VIRIDIAN_FOREST,
         .type = MPS_TYPE_FOREST,
-        .flagId = FLAG_TEMP_5,
+        .flagId = FLAG_WORLD_MAP_VIRIDIAN_FOREST,
         .tilesptr = sViridianForestMapPreviewTiles,
         .tilemapptr = sViridianForestMapPreviewTilemap,
         .palptr = sViridianForestMapPreviewPalette
     },
     [MPS_MT_MOON] = {
-        .mapsec = MAPSEC_RUSTURF_TUNNEL,
+        .mapsec = MAPSEC_MT_MOON,
         .type = MPS_TYPE_CAVE,
         .flagId = FLAG_WORLD_MAP_MT_MOON_1F,
         .tilesptr = sMtMoonMapPreviewTiles,
         .tilemapptr = sMtMoonMapPreviewTilemap,
         .palptr = sMtMoonMapPreviewPalette
-    },/*
+    },
     [MPS_DIGLETTS_CAVE] = {
         .mapsec = MAPSEC_DIGLETTS_CAVE,
         .type = MPS_TYPE_CAVE,
@@ -313,7 +313,7 @@ static const struct MapPreviewScreen sMapPreviewScreenData[MPS_COUNT] = {
         .tilesptr = sMoneanChamberMapPreviewTiles,
         .tilemapptr = sMoneanChamberMapPreviewTilemap,
         .palptr = sMoneanChamberMapPreviewPalette
-    }*/
+    }
 };
 
 static const struct WindowTemplate sMapNameWindow = {
@@ -431,37 +431,6 @@ bool32 MapPreview_IsGfxLoadFinished(void)
     return FreeTempTileDataBuffersIfPossible();
 }
 
-bool32 CanDoMapPreviewForest(void)
-{
-    if (OW_OBJECT_VANILLA_SHADOWS || OW_SHADOW_INTENSITY == 16)
-        return TRUE;
-
-    return FALSE;
-}
-
-void MapPreview_StartForestTransition(mapsec_u8_t mapsec)
-{
-    u8 taskId;
-
-    taskId = CreateTask(Task_RunMapPreviewScreenForest, 0);
-    gTasks[taskId].data[2] = GetBgAttribute(0, BG_ATTR_PRIORITY);
-    gTasks[taskId].data[4] = GetGpuReg(REG_OFFSET_BLDCNT);
-    gTasks[taskId].data[5] = GetGpuReg(REG_OFFSET_BLDALPHA);
-    gTasks[taskId].data[3] = GetGpuReg(REG_OFFSET_DISPCNT);
-    gTasks[taskId].data[6] = GetGpuReg(REG_OFFSET_WININ);
-    gTasks[taskId].data[7] = GetGpuReg(REG_OFFSET_WINOUT);
-    gTasks[taskId].data[10] = MapPreview_GetDuration(mapsec);
-    gTasks[taskId].data[8] = 16;
-    gTasks[taskId].data[9] = 0;
-    SetBgAttribute(0, BG_ATTR_PRIORITY, 0);
-    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG0 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG2 | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BD);
-    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(16, 0));
-    SetGpuRegBits(REG_OFFSET_WININ, WININ_WIN0_CLR | WININ_WIN1_CLR);
-    SetGpuRegBits(REG_OFFSET_WINOUT, WINOUT_WIN01_CLR);
-    gTasks[taskId].data[11] = MapPreview_CreateMapNameWindow(mapsec);
-    LockPlayerFieldControls();
-}
-
 u16 MapPreview_CreateMapNameWindow(mapsec_u8_t mapsec)
 {
     u16 windowId;
@@ -526,7 +495,11 @@ void Task_MapPreviewScreen_0(u8 taskId)
     case 2:
         if (!IsDma3ManagerBusyWithBgCopy())
         {
-            BeginNormalPaletteFade(PALETTES_ALL, -1, 16, 0, RGB_WHITE);
+            if (MapHasPreviewScreen_HandleQLState2(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE)
+                BeginNormalPaletteFade(PALETTES_ALL, -1, 16, 0, RGB_WHITE);
+            else
+                BeginNormalPaletteFade(PALETTES_ALL, -1, 16, 0, RGB_BLACK);
+
             SetVBlankCallback((IntrCallback)GetWordTaskArg(taskId, 5));
             data[0]++;
         }
@@ -574,6 +547,27 @@ void Task_MapPreviewScreen_0(u8 taskId)
     }
 }
 
+void MapPreview_StartForestTransition(mapsec_u8_t mapsec)
+{
+    u8 taskId;
+
+    taskId = CreateTask(Task_RunMapPreviewScreenForest, 0);
+    gTasks[taskId].data[2] = GetBgAttribute(0, BG_ATTR_PRIORITY);
+    gTasks[taskId].data[4] = GetGpuReg(REG_OFFSET_BLDCNT);
+    gTasks[taskId].data[5] = GetGpuReg(REG_OFFSET_BLDALPHA);
+    gTasks[taskId].data[3] = GetGpuReg(REG_OFFSET_DISPCNT);
+    gTasks[taskId].data[6] = GetGpuReg(REG_OFFSET_WININ);
+    gTasks[taskId].data[7] = GetGpuReg(REG_OFFSET_WINOUT);
+    gTasks[taskId].data[10] = MapPreview_GetDuration(mapsec);
+    gTasks[taskId].data[8] = 16;
+    gTasks[taskId].data[9] = 0;
+    SetBgAttribute(0, BG_ATTR_PRIORITY, 0);
+    SetGpuRegBits(REG_OFFSET_WININ, WININ_WIN0_CLR | WININ_WIN1_CLR);
+    SetGpuRegBits(REG_OFFSET_WINOUT, WINOUT_WIN01_CLR);
+    gTasks[taskId].data[11] = MapPreview_CreateMapNameWindow(mapsec);
+    LockPlayerFieldControls();
+}
+
 bool32 ForestMapPreviewScreenIsRunning(void)
 {
     return FuncIsActiveTask(Task_RunMapPreviewScreenForest);
@@ -609,15 +603,10 @@ static void Task_RunMapPreviewScreenForest(u8 taskId)
         break;
     case 3:
         data[1]++;
-        if (JOY_NEW(START_BUTTON | SELECT_BUTTON))
+        if (data[1] > data[10] || (JOY_NEW(B_BUTTON)))
         {
-            FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 32, 32);
-            CopyBgTilemapBufferToVram(0);
-            data[0] = 5;
-            break;
-        }
-        if (data[1] > data[10])
-        {
+            SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG0 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG2 | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BD);
+            SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(16, 0));
             data[1] = 0;
             data[0]++;
         }
@@ -642,7 +631,7 @@ static void Task_RunMapPreviewScreenForest(u8 taskId)
         }
         data[1] = (data[1] + 1) % 3;
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(data[8], data[9]));
-        if ((data[8] == 0 && data[9] == 16) || JOY_NEW(START_BUTTON | SELECT_BUTTON))
+        if ((data[8] == 0 && data[9] == 16))
         {
             FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 32, 32);
             CopyBgTilemapBufferToVram(0);
@@ -659,6 +648,7 @@ static void Task_RunMapPreviewScreenForest(u8 taskId)
             SetGpuReg(REG_OFFSET_BLDALPHA, data[5]);
             SetGpuReg(REG_OFFSET_WININ, data[6]);
             SetGpuReg(REG_OFFSET_WINOUT, data[7]);
+            UnlockPlayerFieldControls();
             DestroyTask(taskId);
         }
         break;
