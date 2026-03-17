@@ -8,6 +8,7 @@
 #include "field_weather.h"
 #include "fieldmap.h"
 #include "main.h"
+#include "map_preview_screen.h"
 #include "menu.h"
 #include "palette.h"
 #include "random.h"
@@ -169,7 +170,11 @@ static const u8 ALIGNED(2) sBasePaletteColorMapTypes[32] =
     COLOR_MAP_DARK_CONTRAST,
     COLOR_MAP_DARK_CONTRAST,
     COLOR_MAP_DARK_CONTRAST,
+#if MPS_ENABLE_MAP_PREVIEWS
+    COLOR_MAP_NONE,
+#else
     COLOR_MAP_DARK_CONTRAST,
+#endif // MPS_ENABLE_MAP_PREVIEWS
     COLOR_MAP_NONE,
     COLOR_MAP_NONE,
     // sprite palettes
