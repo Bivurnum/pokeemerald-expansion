@@ -38,6 +38,7 @@ enum MapPreviewScreenId
 #define MPS_TYPE_FOREST 1
 #define MPS_TYPE_BASIC  2
 
+#define MPS_FLAG_NULL   0
 
 struct MapPreviewScreen
 {
