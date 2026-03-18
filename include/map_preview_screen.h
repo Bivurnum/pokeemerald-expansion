@@ -38,9 +38,6 @@ enum MapPreviewScreenId
 #define MPS_TYPE_FOREST 1
 #define MPS_TYPE_BASIC  2
 
-#define MPS_ENABLE_MAP_PREVIEWS TRUE
-
-#define MPS_BASIC_FADE_SPEED    1
 
 struct MapPreviewScreen
 {

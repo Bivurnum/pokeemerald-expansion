@@ -665,30 +665,26 @@ u16 MapPreview_GetDuration(mapsec_u8_t mapsec)
     u16 flagId;
 
     idx = GetMapPreviewScreenIdx(mapsec);
+
     if (idx == MPS_COUNT)
-    {
         return 0;
-    }
+
     flagId = sMapPreviewScreenData[idx].flagId;
-    if (sMapPreviewScreenData[idx].type == MPS_TYPE_CAVE)
+
+    if (flagId == MPS_FLAG_NULL)
+    {
+        return MPS_DURATION_NO_FLAG;
+    }
+    else
     {
         if (!FlagGet(flagId))
         {
-            return 120;
+            FlagSet(flagId);
+            return MPS_DURATION_LONG;
         }
         else
         {
-            return 40;
-        }
-    }
-    else {
-        if (sHasVisitedMapBefore)
-        {
-            return 120;
-        }
-        else
-        {
-            return 40;
+            return MPS_DURATION_SHORT;
         }
     }
 }
