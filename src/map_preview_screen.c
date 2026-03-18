@@ -18,9 +18,6 @@
 #include "constants/rgb.h"
 
 static EWRAM_DATA bool8 sHasVisitedMapBefore = FALSE;
-
-//#if IS_FRLG
-
 static EWRAM_DATA bool8 sAllocedBg0TilemapBuffer = FALSE;
 
 static void Task_RunMapPreviewScreenForest(u8 taskId);
@@ -688,8 +685,6 @@ u16 MapPreview_GetDuration(mapsec_u8_t mapsec)
         }
     }
 }
-
-//#endif // IS_FRLG
 
 void MapPreview_SetFlag(u16 flagId)
 {
