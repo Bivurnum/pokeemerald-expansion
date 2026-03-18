@@ -170,11 +170,7 @@ static const u8 ALIGNED(2) sBasePaletteColorMapTypes[32] =
     COLOR_MAP_DARK_CONTRAST,
     COLOR_MAP_DARK_CONTRAST,
     COLOR_MAP_DARK_CONTRAST,
-#if MPS_ENABLE_MAP_PREVIEWS
-    COLOR_MAP_NONE,
-#else
     COLOR_MAP_DARK_CONTRAST,
-#endif // MPS_ENABLE_MAP_PREVIEWS
     COLOR_MAP_NONE,
     COLOR_MAP_NONE,
     // sprite palettes
@@ -481,7 +477,9 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
         {
             // don't blend special palettes immune to blending
             if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_NONE ||
-                (curPalIndex >= 16 && IS_BLEND_IMMUNE_TAG(GetSpritePaletteTagByPaletteNum(curPalIndex - 16))))
+                (curPalIndex >= 16 && IS_BLEND_IMMUNE_TAG(GetSpritePaletteTagByPaletteNum(curPalIndex - 16))) ||
+                // Don't blend map preview palettes.
+                (curPalIndex == 13 && ForestMapPreviewScreenIsRunning()))
             {
                 // No palette change.
                 palOffset += 16;
