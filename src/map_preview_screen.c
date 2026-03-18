@@ -362,20 +362,9 @@ bool8 MapHasPreviewScreen(mapsec_u8_t mapsec, u8 type)
 
     idx = GetMapPreviewScreenIdx(mapsec);
     if (idx != MPS_COUNT)
-    {
-        if (type == MPS_TYPE_ANY)
-        {
-            return TRUE;
-        }
-        else
-        {
-            return sMapPreviewScreenData[idx].type == type ? TRUE : FALSE;
-        }
-    }
+        return sMapPreviewScreenData[idx].type == type ? TRUE : FALSE;
     else
-    {
         return FALSE;
-    }
 }
 
 bool32 MapHasPreviewScreen_HandleQLState2(mapsec_u8_t mapsec, u8 type)
