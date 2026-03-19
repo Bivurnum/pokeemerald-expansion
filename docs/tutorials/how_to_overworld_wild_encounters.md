@@ -23,7 +23,7 @@ As level and species are potentially taken from the Wild Encounter Header, there
 
 No matter how much of a Manual OWE is defined, it is considered a high priority OWE, and treated as a regular object event in all ways other than ones outlined above. They will always spawn, regardless of level or abilties of player Pokémon. However, they cannot be special spawns.
 
-> Flags are set when removed.
+> When a manual OWE is removed, for whatever reason, it's flag is also set. Because of this, we recommend giving them temporary flags so they can be reset on leaving the map.
 
 ### Special Spawns
 Special spawns can be one of three types, in decreasing priority: A Roamer, Feebas, or Mass Outbreak Encounter. Generated OWEs can have any of these, however, Manual OWEs can only have the Feebas Special Spawn. These work exactly as they would normally;
@@ -42,7 +42,7 @@ There are three configs that can be used to restrict the despawning of Generated
 None of these three configs can prevent the forceful despawning of OWEs to free up limited resources, as is explained in the next section.
 
 ## High Priority and Low Priority OWEs
-Low Priority OWEs may not be spawned or even be destroyed in certain situations. There are palettes and object tiles checks to prevent these from spawning if it would fail, as well as similar checks for number of event objects, palettes and object tiles. These checks will despawn the oldest of Low Priority OWEs when other objects event are attempting to be spawned and Low Priority OWEs are using these resources. Low Priority OWEs may also be destroyed by NPC object events colliding with them due to their movements or the OWE being in the way of a trainer interaction. High priority OWEs are treated as regular objects and will not be destroyed in the ways outlined above, but may cause the destruction of Generated OWEs and will not face spawning restrictions.
+Low Priority OWEs may not be spawned or even be destroyed in certain situations. There are checks to prevent these from spawning if it would fail, including for the number of event objects, palettes and object tiles. There are also similar checks, when spawning object events other than Low Priotity OWEs. These checks will despawn the oldest of Low Priority OWEs when other objects event are attempting to be spawned and Low Priority OWEs are using these resources. Low Priority OWEs may also be destroyed by NPC object events colliding with them due to their movements or the OWE being in the way of a trainer interaction. High priority OWEs are treated as regular objects and will not be destroyed in the ways outlined above, but may cause the destruction of Generated OWEs and will not face spawning restrictions.
 These despawn conditions will overwrite the restrictive despawns mentioned above.
 
 ## Encountering an OWE
@@ -50,7 +50,7 @@ Any collision between the player and the OWE will start an encounter. An encount
 
 If the `WE_OWE_APPROACH_FOR_BATTLE` config is `TRUE`, the OWE will take steps to be right next to the player before the battle begins. Otherwise, the objects will be frozen and the battle will start immediately.
 
-A player on land is able to interact with an OWE in the water.
+A player on land is able to interact with an OWE in the water, only by pressing the A button.
 
 ## Repel and Lure Behaviours
 Repels will prevent the spawning of generated OWEs that are a lower level than the player's lead Pokemon. Lower level generated OWEs that have already been spawned will be immediately despawned when a repel is used. Existing generated OWEs can also be despawned if the player switches a higher level Pokemon to the front of the party if a repel is already active.
