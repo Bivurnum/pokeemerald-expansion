@@ -1763,11 +1763,11 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
 
     bool32 validSpecies = CheckValidOWESpecies(speciesId);
     bool32 validLevel = GetOWEEncounterLevel(level) >= MIN_LEVEL && GetOWEEncounterLevel(level) <= MAX_LEVEL;
-    assertf(validSpecies && validLevel, "invalid manual overworld encounter\nspecies: %d\nlevel: %d\nx: %d y: %d\ncheck if valid wild mon header exists", speciesId, level, x, y)
+    u32 objectEventId = GetObjectEventIdByLocalId(template->localId);
+    assertf((validSpecies && validLevel) || gObjectEvents[objectEventId].active, "invalid manual overworld encounter template\nspecies: %d\nlevel: %d\ntemplate x: %d\ntemplate y: %d\ncheck if valid wild mon header exists", speciesId, level, x, y)
     {
         if (!validSpecies)
         {
-            // Currently causes assertf on each player step as function is called.
             templateOWE.graphicsId = OBJ_EVENT_GFX_BOY_1;
             templateOWE.trainerType = TRAINER_TYPE_NONE;
             templateOWE.sOverworldEncounterLevel = 0;
