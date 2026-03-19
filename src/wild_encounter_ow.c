@@ -868,7 +868,7 @@ static void SetSpeciesInfoForOWE(enum Species *speciesId, bool32 *isShiny, bool3
 static u32 GetGraphicsIdForOWE(enum Species *speciesId, bool32 *isShiny, bool32 *isFemale, u32 *level, u32 *indexRoamerOutbreak, s32 x, s32 y)
 {
     SetSpeciesInfoForOWE(speciesId, isShiny, isFemale, level, indexRoamerOutbreak, x, y);
-    assertf(CheckValidOWESpecies(*speciesId), "invalid generated overworld encounter\nspecies: %d\ncheck if valid wild mon header exists", speciesId, x, y);
+    assertf(CheckValidOWESpecies(*speciesId), "invalid generated overworld encounter\nspecies: %d\ncheck if valid wild mon header exists", speciesId);
     u32 graphicsId = *speciesId + OBJ_EVENT_MON;
 
     if (*isFemale)
