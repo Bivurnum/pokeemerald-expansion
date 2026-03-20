@@ -3123,7 +3123,8 @@ bool8 Scrcmd_getsetpokedexflag(struct ScriptContext *ctx)
     enum NationalDexOrder speciesId = SpeciesToNationalPokedexNum(VarGet(ScriptReadHalfword(ctx)));
     u32 desiredFlag = VarGet(ScriptReadHalfword(ctx));
 
-    if (desiredFlag == FLAG_SET_CAUGHT || desiredFlag == FLAG_SET_SEEN)
+    if (desiredFlag == FLAG_SET_CAUGHT || desiredFlag == FLAG_SET_SEEN
+        || (desiredFlag == FLAG_SET_GLIMPSED && WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS))
         Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
     else
         Script_RequestEffects(SCREFF_V1);
@@ -3131,7 +3132,15 @@ bool8 Scrcmd_getsetpokedexflag(struct ScriptContext *ctx)
     gSpecialVar_Result = GetSetPokedexFlag(speciesId, desiredFlag);
 
     if (desiredFlag == FLAG_SET_CAUGHT)
+    {
         GetSetPokedexFlag(speciesId, FLAG_SET_SEEN);
+        GetSetPokedexFlag(speciesId, FLAG_SET_GLIMPSED);
+    }
+    
+    if (desiredFlag == FLAG_SET_SEEN)
+    {
+        GetSetPokedexFlag(speciesId, FLAG_SET_GLIMPSED);
+    }
 
     return FALSE;
 }

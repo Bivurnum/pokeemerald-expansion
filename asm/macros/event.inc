@@ -2516,6 +2516,20 @@
 	.2byte FLAG_SET_CAUGHT
 	.endm
 
+	@ Returns the state of the Pokedex Glimpsed Flag to VAR_RESULT for the Pokemon with speciesId
+	.macro getglimpsedmon species:req
+	callnative Scrcmd_getsetpokedexflag, requests_effects=1
+	.2byte \species
+	.2byte FLAG_SET_GLIMPSED
+	.endm
+
+	@ Sets the Pokedex Glimpsed Flag for the Pokemon with speciesId
+	.macro setglimpsedmon species:req
+	callnative Scrcmd_getsetpokedexflag, requests_effects=1
+	.2byte \species
+	.2byte FLAG_SET_GLIMPSED
+	.endm
+
 	@ Check if the Player has speciesId in their party. OPEN_PARTY_SCREEN will have the player select a mon from their party. NO_PARTY_SCREEN will automatically check every mon in the player's party.
 	.macro checkspecies speciesId:req, mode=NO_PARTY_SCREEN
 	.if \mode == OPEN_PARTY_SCREEN
