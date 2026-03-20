@@ -37,6 +37,7 @@ enum MapPreviewScreenId
 #define MPS_TYPE_CAVE   0
 #define MPS_TYPE_FOREST 1
 #define MPS_TYPE_BASIC  2
+#define MPS_TYPE_ANY    3
 
 #define MPS_FLAG_NULL   0
 
@@ -52,9 +53,8 @@ struct MapPreviewScreen
 };
 
 u16 MapPreview_CreateMapNameWindow(u8 id);
-void MapPreview_SetFlag(u16 a0);
 u16 MapPreview_GetDuration(u8 id);
-bool8 MapHasPreviewScreen(mapsec_u8_t mapsec, u8 type);
+bool32 MapHasPreviewScreen(mapsec_u8_t mapsec, u8 type);
 bool32 ForestMapPreviewScreenIsRunning(void);
 const struct MapPreviewScreen * GetDungeonMapPreviewScreenInfo(mapsec_u8_t mapsec);
 bool32 MapHasPreviewScreen_HandleQLState2(mapsec_u8_t mapsec, u8 type);
@@ -65,5 +65,6 @@ void MapPreview_Unload(s32 windowId);
 void MapPreview_StartForestTransition(mapsec_u8_t mapsec);
 void RunMapPreviewScreen(u8 mapsecId);
 void Task_MapPreviewScreen_0(u8 taskId);
+void MapPreview_SetFlag(u16 flagId);
 
 #endif //GUARD_MAP_PREVIEW_SCREEN_H

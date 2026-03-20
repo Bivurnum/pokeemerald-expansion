@@ -353,15 +353,22 @@ static u8 GetMapPreviewScreenIdx(mapsec_u8_t mapsec)
     return MPS_COUNT;
 }
 
-bool8 MapHasPreviewScreen(mapsec_u8_t mapsec, u8 type)
+bool32 MapHasPreviewScreen(mapsec_u8_t mapsec, u8 type)
 {
     u8 idx;
 
     idx = GetMapPreviewScreenIdx(mapsec);
     if (idx != MPS_COUNT)
-        return sMapPreviewScreenData[idx].type == type ? TRUE : FALSE;
+    {
+        if (type == MPS_TYPE_ANY)
+            return TRUE;
+        else
+            return sMapPreviewScreenData[idx].type == type ? TRUE : FALSE;
+    }
     else
+    {
         return FALSE;
+    }
 }
 
 bool32 MapHasPreviewScreen_HandleQLState2(mapsec_u8_t mapsec, u8 type)
@@ -697,4 +704,89 @@ void MapPreview_SetFlag(u16 flagId)
         sHasVisitedMapBefore = FALSE;
     }
     FlagSet(flagId);
+}
+
+static void VblankCB_MapPreviewScript(void)
+{
+    TransferPlttBuffer();
+}
+
+static void CB2_MapPreviewScript(void)
+{
+    RunTasks();
+    DoScheduledBgTilemapCopiesToVram();
+    UpdatePaletteFade();
+}
+
+#define tTaskStep       data[0]
+#define tFrameCounter   data[1]
+#define tWindowId       data[2]
+#define tDuration       data[3]
+
+static void Task_RunMapPreview_Script(u8 taskId)
+{
+    s16 *data;
+
+    data = gTasks[taskId].data;
+    switch (tTaskStep)
+    {
+    case 0:
+        if (!UpdatePaletteFade())
+        {
+            SetVBlankCallback(NULL);
+            MapPreview_LoadGfx(gMapHeader.regionMapSectionId);
+            BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
+            gMain.savedCallback = CB2_ReturnToFieldContinueScript;
+            SetMainCallback2(CB2_MapPreviewScript);
+            tTaskStep++;
+        }
+        break;
+    case 1:
+        if (!MapPreview_IsGfxLoadFinished() && !IsDma3ManagerBusyWithBgCopy())
+        {
+            tWindowId = MapPreview_CreateMapNameWindow(gMapHeader.regionMapSectionId);
+            CopyWindowToVram(tWindowId, COPYWIN_FULL);
+            tTaskStep++;
+        }
+        break;
+    case 2:
+        if (!IsDma3ManagerBusyWithBgCopy())
+        {
+            SetVBlankCallback(VblankCB_MapPreviewScript);
+            FadeInFromBlack();
+            tTaskStep++;
+        }
+        break;
+    case 3:
+        tFrameCounter++;
+        if (tFrameCounter > tDuration || JOY_HELD(B_BUTTON))
+        {
+            BeginNormalPaletteFade(PALETTES_ALL, MPS_BASIC_FADE_SPEED, 0, 16, RGB_BLACK);
+            tFrameCounter = 0;
+            tTaskStep++;
+        }
+        break;
+    case 4:
+        if (!UpdatePaletteFade())
+        {
+            MapPreview_Unload(tWindowId);
+            DestroyTask(taskId);
+            SetMainCallback2(gMain.savedCallback);
+        }
+        break;
+    }
+}
+
+void MapPreviewScript(struct ScriptContext *ctx)
+{
+    u32 duration = ScriptReadHalfword(ctx);
+    u32 taskId;
+
+    if (!MapHasPreviewScreen(gMapHeader.regionMapSectionId, MPS_TYPE_ANY))
+        return;
+
+    ScriptContext_Stop();
+    FadeScreen(FADE_TO_BLACK, 0);
+    taskId = CreateTask(Task_RunMapPreview_Script, 0);
+    gTasks[taskId].tDuration = duration;
 }

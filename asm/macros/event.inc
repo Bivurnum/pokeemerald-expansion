@@ -2691,6 +2691,11 @@
 	.byte \selectionType
 	.endm
 
+	.macro mappreview duration:req
+	callnative MapPreviewScript
+	.2byte \duration
+	.endm
+
 @ Follower NPCs
 
 	@ Sets an existing NPC up to follow the player.
