@@ -371,11 +371,6 @@ bool32 MapHasPreviewScreen(mapsec_u8_t mapsec, u8 type)
     }
 }
 
-bool32 MapHasPreviewScreen_HandleQLState2(mapsec_u8_t mapsec, u8 type)
-{
-    return MapHasPreviewScreen(mapsec, type);
-}
-
 void MapPreview_InitBgs(void)
 {
     InitBgsFromTemplates(0, sMapPreviewBgTemplate, NELEMS(sMapPreviewBgTemplate));
@@ -488,7 +483,7 @@ void Task_MapPreviewScreen_0(u8 taskId)
     case 2:
         if (!IsDma3ManagerBusyWithBgCopy())
         {
-            if (MapHasPreviewScreen_HandleQLState2(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE)
+            if (MapHasPreviewScreen(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE)
                 BeginNormalPaletteFade(PALETTES_ALL, -1, 16, 0, RGB_WHITE);
             else
                 BeginNormalPaletteFade(PALETTES_ALL, -1, 16, 0, RGB_BLACK);
@@ -508,7 +503,7 @@ void Task_MapPreviewScreen_0(u8 taskId)
         data[1]++;
         if (data[1] > data[2] || JOY_NEW(B_BUTTON))
         {
-            if (MapHasPreviewScreen_HandleQLState2(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE)
+            if (MapHasPreviewScreen(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE)
             {
                 BeginNormalPaletteFade(PALETTES_ALL, -2, 0, 16, RGB_WHITE);
             }
@@ -527,7 +522,7 @@ void Task_MapPreviewScreen_0(u8 taskId)
                 data[i] = 0;
             }
             MapPreview_Unload(data[4]);
-            if (MapHasPreviewScreen_HandleQLState2(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE)
+            if (MapHasPreviewScreen(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE)
             {
                 gTasks[taskId].func = Task_EnterCaveTransition2;
             }
