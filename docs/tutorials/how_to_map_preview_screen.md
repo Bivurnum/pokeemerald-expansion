@@ -1,3 +1,7 @@
+# Map Preview Screen: How To
+
+*written by Bivurnum*
+
 ![map_preview_example](https://github.com/rh-hideout/pokeemerald-expansion/blob/master/docs/tutorials/img/map_preview_screen/map_preview_example.gif)
 
 ### [Click Here for a Guide to Creating a New Map Preview](#creating-a-new-map-preview-image)
