@@ -111,6 +111,9 @@ static void ClearPokedexFlags(void)
     gUnusedPokedexU8 = 0;
     memset(&gSaveBlock1Ptr->dexCaught, 0, sizeof(gSaveBlock1Ptr->dexCaught));
     memset(&gSaveBlock1Ptr->dexSeen, 0, sizeof(gSaveBlock1Ptr->dexSeen));
+#if WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS
+    memset(&gSaveBlock3Ptr->dexGlimpsed, 0, sizeof(gSaveBlock3Ptr->dexGlimpsed));
+#endif
 }
 
 void ClearAllContestWinnerPics(void)

@@ -2427,6 +2427,9 @@ static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId)
     // Reset Pokedex to emtpy
     memset(&gSaveBlock1Ptr->dexCaught, 0, sizeof(gSaveBlock1Ptr->dexCaught));
     memset(&gSaveBlock1Ptr->dexSeen, 0, sizeof(gSaveBlock1Ptr->dexSeen));
+#if WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS
+    memset(&gSaveBlock3Ptr->dexGlimpsed, 0, sizeof(gSaveBlock3Ptr->dexGlimpsed));
+#endif
 
     // Add party Pokemon to Pokedex
     for (partyId = 0; partyId < PARTY_SIZE; partyId++)

@@ -1519,6 +1519,9 @@ void ResetPokedex(void)
     {
         gSaveBlock1Ptr->dexCaught[i] = 0;
         gSaveBlock1Ptr->dexSeen[i] = 0;
+#if WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS
+        gSaveBlock3Ptr->dexGlimpsed[i] = 0;
+#endif
     }
 }
 
