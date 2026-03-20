@@ -4537,7 +4537,6 @@ s8 GetSetPokedexFlag(enum NationalDexOrder nationalDexNo, u8 caseID)
         gSaveBlock1Ptr->dexSeen[index] |= mask;
         break;
     case FLAG_SET_CAUGHT:
-        gSaveBlock1Ptr->dexSeen[index] |= mask;
         gSaveBlock1Ptr->dexCaught[index] |= mask;
         break;
 #if WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS
