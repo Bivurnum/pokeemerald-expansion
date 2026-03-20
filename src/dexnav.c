@@ -163,7 +163,7 @@ static void DexNavDrawHiddenIcons(void);
 static void DrawHiddenSearchWindow(u8 width);
 static void RevealHiddenMon(void);
 
-static void TryLoadSilhouetteIconPalette(void);
+static void TryLoadSilhouetteIconPalette(u16 color);
 static void FreeSilhouetteIconPalette(void);
 static u8 CreateMonIcon_Silhouette(enum Species species, s16 x, s16 y);
 
@@ -429,7 +429,7 @@ static void DrawDexNavSearchMonIcon(enum Species species, u8 *dst, bool8 owned)
     }
     else
     {
-        TryLoadSilhouetteIconPalette();
+        TryLoadSilhouetteIconPalette(RGB(7, 7, 7));
         spriteId = CreateMonIcon_Silhouette(species, x, y);
     }
     
@@ -2271,7 +2271,7 @@ static bool8 DexNav_DoGfxSetup(void)
         break;
     case 10:
         LoadMonIconPalettes();
-        TryLoadSilhouetteIconPalette();
+        TryLoadSilhouetteIconPalette(RGB_BLACK);
         DrawSpeciesIcons();
         CreateSelectionCursor();
         DexNavLoadCapturedAllSymbols();
@@ -2683,12 +2683,12 @@ void IncrementDexNavChain(void)
         gSaveBlock3Ptr->dexNavChain++;
 }
 
-static void TryLoadSilhouetteIconPalette(void)
+static void TryLoadSilhouetteIconPalette(u16 color)
 {
     if (WE_DEX_SILHOUETTE == WE_SILHOUETTE_NEVER)
         return;
 
-    const u16 palette[PLTT_SIZE_4BPP] = { [0 ... PLTT_SIZE_4BPP - 1] = RGB_BLACK };
+    const u16 palette[PLTT_SIZE_4BPP] = { [0 ... PLTT_SIZE_4BPP - 1] = color };
     struct SpritePalette spritePalette = {
         .data = palette,
         .tag = POKE_ICON_SILHOUETTE_PAL_TAG,
