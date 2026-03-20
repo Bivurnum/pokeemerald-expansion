@@ -326,6 +326,7 @@ static void EraseSelectorArrow(u32);
 static void PrintSelectorArrow(u32);
 static void PrintSearchParameterTitle(u32, const u8 *);
 static void ClearSearchParameterBoxText(void);
+static bool32 ShouldListIncludeGlimpsedMon(bool32 glimpsed);
 
 // const rom data
 #include "data/pokemon/pokedex_orders.h"
@@ -2217,11 +2218,11 @@ static void CreatePokedexList(u8 dexMode, u8 order)
             for (i = 0; i < temp_dexCount; i++)
             {
                 temp_dexNum = RegionalToNationalOrder(i + 1);
-                glimpsed = GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED);
+                glimpsed = ShouldListIncludeGlimpsedMon(GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED));
                 sPokedexView->pokedexList[i].dexNum = temp_dexNum;
                 sPokedexView->pokedexList[i].seen = GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN);
                 sPokedexView->pokedexList[i].owned = GetSetPokedexFlag(temp_dexNum, FLAG_GET_CAUGHT);
-                if (sPokedexView->pokedexList[i].seen || (WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS && glimpsed))
+                if (sPokedexView->pokedexList[i].seen || glimpsed)
                     sPokedexView->pokemonListCount = i + 1;
             }
         }
@@ -2231,15 +2232,15 @@ static void CreatePokedexList(u8 dexMode, u8 order)
             for (i = 0, r5 = 0, r10 = 0; i < temp_dexCount; i++)
             {
                 temp_dexNum = i + 1;
-                glimpsed = GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED);
-                if (GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN) || (WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS && glimpsed))
+                glimpsed = ShouldListIncludeGlimpsedMon(GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED));
+                if (GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN) || glimpsed)
                     r10 = 1;
                 if (r10)
                 {
                     sPokedexView->pokedexList[r5].dexNum = temp_dexNum;
                     sPokedexView->pokedexList[r5].seen = GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN);
                     sPokedexView->pokedexList[r5].owned = GetSetPokedexFlag(temp_dexNum, FLAG_GET_CAUGHT);
-                    if (sPokedexView->pokedexList[r5].seen || (WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS && glimpsed))
+                    if (sPokedexView->pokedexList[r5].seen || glimpsed)
                         sPokedexView->pokemonListCount = r5 + 1;
                     r5++;
                 }
@@ -5934,4 +5935,9 @@ static void PrintSearchParameterTitle(u32 y, const u8 *str)
 static void ClearSearchParameterBoxText(void)
 {
     ClearSearchMenuRect(144, 8, 96, 96);
+}
+
+static bool32 ShouldListIncludeGlimpsedMon(bool32 glimpsed)
+{
+    return WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS && glimpsed;
 }
