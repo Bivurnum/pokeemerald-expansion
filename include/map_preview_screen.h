@@ -60,8 +60,8 @@ void MapPreview_InitBgs(void);
 void MapPreview_LoadGfx(mapsec_u8_t mapsec);
 bool32 MapPreview_IsGfxLoadFinished(void);
 void MapPreview_Unload(s32 windowId);
+void RunMapPreviewScreenNonFade(u8 mapSecId);
 void RunMapPreviewScreenFadeIn(mapsec_u8_t mapsec);
-void RunMapPreviewScreen(u8 mapsecId);
 void Task_MapPreviewScreen_NonFade(u8 taskId);
 void MapPreview_SetFlag(u16 flagId);
 

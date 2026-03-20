@@ -159,7 +159,7 @@ static bool8 TryDoMapTransition(void)
 
     if (MPS_ENABLE_MAP_PREVIEWS && FlagGet(FLAG_HIDE_MAP_NAME_POPUP) != TRUE && GetLastUsedWarpMapSectionId() != gMapHeader.regionMapSectionId && (MapHasPreviewScreen(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE || MapHasPreviewScreen(gMapHeader.regionMapSectionId, MPS_TYPE_BASIC) == TRUE))
     {
-        RunMapPreviewScreen(gMapHeader.regionMapSectionId);
+        RunMapPreviewScreenNonFade(gMapHeader.regionMapSectionId);
         return TRUE;
     }
 
