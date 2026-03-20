@@ -20,7 +20,7 @@
 static EWRAM_DATA bool8 sHasVisitedMapBefore = FALSE;
 static EWRAM_DATA bool8 sAllocedBg0TilemapBuffer = FALSE;
 
-static void Task_RunMapPreviewScreenForest(u8 taskId);
+static void Task_RunMapPreviewScreenFadeIn(u8 taskId);
 
 static const u8 sViridianForestMapPreviewPalette[] = INCBIN_U8("graphics/map_preview/viridian_forest/tiles.gbapal");
 static const u8 sViridianForestMapPreviewTiles[] = INCBIN_U8("graphics/map_preview/viridian_forest/tiles.4bpp.smol");
@@ -89,7 +89,7 @@ static const u8 sAlteringCaveMapPreviewTilemap[] = INCBIN_U8("graphics/map_previ
 static const struct MapPreviewScreen sMapPreviewScreenData[MPS_COUNT] = {
     [MPS_VIRIDIAN_FOREST] = {
         .mapsec = MAPSEC_VIRIDIAN_FOREST,
-        .type = MPS_TYPE_FOREST,
+        .type = MPS_TYPE_FADE_IN,
         .flagId = FLAG_WORLD_MAP_VIRIDIAN_FOREST,
         .tilesptr = sViridianForestMapPreviewTiles,
         .tilemapptr = sViridianForestMapPreviewTilemap,
@@ -129,7 +129,7 @@ static const struct MapPreviewScreen sMapPreviewScreenData[MPS_COUNT] = {
     },
     [MPS_SAFARI_ZONE] = {
         .mapsec = MAPSEC_KANTO_SAFARI_ZONE,
-        .type = MPS_TYPE_FOREST,
+        .type = MPS_TYPE_FADE_IN,
         .flagId = FLAG_WORLD_MAP_SAFARI_ZONE_CENTER,
         .tilesptr = sSafariZoneMapPreviewTiles,
         .tilemapptr = sSafariZoneMapPreviewTilemap,
@@ -145,7 +145,7 @@ static const struct MapPreviewScreen sMapPreviewScreenData[MPS_COUNT] = {
     },
     [MPS_POKEMON_MANSION] = {
         .mapsec = MAPSEC_POKEMON_MANSION,
-        .type = MPS_TYPE_FOREST,
+        .type = MPS_TYPE_FADE_IN,
         .flagId = FLAG_WORLD_MAP_POKEMON_MANSION_1F,
         .tilesptr = sPokemonMansionMapPreviewTiles,
         .tilemapptr = sPokemonMansionMapPreviewTilemap,
@@ -153,7 +153,7 @@ static const struct MapPreviewScreen sMapPreviewScreenData[MPS_COUNT] = {
     },
     [MPS_ROCKET_HIDEOUT] = {
         .mapsec = MAPSEC_ROCKET_HIDEOUT,
-        .type = MPS_TYPE_FOREST,
+        .type = MPS_TYPE_FADE_IN,
         .flagId = FLAG_WORLD_MAP_ROCKET_HIDEOUT_B1F,
         .tilesptr = sRocketHideoutMapPreviewTiles,
         .tilemapptr = sRocketHideoutMapPreviewTilemap,
@@ -185,7 +185,7 @@ static const struct MapPreviewScreen sMapPreviewScreenData[MPS_COUNT] = {
     },
     [MPS_POWER_PLANT] = {
         .mapsec = MAPSEC_POWER_PLANT,
-        .type = MPS_TYPE_FOREST,
+        .type = MPS_TYPE_FADE_IN,
         .flagId = FLAG_WORLD_MAP_POWER_PLANT,
         .tilesptr = sPowerPlantMapPreviewTiles,
         .tilemapptr = sPowerPlantMapPreviewTilemap,
@@ -201,7 +201,7 @@ static const struct MapPreviewScreen sMapPreviewScreenData[MPS_COUNT] = {
     },
     [MPS_ROCKET_WAREHOUSE] = {
         .mapsec = MAPSEC_ROCKET_WAREHOUSE,
-        .type = MPS_TYPE_FOREST,
+        .type = MPS_TYPE_FADE_IN,
         .flagId = FLAG_WORLD_MAP_THREE_ISLAND_BERRY_FOREST,
         .tilesptr = sRocketWarehouseMapPreviewTiles,
         .tilemapptr = sRocketWarehouseMapPreviewTilemap,
@@ -225,7 +225,7 @@ static const struct MapPreviewScreen sMapPreviewScreenData[MPS_COUNT] = {
     },
     [MPS_BERRY_FOREST] = {
         .mapsec = MAPSEC_BERRY_FOREST,
-        .type = MPS_TYPE_FOREST,
+        .type = MPS_TYPE_FADE_IN,
         .flagId = FLAG_WORLD_MAP_THREE_ISLAND_BERRY_FOREST,
         .tilesptr = sBerryForestMapPreviewTiles,
         .tilemapptr = sBerryForestMapPreviewTilemap,
@@ -257,7 +257,7 @@ static const struct MapPreviewScreen sMapPreviewScreenData[MPS_COUNT] = {
     },
     [MPS_PATTERN_BUSH] = {
         .mapsec = MAPSEC_PATTERN_BUSH,
-        .type = MPS_TYPE_FOREST,
+        .type = MPS_TYPE_FADE_IN,
         .flagId = FLAG_WORLD_MAP_SIX_ISLAND_PATTERN_BUSH,
         .tilesptr = sViridianForestMapPreviewTiles,
         .tilemapptr = sViridianForestMapPreviewTilemap,
@@ -535,11 +535,11 @@ void Task_MapPreviewScreen_0(u8 taskId)
     }
 }
 
-void MapPreview_StartForestTransition(mapsec_u8_t mapsec)
+void MapPreview_StartFadeInTransition(mapsec_u8_t mapsec)
 {
     u8 taskId;
 
-    taskId = CreateTask(Task_RunMapPreviewScreenForest, 0);
+    taskId = CreateTask(Task_RunMapPreviewScreenFadeIn, 0);
     gTasks[taskId].data[2] = GetBgAttribute(0, BG_ATTR_PRIORITY);
     gTasks[taskId].data[4] = GetGpuReg(REG_OFFSET_BLDCNT);
     gTasks[taskId].data[5] = GetGpuReg(REG_OFFSET_BLDALPHA);
@@ -556,12 +556,12 @@ void MapPreview_StartForestTransition(mapsec_u8_t mapsec)
     LockPlayerFieldControls();
 }
 
-bool32 ForestMapPreviewScreenIsRunning(void)
+bool32 FadeInMapPreviewScreenIsRunning(void)
 {
-    return FuncIsActiveTask(Task_RunMapPreviewScreenForest);
+    return FuncIsActiveTask(Task_RunMapPreviewScreenFadeIn);
 }
 
-static void Task_RunMapPreviewScreenForest(u8 taskId)
+static void Task_RunMapPreviewScreenFadeIn(u8 taskId)
 {
     s16 * data;
 

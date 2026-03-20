@@ -222,7 +222,7 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     }
     if (input->pressedAButton && TrySetupDiveDownScript() == TRUE)
         return TRUE;
-    if (input->pressedStartButton/* && !ForestMapPreviewScreenIsRunning()*/) // Prevents opening the Start menu while the map preview is still fading out.
+    if (input->pressedStartButton/* && !FadeInMapPreviewScreenIsRunning()*/) // Prevents opening the Start menu while the map preview is still fading out.
     {
         FlagSet(FLAG_OPENED_START_MENU);
         PlaySE(SE_WIN_OPEN);
