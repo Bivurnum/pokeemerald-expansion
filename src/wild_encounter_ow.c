@@ -12,6 +12,7 @@
 #include "follower_npc.h"
 #include "metatile_behavior.h"
 #include "overworld.h"
+#include "pokedex.h"
 #include "random.h"
 #include "roamer.h"
 #include "script.h"
@@ -1030,6 +1031,8 @@ void OnOverworldWildEncounterSpawn(struct ObjectEvent *owe)
     if (IsOverworldWildEncounter(owe, OWE_GENERATED))
         SortOWEAges();
 
+    enum Species species = OW_SPECIES(owe);
+    GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_SET_GLIMPSED);
     DoOWESpawnDespawnAnim(owe, TRUE);
 }
 
