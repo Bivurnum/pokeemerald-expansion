@@ -164,7 +164,6 @@ struct SearchMenuItem
 struct PokedexListItem
 {
     u16 dexNum;
-    u16 glimpsed:1;
     u16 seen:1;
     u16 owned:1;
 };
@@ -2185,6 +2184,7 @@ static void CreatePokedexList(u8 dexMode, u8 order)
 #define temp_isHoennDex vars[1]
 #define temp_dexNum     vars[2]
     s32 i;
+    bool32 glimpsed;
 
     sPokedexView->pokemonListCount = 0;
 
@@ -2217,11 +2217,11 @@ static void CreatePokedexList(u8 dexMode, u8 order)
             for (i = 0; i < temp_dexCount; i++)
             {
                 temp_dexNum = RegionalToNationalOrder(i + 1);
+                glimpsed = GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED);
                 sPokedexView->pokedexList[i].dexNum = temp_dexNum;
-                sPokedexView->pokedexList[i].glimpsed = GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED);
                 sPokedexView->pokedexList[i].seen = GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN);
                 sPokedexView->pokedexList[i].owned = GetSetPokedexFlag(temp_dexNum, FLAG_GET_CAUGHT);
-                if (sPokedexView->pokedexList[i].seen || (WE_OWE_GLIMPSE_ON_SPAWN && sPokedexView->pokedexList[i].glimpsed))
+                if (sPokedexView->pokedexList[i].seen || (WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS && glimpsed))
                     sPokedexView->pokemonListCount = i + 1;
             }
         }
@@ -2231,15 +2231,15 @@ static void CreatePokedexList(u8 dexMode, u8 order)
             for (i = 0, r5 = 0, r10 = 0; i < temp_dexCount; i++)
             {
                 temp_dexNum = i + 1;
-                if (GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN) || (WE_OWE_GLIMPSE_ON_SPAWN && GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED)))
+                glimpsed = GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED);
+                if (GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN) || (WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS && glimpsed))
                     r10 = 1;
                 if (r10)
                 {
                     sPokedexView->pokedexList[r5].dexNum = temp_dexNum;
-                    sPokedexView->pokedexList[r5].glimpsed = GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED);
                     sPokedexView->pokedexList[r5].seen = GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN);
                     sPokedexView->pokedexList[r5].owned = GetSetPokedexFlag(temp_dexNum, FLAG_GET_CAUGHT);
-                    if (sPokedexView->pokedexList[r5].seen || (WE_OWE_GLIMPSE_ON_SPAWN && sPokedexView->pokedexList[r5].glimpsed))
+                    if (sPokedexView->pokedexList[r5].seen || (WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS && glimpsed))
                         sPokedexView->pokemonListCount = r5 + 1;
                     r5++;
                 }
@@ -2759,7 +2759,7 @@ static u16 GetPokemonSpriteToDisplay(u16 index)
 {
     if (index >= NATIONAL_DEX_COUNT || sPokedexView->pokedexList[index].dexNum == 0xFFFF)
         return 0xFFFF;
-    else if (sPokedexView->pokedexList[index].seen || (WE_OWE_GLIMPSE_ON_SPAWN && sPokedexView->pokedexList[index].glimpsed))
+    else if (sPokedexView->pokedexList[index].seen || ShouldShowMonSilhouette(sPokedexView->pokedexList[index].dexNum))
         return sPokedexView->pokedexList[index].dexNum;
     else
         return 0;
@@ -2781,7 +2781,7 @@ static u32 CreatePokedexMonSprite(u16 num, s16 x, s16 y)
             gSprites[spriteId].data[1] = i;
             gSprites[spriteId].data[2] = NationalPokedexNumToSpecies(num);
             sPokedexView->monSpriteIds[i] = spriteId;
-            if (WE_OWE_GLIMPSE_ON_SPAWN && GetSetPokedexFlag(num, FLAG_GET_GLIMPSED)) // figure out how to access sPokedexView->pokedexList[index].glimpsed here
+            if (ShouldShowMonSilhouette(num))
                 LoadPalette(sSizeScreenSilhouette_Pal, OBJ_PLTT_ID2(gSprites[spriteId].oam.paletteNum), PLTT_SIZE_4BPP);
             return spriteId;
         }
@@ -4531,10 +4531,7 @@ s8 GetSetPokedexFlag(enum NationalDexOrder nationalDexNo, u8 caseID)
         retVal = ((gSaveBlock1Ptr->dexSeen[index] & mask) != 0);
         break;
     case FLAG_GET_CAUGHT:
-        retVal = ((gSaveBlock1Ptr->dexSeen[index] & mask) != 0) && ((gSaveBlock1Ptr->dexCaught[index] & mask) != 0);
-        break;
-    case FLAG_GET_GLIMPSED:
-        retVal = !((gSaveBlock1Ptr->dexSeen[index] & mask) != 0) && ((gSaveBlock1Ptr->dexCaught[index] & mask) != 0);
+        retVal = ((gSaveBlock1Ptr->dexCaught[index] & mask) != 0);
         break;
     case FLAG_SET_SEEN:
         gSaveBlock1Ptr->dexSeen[index] |= mask;
@@ -4543,9 +4540,14 @@ s8 GetSetPokedexFlag(enum NationalDexOrder nationalDexNo, u8 caseID)
         gSaveBlock1Ptr->dexSeen[index] |= mask;
         gSaveBlock1Ptr->dexCaught[index] |= mask;
         break;
-    case FLAG_SET_GLIMPSED:
-        gSaveBlock1Ptr->dexCaught[index] |= mask;
+#if WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS
+    case FLAG_GET_GLIMPSED:
+        retVal = ((gSaveBlock3Ptr->dexGlimpsed[index] & mask) != 0);
         break;
+    case FLAG_SET_GLIMPSED:
+        gSaveBlock3Ptr->dexGlimpsed[index] |= mask;
+        break;
+#endif
     }
 
     return retVal;

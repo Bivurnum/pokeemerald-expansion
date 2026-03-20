@@ -7505,3 +7505,15 @@ enum SpeedOWE OWE_GetActiveSpeedFromSpecies(enum Species speciesId)
     enum OverworldWildEncounterBehaviors behavior = gSpeciesInfo[speciesId].overworldEncounterBehavior;
     return sOWESpeciesBehavior[behavior].activeSpeed;
 }
+
+bool32 ShouldShowMonSilhouette(enum NationalDexOrder nationalNum)
+{
+    if (WE_DEX_SILHOUETTE == WE_SILHOUETTE_SEEN_MONS)
+        return GetSetPokedexFlag(nationalNum, FLAG_GET_SEEN)
+         && !GetSetPokedexFlag(nationalNum, FLAG_GET_CAUGHT);
+
+    if (WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS)
+        return GetSetPokedexFlag(nationalNum, FLAG_GET_GLIMPSED);
+
+    return FALSE;
+}

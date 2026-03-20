@@ -269,6 +269,9 @@ struct SaveBlock3
 #if APRICORN_TREE_COUNT > 0
     u8 apricornTrees[NUM_APRICORN_TREE_BYTES];
 #endif
+#if WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS
+    u8 dexGlimpsed[NUM_DEX_FLAG_BYTES];
+#endif
 }; /* max size 1624 bytes */
 
 extern struct SaveBlock3 *gSaveBlock3Ptr;
