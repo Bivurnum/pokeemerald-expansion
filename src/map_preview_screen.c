@@ -643,21 +643,6 @@ static void Task_RunMapPreviewScreenFadeIn(u8 taskId)
     }
 }
 
-const struct MapPreviewScreen * GetDungeonMapPreviewScreenInfo(mapsec_u8_t mapsec)
-{
-    u8 idx;
-
-    idx = GetMapPreviewScreenIdx(mapsec);
-    if (idx == MPS_COUNT)
-    {
-        return NULL;
-    }
-    else
-    {
-        return &sMapPreviewScreenData[idx];
-    }
-}
-
 u16 MapPreview_GetDuration(mapsec_u8_t mapsec)
 {
     u8 idx;
