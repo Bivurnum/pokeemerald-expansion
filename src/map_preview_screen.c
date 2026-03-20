@@ -20,7 +20,7 @@
 static EWRAM_DATA bool8 sHasVisitedMapBefore = FALSE;
 static EWRAM_DATA bool8 sAllocedBg0TilemapBuffer = FALSE;
 
-static void Task_RunMapPreviewScreenFadeIn(u8 taskId);
+static void Task_MapPreviewScreen_FadeIn(u8 taskId);
 
 static const u8 sViridianForestMapPreviewPalette[] = INCBIN_U8("graphics/map_preview/viridian_forest/tiles.gbapal");
 static const u8 sViridianForestMapPreviewTiles[] = INCBIN_U8("graphics/map_preview/viridian_forest/tiles.4bpp.smol");
@@ -453,13 +453,13 @@ u16 MapPreview_CreateMapNameWindow(mapsec_u8_t mapsec)
     return windowId;
 }
 
-void RunMapPreviewScreen(u8 mapSecId)
+void RunMapPreviewScreenNonFade(u8 mapSecId)
 {
-    u8 taskId = CreateTask(Task_MapPreviewScreen_0, 0);
+    u8 taskId = CreateTask(Task_MapPreviewScreen_NonFade, 0);
     gTasks[taskId].data[3] = mapSecId;
 }
 
-void Task_MapPreviewScreen_0(u8 taskId)
+void Task_MapPreviewScreen_NonFade(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
     switch (data[0])
@@ -535,11 +535,11 @@ void Task_MapPreviewScreen_0(u8 taskId)
     }
 }
 
-void MapPreview_StartFadeInTransition(mapsec_u8_t mapsec)
+void RunMapPreviewScreenFadeIn(mapsec_u8_t mapsec)
 {
     u8 taskId;
 
-    taskId = CreateTask(Task_RunMapPreviewScreenFadeIn, 0);
+    taskId = CreateTask(Task_MapPreviewScreen_FadeIn, 0);
     gTasks[taskId].data[2] = GetBgAttribute(0, BG_ATTR_PRIORITY);
     gTasks[taskId].data[4] = GetGpuReg(REG_OFFSET_BLDCNT);
     gTasks[taskId].data[5] = GetGpuReg(REG_OFFSET_BLDALPHA);
@@ -558,10 +558,10 @@ void MapPreview_StartFadeInTransition(mapsec_u8_t mapsec)
 
 bool32 FadeInMapPreviewScreenIsRunning(void)
 {
-    return FuncIsActiveTask(Task_RunMapPreviewScreenFadeIn);
+    return FuncIsActiveTask(Task_MapPreviewScreen_FadeIn);
 }
 
-static void Task_RunMapPreviewScreenFadeIn(u8 taskId)
+static void Task_MapPreviewScreen_FadeIn(u8 taskId)
 {
     s16 * data;
 
@@ -703,7 +703,7 @@ static void CB2_MapPreviewScript(void)
 #define tWindowId       data[2]
 #define tDuration       data[3]
 
-static void Task_RunMapPreview_Script(u8 taskId)
+static void Task_MapPreviewScreen_Script(u8 taskId)
 {
     s16 *data;
 
@@ -767,6 +767,6 @@ void MapPreviewScript(struct ScriptContext *ctx)
 
     ScriptContext_Stop();
     FadeScreen(FADE_TO_BLACK, 0);
-    taskId = CreateTask(Task_RunMapPreview_Script, 0);
+    taskId = CreateTask(Task_MapPreviewScreen_Script, 0);
     gTasks[taskId].tDuration = duration;
 }
