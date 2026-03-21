@@ -27,7 +27,7 @@
 
 #define WE_SILHOUETTE_NEVER                 0       // Never show silhouette.
 #define WE_SILHOUETTE_SEEN_MONS             1       // Show silhouttes when the species has been seen in battle.
-#define WE_SILHOUETTE_GLIMPSED_MONS         2       // Show silhouttes when the species has been spawned as an Overworld Wild Encounter. (** SAVE-BREAKING - see struct SaveBlock3 **)
+#define WE_SILHOUETTE_GLIMPSED_MONS         2       // Show silhouttes when the species has been spawned as an Overworld Wild Encounter.
 #define WE_DEX_SILHOUETTE                   WE_SILHOUETTE_NEVER     // If enabled, will show silhouettes in the Pokédex and DexNav.
 
 // Should move others from config/overworld.h here?

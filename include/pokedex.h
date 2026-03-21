@@ -11,7 +11,7 @@ u16 GetHoennPokedexCount(u8 caseID);
 u16 GetKantoPokedexCount(u8 caseID);
 u8 DisplayCaughtMonDexPage(enum Species species, bool32 isShiny, u32 personality);
 u32 Pokedex_CreateCaughtMonSprite(enum Species species, s32 x, s32 y);
-s8 GetSetPokedexFlag(enum NationalDexOrder nationalDexNo, u8 caseID);
+s32 GetSetPokedexFlag(enum NationalDexOrder nationalDexNo, enum DexFlagStates caseID);
 void DrawFootprint(u8 windowId, enum Species species);
 u16 CreateMonSpriteFromNationalDexNumber(enum NationalDexOrder nationalNum, s16 x, s16 y, u16 paletteSlot);
 bool16 HasAllRegionalMons(void);

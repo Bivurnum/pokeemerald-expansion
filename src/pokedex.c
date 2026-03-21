@@ -1519,9 +1519,6 @@ void ResetPokedex(void)
     {
         gSaveBlock1Ptr->dexCaught[i] = 0;
         gSaveBlock1Ptr->dexSeen[i] = 0;
-#if WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS
-        gSaveBlock3Ptr->dexGlimpsed[i] = 0;
-#endif
     }
 }
 
@@ -4519,38 +4516,48 @@ static u8* ConvertMeasurementToMetricString(u32 num, u32* index)
     return string;
 }
 
-s8 GetSetPokedexFlag(enum NationalDexOrder nationalDexNo, u8 caseID)
+s32 GetSetPokedexFlag(enum NationalDexOrder nationalDexNo, enum DexFlagStates caseID)
 {
-    u32 index, bit, mask;
-    s8 retVal = 0;
+    u32 index, bit, mask, seen, caught, state;
+    s32 retVal = 0;
 
     nationalDexNo--;
     index = nationalDexNo / 8;
     bit = nationalDexNo % 8;
     mask = 1 << bit;
 
+    seen = (gSaveBlock1Ptr->dexSeen[index] & mask) != 0;
+    caught = (gSaveBlock1Ptr->dexCaught[index] & mask) != 0;
+    state = (seen << 1) | caught;
+    if (caseID >= FLAG_SET_GLIMPSED && state >= caseID - NUM_FLAG_STATES)
+        return retVal;
+
     switch (caseID)
     {
-    case FLAG_GET_SEEN:
-        retVal = ((gSaveBlock1Ptr->dexSeen[index] & mask) != 0);
+    case FLAG_GET_UNOBSERVED:
+        retVal = (caseID == state);
         break;
+    case FLAG_GET_GLIMPSED:
+    case FLAG_GET_SEEN:
     case FLAG_GET_CAUGHT:
-        retVal = ((gSaveBlock1Ptr->dexCaught[index] & mask) != 0);
+        retVal = (caseID <= state);
+        break;
+    case FLAG_SET_UNOBSERVED:
+        gSaveBlock1Ptr->dexSeen[index] &= ~mask;
+        gSaveBlock1Ptr->dexCaught[index] &= ~mask;
+        break;
+    case FLAG_SET_GLIMPSED:
+        gSaveBlock1Ptr->dexSeen[index] &= ~mask;
+        gSaveBlock1Ptr->dexCaught[index] |= mask;
         break;
     case FLAG_SET_SEEN:
         gSaveBlock1Ptr->dexSeen[index] |= mask;
+        gSaveBlock1Ptr->dexCaught[index] &= ~mask;
         break;
     case FLAG_SET_CAUGHT:
+        gSaveBlock1Ptr->dexSeen[index] |= mask;
         gSaveBlock1Ptr->dexCaught[index] |= mask;
         break;
-#if WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS
-    case FLAG_GET_GLIMPSED:
-        retVal = ((gSaveBlock3Ptr->dexGlimpsed[index] & mask) != 0);
-        break;
-    case FLAG_SET_GLIMPSED:
-        gSaveBlock3Ptr->dexGlimpsed[index] |= mask;
-        break;
-#endif
     }
 
     return retVal;
