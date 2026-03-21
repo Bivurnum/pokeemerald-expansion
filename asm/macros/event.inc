@@ -2520,7 +2520,7 @@
 	.macro getglimpsedmon species:req
 	callnative Scrcmd_getsetpokedexflag, requests_effects=1
 	.2byte \species
-	.2byte FLAG_SET_GLIMPSED
+	.2byte FLAG_GET_GLIMPSED
 	.endm
 
 	@ Sets the Pokedex Glimpsed Flag for the Pokemon with speciesId
