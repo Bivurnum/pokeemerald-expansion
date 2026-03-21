@@ -59,7 +59,6 @@
 #include "constants/rgb.h"
 #include "constants/region_map_sections.h"
 #include "gba/m4a_internal.h"
-#include "constants/pokemon_icon.h"
 
 #if DEXNAV_ENABLED
 STATIC_ASSERT(DN_FLAG_SEARCHING != 0, DNFlagSearching_Must_Not_Be_Zero);
@@ -69,7 +68,6 @@ STATIC_ASSERT(DN_VAR_STEP_COUNTER != 0, DNVarStepCounter_Must_Not_Be_Zero);
 #endif
 
 // Defines
-#define POKE_ICON_SILHOUETTE_PAL_TAG POKE_ICON_BASE_PAL_TAG - 1
 enum WindowIds
 {
     WINDOW_INFO,
@@ -162,10 +160,6 @@ static void DexNavUpdateSearchWindow(u8 proximity, u8 searchLevel);
 static void DexNavDrawHiddenIcons(void);
 static void DrawHiddenSearchWindow(u8 width);
 static void RevealHiddenMon(void);
-
-static void TryLoadSilhouetteIconPalette(u16 color);
-static void FreeSilhouetteIconPalette(void);
-static u8 CreateMonIcon_Silhouette(enum Species species, s16 x, s16 y);
 
 //// Const Data
 // gui image data
@@ -421,16 +415,19 @@ static void DrawDexNavSearchMonIcon(enum Species species, u8 *dst, bool8 owned)
     u8 spriteId;
     s16 x = SPECIES_ICON_X - 6;
     s16 y = GetSearchWindowY() + 8;
+    u32 subpriority = 0;
+    u32 personality = 0xFFFFFFFF;
+    void (*callback)(struct Sprite *) = SpriteCB_MonIcon;
 
     if (!ShouldShowMonSilhouette(SpeciesToNationalPokedexNum(species)))
     {
         LoadMonIconPalette(species);
-        spriteId = CreateMonIcon(species, SpriteCB_MonIcon, x, y, 0, 0xFFFFFFFF);
+        spriteId = CreateMonIcon(species, callback, x, y, subpriority, personality);
     }
     else
     {
-        TryLoadSilhouetteIconPalette(RGB(7, 7, 7));
-        spriteId = CreateMonIcon_Silhouette(species, x, y);
+        TryLoadMonIconSilhouettePalette(RGB(7, 7, 7));
+        spriteId = CreateMonIconSilhouette(species, callback, x, y, subpriority, personality);
     }
     
     gSprites[spriteId].oam.priority = 0;
@@ -567,7 +564,7 @@ static void RemoveDexNavWindowAndGfx(void)
     FreeSpriteTilesByTag(LIT_STAR_TILE_TAG);
     FreeSpritePaletteByTag(HELD_ITEM_TAG);
     SafeFreeMonIconPalette(sDexNavSearchDataPtr->species);
-    FreeSilhouetteIconPalette();
+    FreeMonIconSilhouettePalette();
 
     // remove window
     ClearStdWindowAndFrameToTransparent(sDexNavSearchDataPtr->windowId, FALSE);
@@ -852,7 +849,6 @@ static void DexNavSearchBail(const u8 *script)
     TRY_FREE_AND_SET_NULL(sDexNavSearchDataPtr);
     FlagClear(DN_FLAG_SEARCHING);
     FreeMonIconPalettes();
-    FreeSilhouetteIconPalette();
     ScriptContext_SetupScript(script);
 }
 
@@ -1967,14 +1963,17 @@ static void DexNavLoadEncounterData(void)
 static void TryDrawIconInSlot(enum Species species, s16 x, s16 y)
 {
     enum NationalDexOrder nationalNum = SpeciesToNationalPokedexNum(species);
+    u32 subpriority = 0;
+    u32 personality = 0xFFFFFFFF;
+    void (*callback)(struct Sprite *) = SpriteCB_MonIcon;
     if (species == SPECIES_NONE || species > NUM_SPECIES)
         CreateNoDataIcon(x, y);   //'X' in slot
-    else if (ShouldShowMonSilhouette(nationalNum) && !GetSetPokedexFlag(nationalNum, FLAG_GET_CAUGHT))
-        CreateMonIcon_Silhouette(species, x, y);
+    else if (ShouldShowMonSilhouette(nationalNum))
+        CreateMonIconSilhouette(species, callback, x, y, subpriority, personality);
     else if (!GetSetPokedexFlag(nationalNum, FLAG_GET_SEEN))
-        CreateMonIcon(SPECIES_NONE, SpriteCB_MonIcon, x, y, 0, 0xFFFFFFFF); //question mark
+        CreateMonIcon(SPECIES_NONE, callback, x, y, subpriority, personality); //question mark
     else
-        CreateMonIcon(species, SpriteCB_MonIcon, x, y, 0, 0xFFFFFFFF);
+        CreateMonIcon(species, callback, x, y, subpriority, personality);
 }
 
 static void DrawSpeciesIcons(void)
@@ -2271,7 +2270,7 @@ static bool8 DexNav_DoGfxSetup(void)
         break;
     case 10:
         LoadMonIconPalettes();
-        TryLoadSilhouetteIconPalette(RGB_BLACK);
+        TryLoadMonIconSilhouettePalette(RGB_BLACK);
         DrawSpeciesIcons();
         CreateSelectionCursor();
         DexNavLoadCapturedAllSymbols();
@@ -2681,30 +2680,4 @@ void IncrementDexNavChain(void)
 {
     if (gSaveBlock3Ptr->dexNavChain < DEXNAV_CHAIN_MAX)
         gSaveBlock3Ptr->dexNavChain++;
-}
-
-static void TryLoadSilhouetteIconPalette(u16 color)
-{
-    if (WE_DEX_SILHOUETTE == WE_SILHOUETTE_NEVER)
-        return;
-
-    const u16 palette[PLTT_SIZE_4BPP] = { [0 ... PLTT_SIZE_4BPP - 1] = color };
-    struct SpritePalette spritePalette = {
-        .data = palette,
-        .tag = POKE_ICON_SILHOUETTE_PAL_TAG,
-    };
-    LoadSpritePalette(&spritePalette);
-}
-
-static void FreeSilhouetteIconPalette(void)
-{
-    FreeSpritePaletteByTag(POKE_ICON_SILHOUETTE_PAL_TAG);
-}
-
-static u8 CreateMonIcon_Silhouette(enum Species species, s16 x, s16 y)
-{
-    u32 spriteId = CreateMonIcon(species, SpriteCB_MonIcon, x, y, 0, 0xFFFFFFFF);
-    u32 palIndex = IndexOfSpritePaletteTag(POKE_ICON_SILHOUETTE_PAL_TAG);
-    gSprites[spriteId].oam.paletteNum = palIndex;
-    return spriteId;
 }

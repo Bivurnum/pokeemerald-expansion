@@ -7508,9 +7508,11 @@ enum SpeedOWE OWE_GetActiveSpeedFromSpecies(enum Species speciesId)
 
 bool32 ShouldShowMonSilhouette(enum NationalDexOrder nationalNum)
 {
+    if (GetSetPokedexFlag(nationalNum, FLAG_GET_CAUGHT))
+        return FALSE;
+    
     if (WE_DEX_SILHOUETTE == WE_SILHOUETTE_SEEN_MONS)
-        return GetSetPokedexFlag(nationalNum, FLAG_GET_SEEN)
-         && !GetSetPokedexFlag(nationalNum, FLAG_GET_CAUGHT);
+        return GetSetPokedexFlag(nationalNum, FLAG_GET_SEEN);
 
     if (WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS)
         return GetSetPokedexFlag(nationalNum, FLAG_GET_GLIMPSED);
