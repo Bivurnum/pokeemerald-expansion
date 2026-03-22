@@ -661,6 +661,14 @@ static bool32 IsHandOnItemsIcon(void)
     return FALSE;
 }
 
+static const u8 *SpaItemToPointer[4] =
+{
+    &sSpaData.berrySpriteId, // Berry.
+    &sSpaData.clawSpriteId,  // Claw.
+    &sSpaData.honeySpriteId, // Honey.
+    &sSpaData.orbSpriteId,   // Orb.
+};
+
 static const u16 SpaItemsY[][2] =
 {
     { 48, SPA_ITEM_BIT_BERRY }, // Berry.
@@ -723,6 +731,55 @@ static void SpaHandHandleInput(u8 taskId)
     }
 }
 
+static void SpaItemChooseHandleInput(u8 taskId)
+{
+    u32 i;
+    s32 newPosition;
+
+    if (JOY_NEW(EXIT_BUTTON))
+    {
+        gSprites[sSpaData.handSpriteId].invisible = TRUE;
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+        gTasks[taskId].func = Task_SpaEndFade;
+    }
+    else if (JOY_NEW(DPAD_DOWN))
+    {
+        for (i = 1; i < ARRAY_COUNT(SpaItemsY); i++)
+        {
+            newPosition = tSelectedItem + i;
+            if (newPosition > 3)
+                newPosition -= 4;
+
+            if (sSpaData.itemFlagBits & SpaItemsY[newPosition][1])
+            {
+                gSprites[sSpaData.itemSelectorSpriteId].y = SpaItemsY[newPosition][0];
+                gSprites[*SpaItemToPointer[newPosition]].x += 14;
+                gSprites[*SpaItemToPointer[tSelectedItem]].x -= 14;
+                tSelectedItem = newPosition;
+                break;
+            }
+        }
+    }
+    else if (JOY_NEW(DPAD_UP))
+    {
+        for (i = 1; i < ARRAY_COUNT(SpaItemsY); i++)
+        {
+            newPosition = tSelectedItem - i;
+            if (newPosition < 0)
+                newPosition += 4;
+
+            if (sSpaData.itemFlagBits & SpaItemsY[newPosition][1])
+            {
+                gSprites[sSpaData.itemSelectorSpriteId].y = SpaItemsY[newPosition][0];
+                gSprites[*SpaItemToPointer[newPosition]].x += 14;
+                gSprites[*SpaItemToPointer[tSelectedItem]].x -= 14;
+                tSelectedItem = newPosition;
+                break;
+            }
+        }
+    }
+}
+
 static void Task_SpaWaitFade(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -760,6 +817,10 @@ static void Task_Spa(u8 taskId)
         {
             tState = STATE_ITEM_CHOOSE;
         }
+        break;
+    case STATE_ITEM_CHOOSE:
+        SpaItemChooseHandleInput(taskId);
+        break;
     }
 
     CheckSpaStateChange(taskId);

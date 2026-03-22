@@ -2,7 +2,8 @@
 #define GUARD_SPA_H
 
 // Task Data
-#define tState  gTasks[taskId].data[0]
+#define tState          gTasks[taskId].data[0]
+#define tSelectedItem   gTasks[taskId].data[1]
 
 // Sprite Data
 #define sTaskId     data[0]
@@ -45,6 +46,7 @@ struct SpaData
     u8 berrySpriteId;
     u8 clawSpriteId;
     u8 honeySpriteId;
+    u8 orbSpriteId;
 };
 
 enum SpaMons
