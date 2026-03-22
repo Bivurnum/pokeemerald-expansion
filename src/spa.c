@@ -747,6 +747,9 @@ static void Task_Spa(u8 taskId)
                 gSprites[sSpaData.itemTraySpriteId1].x += 2;
                 gSprites[sSpaData.itemTraySpriteId2].x += 2;
             }
+            if (gSprites[sSpaData.itemSelectorSpriteId].x < 0)
+                gSprites[sSpaData.itemSelectorSpriteId].x += 2;
+                
             gSprites[sSpaData.berrySpriteId].x += 2;
             if (sSpaData.clawSpriteId)
                 gSprites[sSpaData.clawSpriteId].x += 2;
