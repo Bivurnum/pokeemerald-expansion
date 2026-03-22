@@ -27,6 +27,9 @@
 #define ITEM_START_X    -22
 #define ITEM_END_X      10
 
+#define HAND_START_X    28
+#define HAND_START_Y    45
+
 #define SPA_ITEM_BIT_BERRY  0x1
 #define SPA_ITEM_BIT_CLAW   0x2
 #define SPA_ITEM_BIT_HONEY  0x4

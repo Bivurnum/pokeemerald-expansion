@@ -600,7 +600,7 @@ static void CreateSpaSprites(u8 taskId)
 {
     u8 spriteId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_Hand, 28, 45, 5);
+    spriteId = CreateSprite(&sSpriteTemplate_Hand, HAND_START_X, HAND_START_Y, 5);
     gSprites[spriteId].sTaskId = taskId;
     gSprites[spriteId].oam.priority = 0;
     sSpaData.handSpriteId = spriteId;
@@ -736,11 +736,9 @@ static void SpaItemChooseHandleInput(u8 taskId)
     u32 i;
     s32 newPosition;
 
-    if (JOY_NEW(EXIT_BUTTON))
+    if (JOY_NEW(B_BUTTON | EXIT_BUTTON))
     {
-        gSprites[sSpaData.handSpriteId].invisible = TRUE;
-        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
-        gTasks[taskId].func = Task_SpaEndFade;
+        tState = STATE_TRAY_IN_HAND;
     }
     else if (JOY_NEW(DPAD_DOWN))
     {
@@ -820,6 +818,48 @@ static void Task_Spa(u8 taskId)
         break;
     case STATE_ITEM_CHOOSE:
         SpaItemChooseHandleInput(taskId);
+        break;
+    case STATE_TRAY_IN_HAND:
+        if (gSprites[sSpaData.itemTraySpriteId1].x > ITEM_START_X)
+        {
+            gSprites[sSpaData.itemTraySpriteId1].x -= 2;
+            gSprites[sSpaData.itemTraySpriteId2].x -= 2;
+
+            if (gSprites[sSpaData.itemSelectorSpriteId].x > ITEM_START_X)
+                gSprites[sSpaData.itemSelectorSpriteId].x -= 2;
+            if (gSprites[sSpaData.berrySpriteId].x > (ITEM_START_X + 10))
+                gSprites[sSpaData.berrySpriteId].x -= 2;
+            if (sSpaData.clawSpriteId)
+                gSprites[sSpaData.clawSpriteId].x -= 2;
+            if (sSpaData.honeySpriteId)
+                gSprites[sSpaData.honeySpriteId].x -= 2;
+        }
+        else
+        {
+            DestroySprite(&gSprites[sSpaData.itemTraySpriteId1]);
+            sSpaData.itemTraySpriteId1 = 0;
+            DestroySprite(&gSprites[sSpaData.itemTraySpriteId2]);
+            sSpaData.itemTraySpriteId2 = 0;
+            DestroySprite(&gSprites[sSpaData.itemSelectorSpriteId]);
+            sSpaData.itemSelectorSpriteId = 0;
+            DestroySprite(&gSprites[sSpaData.berrySpriteId]);
+            sSpaData.berrySpriteId = 0;
+            if (sSpaData.clawSpriteId)
+            {
+                DestroySprite(&gSprites[sSpaData.clawSpriteId]);
+                sSpaData.clawSpriteId = 0;
+            }
+            if (sSpaData.honeySpriteId)
+            {
+                DestroySprite(&gSprites[sSpaData.honeySpriteId]);
+                sSpaData.honeySpriteId = 0;
+            }
+            gSprites[sSpaData.handSpriteId].x = HAND_START_X;
+            gSprites[sSpaData.handSpriteId].y = HAND_START_Y;
+            gSprites[sSpaData.handSpriteId].invisible = FALSE;
+            tSelectedItem = 0;
+            tState = STATE_HAND;
+        }
         break;
     }
 
