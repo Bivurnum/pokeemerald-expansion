@@ -38,6 +38,12 @@ struct SpaData
     u8 handSpriteId;
     u8 itemsIconSpriteId;
     u8 itemsExitSpriteId;
+    u8 itemTraySpriteId1;
+    u8 itemTraySpriteId2;
+    u8 itemSelectorSpriteId;
+    u8 berrySpriteId;
+    u8 clawSpriteId;
+    u8 honeySpriteId;
 };
 
 enum SpaMons
@@ -72,6 +78,16 @@ enum ItemChooseStates
     ITEM_STATE_ITEM_HELD,
     ITEM_STATE_NO_SELECTION,
     ITEM_STATE_END,
+};
+
+enum SpaTaskStates
+{
+    STATE_HAND,
+    STATE_TRAY_OUT,
+    STATE_ITEM_CHOOSE,
+    STATE_TRAY_IN_ITEM,
+    STATE_TRAY_IN_HAND,
+    STATE_ITEM
 };
 
 extern const struct SpritePalette sSpritePalettes_SpaRattata[];
