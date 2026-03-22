@@ -90,6 +90,12 @@ PetalburgCity_EventScript_Boy::
 	release
 	end
 
+PetalburgCity_EventScript_Rattata::
+	lock
+	startspa 0
+	releaseall
+	end
+
 PetalburgCity_EventScript_WallysMom::
 	msgbox PetalburgCity_Text_WhereIsWally, MSGBOX_NPC
 	end

@@ -2691,6 +2691,13 @@
 	.byte \selectionType
 	.endm
 
+	.macro startspa mon:req
+	fadescreen FADE_TO_BLACK
+	callnative StartSpa
+	.byte \mon
+	waitstate
+	.endm
+
 @ Follower NPCs
 
 	@ Sets an existing NPC up to follow the player.
