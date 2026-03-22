@@ -7,6 +7,7 @@
 // Sprite Data
 #define sTaskId     data[0]
 #define sInterval   data[1]
+#define sCounter    data[2]
 
 #define INTERACT_BUTTON     A_BUTTON
 #define FAST_BUTTON         B_BUTTON

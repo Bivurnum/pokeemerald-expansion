@@ -742,14 +742,14 @@ static void Task_Spa(u8 taskId)
     case STATE_TRAY_OUT:
         if (gSprites[sSpaData.berrySpriteId].x < (ITEM_END_X + 14))
         {
-            if (gSprites[sSpaData.itemTraySpriteId1].x < 0)
+            if (gSprites[sSpaData.itemTraySpriteId1].x < ITEM_END_X)
             {
                 gSprites[sSpaData.itemTraySpriteId1].x += 2;
                 gSprites[sSpaData.itemTraySpriteId2].x += 2;
             }
             if (gSprites[sSpaData.itemSelectorSpriteId].x < 0)
                 gSprites[sSpaData.itemSelectorSpriteId].x += 2;
-                
+
             gSprites[sSpaData.berrySpriteId].x += 2;
             if (sSpaData.clawSpriteId)
                 gSprites[sSpaData.clawSpriteId].x += 2;
@@ -791,7 +791,20 @@ static void SpriteCB_ItemTray(struct Sprite *sprite)
 
 static void SpriteCB_Selector(struct Sprite *sprite)
 {
+    if (gTasks[sprite->sTaskId].sTaskId == STATE_ITEM_CHOOSE)
+    {
+        if (sprite->sCounter == 32)
+        {
+            sprite->x2++;
+        }
+        else if (sprite->sCounter == 64)
+        {
+            sprite->x2--;
+            sprite->sCounter = 0;
+        }
 
+        sprite->sCounter++;
+    }
 }
 
 static void SpriteCB_Angry(struct Sprite *sprite)
