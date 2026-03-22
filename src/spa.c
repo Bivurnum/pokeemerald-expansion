@@ -660,6 +660,22 @@ static void CreateSpaMonSprites(u8 taskId)
     }
 }
 
+static void PlaySpaMonCry(u8 mode)
+{
+    switch (VarGet(sSpaData.mon))
+    {
+    case SPA_RATTATA:
+        PlayCry_ByMode(SPECIES_RATTATA, 0, mode);
+        break;
+    case SPA_TEDDIURSA:
+        PlayCry_ByMode(SPECIES_TEDDIURSA, 0, mode);
+        break;
+    case SPA_PSYDUCK:
+        PlayCry_ByMode(SPECIES_PSYDUCK, 0, mode);
+        break;
+    }
+}
+
 static void Task_Spa(u8 taskId)
 {
     if (gPaletteFade.active)
@@ -667,7 +683,10 @@ static void Task_Spa(u8 taskId)
 
     switch (tState)
     {
-
+    case 0:
+        PlaySpaMonCry(CRY_MODE_NORMAL);
+        tState++;
+        break;
     }
 }
 
