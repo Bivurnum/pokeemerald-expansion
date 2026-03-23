@@ -515,6 +515,20 @@ void StartRattataAngry(u8 taskId)
     CreateAngrySprite(taskId);
 }
 
+void StartRattataPet(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sRatEyesSpriteId], 2);
+    StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 1);
+    StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 1);
+}
+
+void StopRattataPet(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sRatEyesSpriteId], 0);
+    StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 0);
+    StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 0);
+}
+
 void ResetRattataSprites(void)
 {
     gSprites[sRatTailSpriteId].invisible = FALSE;
@@ -649,30 +663,108 @@ static void SpriteCB_RatTail(struct Sprite *sprite)
 
 static void SpriteCB_RatEarLeft(struct Sprite *sprite)
 {
+    u32 taskId = sprite->sTaskId;
 
+        if (tPetArea == SPA_PET_HEAD)
+        {
+            if (sprite->y2 > -3 && sprite->sCounter % 4 == 0)
+            {
+                sprite->y2--;
+            }
+            sprite->sCounter++;
+        }
+        else if (sprite->y2 < 0)
+        {
+            sprite->y2++;
+        }
 }
 
 static void SpriteCB_RatEarRight(struct Sprite *sprite)
 {
+    u32 taskId = sprite->sTaskId;
 
+        if (tPetArea == SPA_PET_HEAD)
+        {
+            if (sprite->y2 > -3 && sprite->sCounter % 4 == 0)
+            {
+                sprite->y2--;
+            }
+            sprite->sCounter++;
+        }
+        else if (sprite->y2 < 0)
+        {
+            sprite->y2++;
+        }
 }
 
 static void SpriteCB_RatMouth(struct Sprite *sprite)
 {
+    u32 taskId = sprite->sTaskId;
 
+        if (tPetArea == SPA_PET_HEAD)
+        {
+            if (sprite->y2 > -3 && sprite->sCounter % 4 == 0)
+            {
+                sprite->y2--;
+            }
+            sprite->sCounter++;
+        }
+        else if (sprite->y2 < 0)
+        {
+            sprite->y2++;
+        }
 }
 
 static void SpriteCB_RatWhiskerLeft(struct Sprite *sprite)
 {
+    u32 taskId = sprite->sTaskId;
 
+        if (tPetArea == SPA_PET_HEAD)
+        {
+            if (sprite->y2 > -3 && sprite->sCounter % 4 == 0)
+            {
+                sprite->y2--;
+            }
+            sprite->sCounter++;
+        }
+        else if (sprite->y2 < 0)
+        {
+            sprite->y2++;
+        }
 }
 
 static void SpriteCB_RatWhiskerRight(struct Sprite *sprite)
 {
+    u32 taskId = sprite->sTaskId;
 
+        if (tPetArea == SPA_PET_HEAD)
+        {
+            if (sprite->y2 > -3 && sprite->sCounter % 4 == 0)
+            {
+                sprite->y2--;
+            }
+            sprite->sCounter++;
+        }
+        else if (sprite->y2 < 0)
+        {
+            sprite->y2++;
+        }
 }
 
 static void SpriteCB_RatEyes(struct Sprite *sprite)
 {
+    u32 taskId = sprite->sTaskId;
 
+        if (tPetArea == SPA_PET_HEAD)
+        {
+            if (sprite->y2 > -3 && sprite->sCounter % 4 == 0)
+            {
+                sprite->y2--;
+            }
+            sprite->sCounter++;
+        }
+        else if (sprite->y2 < 0)
+        {
+            sprite->y2++;
+        }
 }

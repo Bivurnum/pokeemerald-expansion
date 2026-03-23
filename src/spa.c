@@ -899,6 +899,38 @@ static void StartAngryAnim(u8 taskId)
     PlaySpaMonCry(CRY_MODE_ROAR_1);
 }
 
+static void StartPetAnim(u8 taskId)
+{
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        StartRattataPet(taskId);
+        break;
+    case SPA_TEDDIURSA:
+        break;
+    case SPA_PSYDUCK:
+        break;
+    case SPA_FLETCHINDER:
+        break;
+    }
+}
+
+static void StopSpaPetAnim(u8 taskId)
+{
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        StopRattataPet(taskId);
+        break;
+    case SPA_TEDDIURSA:
+        break;
+    case SPA_PSYDUCK:
+        break;
+    case SPA_FLETCHINDER:
+        break;
+    }
+}
+
 static const u8 *SpaItemToPointer[4] =
 {
     &sSpaData.berrySpriteId, // Berry.
@@ -943,6 +975,7 @@ static void StopPetting(u8 taskId)
         tPetArea = SPA_PET_NONE;
         gSprites[sSpaData.handSpriteId].subpriority = 5;
         gSprites[sSpaData.handSpriteId].oam.priority = 0;
+        StopSpaPetAnim(taskId);
     }
 }
 
@@ -1031,11 +1064,12 @@ static void SpaHandHandleInput(u8 taskId)
                     //DoSpaMonBadTouchText(sTask.tIsSatisfied);
                     return;
                 }
-                else
+                else if (JOY_HELD(DPAD_ANY))
                 {
                     AdjustToPetArea(taskId, petArea);
-                    StartSpriteAnim(&gSprites[sSpaData.handSpriteId], 1);
+                    StartPetAnim(taskId);
                 }
+                StartSpriteAnim(&gSprites[sSpaData.handSpriteId], 1);
             }
             else
             {
@@ -1061,7 +1095,7 @@ static void SpaHandHandleInput(u8 taskId)
                     gTasks[taskId].func = Task_SpaEndSuccess;
                     return;
                 }
-                else if (!JOY_HELD(INTERACT_BUTTON) || !petArea)
+                else if (!petArea)
                 {
                     StartSpriteAnim(&gSprites[sSpaData.handSpriteId], 0);
                     StopPetting(taskId);
@@ -1088,11 +1122,13 @@ static void SpaHandHandleInput(u8 taskId)
         else
         {
             StopPetting(taskId);
+            StartSpriteAnim(&gSprites[sSpaData.handSpriteId], 0);
         }
     }
     else
     {
         StopPetting(taskId);
+        StartSpriteAnim(&gSprites[sSpaData.handSpriteId], 0);
     }
 
     MoveSpriteFromInput(&gSprites[sSpaData.handSpriteId]);
