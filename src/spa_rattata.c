@@ -620,6 +620,17 @@ void HandleItemsRattata(u8 taskId)
     }*/
 }
 
+void EndSpaBadRattata(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sRatEyesSpriteId], 6);
+    StartSpriteAnim(&gSprites[sRatMouthSpriteId], 1);
+    StartSpriteAnim(&gSprites[sRatEarLeftSpriteId], 1);
+    StartSpriteAnim(&gSprites[sRatEarRightSpriteId], 1);
+    StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 2);
+    StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 2);
+    //PauseUntilAnimEnds(taskId, sRatMouthSpriteId);
+}
+
 static void SpriteCB_RatBodyLeft(struct Sprite *sprite)
 {
 

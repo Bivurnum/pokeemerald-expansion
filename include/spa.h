@@ -71,7 +71,8 @@ enum SpaMons
     SPA_RATTATA,
     SPA_TEDDIURSA,
     SPA_PSYDUCK,
-    SPA_FLETCHINDER
+    SPA_FLETCHINDER,
+    SPA_NUM_MONS
 };
 
 enum SpaItems
@@ -109,6 +110,8 @@ void ResetRattataSprites(void);
 void HandleItemsRattata(u8 taskId);
 void StartRattataBadTouch(u8 taskId);
 void StartRattataAngry(u8 taskId);
+void EndSpaBadRattata(u8 taskId);
+
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);
 void CreateAngrySprite(u8 taskId);

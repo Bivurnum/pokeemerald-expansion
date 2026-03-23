@@ -31,6 +31,7 @@ static void CB2_StartSpa(void);
 static void Task_SpaWaitFade(u8 taskId);
 static void Task_Spa(u8 taskId);
 static void Task_SpaEndFade(u8 taskId);
+static void Task_SpaEndBad(u8 taskId);
 static void CreateSpaSprites(u8 taskId);
 static void CreateSpaMonSprites(u8 taskId);
 
@@ -634,7 +635,7 @@ static void CreateSpaMonSprites(u8 taskId)
 
 static void PlaySpaMonCry(u8 mode)
 {
-    switch (VarGet(sSpaData.mon))
+    switch (sSpaData.mon)
     {
     case SPA_RATTATA:
         PlayCry_ByMode(SPECIES_RATTATA, 0, mode);
@@ -644,6 +645,22 @@ static void PlaySpaMonCry(u8 mode)
         break;
     case SPA_PSYDUCK:
         PlayCry_ByMode(SPECIES_PSYDUCK, 0, mode);
+        break;
+    }
+}
+
+static void PlaySpaMonAttackSE(void)
+{
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        PlaySE(SE_M_BITE);
+        break;
+    case SPA_TEDDIURSA:
+        PlaySE(SE_M_SCRATCH);
+        break;
+    case SPA_PSYDUCK:
+        PlaySE(SE_M_CUT);
         break;
     }
 }
@@ -722,8 +739,8 @@ void CreateMusicSprite(u8 taskId)
 
 static const s16 AngryPos[][2] =
 {
-    [SPA_RATTATA] = { 165, 38},
-    [SPA_TEDDIURSA] = { 155, 40},
+    [SPA_RATTATA] = { 165, 38 },
+    [SPA_TEDDIURSA] = { 155, 40 },
 };
 
 void CreateAngrySprite(u8 taskId)
@@ -1094,6 +1111,26 @@ bool32 IsBerryInFeedingZone(void)
     return FALSE;
 }
 
+static void EndSpaBad(u8 taskId)
+{
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        EndSpaBadRattata(taskId);
+        PlaySpaMonCry(CRY_MODE_ROAR_1);
+        break;
+    case SPA_TEDDIURSA:
+        break;
+    case SPA_PSYDUCK:
+        break;
+    case SPA_FLETCHINDER:
+        break;
+    }
+    gTasks[taskId].func = Task_SpaEndBad;
+    tState = 0;
+    tCounter = 0;
+}
+
 static void Task_SpaWaitFade(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -1117,6 +1154,7 @@ static void Task_Spa(u8 taskId)
                     if (sSpaData.hasBeenPetBad)
                     {
                         ResetSpaMonSprites();
+                        EndSpaBad(taskId);
                     }
                     else
                     {
@@ -1140,6 +1178,10 @@ static void Task_Spa(u8 taskId)
                 ResetSpaHand();
                 sSpaData.pausedSpriteId = 0;
             }
+            return;
+        }
+        else if (gSprites[sSpaData.handSpriteId].invisible)
+        {
             return;
         }
         SpaHandHandleInput(taskId);
@@ -1280,6 +1322,40 @@ static void Task_SpaEndFade(u8 taskId)
         SetMainCallback2(CB2_ReturnToFieldContinueScript);
         DestroyTask(taskId);
     }
+}
+
+static const u8 SpaMonAttackDelay[SPA_NUM_MONS] =
+{
+    60, // Rattata
+    60, // Teddiursa
+    60, // Psyduck
+    60  // Fletchinder
+};
+
+static void Task_SpaEndBad(u8 taskId)
+{
+    if (tCounter == SpaMonAttackDelay[sSpaData.mon])
+    {
+        PlaySpaMonAttackSE();
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 8, RGB_RED);
+    }
+    else if (tCounter > SpaMonAttackDelay[sSpaData.mon])
+    {
+        if (!gPaletteFade.active)
+        {
+            if (tState == 0)
+            {
+                BeginNormalPaletteFade(PALETTES_ALL, 1, 8, 0, RGB_RED);
+                tState++;
+            }
+            else
+            {
+                BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+                gTasks[taskId].func = Task_SpaEndFade;
+            }
+        }
+    }
+    tCounter++;
 }
 
 static void SpriteCB_Hand(struct Sprite *sprite)
