@@ -653,12 +653,112 @@ static void CheckSpaStateChange(u8 taskId)
 
 }
 
+static void MoveSpriteFromInput(struct Sprite *sprite)
+{
+    if (JOY_HELD(DPAD_DOWN))
+    {
+        if (JOY_HELD(FAST_BUTTON))
+            sprite->y++;
+
+        sprite->y++;
+        if (sprite->y > 155)
+            sprite->y = 155;
+    }
+    if (JOY_HELD(DPAD_UP))
+    {
+        if (JOY_HELD(FAST_BUTTON))
+            sprite->y--;
+
+        sprite->y--;
+        if (sprite->y < 9)
+            sprite->y = 9;
+    }
+    if (JOY_HELD(DPAD_RIGHT))
+    {
+        if (JOY_HELD(FAST_BUTTON))
+            sprite->x++;
+
+        sprite->x++;
+        if (sprite->x > 240)
+            sprite->x = 240;
+    }
+    if (JOY_HELD(DPAD_LEFT))
+    {
+        if (JOY_HELD(FAST_BUTTON))
+            sprite->x--;
+
+        sprite->x--;
+        if (sprite->x < 0)
+            sprite->x = 0;
+    }
+}
+
+static const u16 SpaItemsY[][2] =
+{
+    { 48, SPA_ITEM_BIT_BERRY }, // Berry.
+    { 69, SPA_ITEM_BIT_CLAW }, // Claw.
+    { 90, SPA_ITEM_BIT_HONEY }, // Honey.
+    { 112, SPA_ITEM_BIT_ORB }, // Orb.
+};
+
 static bool32 IsHandOnItemsIcon(void)
 {
     if (gSprites[sSpaData.handSpriteId].x < (gSprites[sSpaData.itemsIconSpriteId].x + 20) && gSprites[sSpaData.handSpriteId].y > (gSprites[sSpaData.itemsIconSpriteId].y - 7))
         return TRUE;
 
     return FALSE;
+}
+
+static bool32 IsHandOnExitIcon(void)
+{
+    if (gSprites[sSpaData.handSpriteId].x < 38 && gSprites[sSpaData.handSpriteId].y < 38)
+        return TRUE;
+
+    return FALSE;
+}
+
+static void ItemTraySlideOut(u8 taskId)
+{
+    gSprites[sSpaData.handSpriteId].invisible = TRUE;
+    sSpaData.itemSelectorSpriteId = CreateSprite(&sSpriteTemplate_Selector, -32, SpaItemsY[0][0], 0);
+    gSprites[sSpaData.itemSelectorSpriteId].sTaskId = taskId;
+
+    sSpaData.itemTraySpriteId1 = CreateSprite(&sSpriteTemplate_ItemTray, ITEM_START_X, 48, 1);
+    gSprites[sSpaData.itemTraySpriteId1].sTaskId = taskId;
+    sSpaData.itemTraySpriteId2 = CreateSprite(&sSpriteTemplate_ItemTray, ITEM_START_X, 112, 1);
+    gSprites[sSpaData.itemTraySpriteId2].sTaskId = taskId;
+    gSprites[sSpaData.itemTraySpriteId2].vFlip = TRUE;
+
+    sSpaData.berrySpriteId = CreateSprite(&sSpriteTemplate_Berry, (ITEM_START_X + 14), SpaItemsY[0][0], 0);
+    gSprites[sSpaData.berrySpriteId].sTaskId = taskId;
+    gSprites[sSpaData.berrySpriteId].oam.priority = 0;
+    //StartSpriteAnim(&gSprites[sSpaData.berrySpriteId], gTasks[taskId].tBerryBites);
+
+    if (FlagGet(FLAG_SPA_OBTAINED_CLAW))
+    {
+        sSpaData.clawSpriteId = CreateSprite(&sSpriteTemplate_Claw, (ITEM_START_X), SpaItemsY[1][0], 0);
+        gSprites[sSpaData.clawSpriteId].sTaskId = taskId;
+        gSprites[sSpaData.clawSpriteId].oam.priority = 0;
+    }
+
+    if (FlagGet(FLAG_SPA_OBTAINED_HONEY))
+    {
+        //u8 numBugs = 0;
+        //u8 i;
+
+        sSpaData.honeySpriteId = CreateSprite(&sSpriteTemplate_Honey, (ITEM_START_X), SpaItemsY[2][0], 0);
+        gSprites[sSpaData.honeySpriteId].sTaskId = taskId;
+        gSprites[sSpaData.honeySpriteId].oam.priority = 0;
+        /*for (i = 0; i < MAX_BUGS; i++)
+        {
+            if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i) && !FlagGet(FLAG_SPA_BUG_0_EATEN + i))
+                numBugs++;
+        }
+        StartSpriteAnim(&gSprites[spriteId], numBugs);*/
+    }
+
+    PlaySE(SE_BALL_TRAY_ENTER);
+    tState = STATE_TRAY_OUT;
 }
 
 static const u8 *SpaItemToPointer[4] =
@@ -669,14 +769,6 @@ static const u8 *SpaItemToPointer[4] =
     &sSpaData.orbSpriteId,   // Orb.
 };
 
-static const u16 SpaItemsY[][2] =
-{
-    { 48, SPA_ITEM_BIT_BERRY }, // Berry.
-    { 69, SPA_ITEM_BIT_CLAW }, // Claw.
-    { 90, SPA_ITEM_BIT_HONEY }, // Honey.
-    { 112, SPA_ITEM_BIT_ORB }, // Orb.
-};
-
 static void SpaHandHandleInput(u8 taskId)
 {
     if (JOY_NEW(EXIT_BUTTON))
@@ -685,50 +777,27 @@ static void SpaHandHandleInput(u8 taskId)
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
         gTasks[taskId].func = Task_SpaEndFade;
     }
-    if ((JOY_NEW(ITEM_MENU_BUTTON) || (JOY_NEW(INTERACT_BUTTON) && IsHandOnItemsIcon())) && FlagGet(FLAG_SPA_OBTAINED_BERRY))
+    else if (JOY_NEW(INTERACT_BUTTON) && IsHandOnExitIcon())
     {
+        StartSpriteAnim(&gSprites[sSpaData.itemsExitSpriteId], 1);
         gSprites[sSpaData.handSpriteId].invisible = TRUE;
-        sSpaData.itemSelectorSpriteId = CreateSprite(&sSpriteTemplate_Selector, -32, SpaItemsY[0][0], 0);
-        gSprites[sSpaData.itemSelectorSpriteId].sTaskId = taskId;
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+        gTasks[taskId].func = Task_SpaEndFade;
+    }
 
-        sSpaData.itemTraySpriteId1 = CreateSprite(&sSpriteTemplate_ItemTray, ITEM_START_X, 48, 1);
-        gSprites[sSpaData.itemTraySpriteId1].sTaskId = taskId;
-        sSpaData.itemTraySpriteId2 = CreateSprite(&sSpriteTemplate_ItemTray, ITEM_START_X, 112, 1);
-        gSprites[sSpaData.itemTraySpriteId2].sTaskId = taskId;
-        gSprites[sSpaData.itemTraySpriteId2].vFlip = TRUE;
-
-        sSpaData.berrySpriteId = CreateSprite(&sSpriteTemplate_Berry, (ITEM_START_X + 14), SpaItemsY[0][0], 0);
-        gSprites[sSpaData.berrySpriteId].sTaskId = taskId;
-        gSprites[sSpaData.berrySpriteId].oam.priority = 0;
-        //StartSpriteAnim(&gSprites[sSpaData.berrySpriteId], gTasks[taskId].tBerryBites);
-
-        if (FlagGet(FLAG_SPA_OBTAINED_CLAW))
-        {
-            sSpaData.clawSpriteId = CreateSprite(&sSpriteTemplate_Claw, (ITEM_START_X), SpaItemsY[1][0], 0);
-            gSprites[sSpaData.clawSpriteId].sTaskId = taskId;
-            gSprites[sSpaData.clawSpriteId].oam.priority = 0;
-        }
-
-        if (FlagGet(FLAG_SPA_OBTAINED_HONEY))
-        {
-            //u8 numBugs = 0;
-            //u8 i;
-
-            sSpaData.honeySpriteId = CreateSprite(&sSpriteTemplate_Honey, (ITEM_START_X), SpaItemsY[2][0], 0);
-            gSprites[sSpaData.honeySpriteId].sTaskId = taskId;
-            gSprites[sSpaData.honeySpriteId].oam.priority = 0;
-            /*for (i = 0; i < MAX_BUGS; i++)
-            {
-                if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i) && !FlagGet(FLAG_SPA_BUG_0_EATEN + i))
-                    numBugs++;
-            }
-            StartSpriteAnim(&gSprites[spriteId], numBugs);*/
-        }
-
-        PlaySE(SE_BALL_TRAY_ENTER);
-        tState = STATE_TRAY_OUT;
+    if (JOY_NEW(ITEM_MENU_BUTTON) && FlagGet(FLAG_SPA_OBTAINED_BERRY))
+    {
+        ItemTraySlideOut(taskId);
         return;
     }
+    else if ((JOY_NEW(INTERACT_BUTTON) && IsHandOnItemsIcon()) && FlagGet(FLAG_SPA_OBTAINED_BERRY))
+    {
+        StartSpriteAnim(&gSprites[sSpaData.itemsIconSpriteId], 1);
+        ItemTraySlideOut(taskId);
+        return;
+    }
+
+    MoveSpriteFromInput(&gSprites[sSpaData.handSpriteId]);
 }
 
 static void SpaItemChooseHandleInput(u8 taskId)
