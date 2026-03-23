@@ -4,6 +4,7 @@
 // Task Data
 #define tState          gTasks[taskId].data[0]
 #define tSelectedItem   gTasks[taskId].data[1]
+#define tActiveItemId   gTasks[taskId].data[2]
 
 // Sprite Data
 #define sTaskId     data[0]
@@ -60,11 +61,12 @@ enum SpaMons
     SPA_FLETCHINDER
 };
 
-enum HandStates
+enum SpaItems
 {
-    HAND_NORMAL,
-    HAND_PET,
-    HAND_ITEM
+    SPA_BERRY,
+    SPA_CLAW,
+    SPA_HONEY,
+    SPA_ORB
 };
 
 enum PetAreas
@@ -73,17 +75,6 @@ enum PetAreas
     SPA_PET_BODY,
     SPA_PET_HEAD,
     SPA_PET_BAD
-};
-
-enum ItemChooseStates
-{
-    ITEM_STATE_START,
-    ITEM_STATE_TRAY_OUT,
-    ITEM_STATE_TRAY_INPUT,
-    ITEM_STATE_ITEM_SELECTED,
-    ITEM_STATE_ITEM_HELD,
-    ITEM_STATE_NO_SELECTION,
-    ITEM_STATE_END,
 };
 
 enum SpaTaskStates

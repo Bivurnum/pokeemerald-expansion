@@ -769,6 +769,13 @@ static const u8 *SpaItemToPointer[4] =
     &sSpaData.orbSpriteId,   // Orb.
 };
 
+static void ResetSpaHand(void)
+{
+    gSprites[sSpaData.handSpriteId].x = HAND_START_X;
+    gSprites[sSpaData.handSpriteId].y = HAND_START_Y;
+    gSprites[sSpaData.handSpriteId].invisible = FALSE;
+}
+
 static void SpaHandHandleInput(u8 taskId)
 {
     if (JOY_NEW(EXIT_BUTTON))
@@ -809,6 +816,10 @@ static void SpaItemChooseHandleInput(u8 taskId)
     {
         tState = STATE_TRAY_IN_HAND;
     }
+    else if (JOY_NEW(INTERACT_BUTTON))
+    {
+        tState = STATE_TRAY_IN_ITEM;
+    }
     else if (JOY_NEW(DPAD_DOWN))
     {
         for (i = 1; i < ARRAY_COUNT(SpaItemsY); i++)
@@ -845,6 +856,24 @@ static void SpaItemChooseHandleInput(u8 taskId)
             }
         }
     }
+}
+
+static void SpaItemHandleInput(u8 taskId)
+{
+    if (JOY_NEW(INTERACT_BUTTON))
+    {
+        tSelectedItem = 0;
+        DestroySprite(&gSprites[tActiveItemId]);
+        ResetSpaHand();
+        tState = STATE_HAND;
+    }
+    else if (JOY_NEW(ITEM_MENU_BUTTON))
+    {
+        tSelectedItem = 0;
+        ItemTraySlideOut(taskId);
+        DestroySprite(&gSprites[tActiveItemId]);
+    }
+    MoveSpriteFromInput(&gSprites[tActiveItemId]);
 }
 
 static void Task_SpaWaitFade(u8 taskId)
@@ -888,6 +917,62 @@ static void Task_Spa(u8 taskId)
     case STATE_ITEM_CHOOSE:
         SpaItemChooseHandleInput(taskId);
         break;
+    case STATE_TRAY_IN_ITEM:
+        if (gSprites[sSpaData.itemTraySpriteId1].x > ITEM_START_X)
+        {
+            switch (tSelectedItem)
+            {
+            case SPA_BERRY:
+                tActiveItemId = sSpaData.berrySpriteId;
+                break;
+            case SPA_CLAW:
+                tActiveItemId = sSpaData.clawSpriteId;
+                break;
+            case SPA_HONEY:
+                tActiveItemId = sSpaData.honeySpriteId;
+                break;
+            case SPA_ORB:
+                tActiveItemId = sSpaData.orbSpriteId;
+                break;
+            }
+
+            gSprites[sSpaData.itemTraySpriteId1].x -= 2;
+            gSprites[sSpaData.itemTraySpriteId2].x -= 2;
+            if (gSprites[sSpaData.itemSelectorSpriteId].x > ITEM_START_X)
+                gSprites[sSpaData.itemSelectorSpriteId].x -= 2;
+            if (tSelectedItem != SPA_BERRY && gSprites[sSpaData.berrySpriteId].x > (ITEM_START_X + 10))
+                gSprites[sSpaData.berrySpriteId].x -= 2;
+            if (tSelectedItem != SPA_CLAW && sSpaData.clawSpriteId)
+                gSprites[sSpaData.clawSpriteId].x -= 2;
+            if (tSelectedItem != SPA_HONEY && sSpaData.honeySpriteId)
+                gSprites[sSpaData.honeySpriteId].x -= 2;
+        }
+        else
+        {
+            DestroySprite(&gSprites[sSpaData.itemTraySpriteId1]);
+            sSpaData.itemTraySpriteId1 = 0;
+            DestroySprite(&gSprites[sSpaData.itemTraySpriteId2]);
+            sSpaData.itemTraySpriteId2 = 0;
+            DestroySprite(&gSprites[sSpaData.itemSelectorSpriteId]);
+            sSpaData.itemSelectorSpriteId = 0;
+            if (tSelectedItem != SPA_BERRY)
+            {
+                DestroySprite(&gSprites[sSpaData.berrySpriteId]);
+                sSpaData.berrySpriteId = 0;
+            }
+            if (tSelectedItem != SPA_CLAW && sSpaData.clawSpriteId)
+            {
+                DestroySprite(&gSprites[sSpaData.clawSpriteId]);
+                sSpaData.clawSpriteId = 0;
+            }
+            if (tSelectedItem != SPA_HONEY && sSpaData.honeySpriteId)
+            {
+                DestroySprite(&gSprites[sSpaData.honeySpriteId]);
+                sSpaData.honeySpriteId = 0;
+            }
+            tState = STATE_ITEM;
+        }
+        break;
     case STATE_TRAY_IN_HAND:
         if (gSprites[sSpaData.itemTraySpriteId1].x > ITEM_START_X)
         {
@@ -923,12 +1008,13 @@ static void Task_Spa(u8 taskId)
                 DestroySprite(&gSprites[sSpaData.honeySpriteId]);
                 sSpaData.honeySpriteId = 0;
             }
-            gSprites[sSpaData.handSpriteId].x = HAND_START_X;
-            gSprites[sSpaData.handSpriteId].y = HAND_START_Y;
-            gSprites[sSpaData.handSpriteId].invisible = FALSE;
+            ResetSpaHand();
             tSelectedItem = 0;
             tState = STATE_HAND;
         }
+        break;
+    case STATE_ITEM:
+        SpaItemHandleInput(taskId);
         break;
     }
 
