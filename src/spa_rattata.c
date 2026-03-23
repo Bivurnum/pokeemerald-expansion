@@ -530,6 +530,7 @@ void HandleItemsRattata(u8 taskId)
             StartRattataHappyAnim(taskId);
             PauseUntilAnimEnds(taskId, sRatEyesSpriteId);
             CreateMusicSprite(taskId);
+            sSpaData.isSatisfied = TRUE;
             tBerryBites = 0;
         }
         else if (IsBerryInFeedingZone())

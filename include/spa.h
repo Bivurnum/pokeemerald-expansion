@@ -9,11 +9,13 @@
 #define tCounter        gTasks[taskId].data[4]
 #define tBiteState      gTasks[taskId].data[5]
 #define tPetArea        gTasks[taskId].data[6]
+#define tPetScore       gTasks[taskId].data[7]
 
 // Sprite Data
-#define sTaskId     data[0]
-#define sInterval   data[1]
-#define sCounter    data[2]
+#define sTaskId         data[0]
+#define sInterval       data[1]
+#define sCounter        data[2]
+#define sHeartOffset    data[3]
 
 // Rattata Sprite Data
 #define sBerryBites data[3]
@@ -42,6 +44,8 @@
 #define SPA_ITEM_BIT_CLAW   0x2
 #define SPA_ITEM_BIT_HONEY  0x4
 #define SPA_ITEM_BIT_ORB    0x8
+
+#define SPA_PET_SCORE_TARGET    600
 
 struct SpaData
 {

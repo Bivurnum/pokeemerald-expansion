@@ -32,6 +32,7 @@ static void Task_SpaWaitFade(u8 taskId);
 static void Task_Spa(u8 taskId);
 static void Task_SpaEndFade(u8 taskId);
 static void Task_SpaEndBad(u8 taskId);
+static void Task_SpaEndSuccess(u8 taskId);
 static void CreateSpaSprites(u8 taskId);
 static void CreateSpaMonSprites(u8 taskId);
 
@@ -922,12 +923,54 @@ static void ResetSpaMonSprites(void)
     }
 }
 
+static void AdjustToPetArea(u8 taskId, u8 area)
+{
+    if (tPetArea != area && area != SPA_PET_BAD)
+    {
+        tPetArea = area;
+        if (tPetArea == SPA_PET_BODY && sSpaData.mon == SPA_RATTATA)
+        {
+            gSprites[sSpaData.handSpriteId].subpriority = 11;
+            gSprites[sSpaData.handSpriteId].oam.priority = 1;
+        }
+    }
+}
+
+static void StopPetting(u8 taskId)
+{
+    if (tPetArea != SPA_PET_NONE)
+    {
+        tPetArea = SPA_PET_NONE;
+        gSprites[sSpaData.handSpriteId].subpriority = 5;
+        gSprites[sSpaData.handSpriteId].oam.priority = 0;
+    }
+}
+
 static void ResetSpaHand(void)
 {
     gSprites[sSpaData.handSpriteId].x = HAND_START_X;
     gSprites[sSpaData.handSpriteId].y = HAND_START_Y;
     gSprites[sSpaData.handSpriteId].invisible = FALSE;
 }
+
+static const s16 HeartPos[][3][2] =
+{
+    [SPA_RATTATA] = {
+        { 130, 40 },
+        { 150, 35 },
+        { 170, 45 },
+    },
+    [SPA_TEDDIURSA] = {
+        { 110, 40 },
+        { 130, 35 },
+        { 150, 45 },
+    },
+    [SPA_PSYDUCK] = {
+        { 70, 50 },
+        { 90, 45 },
+        { 110, 55 },
+    }
+};
 
 static void SpaHandHandleInput(u8 taskId)
 {
@@ -959,6 +1002,9 @@ static void SpaHandHandleInput(u8 taskId)
 
     u32 petArea = GetCurrentPettingArea();
 
+    if (tPetScore > 0 && tPetScore < SPA_PET_SCORE_TARGET)
+        tPetScore--;
+
     if (JOY_NEW(INTERACT_BUTTON))
     {
         if (petArea == SPA_PET_BAD)
@@ -974,27 +1020,80 @@ static void SpaHandHandleInput(u8 taskId)
     {
         if (petArea)
         {
-            if (petArea == SPA_PET_BAD)
+            if (tPetArea != petArea)
             {
-                tPetArea = SPA_PET_BAD;
-                StartBadTouchAnim(taskId);
-                gSprites[sSpaData.handSpriteId].invisible = TRUE;
-                //DoSpaMonBadTouchText(sTask.tIsSatisfied);
-                return;
+                tCounter = 0;
+                if (petArea == SPA_PET_BAD)
+                {
+                    tPetArea = SPA_PET_BAD;
+                    StartBadTouchAnim(taskId);
+                    gSprites[sSpaData.handSpriteId].invisible = TRUE;
+                    //DoSpaMonBadTouchText(sTask.tIsSatisfied);
+                    return;
+                }
+                else
+                {
+                    AdjustToPetArea(taskId, petArea);
+                    StartSpriteAnim(&gSprites[sSpaData.handSpriteId], 1);
+                }
             }
-            //AdjustToPetArea(sprite, petArea);
-            //StartSpriteAnim(sprite, 1);
-            //sHandState = HAND_PET;
+            else
+            {
+                if (tPetScore >= SPA_PET_SCORE_TARGET)
+                {
+                    u8 spaMon = sSpaData.mon;
+                    u8 spriteId;
+                    u8 i;
+                
+                    for (i = 0; i < 3; i++)
+                    {
+                        spriteId = CreateSprite(&sSpriteTemplate_Heart, HeartPos[spaMon][i][0], HeartPos[spaMon][i][1], 0);
+                        sSpaData.heartSpriteIds[i] = taskId;
+                        gSprites[spriteId].sHeartOffset = Random() % 120;
+                        gSprites[spriteId].sCounter = gSprites[spriteId].sHeartOffset;
+                        //gSprites[spriteId].sHeartId = i + 1;
+                    }
+                
+                    PlaySpaMonCry(CRY_MODE_GROWL_1);
+                    //DoSpaMonSatisfiedText();
+                    gSprites[sSpaData.handSpriteId].invisible = TRUE;
+                    tCounter = 0;
+                    gTasks[taskId].func = Task_SpaEndSuccess;
+                    return;
+                }
+                else if (!JOY_HELD(INTERACT_BUTTON) || !petArea)
+                {
+                    StartSpriteAnim(&gSprites[sSpaData.handSpriteId], 0);
+                    StopPetting(taskId);
+                }
+                else if (JOY_HELD(DPAD_ANY))
+                {
+                    tPetScore += 4;
+                    tCounter = 0;
+                }
+
+                if (tPetScore < SPA_PET_SCORE_TARGET)
+                {
+                    if(!JOY_HELD(DPAD_ANY))
+                    {
+                        if (tCounter == 60)
+                        {
+                            StopPetting(taskId);
+                        }
+                        tCounter++;
+                    }
+                }
+            }
         }
-        //else
-        //{
-        //    StopPetting(sprite);
-        //}
+        else
+        {
+            StopPetting(taskId);
+        }
     }
-    //else
-    //{
-    //    StopPetting(sprite);
-    //}
+    else
+    {
+        StopPetting(taskId);
+    }
 
     MoveSpriteFromInput(&gSprites[sSpaData.handSpriteId]);
 }
@@ -1358,6 +1457,16 @@ static void Task_SpaEndBad(u8 taskId)
     tCounter++;
 }
 
+static void Task_SpaEndSuccess(u8 taskId)
+{
+    if (tCounter == 180)
+    {
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+        gTasks[taskId].func = Task_SpaEndFade;
+    }
+    tCounter++;
+}
+
 static void SpriteCB_Hand(struct Sprite *sprite)
 {
 
@@ -1402,7 +1511,10 @@ static void SpriteCB_Angry(struct Sprite *sprite)
 
 static void SpriteCB_Heart(struct Sprite *sprite)
 {
-
+    sprite->sCounter++;
+    sprite->x2 = Sin2(0 - sprite->sCounter * 3) / 512;
+    if (sprite->sCounter % 4 == 0)
+        sprite->y--;
 }
 
 static void SpriteCB_Berry(struct Sprite *sprite)
