@@ -720,6 +720,18 @@ void CreateMusicSprite(u8 taskId)
     StartSpriteAnim(&gSprites[sSpaData.musicSpriteId], MusicPos[sSpaData.mon][2]);
 }
 
+static const s16 AngryPos[][2] =
+{
+    [SPA_RATTATA] = { 165, 38},
+    [SPA_TEDDIURSA] = { 155, 40},
+};
+
+void CreateAngrySprite(u8 taskId)
+{
+    sSpaData.angrySpriteId = CreateSprite(&sSpriteTemplate_Angry, AngryPos[sSpaData.mon][0], AngryPos[sSpaData.mon][1], 0);
+    gSprites[sSpaData.angrySpriteId].sTaskId = taskId;
+}
+
 static const u16 SpaItemsY[][2] =
 {
     { 48, SPA_ITEM_BIT_BERRY }, // Berry.
@@ -788,6 +800,87 @@ static void ItemTraySlideOut(u8 taskId)
     tState = STATE_TRAY_OUT;
 }
 
+const s16 PettingZones[][5][5] =
+{
+    // { MIN_X, MAX_X, MIN_Y, MAX_Y, BODY_PART }
+
+    [SPA_RATTATA] =
+    {
+        { 78, 118, 49, 97, SPA_PET_BODY },
+        { 127, 175, 32, 72, SPA_PET_HEAD },
+        { 72, 112, 8, 31, SPA_PET_BAD },
+        { 64, 80, 25, 73, SPA_PET_BAD },
+        { 155, 168, 91, 104, SPA_PET_BAD }
+    },
+    [SPA_TEDDIURSA] =
+    {
+        { 117, 165, 70, 118, SPA_PET_BODY },
+        { 108, 164, 24, 74, SPA_PET_HEAD },
+    },
+    [SPA_PSYDUCK] =
+    {
+        { 126, 195, 47, 94, SPA_PET_BODY },
+        { 69, 124, 60, 94, SPA_PET_HEAD },
+    }
+};
+
+static u8 GetCurrentPettingArea(void)
+{
+    u32 i;
+    u32 spaMon = sSpaData.mon;
+    struct Sprite *sprite = &gSprites[sSpaData.handSpriteId];
+
+    for (i = 0; i < ARRAY_COUNT(PettingZones[spaMon]); i++)
+    {
+        if (sprite->x > PettingZones[spaMon][i][0] && sprite->x < PettingZones[spaMon][i][1])
+        {
+            if (sprite->y > PettingZones[spaMon][i][2] && sprite->y < PettingZones[spaMon][i][3])
+            {
+                if (!sSpaData.isSatisfied)
+                    return SPA_PET_BAD;
+
+                return PettingZones[spaMon][i][4];
+            }
+        }
+    }
+
+    return SPA_PET_NONE;
+}
+
+static void StartBadTouchAnim(u8 taskId)
+{
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        StartRattataBadTouch(taskId);
+        break;
+    case SPA_TEDDIURSA:
+        break;
+    case SPA_PSYDUCK:
+        break;
+    case SPA_FLETCHINDER:
+        break;
+    }
+    PlaySE(SE_CONTEST_CONDITION_LOSE);
+}
+
+static void StartAngryAnim(u8 taskId)
+{
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        StartRattataAngry(taskId);
+        break;
+    case SPA_TEDDIURSA:
+        break;
+    case SPA_PSYDUCK:
+        break;
+    case SPA_FLETCHINDER:
+        break;
+    }
+    PlaySpaMonCry(CRY_MODE_ROAR_1);
+}
+
 static const u8 *SpaItemToPointer[4] =
 {
     &sSpaData.berrySpriteId, // Berry.
@@ -795,6 +888,22 @@ static const u8 *SpaItemToPointer[4] =
     &sSpaData.honeySpriteId, // Honey.
     &sSpaData.orbSpriteId,   // Orb.
 };
+
+static void ResetSpaMonSprites(void)
+{
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        ResetRattataSprites();
+        break;
+    case SPA_TEDDIURSA:
+        break;
+    case SPA_PSYDUCK:
+        break;
+    case SPA_FLETCHINDER:
+        break;
+    }
+}
 
 static void ResetSpaHand(void)
 {
@@ -830,6 +939,45 @@ static void SpaHandHandleInput(u8 taskId)
         ItemTraySlideOut(taskId);
         return;
     }
+
+    u32 petArea = GetCurrentPettingArea();
+
+    if (JOY_NEW(INTERACT_BUTTON))
+    {
+        if (petArea == SPA_PET_BAD)
+        {
+            tPetArea = SPA_PET_BAD;
+            StartBadTouchAnim(taskId);
+            gSprites[sSpaData.handSpriteId].invisible = TRUE;
+            //DoSpaMonBadTouchText(sTask.tIsSatisfied);
+            return;
+        }
+    }
+    else if (JOY_HELD(INTERACT_BUTTON))
+    {
+        if (petArea)
+        {
+            if (petArea == SPA_PET_BAD)
+            {
+                tPetArea = SPA_PET_BAD;
+                StartBadTouchAnim(taskId);
+                gSprites[sSpaData.handSpriteId].invisible = TRUE;
+                //DoSpaMonBadTouchText(sTask.tIsSatisfied);
+                return;
+            }
+            //AdjustToPetArea(sprite, petArea);
+            //StartSpriteAnim(sprite, 1);
+            //sHandState = HAND_PET;
+        }
+        //else
+        //{
+        //    StopPetting(sprite);
+        //}
+    }
+    //else
+    //{
+    //    StopPetting(sprite);
+    //}
 
     MoveSpriteFromInput(&gSprites[sSpaData.handSpriteId]);
 }
@@ -964,10 +1112,30 @@ static void Task_Spa(u8 taskId)
         {
             if (gSprites[sSpaData.pausedSpriteId].animEnded)
             {
+                if (tPetArea == SPA_PET_BAD)
+                {
+                    if (sSpaData.hasBeenPetBad)
+                    {
+                        ResetSpaMonSprites();
+                    }
+                    else
+                    {
+                        ResetSpaMonSprites();
+                        StartAngryAnim(taskId);
+                        sSpaData.hasBeenPetBad = TRUE;
+                    }
+                    tPetArea = SPA_PET_NONE;
+                    return;
+                }
                 if (sSpaData.musicSpriteId)
                 {
                     DestroySprite(&gSprites[sSpaData.musicSpriteId]);
                     sSpaData.musicSpriteId = 0;
+                }
+                if (sSpaData.angrySpriteId)
+                {
+                    DestroySprite(&gSprites[sSpaData.angrySpriteId]);
+                    sSpaData.angrySpriteId = 0;
                 }
                 ResetSpaHand();
                 sSpaData.pausedSpriteId = 0;

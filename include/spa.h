@@ -8,6 +8,7 @@
 #define tBerryBites     gTasks[taskId].data[3]
 #define tCounter        gTasks[taskId].data[4]
 #define tBiteState      gTasks[taskId].data[5]
+#define tPetArea        gTasks[taskId].data[6]
 
 // Sprite Data
 #define sTaskId     data[0]
@@ -44,12 +45,15 @@
 
 struct SpaData
 {
-    u8 mon;
+    u8 mon:6;
+    u8 isSatisfied:1;
+    u8 hasBeenPetBad:1;
     u8 pausedSpriteId;
     u8 itemFlagBits;
     u8 monSpriteIds[10];
     u8 heartSpriteIds[3];
     u8 musicSpriteId;
+    u8 angrySpriteId;
     u8 handSpriteId;
     u8 itemsIconSpriteId;
     u8 itemsExitSpriteId;
@@ -101,9 +105,13 @@ extern struct SpaData sSpaData;
 extern const struct SpritePalette sSpritePalettes_SpaRattata[];
 
 void CreateRattataSprites(u8 taskId);
+void ResetRattataSprites(void);
 void HandleItemsRattata(u8 taskId);
+void StartRattataBadTouch(u8 taskId);
+void StartRattataAngry(u8 taskId);
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);
+void CreateAngrySprite(u8 taskId);
 bool32 IsBerryInFeedingZone(void);
 
 static const struct OamData sOam_64x64 =

@@ -214,7 +214,9 @@ static const union AnimCmd sAnim_RatEyesBiteGood[] =
 
 static const union AnimCmd sAnim_RatEyesAngry[] =
 {
-    ANIMCMD_FRAME(.imageValue = 7, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 7, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 7, .duration = 59),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
@@ -496,6 +498,26 @@ static void StartRattataBite(u8 taskId)
     StartSpriteAnim(&gSprites[sRatEarRightSpriteId], 1);
     StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 2);
     StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 2);
+}
+
+void StartRattataBadTouch(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sRatBodyLeftSpriteId], 2);
+    StartSpriteAnim(&gSprites[sRatEyesSpriteId], 3);
+    gSprites[sRatTailSpriteId].invisible = TRUE;
+    PauseUntilAnimEnds(taskId, sRatEyesSpriteId);
+}
+
+void StartRattataAngry(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sRatEyesSpriteId], 5);
+    PauseUntilAnimEnds(taskId, sRatEyesSpriteId);
+    CreateAngrySprite(taskId);
+}
+
+void ResetRattataSprites(void)
+{
+    gSprites[sRatTailSpriteId].invisible = FALSE;
 }
 
 void HandleItemsRattata(u8 taskId)
