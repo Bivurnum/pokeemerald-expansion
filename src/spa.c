@@ -706,6 +706,20 @@ void PauseUntilAnimEnds(u8 taskId, u8 spriteId)
     tState = STATE_HAND;
 }
 
+static const s16 MusicPos[][3] =
+{
+    [SPA_RATTATA] = { 190, 20, 0 },
+    [SPA_TEDDIURSA] = { 84, 26, 1 },
+    [SPA_PSYDUCK] = { 64, 37, 1 },
+};
+
+void CreateMusicSprite(u8 taskId)
+{
+    sSpaData.musicSpriteId = CreateSprite(&sSpriteTemplate_Music, MusicPos[sSpaData.mon][0], MusicPos[sSpaData.mon][1], 0);
+    gSprites[sSpaData.musicSpriteId].sTaskId = taskId;
+    StartSpriteAnim(&gSprites[sSpaData.musicSpriteId], MusicPos[sSpaData.mon][2]);
+}
+
 static const u16 SpaItemsY[][2] =
 {
     { 48, SPA_ITEM_BIT_BERRY }, // Berry.
@@ -907,6 +921,31 @@ static void SpaItemHandleInput(u8 taskId)
     }
 }
 
+static const s16 FeedingZones[][2][2] =
+{
+    [SPA_RATTATA] =
+    {
+        { 135, 170 },
+        { 83, 110 }
+    },
+    [SPA_TEDDIURSA] =
+    {
+        { 60, 80 },
+        { 60, 110 }
+    }
+};
+
+bool32 IsBerryInFeedingZone(void)
+{
+    if (gSprites[sSpaData.berrySpriteId].x > FeedingZones[sSpaData.mon][0][0] && gSprites[sSpaData.berrySpriteId].x < FeedingZones[sSpaData.mon][0][1] 
+     && gSprites[sSpaData.berrySpriteId].y > FeedingZones[sSpaData.mon][1][0] && gSprites[sSpaData.berrySpriteId].y < FeedingZones[sSpaData.mon][1][1])
+    {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
 static void Task_SpaWaitFade(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -925,6 +964,11 @@ static void Task_Spa(u8 taskId)
         {
             if (gSprites[sSpaData.pausedSpriteId].animEnded)
             {
+                if (sSpaData.musicSpriteId)
+                {
+                    DestroySprite(&gSprites[sSpaData.musicSpriteId]);
+                    sSpaData.musicSpriteId = 0;
+                }
                 ResetSpaHand();
                 sSpaData.pausedSpriteId = 0;
             }
@@ -1077,7 +1121,11 @@ static void SpriteCB_Hand(struct Sprite *sprite)
 
 static void SpriteCB_Music(struct Sprite *sprite)
 {
-
+    if (sprite->sCounter == 10)
+    {
+        PlaySpaMonCry(CRY_MODE_HIGH_PITCH);
+    }
+    sprite->sCounter++;
 }
 
 static void SpriteCB_ItemTray(struct Sprite *sprite)

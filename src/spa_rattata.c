@@ -41,6 +41,13 @@ static const u32 gRattataWhiskerRight_Gfx[] = INCBIN_U32("graphics/_spa/rattata/
 static const u32 gRattataToes_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_toes.4bpp");
 static const u32 gRattataEyes_Gfx[] = INCBIN_U32("graphics/_spa/rattata/rattata_eyes.4bpp");
 
+enum RattataBiteStates
+{
+    BITE_STATE_NONE,
+    BITE_STATE_ACTIVE,
+    BITE_STATE_END
+};
+
 static const union AnimCmd sAnim_Normal[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
@@ -103,7 +110,9 @@ static const union AnimCmd sAnim_RatBite[] =
 
 static const union AnimCmd sAnim_RatSmile[] =
 {
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
@@ -221,7 +230,9 @@ static const union AnimCmd sAnim_RatEyesBiteBad[] =
 
 static const union AnimCmd sAnim_RatEyesSmile[] =
 {
-    ANIMCMD_FRAME(.imageValue = 10, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 10, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 10, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
@@ -469,12 +480,22 @@ void CreateRattataSprites(u8 taskId)
 
 static void StartRattataHappyAnim(u8 taskId)
 {
-    StartSpriteAnim(&gSprites[sRatEyesSpriteId], 2);
+    StartSpriteAnim(&gSprites[sRatEyesSpriteId], 7);
     StartSpriteAnim(&gSprites[sRatMouthSpriteId], 2);
     StartSpriteAnim(&gSprites[sRatEarLeftSpriteId], 2);
     StartSpriteAnim(&gSprites[sRatEarRightSpriteId], 2);
     StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 3);
     StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 3);
+}
+
+static void StartRattataBite(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sRatEyesSpriteId], 4);
+    StartSpriteAnim(&gSprites[sRatMouthSpriteId], 1);
+    StartSpriteAnim(&gSprites[sRatEarLeftSpriteId], 1);
+    StartSpriteAnim(&gSprites[sRatEarRightSpriteId], 1);
+    StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 2);
+    StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 2);
 }
 
 void HandleItemsRattata(u8 taskId)
@@ -486,7 +507,44 @@ void HandleItemsRattata(u8 taskId)
         {
             StartRattataHappyAnim(taskId);
             PauseUntilAnimEnds(taskId, sRatEyesSpriteId);
+            CreateMusicSprite(taskId);
             tBerryBites = 0;
+        }
+        else if (IsBerryInFeedingZone())
+        {
+            switch (tBiteState)
+            {
+            case BITE_STATE_NONE:
+                StartRattataBite(taskId);
+                tCounter = 0;
+                tBiteState = BITE_STATE_ACTIVE;
+                break;
+            case BITE_STATE_ACTIVE:
+                if (gSprites[sRatMouthSpriteId].animEnded)
+                {
+                    tBerryBites++;
+                    if (tBerryBites >= 3)
+                        DestroySprite(&gSprites[sSpaData.berrySpriteId]);
+                    else
+                        StartSpriteAnim(&gSprites[sSpaData.berrySpriteId], tBerryBites);
+
+                    tBiteState = BITE_STATE_NONE;
+                }
+                else if (tCounter == 56)
+                {
+                    PlaySE(SE_M_SCRATCH);
+                    tCounter++;
+                }
+                else if (tCounter < 56)
+                {
+                    tCounter++;
+                }
+                break;
+            }
+        }
+        else
+        {
+            tBiteState = BITE_STATE_NONE;
         }
         break;
     case SPA_CLAW:
@@ -500,7 +558,7 @@ void HandleItemsRattata(u8 taskId)
 
 
     
-    if (!sTask.tIsBitingOrAttacking)
+/*    if (!sTask.tIsBitingOrAttacking)
     {
         if (sTask.tBerryBites == 3)
         {
@@ -537,7 +595,7 @@ void HandleItemsRattata(u8 taskId)
                 sprite->sBlinkCounter++;
             }
         }
-    }
+    }*/
 }
 
 static void SpriteCB_RatBodyLeft(struct Sprite *sprite)
