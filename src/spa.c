@@ -25,7 +25,7 @@
 #include "constants/songs.h"
 #include "constants/rgb.h"
 
-static EWRAM_DATA struct SpaData sSpaData = {0};
+EWRAM_DATA struct SpaData sSpaData = {0};
 
 static void CB2_StartSpa(void);
 static void Task_SpaWaitFade(u8 taskId);
@@ -693,6 +693,19 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
     }
 }
 
+void PauseUntilAnimEnds(u8 taskId, u8 spriteId)
+{
+    if (tActiveItemId)
+    {
+        tSelectedItem = 0;
+        DestroySprite(&gSprites[tActiveItemId]);
+        tActiveItemId = 0;
+    }
+    gSprites[sSpaData.handSpriteId].invisible = TRUE;
+    sSpaData.pausedSpriteId = spriteId;
+    tState = STATE_HAND;
+}
+
 static const u16 SpaItemsY[][2] =
 {
     { 48, SPA_ITEM_BIT_BERRY }, // Berry.
@@ -864,16 +877,34 @@ static void SpaItemHandleInput(u8 taskId)
     {
         tSelectedItem = 0;
         DestroySprite(&gSprites[tActiveItemId]);
+        tActiveItemId = 0;
         ResetSpaHand();
         tState = STATE_HAND;
+        return;
     }
     else if (JOY_NEW(ITEM_MENU_BUTTON))
     {
         tSelectedItem = 0;
-        ItemTraySlideOut(taskId);
         DestroySprite(&gSprites[tActiveItemId]);
+        tActiveItemId = 0;
+        ItemTraySlideOut(taskId);
+        return;
     }
+
     MoveSpriteFromInput(&gSprites[tActiveItemId]);
+
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        HandleItemsRattata(taskId);
+        break;
+    case SPA_TEDDIURSA:
+        break;
+    case SPA_PSYDUCK:
+        break;
+    case SPA_FLETCHINDER:
+        break;
+    }
 }
 
 static void Task_SpaWaitFade(u8 taskId)
@@ -890,6 +921,15 @@ static void Task_Spa(u8 taskId)
     switch (tState)
     {
     case STATE_HAND:
+        if (sSpaData.pausedSpriteId)
+        {
+            if (gSprites[sSpaData.pausedSpriteId].animEnded)
+            {
+                ResetSpaHand();
+                sSpaData.pausedSpriteId = 0;
+            }
+            return;
+        }
         SpaHandHandleInput(taskId);
         break;
     case STATE_TRAY_OUT:

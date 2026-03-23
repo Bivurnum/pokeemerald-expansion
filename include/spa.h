@@ -5,11 +5,16 @@
 #define tState          gTasks[taskId].data[0]
 #define tSelectedItem   gTasks[taskId].data[1]
 #define tActiveItemId   gTasks[taskId].data[2]
+#define tBerryBites     gTasks[taskId].data[3]
+#define tCounter        gTasks[taskId].data[4]
 
 // Sprite Data
 #define sTaskId     data[0]
 #define sInterval   data[1]
 #define sCounter    data[2]
+
+// Rattata Sprite Data
+#define sBerryBites data[3]
 
 #define INTERACT_BUTTON     A_BUTTON
 #define FAST_BUTTON         B_BUTTON
@@ -38,9 +43,10 @@
 
 struct SpaData
 {
-    u8 mon:7;
-    u8 shouldExit:1;
+    u8 mon;
+    u8 pausedSpriteId;
     u8 itemFlagBits;
+    u8 monSpriteIds[10];
     u8 handSpriteId;
     u8 itemsIconSpriteId;
     u8 itemsExitSpriteId;
@@ -87,9 +93,12 @@ enum SpaTaskStates
     STATE_ITEM
 };
 
+extern struct SpaData sSpaData;
+
 extern const struct SpritePalette sSpritePalettes_SpaRattata[];
 
 void CreateRattataSprites(u8 taskId);
+void HandleItemsRattata(u8 taskId)
 
 static const struct OamData sOam_64x64 =
 {

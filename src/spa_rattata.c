@@ -4,8 +4,20 @@
 #include "random.h"
 #include "sound.h"
 #include "spa.h"
+#include "sprite.h"
 #include "task.h"
 #include "constants/songs.h"
+
+#define sRatEyesSpriteId            sSpaData.monSpriteIds[0]
+#define sRatBodyLeftSpriteId        sSpaData.monSpriteIds[1]
+#define sRatBodyRightSpriteId       sSpaData.monSpriteIds[2]
+#define sRatTailSpriteId            sSpaData.monSpriteIds[3]
+#define sRatEarLeftSpriteId         sSpaData.monSpriteIds[4]
+#define sRatEarRightSpriteId        sSpaData.monSpriteIds[5]
+#define sRatMouthSpriteId           sSpaData.monSpriteIds[6]
+#define sRatWhiskerLeftSpriteId     sSpaData.monSpriteIds[7]
+#define sRatWhiskerRightSpriteId    sSpaData.monSpriteIds[8]
+#define sRatToesSpriteId            sSpaData.monSpriteIds[9]
 
 static void SpriteCB_RatBodyLeft(struct Sprite *sprite);
 static void SpriteCB_RatBodyRight(struct Sprite *sprite);
@@ -421,40 +433,111 @@ const struct SpritePalette sSpritePalettes_SpaRattata[] =
 
 void CreateRattataSprites(u8 taskId)
 {
-    u8 spriteId;
+    sRatEyesSpriteId = CreateSprite(&sSpriteTemplate_RatEyes, 154, 63, 8);
+    gSprites[sRatEyesSpriteId].sTaskId = taskId;
+    gSprites[sRatEyesSpriteId].sInterval = (Random() % 180) + 180;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatEyes, 154, 63, 8);
-    gSprites[spriteId].sTaskId = taskId;
-    gSprites[spriteId].sInterval = (Random() % 180) + 180;
+    sRatBodyLeftSpriteId = CreateSprite(&sSpriteTemplate_RatBodyLeft, 94, 73, 12);
+    gSprites[sRatBodyLeftSpriteId].sTaskId = taskId;
+    StartSpriteAnim(&gSprites[sRatBodyLeftSpriteId], 1);
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatBodyLeft, 94, 73, 12);
-    gSprites[spriteId].sTaskId = taskId;
-    StartSpriteAnim(&gSprites[spriteId], 1);
+    sRatBodyRightSpriteId = CreateSprite(&sSpriteTemplate_RatBodyRight, 158, 81, 12);
+    gSprites[sRatBodyRightSpriteId].sTaskId = taskId;
+    StartSpriteAnim(&gSprites[sRatBodyRightSpriteId], 1);
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatBodyRight, 158, 81, 12);
-    gSprites[spriteId].sTaskId = taskId;
-    StartSpriteAnim(&gSprites[spriteId], 1);
+    sRatTailSpriteId = CreateSprite(&sSpriteTemplate_RatTail, 88, 33, 11);
+    gSprites[sRatTailSpriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatTail, 88, 33, 11);
-    gSprites[spriteId].sTaskId = taskId;
+    sRatEarLeftSpriteId = CreateSprite(&sSpriteTemplate_RatEarLeft, 119, 32, 10);
+    gSprites[sRatEarLeftSpriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatEarLeft, 119, 32, 10);
-    gSprites[spriteId].sTaskId = taskId;
+    sRatEarRightSpriteId = CreateSprite(&sSpriteTemplate_RatEarRight, 183, 32, 10);
+    gSprites[sRatEarRightSpriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatEarRight, 183, 32, 10);
-    gSprites[spriteId].sTaskId = taskId;
+    sRatMouthSpriteId = CreateSprite(&sSpriteTemplate_RatMouth, 152, 80, 10);
+    gSprites[sRatMouthSpriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatMouth, 152, 80, 10);
-    gSprites[spriteId].sTaskId = taskId;
+    sRatWhiskerLeftSpriteId = CreateSprite(&sSpriteTemplate_RatWhiskerLeft, 96, 59, 9);
+    gSprites[sRatWhiskerLeftSpriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatWhiskerLeft, 96, 59, 9);
-    gSprites[spriteId].sTaskId = taskId;
+    sRatWhiskerRightSpriteId = CreateSprite(&sSpriteTemplate_RatWhiskerRight, 207, 57, 9);
+    gSprites[sRatWhiskerRightSpriteId].sTaskId = taskId;
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatWhiskerRight, 207, 57, 9);
-    gSprites[spriteId].sTaskId = taskId;
+    sRatToesSpriteId = CreateSprite(&sSpriteTemplate_RatToes, 104, 109, 12);
+    gSprites[sRatToesSpriteId].sTaskId = taskId;
+}
 
-    spriteId = CreateSprite(&sSpriteTemplate_RatToes, 104, 109, 12);
-    gSprites[spriteId].sTaskId = taskId;
+static void StartRattataHappyAnim(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sRatEyesSpriteId], 2);
+    StartSpriteAnim(&gSprites[sRatMouthSpriteId], 2);
+    StartSpriteAnim(&gSprites[sRatEarLeftSpriteId], 2);
+    StartSpriteAnim(&gSprites[sRatEarRightSpriteId], 2);
+    StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 3);
+    StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 3);
+}
+
+void HandleItemsRattata(u8 taskId)
+{
+    switch (tSelectedItem)
+    {
+    case SPA_BERRY:
+        if (tBerryBites >= 3)
+        {
+            StartRattataHappyAnim(taskId);
+            PauseUntilAnimEnds(taskId, sRatEyesSpriteId);
+            tBerryBites = 0;
+        }
+        break;
+    case SPA_CLAW:
+        break;
+    case SPA_HONEY:
+        break;
+    case SPA_ORB:
+        break;
+    }
+
+
+
+    
+    if (!sTask.tIsBitingOrAttacking)
+    {
+        if (sTask.tBerryBites == 3)
+        {
+            if (counter == 1)
+            {
+                StartSpriteAnim(sprite, 2);
+            }
+        }
+        else if (IsBerryInFeedingZone())
+        {
+            StartSpriteAnim(sprite, 4);
+            sTask.tIsBitingOrAttacking = TRUE;
+            sprite->sBlinkCounter = 0;
+        }
+        else if (sTask.tNumBadPets != 2)
+        {
+            if (counter == 1)
+            {
+                StartSpriteAnim(sprite, 0);
+                sprite->sBlinkCounter = 0;
+            }
+            if (sprite->y2 < 0)
+            {
+                sprite->y2++;
+            }
+            if (sprite->sBlinkCounter == sprite->sInterval)
+            {
+                StartSpriteAnim(sprite, 1); // Blink.
+                sprite->sInterval = (Random() % 180) + 180; // 3 to 6 seconds.
+                sprite->sBlinkCounter = 0;
+            }
+            else
+            {
+                sprite->sBlinkCounter++;
+            }
+        }
+    }
 }
 
 static void SpriteCB_RatBodyLeft(struct Sprite *sprite)
