@@ -533,13 +533,9 @@ void Task_MapPreviewScreen_NonFade(u8 taskId)
             }
             MapPreview_Unload(data[4]);
             if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE) == TRUE)
-            {
                 gTasks[taskId].func = Task_EnterCaveTransition2;
-            }
             else
-            {
                 SetMainCallback2(gMain.savedCallback);
-            }
         }
         break;
     }
