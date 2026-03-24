@@ -128,6 +128,7 @@ void EndSpaBadRattata(u8 taskId);
 
 void CreateTeddiursaSprites(u8 taskId);
 void HandleItemsTeddiursa(u8 taskId);
+void TeddiursaReactToClaw(void);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);

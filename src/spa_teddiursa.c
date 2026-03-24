@@ -415,6 +415,13 @@ void CreateTeddiursaSprites(u8 taskId)
     gSprites[sTeddyItchSpriteId].sTaskId = taskId;
 }
 
+void TeddiursaReactToClaw(void)
+{
+    StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 2);
+    StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 0);
+    StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 0);
+}
+
 static bool32 IsClawInItchArea(void)
 {
     if (gSprites[sSpaData.clawSpriteId].x > 135 && gSprites[sSpaData.clawSpriteId].x < 165 

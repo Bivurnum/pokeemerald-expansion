@@ -1341,6 +1341,10 @@ static void SpaItemChooseHandleInput(u8 taskId)
     }
     else if (JOY_NEW(INTERACT_BUTTON))
     {
+        if (sSpaData.mon == SPA_TEDDIURSA && tSelectedItem == SPA_CLAW && !sSpaData.isSatisfied)
+        {
+            TeddiursaReactToClaw();
+        }
         tState = STATE_TRAY_IN_ITEM;
     }
     else if (JOY_NEW(DPAD_DOWN))
