@@ -112,6 +112,7 @@ In the ***include/config/map_preview_screen.h*** file, there are a few configs y
 * `MPS_BASIC_FADE_SPEED` determines how quickly the fade to black animation plays at the end of `MPS_TYPE_BASIC`. A larger value makes it fade out slower. A smaller value (even a negative number) makes it fade out faster.
 
 ### Notes
+* If `FLAG_HIDE_MAP_NAME_POPUP` is set, it will prevent map previews from showing.
 * Due to it needing the only blend register, `MPS_TYPE_FADE_IN` causes NPC shadows (`OW_OBJECT_VANILLA_SHADOWS == FALSE`) to lose their transparency while the map preview is running. 
 * `MPS_TYPE_FADE_IN` does not work properly if the map has any of the following weather types. (You can use `MPS_TYPE_BASIC` for the map preview instead.)
    * `WEATHER_SUNNY_CLOUDS`
