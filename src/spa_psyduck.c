@@ -597,6 +597,48 @@ static void SpriteCB_ArmBack(struct Sprite *sprite)
 
 }
 
+static const s16 sBugBoundCoords[MAX_BUGS][2] = {
+    [0] = { 70, 59 },
+    [1] = { 148, 50 },
+    [2] = { 131, 43 },
+    [3] = { 126, 61 },
+};
+
+static void MoveBug(struct Sprite *sprite)
+{
+    switch (sprite->sBugDirection)
+    {
+    case BUG_NORTH:
+        sprite->y--;
+        break;
+    case BUG_EAST:
+        sprite->x++;
+        break;
+    case BUG_SOUTH:
+        sprite->y++;
+        break;
+    case BUG_WEST:
+        sprite->x--;
+        break;
+    case BUG_NE:
+        sprite->y--;
+        sprite->x++;
+        break;
+    case BUG_SE:
+        sprite->y++;
+        sprite->x++;
+        break;
+    case BUG_SW:
+        sprite->y++;
+        sprite->x--;
+        break;
+    case BUG_NW:
+        sprite->y--;
+        sprite->x--;
+        break;
+    }
+}
+
 static void SpriteCB_Bug(struct Sprite *sprite)
 {
     u32 taskId = sprite->sTaskId;
@@ -621,4 +663,85 @@ static void SpriteCB_Bug(struct Sprite *sprite)
             DestroySprite(sprite);
         }
     }
+
+    if (sprite->x <= sBugBoundCoords[sprite->sBugId][0])
+    {
+        sprite->x++;
+        sprite->sCounter = 0;
+        sprite->sBugInterval = 0;
+        sprite->sInterval = (Random32() % (BUG_MAX_MOVE - BUG_MIN_MOVE)) + BUG_MIN_MOVE;
+        sprite->sBugDirection = BUG_EAST;
+        StartSpriteAnim(sprite, sprite->sBugDirection);
+    }
+    else if (sprite->x >= sBugBoundCoords[sprite->sBugId][0] + BUG_BOUND_WIDTH)
+    {
+        sprite->x--;
+        sprite->sCounter = 0;
+        sprite->sBugInterval = 0;
+        sprite->sInterval = (Random32() % (BUG_MAX_MOVE - BUG_MIN_MOVE)) + BUG_MIN_MOVE;
+        sprite->sBugDirection = BUG_WEST;
+        StartSpriteAnim(sprite, sprite->sBugDirection);
+    }
+
+    if (sprite->y <= sBugBoundCoords[sprite->sBugId][1])
+    {
+        sprite->y++;
+        sprite->sCounter = 0;
+        sprite->sBugInterval = 0;
+        sprite->sInterval = (Random32() % (BUG_MAX_MOVE - BUG_MIN_MOVE)) + BUG_MIN_MOVE;
+
+        if (sprite->sBugDirection == BUG_EAST)
+        {
+            sprite->sBugDirection = BUG_SE;
+        }
+        else if (sprite->sBugDirection == BUG_WEST)
+        {
+            sprite->sBugDirection = BUG_SW;
+        }
+        else
+        {
+            sprite->sBugDirection = BUG_SOUTH;
+        }
+
+        StartSpriteAnim(sprite, sprite->sBugDirection);
+    }
+    else if (sprite->y >= sBugBoundCoords[sprite->sBugId][1] + BUG_BOUND_HEIGHT)
+    {
+        sprite->y--;
+        sprite->sCounter = 0;
+        sprite->sBugInterval = 0;
+        sprite->sInterval = (Random32() % (BUG_MAX_MOVE - BUG_MIN_MOVE)) + BUG_MIN_MOVE;
+
+        if (sprite->sBugDirection == BUG_EAST)
+        {
+            sprite->sBugDirection = BUG_NE;
+        }
+        else if (sprite->sBugDirection == BUG_WEST)
+        {
+            sprite->sBugDirection = BUG_NW;
+        }
+        else
+        {
+            sprite->sBugDirection = BUG_NORTH;
+        }
+        
+        StartSpriteAnim(sprite, sprite->sBugDirection);
+    }
+
+    if (sprite->sCounter == BUG_MOVE_DELAY)
+    {
+        sprite->sCounter = 0;
+        sprite->sBugInterval++;
+        MoveBug(sprite);
+    }
+
+    if (sprite->sBugInterval == sprite->sInterval)
+    {
+        sprite->sBugInterval = 0;
+        sprite->sInterval = (Random32() % (BUG_MAX_MOVE - BUG_MIN_MOVE)) + BUG_MIN_MOVE;
+        sprite->sBugDirection = (Random32() % 8) + 1;
+        StartSpriteAnim(sprite, sprite->sBugDirection);
+    }
+
+    sprite->sCounter++;
 }

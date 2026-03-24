@@ -23,6 +23,7 @@
 #define sBugDirection   data[3]
 #define sBlinkCounter   data[4]
 #define sBugId          data[5]
+#define sBugInterval    data[6]
 
 // Rattata Sprite Data
 #define sBerryBites data[3]
