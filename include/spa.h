@@ -49,9 +49,10 @@
 
 struct SpaData
 {
-    u8 mon:6;
+    u8 mon:5;
     u8 isSatisfied:1;
     u8 hasBeenPetBad:1;
+    u8 statusIsShowing:1;
     u8 pausedSpriteId;
     u8 itemFlagBits;
     u8 monSpriteIds[10];
@@ -122,6 +123,8 @@ void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);
 void CreateAngrySprite(u8 taskId);
 bool32 IsBerryInFeedingZone(void);
+void DoSpaMonEnjoyedSnackText(void);
+void DoSpaMonFeelsBetterText(void);
 
 static const struct OamData sOam_64x64 =
 {

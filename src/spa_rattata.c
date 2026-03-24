@@ -544,6 +544,7 @@ void HandleItemsRattata(u8 taskId)
             StartRattataHappyAnim(taskId);
             PauseUntilAnimEnds(taskId, sRatEyesSpriteId);
             CreateMusicSprite(taskId);
+            DoSpaMonEnjoyedSnackText();
             sSpaData.isSatisfied = TRUE;
             tBerryBites = 0;
         }

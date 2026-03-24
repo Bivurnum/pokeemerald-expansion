@@ -71,7 +71,35 @@ static const u32 gClaw_Gfx[] = INCBIN_U32("graphics/_spa/claw.4bpp");
 static const u16 gHoney_Pal[] = INCBIN_U16("graphics/_spa/honey.gbapal");
 static const u32 gHoney_Gfx[] = INCBIN_U32("graphics/_spa/honey.4bpp");
 
-const u8 gText_SpaInstructions[] = _("Spa Instruction");
+const u8 gText_SpaInstructions[] = _("{A_BUTTON} : Interact     hold{B_BUTTON} : Fast     hold{R_BUTTON} : Status");
+const u8 gText_SpaItemSelectInstructions[] = _("{DPAD_UPDOWN} : Move            {A_BUTTON} : Select            {B_BUTTON} : Exit");
+const u8 gText_SpaItemInstructions[] = _("{A_BUTTON} : Put Away     hold{B_BUTTON} : Fast     hold{R_BUTTON} : Status");
+const u8 gText_GeneralBadTouch[] = _("It doesn't like to be touched there!");
+const u8 gText_FeelsBetter[] = _("That feels much better!");
+const u8 gText_HoneyLooksSticky[] = _("The honey looks very sticky.");
+const u8 gText_OuchBugsBite[] = _("Ouch! Those bugs bite!");
+const u8 gText_BugsAttacking[] = _("The bugs are attacking!");
+
+const u8 gText_RattataWary[] = _("Rattata is watching warily.");
+const u8 gText_RattataAtEase[] = _("Rattata seems to be more at ease.");
+const u8 gText_RattataBadPet[] = _("It doesn't trust you enough to pet it.");
+const u8 gText_RattataInterestedBerry[] = _("It seems interested in the berry.");
+const u8 gText_RattataEnjoyedSnack[] = _("Rattata enjoyed the snack!");
+const u8 gText_RattataSatisfied[] = _("Rattata is completely satisfied!");
+
+const u8 gText_TeddiursaItchy[] = _("Teddiursa looks itchy!");
+const u8 gText_TeddiursaGrateful[] = _("Teddiursa appears grateful.");
+const u8 gText_TeddiursaNoInterest[] = _("Teddiursa shows no interest.");
+const u8 gText_TeddiursaPretend[] = _("It is pretending not to show interest.");
+const u8 gText_TeddiursaBadPet[] = _("It doesn't want to be touched right now.");
+const u8 gText_TeddiursaSatisfied[] = _("Teddiursa is completely satisfied!");
+const u8 gText_TeddiursaEnjoyedSnack[] = _("Teddiursa enjoyed the snack!");
+const u8 gText_TeddiursaWondersClaw[] = _("Teddiursa wonders what you'll do.");
+const u8 gText_TeddiursaLikesScratches[] = _("Teddiursa likes the back scratches.");
+
+const u8 gText_PsyduckNoInterest[] = _("Psyduck shows no interest.");
+const u8 gText_PsyduckInfested[] = _("Psyduck is infested!");
+const u8 gText_PsyduckUneasy[] = _("Psyduck is still a bit uneasy.");
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -634,6 +662,161 @@ static void CreateSpaMonSprites(u8 taskId)
     }
 }
 
+static void DoSpaMonInstructions(void)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
+}
+
+static void DoSpaMonBerryText(bool8 isSatisfied)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataInterestedBerry, 0, 0, 0, NULL);
+        break;
+    case SPA_TEDDIURSA:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaPretend, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaNoInterest, 0, 0, 0, NULL);
+        break;
+    case SPA_PSYDUCK:
+        AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckNoInterest, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+static void DoSpaMonClawText(bool8 isSatisfied)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    switch (sSpaData.mon)
+    {
+    case SPA_TEDDIURSA:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaLikesScratches, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaWondersClaw, 0, 0, 0, NULL);
+        break;
+    case SPA_PSYDUCK:
+        AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckNoInterest, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+static void DoSpaMonHoneyText(bool8 isSatisfied)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    switch (sSpaData.mon)
+    {
+    case SPA_PSYDUCK:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckNoInterest, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_HoneyLooksSticky, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+static void DoSpaMonItemText(u8 taskId, bool8 isSatisfied)
+{
+    switch (tSelectedItem)
+    {
+    case SPA_BERRY:
+        DoSpaMonBerryText(isSatisfied);
+        break;
+    case SPA_CLAW:
+        DoSpaMonClawText(isSatisfied);
+        break;
+    case SPA_HONEY:
+        DoSpaMonHoneyText(isSatisfied);
+        break;
+    case SPA_ORB:
+        break;
+    }
+}
+
+static void DoSpaMonStatusText(bool8 isSatisfied)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataAtEase, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 0, 0, NULL);
+        break;
+    case SPA_TEDDIURSA:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaGrateful, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaItchy, 0, 0, 0, NULL);
+        break;
+    case SPA_PSYDUCK:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckUneasy, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckInfested, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+static void DoSpaMonBadTouchText(bool8 isSatisfied)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_GeneralBadTouch, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NARROW, gText_RattataBadPet, 0, 0, 0, NULL);
+        break;
+    case SPA_TEDDIURSA:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_GeneralBadTouch, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NARROW, gText_TeddiursaBadPet, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+static void DoSpaMonSatisfiedText(void)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataSatisfied, 0, 0, 0, NULL);
+        break;
+    case SPA_TEDDIURSA:
+        AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaSatisfied, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+void DoSpaMonEnjoyedSnackText(void)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataEnjoyedSnack, 0, 0, 0, NULL);
+        break;
+    case SPA_TEDDIURSA:
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaEnjoyedSnack, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+void DoSpaMonFeelsBetterText(void)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    AddTextPrinterParameterized(0, FONT_NORMAL, gText_FeelsBetter, 0, 0, 0, NULL);
+}
+
 static void PlaySpaMonCry(u8 mode)
 {
     switch (sSpaData.mon)
@@ -984,6 +1167,7 @@ static void ResetSpaHand(void)
     gSprites[sSpaData.handSpriteId].x = HAND_START_X;
     gSprites[sSpaData.handSpriteId].y = HAND_START_Y;
     gSprites[sSpaData.handSpriteId].invisible = FALSE;
+
 }
 
 static const s16 HeartPos[][3][2] =
@@ -1012,6 +1196,7 @@ static void SpaHandHandleInput(u8 taskId)
         gSprites[sSpaData.handSpriteId].invisible = TRUE;
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
         gTasks[taskId].func = Task_SpaEndFade;
+        return;
     }
     else if (JOY_NEW(INTERACT_BUTTON) && IsHandOnExitIcon())
     {
@@ -1019,6 +1204,7 @@ static void SpaHandHandleInput(u8 taskId)
         gSprites[sSpaData.handSpriteId].invisible = TRUE;
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
         gTasks[taskId].func = Task_SpaEndFade;
+        return;
     }
 
     if (JOY_NEW(ITEM_MENU_BUTTON) && FlagGet(FLAG_SPA_OBTAINED_BERRY))
@@ -1033,6 +1219,17 @@ static void SpaHandHandleInput(u8 taskId)
         return;
     }
 
+    if (!JOY_HELD(STATUS_BUTTON) && sSpaData.statusIsShowing)
+    {
+        DoSpaMonInstructions();
+        sSpaData.statusIsShowing = FALSE;
+    }
+    else if (JOY_NEW(STATUS_BUTTON) && !sSpaData.statusIsShowing)
+    {
+        DoSpaMonStatusText(sSpaData.isSatisfied);
+        sSpaData.statusIsShowing = TRUE;
+    }
+
     u32 petArea = GetCurrentPettingArea();
 
     if (tPetScore > 0 && tPetScore < SPA_PET_SCORE_TARGET)
@@ -1045,7 +1242,7 @@ static void SpaHandHandleInput(u8 taskId)
             tPetArea = SPA_PET_BAD;
             StartBadTouchAnim(taskId);
             gSprites[sSpaData.handSpriteId].invisible = TRUE;
-            //DoSpaMonBadTouchText(sTask.tIsSatisfied);
+            DoSpaMonBadTouchText(sSpaData.isSatisfied);
             return;
         }
     }
@@ -1061,7 +1258,7 @@ static void SpaHandHandleInput(u8 taskId)
                     tPetArea = SPA_PET_BAD;
                     StartBadTouchAnim(taskId);
                     gSprites[sSpaData.handSpriteId].invisible = TRUE;
-                    //DoSpaMonBadTouchText(sTask.tIsSatisfied);
+                    DoSpaMonBadTouchText(sSpaData.isSatisfied);
                     return;
                 }
                 else if (JOY_HELD(DPAD_ANY))
@@ -1085,11 +1282,10 @@ static void SpaHandHandleInput(u8 taskId)
                         sSpaData.heartSpriteIds[i] = taskId;
                         gSprites[spriteId].sHeartOffset = Random() % 120;
                         gSprites[spriteId].sCounter = gSprites[spriteId].sHeartOffset;
-                        //gSprites[spriteId].sHeartId = i + 1;
                     }
                 
                     PlaySpaMonCry(CRY_MODE_GROWL_1);
-                    //DoSpaMonSatisfiedText();
+                    DoSpaMonSatisfiedText();
                     gSprites[sSpaData.handSpriteId].invisible = TRUE;
                     tCounter = 0;
                     gTasks[taskId].func = Task_SpaEndSuccess;
@@ -1205,6 +1401,18 @@ static void SpaItemHandleInput(u8 taskId)
         return;
     }
 
+    if (!JOY_HELD(STATUS_BUTTON) && sSpaData.statusIsShowing)
+    {
+        FillWindowPixelBuffer(0, PIXEL_FILL(1));
+        AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaItemInstructions, 0, 0, 0, NULL);
+        sSpaData.statusIsShowing = FALSE;
+    }
+    else if (JOY_NEW(STATUS_BUTTON) && !sSpaData.statusIsShowing)
+    {
+        DoSpaMonItemText(taskId, sSpaData.isSatisfied);
+        sSpaData.statusIsShowing = TRUE;
+    }
+
     MoveSpriteFromInput(&gSprites[tActiveItemId]);
 
     switch (sSpaData.mon)
@@ -1311,6 +1519,7 @@ static void Task_Spa(u8 taskId)
                     sSpaData.angrySpriteId = 0;
                 }
                 ResetSpaHand();
+                DoSpaMonInstructions();
                 sSpaData.pausedSpriteId = 0;
             }
             return;
