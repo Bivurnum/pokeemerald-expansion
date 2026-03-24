@@ -1056,6 +1056,7 @@ static void StartBadTouchAnim(u8 taskId)
         StartRattataBadTouch(taskId);
         break;
     case SPA_TEDDIURSA:
+        StartTeddiursaBadTouch(taskId);
         break;
     case SPA_PSYDUCK:
         break;
@@ -1073,6 +1074,7 @@ static void StartAngryAnim(u8 taskId)
         StartRattataAngry(taskId);
         break;
     case SPA_TEDDIURSA:
+        StartTeddiursaAngry(taskId);
         break;
     case SPA_PSYDUCK:
         break;
@@ -1087,7 +1089,7 @@ static void StartPetAnim(u8 taskId)
     switch (sSpaData.mon)
     {
     case SPA_RATTATA:
-        StartRattataPet(taskId);
+        StartRattataPet();
         break;
     case SPA_TEDDIURSA:
         break;
@@ -1103,7 +1105,7 @@ static void StopSpaPetAnim(u8 taskId)
     switch (sSpaData.mon)
     {
     case SPA_RATTATA:
-        StopRattataPet(taskId);
+        StopRattataPet();
         break;
     case SPA_TEDDIURSA:
         break;
@@ -1474,10 +1476,12 @@ static void EndSpaBad(u8 taskId)
     switch (sSpaData.mon)
     {
     case SPA_RATTATA:
-        EndSpaBadRattata(taskId);
+        EndSpaBadRattata();
         PlaySpaMonCry(CRY_MODE_ROAR_1);
         break;
     case SPA_TEDDIURSA:
+        EndSpaBadTeddiursa();
+        PlaySpaMonCry(CRY_MODE_ROAR_1);
         break;
     case SPA_PSYDUCK:
         break;

@@ -123,15 +123,18 @@ void ResetRattataSprites(void);
 void HandleItemsRattata(u8 taskId);
 void StartRattataBadTouch(u8 taskId);
 void StartRattataAngry(u8 taskId);
-void StartRattataPet(u8 taskId);
-void StopRattataPet(u8 taskId);
-void EndSpaBadRattata(u8 taskId);
+void StartRattataPet(void);
+void StopRattataPet(void);
+void EndSpaBadRattata(void);
 
 void CreateTeddiursaSprites(u8 taskId);
 void HandleItemsTeddiursa(u8 taskId);
 void TeddiursaReactToClaw(void);
 void ResetTeddiursaSpritesNormal(void);
 void ResetTeddiursaSpritesScratch(void);
+void StartTeddiursaBadTouch(u8 taskId);
+void StartTeddiursaAngry(u8 taskId);
+void EndSpaBadTeddiursa(void);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);

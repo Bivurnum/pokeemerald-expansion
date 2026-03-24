@@ -480,7 +480,7 @@ void CreateRattataSprites(u8 taskId)
     gSprites[sRatToesSpriteId].sTaskId = taskId;
 }
 
-static void StartRattataHappyAnim(u8 taskId)
+static void StartRattataHappyAnim(void)
 {
     StartSpriteAnim(&gSprites[sRatEyesSpriteId], 7);
     StartSpriteAnim(&gSprites[sRatMouthSpriteId], 2);
@@ -490,7 +490,7 @@ static void StartRattataHappyAnim(u8 taskId)
     StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 3);
 }
 
-static void StartRattataBite(u8 taskId)
+static void StartRattataBite(void)
 {
     StartSpriteAnim(&gSprites[sRatEyesSpriteId], 4);
     StartSpriteAnim(&gSprites[sRatMouthSpriteId], 1);
@@ -515,14 +515,14 @@ void StartRattataAngry(u8 taskId)
     CreateAngrySprite(taskId);
 }
 
-void StartRattataPet(u8 taskId)
+void StartRattataPet(void)
 {
     StartSpriteAnim(&gSprites[sRatEyesSpriteId], 2);
     StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 1);
     StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 1);
 }
 
-void StopRattataPet(u8 taskId)
+void StopRattataPet(void)
 {
     StartSpriteAnim(&gSprites[sRatEyesSpriteId], 0);
     StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 0);
@@ -542,7 +542,7 @@ void HandleItemsRattata(u8 taskId)
     case SPA_BERRY:
         if (tBerryBites >= 3)
         {
-            StartRattataHappyAnim(taskId);
+            StartRattataHappyAnim();
             PauseUntilAnimEnds(taskId, sRatEyesSpriteId);
             CreateMusicSprite(taskId);
             DoSpaMonEnjoyedSnackText();
@@ -554,7 +554,7 @@ void HandleItemsRattata(u8 taskId)
             switch (tBiteState)
             {
             case BITE_STATE_NONE:
-                StartRattataBite(taskId);
+                StartRattataBite();
                 tCounter = 0;
                 tBiteState = BITE_STATE_ACTIVE;
                 break;
@@ -595,7 +595,7 @@ void HandleItemsRattata(u8 taskId)
     }
 }
 
-void EndSpaBadRattata(u8 taskId)
+void EndSpaBadRattata(void)
 {
     StartSpriteAnim(&gSprites[sRatEyesSpriteId], 6);
     StartSpriteAnim(&gSprites[sRatMouthSpriteId], 1);

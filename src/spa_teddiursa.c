@@ -87,21 +87,20 @@ static const union AnimCmd * const sAnims_TeddyEars[] =
 
 static const union AnimCmd sAnim_EyeMad[] =
 {
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 60),
     ANIMCMD_END
 };
 
 static const union AnimCmd sAnim_EyeHappy[] =
 {
     ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
 static const union AnimCmd sAnim_EyeShutBad[] =
 {
-    ANIMCMD_FRAME(.imageValue = 3, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_END
 };
 
@@ -171,7 +170,6 @@ static const union AnimCmd sAnim_ArmScratchToNormal[] =
 static const union AnimCmd sAnim_ArmBadTouch[] =
 {
     ANIMCMD_FRAME(.imageValue = 5, .duration = 60),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
@@ -457,6 +455,30 @@ static void StartTeddiursaHappyAnim(void)
     StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 0);
     StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 1);
     StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 2);
+}
+
+void StartTeddiursaBadTouch(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 3);
+    StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 3);
+    StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 3);
+    PauseUntilAnimEnds(taskId, sTeddyEyeSpriteId);
+}
+
+void StartTeddiursaAngry(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 0);
+    StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 3);
+    StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 1);
+    PauseUntilAnimEnds(taskId, sTeddyEyeSpriteId);
+    CreateAngrySprite(taskId);
+}
+
+void EndSpaBadTeddiursa(void)
+{
+    StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 4);
+    StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 3);
+    StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 1);
 }
 
 static bool32 IsClawInItchArea(void)
