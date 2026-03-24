@@ -42,6 +42,13 @@ static const u32 gTeddiursaArm_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddi
 static const u16 gTeddiursaItch_Pal[] = INCBIN_U16("graphics/_spa/teddiursa/teddiursa_itch.gbapal");
 static const u32 gTeddiursaItch_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_itch.4bpp");
 
+enum TeddiursaScratchStates
+{
+    SCRATCH_STATE_NONE,
+    SCRATCH_STATE_ACTIVE,
+    SCRATCH_STATE_END
+};
+
 static const union AnimCmd sAnim_Normal[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
@@ -86,7 +93,9 @@ static const union AnimCmd sAnim_EyeMad[] =
 
 static const union AnimCmd sAnim_EyeHappy[] =
 {
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
@@ -436,6 +445,20 @@ void ResetTeddiursaSpritesScratch(void)
     StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 3);
 }
 
+static void StartTeddiursaBeingScratched(void)
+{
+    StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 0);
+    StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 2);
+    StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 2);
+}
+
+static void StartTeddiursaHappyAnim(void)
+{
+    StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 0);
+    StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 1);
+    StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 2);
+}
+
 static bool32 IsClawInItchArea(void)
 {
     if (gSprites[sSpaData.clawSpriteId].x > 135 && gSprites[sSpaData.clawSpriteId].x < 165 
@@ -454,42 +477,67 @@ void HandleItemsTeddiursa(u8 taskId)
     case SPA_BERRY:
         break;
     case SPA_CLAW:
-        if (IsClawInItchArea())
+        if (tItchFadeCount >= 16)
         {
-            if (JOY_HELD(DPAD_ANY))
+            StartTeddiursaHappyAnim();
+            PauseUntilAnimEnds(taskId, sTeddyEyeSpriteId);
+            CreateMusicSprite(taskId);
+            DoSpaMonFeelsBetterText();
+            sSpaData.isSatisfied = TRUE;
+            tBerryBites = 0;
+        }
+        else if (IsClawInItchArea())
+        {
+            switch (tScratchState)
             {
-                tCounter = 0;
-                tScratchScore++;
-                if (tScratchScore % 15 == 0)
+            case SCRATCH_STATE_NONE:
+                if (JOY_HELD(DPAD_ANY))
+                {
+                    StartTeddiursaBeingScratched();
+                    tCounter = 0;
+                    tScratchState = SCRATCH_STATE_ACTIVE;
+                }
+                break;
+            case SCRATCH_STATE_ACTIVE:
+                if (JOY_HELD(DPAD_ANY))
+                {
+                    tCounter = 0;
+                    tScratchScore++;
+                    if (tScratchScore % 15 == 0)
+                    {
+                        if (tItchFadeCount < 16)
+                        {
+                            tItchFadeCount++;
+                        }
+                        else
+                        {
+                            sSpaData.isSatisfied = TRUE;
+                            DestroySprite(&gSprites[sTeddyItchSpriteId]);
+                            return;
+                        }
+
+                        BlendPalettes(1 << (IndexOfSpritePaletteTag(TAG_ITCH) + 16), tItchFadeCount, RGB2GBA(230, 148, 92));
+                    }
+                }
+                else
                 {
                     if (tItchFadeCount < 16)
-                    {
-                        tItchFadeCount++;
-                    }
-                    else
-                    {
-                        sSpaData.isSatisfied = TRUE;
-                        DestroySprite(&gSprites[sTeddyItchSpriteId]);
-                        return;
-                    }
-
-                    BlendPalettes(1 << (IndexOfSpritePaletteTag(TAG_ITCH) + 16), tItchFadeCount, RGB2GBA(230, 148, 92));
-                }
-            }
-            else
-            {
-                if (tItchFadeCount < 16)
-                {
-                    if(!JOY_HELD(DPAD_ANY))
                     {
                         if (tCounter == 60)
                         {
                             ResetTeddiursaSpritesNormal();
+                            tScratchState = SCRATCH_STATE_NONE;
                         }
                         tCounter++;
                     }
                 }
+                break;
             }
+        }
+        else if (tScratchState == SCRATCH_STATE_ACTIVE)
+        {
+            ResetTeddiursaSpritesNormal();
+            tScratchState = SCRATCH_STATE_NONE;
         }
         break;
     case SPA_HONEY:

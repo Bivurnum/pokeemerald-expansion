@@ -9,9 +9,10 @@
 #define tItchFadeCount  gTasks[taskId].data[3]
 #define tCounter        gTasks[taskId].data[4]
 #define tBiteState      gTasks[taskId].data[5]
-#define tScratchScore   gTasks[taskId].data[5]
+#define tScratchState   gTasks[taskId].data[5]
 #define tPetArea        gTasks[taskId].data[6]
 #define tPetScore       gTasks[taskId].data[7]
+#define tScratchScore   gTasks[taskId].data[8]
 
 // Sprite Data
 #define sTaskId         data[0]
