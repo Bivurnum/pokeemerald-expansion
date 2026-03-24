@@ -977,7 +977,7 @@ static void ItemTraySlideOut(u8 taskId)
     sSpaData.berrySpriteId = CreateSprite(&sSpriteTemplate_Berry, (ITEM_START_X + 14), SpaItemsY[0][0], 0);
     gSprites[sSpaData.berrySpriteId].sTaskId = taskId;
     gSprites[sSpaData.berrySpriteId].oam.priority = 0;
-    //StartSpriteAnim(&gSprites[sSpaData.berrySpriteId], gTasks[taskId].tBerryBites);
+    StartSpriteAnim(&gSprites[sSpaData.berrySpriteId], tBerryBites);
 
     if (FlagGet(FLAG_SPA_OBTAINED_CLAW))
     {
@@ -988,18 +988,18 @@ static void ItemTraySlideOut(u8 taskId)
 
     if (FlagGet(FLAG_SPA_OBTAINED_HONEY))
     {
-        //u8 numBugs = 0;
-        //u8 i;
+        u8 numBugs = 0;
+        u8 i;
 
         sSpaData.honeySpriteId = CreateSprite(&sSpriteTemplate_Honey, (ITEM_START_X), SpaItemsY[2][0], 0);
         gSprites[sSpaData.honeySpriteId].sTaskId = taskId;
         gSprites[sSpaData.honeySpriteId].oam.priority = 0;
-        /*for (i = 0; i < MAX_BUGS; i++)
+        for (i = 0; i < MAX_BUGS; i++)
         {
             if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i) && !FlagGet(FLAG_SPA_BUG_0_EATEN + i))
                 numBugs++;
         }
-        StartSpriteAnim(&gSprites[spriteId], numBugs);*/
+        StartSpriteAnim(&gSprites[sSpaData.honeySpriteId], numBugs);
     }
 
     PlaySE(SE_BALL_TRAY_ENTER);
