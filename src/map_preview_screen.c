@@ -742,7 +742,7 @@ static void Task_MapPreviewScreen_Script(u8 taskId)
         break;
     case 3:
         tFrameCounter++;
-        if (tFrameCounter > tDuration || JOY_HELD(B_BUTTON))
+        if (tFrameCounter > tDuration || JOY_NEW(B_BUTTON))
         {
             BeginNormalPaletteFade(PALETTES_ALL, MPS_BASIC_FADE_SPEED, 0, 16, RGB_BLACK);
             tFrameCounter = 0;
