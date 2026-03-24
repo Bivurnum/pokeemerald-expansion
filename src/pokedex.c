@@ -119,6 +119,8 @@ enum {
 #define MON_PAGE_X 48
 #define MON_PAGE_Y 56
 
+#define ENTRY_NUM_INVALID NATIONAL_DEX_COUNT + 1
+
 static EWRAM_DATA struct PokedexView *sPokedexView = NULL;
 static EWRAM_DATA u16 sLastSelectedPokemon = 0;
 static EWRAM_DATA u8 sPokeBallRotation = 0;
@@ -166,6 +168,8 @@ struct PokedexListItem
     u16 dexNum;
     u16 seen:1;
     u16 owned:1;
+    u16 glimpsed:1;
+    u16 padding:13;
 };
 
 struct PokedexView
@@ -231,7 +235,7 @@ static void FreeWindowAndBgBuffers(void);
 static void CreatePokedexList(u8, u8);
 static void CreateMonDexNum(u16, u8, u8, u16);
 static void CreateCaughtBall(u16, u8, u8, u16);
-static u8 CreateMonName(u16, u8, u8);
+static u8 CreateMonName(s16, u8, u8);
 static void ClearMonListEntry(u8 x, u8 y, u16 unused);
 static void CreateMonSpritesAtPos(u16, u16);
 static bool8 UpdateDexListScroll(u8, u8, u8);
@@ -326,7 +330,12 @@ static void EraseSelectorArrow(u32);
 static void PrintSelectorArrow(u32);
 static void PrintSearchParameterTitle(u32, const u8 *);
 static void ClearSearchParameterBoxText(void);
-static bool32 ShouldListIncludeGlimpsedMon(bool32 glimpsed);
+
+static inline bool32 ShouldDisplayPokemonSprite(s16 entryNum)
+{
+    return sPokedexView->pokedexList[entryNum].seen
+        || (sPokedexView->pokedexList[entryNum].glimpsed && WE_DEX_SILHOUETTE);
+}
 
 // const rom data
 #include "data/pokemon/pokedex_orders.h"
@@ -1542,10 +1551,12 @@ static void ResetPokedexView(struct PokedexView *pokedexView)
     for (i = 0; i < NATIONAL_DEX_COUNT; i++)
     {
         pokedexView->pokedexList[i].dexNum = 0xFFFF;
+        pokedexView->pokedexList[i].glimpsed = FALSE;
         pokedexView->pokedexList[i].seen = FALSE;
         pokedexView->pokedexList[i].owned = FALSE;
     }
     pokedexView->pokedexList[NATIONAL_DEX_COUNT].dexNum = 0;
+    pokedexView->pokedexList[NATIONAL_DEX_COUNT].glimpsed = FALSE;
     pokedexView->pokedexList[NATIONAL_DEX_COUNT].seen = FALSE;
     pokedexView->pokedexList[NATIONAL_DEX_COUNT].owned = FALSE;
     pokedexView->pokemonListCount = 0;
@@ -2185,7 +2196,6 @@ static void CreatePokedexList(u8 dexMode, u8 order)
 #define temp_isHoennDex vars[1]
 #define temp_dexNum     vars[2]
     s32 i;
-    bool32 glimpsed;
 
     sPokedexView->pokemonListCount = 0;
 
@@ -2218,11 +2228,11 @@ static void CreatePokedexList(u8 dexMode, u8 order)
             for (i = 0; i < temp_dexCount; i++)
             {
                 temp_dexNum = RegionalToNationalOrder(i + 1);
-                glimpsed = ShouldListIncludeGlimpsedMon(GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED));
                 sPokedexView->pokedexList[i].dexNum = temp_dexNum;
+                sPokedexView->pokedexList[i].glimpsed = GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED);
                 sPokedexView->pokedexList[i].seen = GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN);
                 sPokedexView->pokedexList[i].owned = GetSetPokedexFlag(temp_dexNum, FLAG_GET_CAUGHT);
-                if (sPokedexView->pokedexList[i].seen || glimpsed)
+                if (ShouldDisplayPokemonSprite(i))
                     sPokedexView->pokemonListCount = i + 1;
             }
         }
@@ -2232,15 +2242,15 @@ static void CreatePokedexList(u8 dexMode, u8 order)
             for (i = 0, r5 = 0, r10 = 0; i < temp_dexCount; i++)
             {
                 temp_dexNum = i + 1;
-                glimpsed = ShouldListIncludeGlimpsedMon(GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED));
-                if (GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN) || glimpsed)
+                if (GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN) || ShouldShowMonSilhouette(temp_dexNum))
                     r10 = 1;
                 if (r10)
                 {
                     sPokedexView->pokedexList[r5].dexNum = temp_dexNum;
+                    sPokedexView->pokedexList[r5].glimpsed = GetSetPokedexFlag(temp_dexNum, FLAG_GET_GLIMPSED);
                     sPokedexView->pokedexList[r5].seen = GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN);
                     sPokedexView->pokedexList[r5].owned = GetSetPokedexFlag(temp_dexNum, FLAG_GET_CAUGHT);
-                    if (sPokedexView->pokedexList[r5].seen || glimpsed)
+                    if (ShouldDisplayPokemonSprite(r5))
                         sPokedexView->pokemonListCount = r5 + 1;
                     r5++;
                 }
@@ -2361,17 +2371,17 @@ static void CreateMonListEntry(u8 position, u16 b, u16 ignored)
             else
             {
                 ClearMonListEntry(17, i * 2, ignored);
-                if (sPokedexView->pokedexList[entryNum].seen)
+                if (sPokedexView->pokedexList[entryNum].seen || sPokedexView->pokedexList[entryNum].glimpsed)
                 {
                     CreateMonDexNum(entryNum, 0x12, i * 2, ignored);
                     CreateCaughtBall(sPokedexView->pokedexList[entryNum].owned, 0x11, i * 2, ignored);
-                    CreateMonName(sPokedexView->pokedexList[entryNum].dexNum, 0x16, i * 2);
+                    CreateMonName(entryNum, 0x16, i * 2);
                 }
                 else
                 {
                     CreateMonDexNum(entryNum, 0x12, i * 2, ignored);
                     CreateCaughtBall(FALSE, 0x11, i * 2, ignored);
-                    CreateMonName(0, 0x16, i * 2);
+                    CreateMonName(ENTRY_NUM_INVALID, 0x16, i * 2);
                 }
             }
             entryNum++;
@@ -2386,17 +2396,17 @@ static void CreateMonListEntry(u8 position, u16 b, u16 ignored)
         else
         {
             ClearMonListEntry(17, sPokedexView->listVOffset * 2, ignored);
-            if (sPokedexView->pokedexList[entryNum].seen)
+            if (sPokedexView->pokedexList[entryNum].seen || sPokedexView->pokedexList[entryNum].glimpsed)
             {
                 CreateMonDexNum(entryNum, 18, sPokedexView->listVOffset * 2, ignored);
                 CreateCaughtBall(sPokedexView->pokedexList[entryNum].owned, 0x11, sPokedexView->listVOffset * 2, ignored);
-                CreateMonName(sPokedexView->pokedexList[entryNum].dexNum, 0x16, sPokedexView->listVOffset * 2);
+                CreateMonName(entryNum, 0x16, sPokedexView->listVOffset * 2);
             }
             else
             {
                 CreateMonDexNum(entryNum, 18, sPokedexView->listVOffset * 2, ignored);
                 CreateCaughtBall(FALSE, 17, sPokedexView->listVOffset * 2, ignored);
-                CreateMonName(0, 0x16, sPokedexView->listVOffset * 2);
+                CreateMonName(ENTRY_NUM_INVALID, 0x16, sPokedexView->listVOffset * 2);
             }
         }
         break;
@@ -2412,17 +2422,17 @@ static void CreateMonListEntry(u8 position, u16 b, u16 ignored)
         else
         {
             ClearMonListEntry(17, vOffset * 2, ignored);
-            if (sPokedexView->pokedexList[entryNum].seen)
+            if (sPokedexView->pokedexList[entryNum].seen || sPokedexView->pokedexList[entryNum].glimpsed)
             {
                 CreateMonDexNum(entryNum, 18, vOffset * 2, ignored);
                 CreateCaughtBall(sPokedexView->pokedexList[entryNum].owned, 0x11, vOffset * 2, ignored);
-                CreateMonName(sPokedexView->pokedexList[entryNum].dexNum, 0x16, vOffset * 2);
+                CreateMonName(entryNum, 0x16, vOffset * 2);
             }
             else
             {
                 CreateMonDexNum(entryNum, 18, vOffset * 2, ignored);
                 CreateCaughtBall(FALSE, 0x11, vOffset * 2, ignored);
-                CreateMonName(0, 0x16, vOffset * 2);
+                CreateMonName(ENTRY_NUM_INVALID, 0x16, vOffset * 2);
             }
         }
         break;
@@ -2459,15 +2469,19 @@ static void CreateCaughtBall(bool16 owned, u8 x, u8 y, u16 unused)
         FillWindowPixelRect(0, PIXEL_FILL(0), x * 8, y * 8, 8, 16);
 }
 
-static u8 CreateMonName(u16 num, u8 left, u8 top)
+static u8 CreateMonName(s16 entryNum, u8 left, u8 top)
 {
-    const u8 *str;
+    const u8 *str = sText_TenDashes;
+    enum Species species = NationalPokedexNumToSpecies(sPokedexView->pokedexList[entryNum].dexNum);
 
-    num = NationalPokedexNumToSpecies(num);
-    if (num)
-        str = GetSpeciesName(num);
-    else
-        str = sText_TenDashes;
+    if (entryNum != ENTRY_NUM_INVALID)
+    {
+        if (sPokedexView->pokedexList[entryNum].seen)
+            str = GetSpeciesName(species);
+        else if (ShouldDisplayPokemonSprite(entryNum))
+            str = COMPOUND_STRING("??????????");
+    }
+
     PrintMonName(0, FONT_NARROW, str, left, top);
     return StringLength(str);
 }
@@ -2760,7 +2774,7 @@ static u16 GetPokemonSpriteToDisplay(u16 index)
 {
     if (index >= NATIONAL_DEX_COUNT || sPokedexView->pokedexList[index].dexNum == 0xFFFF)
         return 0xFFFF;
-    else if (sPokedexView->pokedexList[index].seen || ShouldShowMonSilhouette(sPokedexView->pokedexList[index].dexNum))
+    else if (ShouldDisplayPokemonSprite(index))
         return sPokedexView->pokedexList[index].dexNum;
     else
         return 0;
@@ -5945,9 +5959,4 @@ static void PrintSearchParameterTitle(u32 y, const u8 *str)
 static void ClearSearchParameterBoxText(void)
 {
     ClearSearchMenuRect(144, 8, 96, 96);
-}
-
-static bool32 ShouldListIncludeGlimpsedMon(bool32 glimpsed)
-{
-    return WE_DEX_SILHOUETTE == WE_SILHOUETTE_GLIMPSED_MONS && glimpsed;
 }

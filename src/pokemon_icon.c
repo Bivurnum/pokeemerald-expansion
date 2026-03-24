@@ -446,11 +446,8 @@ void SetPartyHPBarSprite(struct Sprite *sprite, u8 animNum)
     sprite->animCmdIndex = 0;
 }
 
-void TryLoadMonIconSilhouettePalette(u16 color)
+void LoadMonIconSilhouettePalette(u16 color)
 {
-    if (WE_DEX_SILHOUETTE == WE_SILHOUETTE_NEVER)
-        return;
-
     const u16 palette[PLTT_SIZE_4BPP] = { [0 ... PLTT_SIZE_4BPP - 1] = color };
     struct SpritePalette spritePalette = {
         .data = palette,
@@ -468,6 +465,8 @@ u8 CreateMonIconSilhouette(enum Species species, void (*callback)(struct Sprite 
 {
     u32 spriteId = CreateMonIcon(species, callback, x, y, subpriority, personality);
     u32 palIndex = IndexOfSpritePaletteTag(POKE_ICON_SILHOUETTE_PAL_TAG);
-    gSprites[spriteId].oam.paletteNum = palIndex;
+    if (palIndex != 0xFF)
+        gSprites[spriteId].oam.paletteNum = palIndex;
+
     return spriteId;
 }

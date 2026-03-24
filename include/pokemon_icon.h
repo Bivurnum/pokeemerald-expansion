@@ -29,7 +29,7 @@ void SpriteCB_MonIcon(struct Sprite *sprite);
 void SetPartyHPBarSprite(struct Sprite *sprite, u8 animNum);
 u8 GetMonIconPaletteIndexFromSpecies(enum Species species);
 void SafeFreeMonIconPalette(enum Species species);
-void TryLoadMonIconSilhouettePalette(u16 color);
+void LoadMonIconSilhouettePalette(u16 color);
 void FreeMonIconSilhouettePalette(void);
 u8 CreateMonIconSilhouette(enum Species species, void (*callback)(struct Sprite *), s16 x, s16 y, u8 subpriority, u32 personality);
 

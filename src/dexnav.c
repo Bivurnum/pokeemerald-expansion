@@ -426,7 +426,7 @@ static void DrawDexNavSearchMonIcon(enum Species species, u8 *dst, bool8 owned)
     }
     else
     {
-        TryLoadMonIconSilhouettePalette(RGB(7, 7, 7));
+        LoadMonIconSilhouettePalette(RGB(7, 7, 7));
         spriteId = CreateMonIconSilhouette(species, callback, x, y, subpriority, personality);
     }
     
@@ -2270,7 +2270,7 @@ static bool8 DexNav_DoGfxSetup(void)
         break;
     case 10:
         LoadMonIconPalettes();
-        TryLoadMonIconSilhouettePalette(RGB_BLACK);
+        LoadMonIconSilhouettePalette(RGB_BLACK);
         DrawSpeciesIcons();
         CreateSelectionCursor();
         DexNavLoadCapturedAllSymbols();
