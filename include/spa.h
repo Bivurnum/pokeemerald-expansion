@@ -132,8 +132,10 @@ void HandleItemsTeddiursa(u8 taskId);
 void TeddiursaReactToClaw(void);
 void ResetTeddiursaSpritesNormal(void);
 void ResetTeddiursaSpritesScratch(void);
+void StartTeddiursaHappyAnim(void);
 void StartTeddiursaBadTouch(u8 taskId);
 void StartTeddiursaAngry(u8 taskId);
+void StartTeddiursaPet(void);
 void EndSpaBadTeddiursa(void);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);

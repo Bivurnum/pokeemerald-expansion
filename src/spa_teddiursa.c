@@ -95,6 +95,7 @@ static const union AnimCmd sAnim_EyeMad[] =
 static const union AnimCmd sAnim_EyeHappy[] =
 {
     ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
     ANIMCMD_END
 };
 
@@ -141,12 +142,19 @@ static const union AnimCmd sAnim_MouthFrown[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_MouthHappyClosed[] =
+{
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_TeddyMouth[] =
 {
     sAnim_Normal,
     sAnim_MouthHappyOpen,
     sAnim_MouthO,
     sAnim_MouthFrown,
+    sAnim_MouthHappyClosed,
 };
 
 static const union AnimCmd sAnim_ArmScratch[] =
@@ -242,6 +250,7 @@ static const struct SpriteFrameImage sPicTable_TeddyMouth[] =
     spa_frame(gTeddiursaMouth_Gfx, 1, 2, 2),
     spa_frame(gTeddiursaMouth_Gfx, 2, 2, 2),
     spa_frame(gTeddiursaMouth_Gfx, 3, 2, 2),
+    spa_frame(gTeddiursaMouth_Gfx, 4, 2, 2),
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyArm[] =
@@ -450,10 +459,17 @@ static void StartTeddiursaBeingScratched(void)
     StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 2);
 }
 
-static void StartTeddiursaHappyAnim(void)
+void StartTeddiursaHappyAnim(void)
 {
     StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 0);
     StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 1);
+    StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 2);
+}
+
+void StartTeddiursaPet(void)
+{
+    StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 0);
+    StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 4);
     StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 2);
 }
 
@@ -505,6 +521,7 @@ void HandleItemsTeddiursa(u8 taskId)
             PauseUntilAnimEnds(taskId, sTeddyEyeSpriteId);
             CreateMusicSprite(taskId);
             DoSpaMonFeelsBetterText();
+            DestroySprite(&gSprites[sTeddyItchSpriteId]);
             sSpaData.isSatisfied = TRUE;
             tBerryBites = 0;
         }
@@ -527,17 +544,7 @@ void HandleItemsTeddiursa(u8 taskId)
                     tScratchScore++;
                     if (tScratchScore % 15 == 0)
                     {
-                        if (tItchFadeCount < 16)
-                        {
-                            tItchFadeCount++;
-                        }
-                        else
-                        {
-                            sSpaData.isSatisfied = TRUE;
-                            DestroySprite(&gSprites[sTeddyItchSpriteId]);
-                            return;
-                        }
-
+                        tItchFadeCount++;
                         BlendPalettes(1 << (IndexOfSpritePaletteTag(TAG_ITCH) + 16), tItchFadeCount, RGB2GBA(230, 148, 92));
                     }
                 }

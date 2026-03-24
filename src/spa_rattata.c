@@ -104,7 +104,7 @@ static const union AnimCmd sAnim_RatBite[] =
     ANIMCMD_FRAME(.imageValue = 1, .duration = 8),
     ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
     ANIMCMD_FRAME(.imageValue = 1, .duration = 4),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 4),
     ANIMCMD_END
 };
 

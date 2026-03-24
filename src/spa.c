@@ -1092,6 +1092,8 @@ static void StartPetAnim(u8 taskId)
         StartRattataPet();
         break;
     case SPA_TEDDIURSA:
+        //StartTeddiursaHappyAnim();
+        StartTeddiursaPet();
         break;
     case SPA_PSYDUCK:
         break;
@@ -1108,6 +1110,24 @@ static void StopSpaPetAnim(u8 taskId)
         StopRattataPet();
         break;
     case SPA_TEDDIURSA:
+        ResetTeddiursaSpritesNormal();
+        break;
+    case SPA_PSYDUCK:
+        break;
+    case SPA_FLETCHINDER:
+        break;
+    }
+}
+
+static void StartHappyAnim(u8 taskId)
+{
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        StartRattataPet();
+        break;
+    case SPA_TEDDIURSA:
+        StartTeddiursaHappyAnim();
         break;
     case SPA_PSYDUCK:
         break;
@@ -1290,6 +1310,7 @@ static void SpaHandHandleInput(u8 taskId)
                         gSprites[spriteId].sCounter = gSprites[spriteId].sHeartOffset;
                     }
                 
+                    StartHappyAnim(taskId);
                     PlaySpaMonCry(CRY_MODE_GROWL_1);
                     DoSpaMonSatisfiedText();
                     gSprites[sSpaData.handSpriteId].invisible = TRUE;
