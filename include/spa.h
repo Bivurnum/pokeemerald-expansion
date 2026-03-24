@@ -13,13 +13,16 @@
 #define tPetArea        gTasks[taskId].data[6]
 #define tPetScore       gTasks[taskId].data[7]
 #define tScratchScore   gTasks[taskId].data[8]
+#define tBugsCaught     gTasks[taskId].data[8]
 
 // Sprite Data
 #define sTaskId         data[0]
 #define sInterval       data[1]
 #define sCounter        data[2]
 #define sHeartOffset    data[3]
+#define sBugDirection   data[3]
 #define sBlinkCounter   data[4]
+#define sBugId          data[5]
 
 // Rattata Sprite Data
 #define sBerryBites data[3]
@@ -38,6 +41,7 @@
 
 #define TAG_MON     0x2000
 #define TAG_ITCH    0x2001
+#define TAG_BUGS    0x2001
 
 #define ITEM_START_X    -22
 #define ITEM_END_X      10
@@ -54,6 +58,13 @@
 
 #define BLINK_INTERVAL  180
 
+#define MAX_BUGS            4
+#define BUG_BOUND_WIDTH     45
+#define BUG_BOUND_HEIGHT    35
+#define BUG_MIN_MOVE        4
+#define BUG_MAX_MOVE        9
+#define BUG_MOVE_DELAY      8
+
 struct SpaData
 {
     u8 mon:5;
@@ -62,7 +73,8 @@ struct SpaData
     u8 statusIsShowing:1;
     u8 pausedSpriteId;
     u8 itemFlagBits;
-    u8 monSpriteIds[10];
+    u8 monSpriteIds[11];
+    u8 bugSpriteIds[4];
     u8 heartSpriteIds[3];
     u8 musicSpriteId;
     u8 angrySpriteId;
@@ -113,10 +125,23 @@ enum SpaTaskStates
     STATE_ITEM
 };
 
+enum BugDirections {
+    BUG_NONE,
+    BUG_NORTH,
+    BUG_EAST,
+    BUG_SOUTH,
+    BUG_WEST,
+    BUG_NE,
+    BUG_SE,
+    BUG_SW,
+    BUG_NW
+};
+
 extern struct SpaData sSpaData;
 
 extern const struct SpritePalette sSpritePalettes_SpaRattata[];
 extern const struct SpritePalette sSpritePalettes_SpaTeddiursa[];
+extern const struct SpritePalette sSpritePalettes_SpaPsyduck[];
 
 void CreateRattataSprites(u8 taskId);
 void ResetRattataSprites(void);
@@ -137,6 +162,8 @@ void StartTeddiursaBadTouch(u8 taskId);
 void StartTeddiursaAngry(u8 taskId);
 void StartTeddiursaPet(void);
 void EndSpaBadTeddiursa(void);
+
+void CreatePsyduckSprites(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);

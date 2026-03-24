@@ -522,7 +522,7 @@ static void LoadMonSpritePalettes(void)
         LoadSpritePalettes(sSpritePalettes_SpaTeddiursa);
         break;
     case SPA_PSYDUCK:
-        //LoadSpritePalettes(sSpritePalettes_SpaPsyduck);
+        LoadSpritePalettes(sSpritePalettes_SpaPsyduck);
         break;
     }
 }
@@ -657,7 +657,7 @@ static void CreateSpaMonSprites(u8 taskId)
         CreateTeddiursaSprites(taskId);
         break;
     case SPA_PSYDUCK:
-        //CreatePsyduckSprites(taskId);
+        CreatePsyduckSprites(taskId);
         break;
     }
 }
