@@ -393,7 +393,7 @@ void MapPreview_LoadGfx(mapsec_u8_t mapsec)
     if (idx != MPS_COUNT)
     {
         ResetTempTileDataBuffers();
-        if (sMapPreviewScreenData[idx].usesAllPalettes == TRUE)
+        if (sMapPreviewScreenData[idx].usesAllPalettes)
             LoadPalette(sMapPreviewScreenData[idx].palptr, BG_PLTT_ID(0), 16 * PLTT_SIZE_4BPP);
         else
             LoadPalette(sMapPreviewScreenData[idx].palptr, BG_PLTT_ID(13), 3 * PLTT_SIZE_4BPP);
@@ -499,7 +499,7 @@ void Task_MapPreviewScreen_NonFade(u8 taskId)
     case 2:
         if (!IsDma3ManagerBusyWithBgCopy())
         {
-            if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE) == TRUE)
+            if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE))
                 BeginNormalPaletteFade(PALETTES_ALL, -1, 16, 0, RGB_WHITE);
             else
                 BeginNormalPaletteFade(PALETTES_ALL, -1, 16, 0, RGB_BLACK);
@@ -519,7 +519,7 @@ void Task_MapPreviewScreen_NonFade(u8 taskId)
         tCounter++;
         if (tCounter > tDuration || JOY_NEW(B_BUTTON))
         {
-            if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE) == TRUE)
+            if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE))
                 BeginNormalPaletteFade(PALETTES_ALL, -2, 0, 16, RGB_WHITE);
             else
                 BeginNormalPaletteFade(PALETTES_ALL, MPS_BASIC_FADE_SPEED, 0, 16, RGB_BLACK);
@@ -535,7 +535,7 @@ void Task_MapPreviewScreen_NonFade(u8 taskId)
                 data[i] = 0;
             }
             MapPreview_Unload(tWindowId);
-            if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE) == TRUE)
+            if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE))
                 gTasks[taskId].func = Task_EnterCaveTransition2;
             else
                 SetMainCallback2(gMain.savedCallback);
