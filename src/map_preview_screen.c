@@ -514,12 +514,9 @@ void Task_MapPreviewScreen_NonFade(u8 taskId)
         if (data[1] > data[2] || JOY_NEW(B_BUTTON))
         {
             if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE) == TRUE)
-            {
                 BeginNormalPaletteFade(PALETTES_ALL, -2, 0, 16, RGB_WHITE);
-            }
-            else {
+            else
                 BeginNormalPaletteFade(PALETTES_ALL, MPS_BASIC_FADE_SPEED, 0, 16, RGB_BLACK);
-            }
             data[0]++;
         }
         break;
