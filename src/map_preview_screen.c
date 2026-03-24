@@ -594,7 +594,7 @@ static void Task_MapPreviewScreen_FadeIn(u8 taskId)
         break;
     case 3:
         data[1]++;
-        if (data[1] > data[10] || (JOY_NEW(B_BUTTON)))
+        if (data[1] > data[10] || JOY_NEW(B_BUTTON))
         {
             SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG0 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG2 | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BD);
             SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(16, 0));
