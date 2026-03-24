@@ -1393,6 +1393,9 @@ static void SpaItemHandleInput(u8 taskId)
 {
     if (JOY_NEW(INTERACT_BUTTON))
     {
+        if (sSpaData.mon == SPA_TEDDIURSA && !sSpaData.isSatisfied && tSelectedItem == SPA_CLAW)
+            ResetTeddiursaSpritesScratch();
+
         tSelectedItem = 0;
         DestroySprite(&gSprites[tActiveItemId]);
         tActiveItemId = 0;
@@ -1402,6 +1405,9 @@ static void SpaItemHandleInput(u8 taskId)
     }
     else if (JOY_NEW(ITEM_MENU_BUTTON))
     {
+        if (sSpaData.mon == SPA_TEDDIURSA && !sSpaData.isSatisfied && tSelectedItem == SPA_CLAW)
+            ResetTeddiursaSpritesScratch();
+            
         tSelectedItem = 0;
         DestroySprite(&gSprites[tActiveItemId]);
         tActiveItemId = 0;
