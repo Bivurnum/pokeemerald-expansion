@@ -424,6 +424,7 @@ u16 MapPreview_CreateMapNameWindow(mapsec_u8_t mapsec)
     u16 windowId;
     u32 xctr;
     s32 stringWidth;
+    u32 fontId;
     #ifdef BUGFIX
     // Fixes access violations indicated below.
     u8 color[3];
@@ -433,7 +434,8 @@ u16 MapPreview_CreateMapNameWindow(mapsec_u8_t mapsec)
 
     GetMapName(gStringVar4, mapsec, 0);
     // Use a longer window size if the map name is too long to fit.
-    stringWidth = GetStringWidth(FONT_NORMAL, gStringVar4, 0);
+    fontId = GetFontIdToFit(gStringVar4, FONT_NORMAL, 0, 104);
+    stringWidth = GetStringWidth(fontId, gStringVar4, 0);
     if (stringWidth > 104)
     {
         windowId = AddWindow(&sMapNameWindowLarge);
@@ -449,7 +451,7 @@ u16 MapPreview_CreateMapNameWindow(mapsec_u8_t mapsec)
     color[0] = TEXT_COLOR_WHITE; // Access violation
     color[1] = TEXT_COLOR_RED; // Access violation
     color[2] = TEXT_COLOR_LIGHT_GRAY; // Access violation
-    AddTextPrinterParameterized4(windowId, FONT_NORMAL, xctr / 2, 2, 0, 0, color/* Access violation */, -1, gStringVar4);
+    AddTextPrinterParameterized4(windowId, fontId, xctr / 2, 2, 0, 0, color/* Access violation */, -1, gStringVar4);
     return windowId;
 }
 
