@@ -92,17 +92,10 @@ static const union AnimCmd sAnim_EyesScared[] =
     ANIMCMD_END
 };
 
-static const union AnimCmd sAnim_EyesMusic[] =
-{
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
-    ANIMCMD_END
-};
-
 static const union AnimCmd sAnim_EyesHappy[] =
 {
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 60),
     ANIMCMD_END
 };
 
@@ -110,7 +103,6 @@ static const union AnimCmd * const sAnims_PsyduckEyes[] =
 {
     sAnim_Normal,
     sAnim_EyesScared,
-    sAnim_EyesMusic,
     sAnim_EyesHappy,
 };
 
@@ -638,6 +630,65 @@ void EndPsyduckBugsBadTouch(u8 taskId)
             gSprites[sSpaData.bugSpriteIds[i]].y2 = 0;
             gSprites[sSpaData.bugSpriteIds[i]].sFrozen = FALSE;
         }
+    }
+}
+
+void StartPsyduckPetHead(void)
+{
+    StartSpriteAnim(&gSprites[sPsyduckEyesSpriteId], 2);
+    StartSpriteAnim(&gSprites[sPsyduckHairSpriteId], 1);
+}
+
+void StartPsyduckPetBody(void)
+{
+    StartSpriteAnim(&gSprites[sPsyduckEyesSpriteId], 2);
+    StartSpriteAnim(&gSprites[sPsyduckTailSpriteId], 1);
+}
+
+void StartPsyduckHappyAnim(void)
+{
+    StartSpriteAnim(&gSprites[sPsyduckEyesSpriteId], 2);
+    StartSpriteAnim(&gSprites[sPsyduckHairSpriteId], 0);
+    StartSpriteAnim(&gSprites[sPsyduckTailSpriteId], 0);
+}
+
+void ResetPsyduckSprites(void)
+{
+    StartSpriteAnim(&gSprites[sPsyduckArmFrontSpriteId], 0);
+    StartSpriteAnim(&gSprites[sPsyduckEyesSpriteId], 0);
+    StartSpriteAnim(&gSprites[sPsyduckHairSpriteId], 0);
+    StartSpriteAnim(&gSprites[sPsyduckTailSpriteId], 0);
+}
+
+static void StartPsyduckHappyNoBugsAnim(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sPsyduckArmFrontSpriteId], 2);
+    StartSpriteAnim(&gSprites[sPsyduckEyesSpriteId], 2);
+    DestroySprite(&gSprites[sPsyduckArmBackSpriteId]);
+    PauseUntilAnimEnds(taskId, sPsyduckEyesSpriteId);
+    gSprites[sPsyduckArmFrontSpriteId].x2 = 0;
+}
+
+void HandleItemsPsyduck(u8 taskId)
+{
+    switch (tSelectedItem)
+    {
+    case SPA_BERRY:
+        break;
+    case SPA_CLAW:
+        break;
+    case SPA_HONEY:
+        if (!sSpaData.isSatisfied && tBugsCaught >= 4)
+        {
+            StartPsyduckHappyNoBugsAnim(taskId);
+            CreateMusicSprite(taskId);
+            DoSpaMonFeelsBetterText();
+            FlagSet(FLAG_SPA_PSYDUCK_SATISFIED);
+            sSpaData.isSatisfied = TRUE;
+        }
+        break;
+    case SPA_ORB:
+        break;
     }
 }
 

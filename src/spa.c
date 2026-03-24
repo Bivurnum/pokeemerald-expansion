@@ -1095,7 +1095,7 @@ static void StartAngryAnim(u8 taskId)
     }
 }
 
-static void StartPetAnim(u8 taskId)
+static void StartPetAnim(u8 taskId, u8 petArea)
 {
     switch (sSpaData.mon)
     {
@@ -1103,10 +1103,13 @@ static void StartPetAnim(u8 taskId)
         StartRattataPet();
         break;
     case SPA_TEDDIURSA:
-        //StartTeddiursaHappyAnim();
         StartTeddiursaPet();
         break;
     case SPA_PSYDUCK:
+        if (petArea == SPA_PET_HEAD)
+            StartPsyduckPetHead();
+        else
+            StartPsyduckPetBody();
         break;
     case SPA_FLETCHINDER:
         break;
@@ -1124,6 +1127,7 @@ static void StopSpaPetAnim(u8 taskId)
         ResetTeddiursaSpritesNormal();
         break;
     case SPA_PSYDUCK:
+        ResetPsyduckSprites();
         break;
     case SPA_FLETCHINDER:
         break;
@@ -1141,6 +1145,7 @@ static void StartHappyAnim(u8 taskId)
         StartTeddiursaHappyAnim();
         break;
     case SPA_PSYDUCK:
+        StartPsyduckHappyAnim();
         break;
     case SPA_FLETCHINDER:
         break;
@@ -1169,6 +1174,7 @@ static void ResetSpaMonSprites(void)
             ResetTeddiursaSpritesScratch();
         break;
     case SPA_PSYDUCK:
+        ResetPsyduckSprites();
         break;
     case SPA_FLETCHINDER:
         break;
@@ -1303,7 +1309,7 @@ static void SpaHandHandleInput(u8 taskId)
                 else if (JOY_HELD(DPAD_ANY))
                 {
                     AdjustToPetArea(taskId, petArea);
-                    StartPetAnim(taskId);
+                    StartPetAnim(taskId, petArea);
                 }
                 StartSpriteAnim(&gSprites[sSpaData.handSpriteId], 1);
             }
@@ -1474,6 +1480,7 @@ static void SpaItemHandleInput(u8 taskId)
         HandleItemsTeddiursa(taskId);
         break;
     case SPA_PSYDUCK:
+        HandleItemsPsyduck(taskId);
         break;
     case SPA_FLETCHINDER:
         break;

@@ -169,6 +169,11 @@ void EndSpaBadTeddiursa(void);
 void CreatePsyduckSprites(u8 taskId);
 void StartPsyduckBugsBadTouch(u8 taskId);
 void EndPsyduckBugsBadTouch(u8 taskId);
+void StartPsyduckPetHead(void);
+void StartPsyduckPetBody(void);
+void StartPsyduckHappyAnim(void);
+void ResetPsyduckSprites(void);
+void HandleItemsPsyduck(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);
