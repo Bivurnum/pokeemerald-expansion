@@ -75,7 +75,6 @@ struct SpaData
     u8 statusIsShowing:1;
     u8 bugsAttacking:1;
     u8 pausedSpriteId;
-    u8 itemFlagBits;
     u8 monSpriteIds[11];
     u8 bugSpriteIds[4];
     u8 heartSpriteIds[3];

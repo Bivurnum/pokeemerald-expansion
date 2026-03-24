@@ -495,21 +495,6 @@ static const struct SpritePalette sSpritePalettes_Spa[] =
     {NULL},
 };
 
-static void SetItemFlagBits(u8 taskId)
-{
-    if (FlagGet(FLAG_SPA_OBTAINED_BERRY))
-        sSpaData.itemFlagBits |= SPA_ITEM_BIT_BERRY;
-
-    if (FlagGet(FLAG_SPA_OBTAINED_CLAW))
-        sSpaData.itemFlagBits |= SPA_ITEM_BIT_CLAW;
-
-    if (FlagGet(FLAG_SPA_OBTAINED_HONEY))
-        sSpaData.itemFlagBits |= SPA_ITEM_BIT_HONEY;
-
-    if (FlagGet(FLAG_SPA_OBTAINED_ORB))
-        sSpaData.itemFlagBits |= SPA_ITEM_BIT_ORB;
-}
-
 static void LoadMonSpritePalettes(void)
 {
     switch (sSpaData.mon)
@@ -618,7 +603,6 @@ static void CB2_StartSpa(void)
 
         taskId = CreateTask(Task_SpaWaitFade, 1);
 
-        SetItemFlagBits(taskId);
         CreateSpaSprites(taskId);
         gMain.state++;
         break;
@@ -940,10 +924,10 @@ void CreateAngrySprite(u8 taskId)
 
 static const u16 SpaItemsY[][2] =
 {
-    { 48, SPA_ITEM_BIT_BERRY }, // Berry.
-    { 69, SPA_ITEM_BIT_CLAW }, // Claw.
-    { 90, SPA_ITEM_BIT_HONEY }, // Honey.
-    { 112, SPA_ITEM_BIT_ORB }, // Orb.
+    { 48, FLAG_SPA_OBTAINED_BERRY }, // Berry.
+    { 69, FLAG_SPA_OBTAINED_CLAW }, // Claw.
+    { 90, FLAG_SPA_OBTAINED_HONEY }, // Honey.
+    { 112, FLAG_SPA_OBTAINED_ORB }, // Orb.
 };
 
 static bool32 IsHandOnItemsIcon(void)
@@ -1401,7 +1385,7 @@ static void SpaItemChooseHandleInput(u8 taskId)
             if (newPosition > 3)
                 newPosition -= 4;
 
-            if (sSpaData.itemFlagBits & SpaItemsY[newPosition][1])
+            if (FlagGet(SpaItemsY[newPosition][1]))
             {
                 gSprites[sSpaData.itemSelectorSpriteId].y = SpaItemsY[newPosition][0];
                 gSprites[*SpaItemToPointer[newPosition]].x += 14;
@@ -1419,7 +1403,7 @@ static void SpaItemChooseHandleInput(u8 taskId)
             if (newPosition < 0)
                 newPosition += 4;
 
-            if (sSpaData.itemFlagBits & SpaItemsY[newPosition][1])
+            if (FlagGet(SpaItemsY[newPosition][1]))
             {
                 gSprites[sSpaData.itemSelectorSpriteId].y = SpaItemsY[newPosition][0];
                 gSprites[*SpaItemToPointer[newPosition]].x += 14;
