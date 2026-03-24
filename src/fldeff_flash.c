@@ -157,7 +157,7 @@ static bool8 TryDoMapTransition(void)
     enum MapType fromType = GetLastUsedWarpMapType();
     enum MapType toType = GetCurrentMapType();
 
-    if (MPS_ENABLE_MAP_PREVIEWS && FlagGet(FLAG_HIDE_MAP_NAME_POPUP) != TRUE && GetLastUsedWarpMapSectionId() != gMapHeader.regionMapSectionId && (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE) == TRUE || CurrentMapHasPreviewScreen(MPS_TYPE_BASIC) == TRUE))
+    if (ShouldRunMapPreview() && (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE) == TRUE || CurrentMapHasPreviewScreen(MPS_TYPE_BASIC) == TRUE))
     {
         RunMapPreviewScreenNonFade(gMapHeader.regionMapSectionId);
         return TRUE;

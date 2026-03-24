@@ -52,6 +52,7 @@ struct MapPreviewScreen
     const void *palptr;
 };
 
+bool32 ShouldRunMapPreview(void);
 u16 MapPreview_CreateMapNameWindow(u8 id);
 u16 MapPreview_GetDuration(u8 id);
 bool32 CurrentMapHasPreviewScreen(u8 type);

@@ -339,6 +339,14 @@ static const struct BgTemplate sMapPreviewBgTemplate[1] = {
     }
 };
 
+bool32 ShouldRunMapPreview(void)
+{
+    if (MPS_ENABLE_MAP_PREVIEWS && FlagGet(FLAG_HIDE_MAP_NAME_POPUP) != TRUE && GetLastUsedWarpMapSectionId() != gMapHeader.regionMapSectionId)
+        return TRUE;
+
+    return FALSE;
+}
+
 static u8 GetMapPreviewScreenIdx(mapsec_u8_t mapsec)
 {
     s32 i;
