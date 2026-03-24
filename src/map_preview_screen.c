@@ -629,7 +629,7 @@ static void Task_MapPreviewScreen_FadeIn(u8 taskId)
         }
         data[1] = (data[1] + 1) % 3;
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(data[8], data[9]));
-        if ((data[8] == 0 && data[9] == 16))
+        if (data[8] == 0 && data[9] == 16)
         {
             FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 32, 32);
             CopyBgTilemapBufferToVram(0);
