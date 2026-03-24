@@ -592,48 +592,6 @@ void HandleItemsRattata(u8 taskId)
     case SPA_ORB:
         break;
     }
-
-
-
-    
-/*    if (!sTask.tIsBitingOrAttacking)
-    {
-        if (sTask.tBerryBites == 3)
-        {
-            if (counter == 1)
-            {
-                StartSpriteAnim(sprite, 2);
-            }
-        }
-        else if (IsBerryInFeedingZone())
-        {
-            StartSpriteAnim(sprite, 4);
-            sTask.tIsBitingOrAttacking = TRUE;
-            sprite->sBlinkCounter = 0;
-        }
-        else if (sTask.tNumBadPets != 2)
-        {
-            if (counter == 1)
-            {
-                StartSpriteAnim(sprite, 0);
-                sprite->sBlinkCounter = 0;
-            }
-            if (sprite->y2 < 0)
-            {
-                sprite->y2++;
-            }
-            if (sprite->sBlinkCounter == sprite->sInterval)
-            {
-                StartSpriteAnim(sprite, 1); // Blink.
-                sprite->sInterval = (Random() % 180) + 180; // 3 to 6 seconds.
-                sprite->sBlinkCounter = 0;
-            }
-            else
-            {
-                sprite->sBlinkCounter++;
-            }
-        }
-    }*/
 }
 
 void EndSpaBadRattata(u8 taskId)

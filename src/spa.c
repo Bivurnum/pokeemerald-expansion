@@ -519,7 +519,7 @@ static void LoadMonSpritePalettes(void)
         LoadSpritePalettes(sSpritePalettes_SpaRattata);
         break;
     case SPA_TEDDIURSA:
-        //LoadSpritePalettes(sSpritePalettes_SpaTeddiursa);
+        LoadSpritePalettes(sSpritePalettes_SpaTeddiursa);
         break;
     case SPA_PSYDUCK:
         //LoadSpritePalettes(sSpritePalettes_SpaPsyduck);
@@ -654,7 +654,7 @@ static void CreateSpaMonSprites(u8 taskId)
         CreateRattataSprites(taskId);
         break;
     case SPA_TEDDIURSA:
-        //CreateTeddiursaSprites(taskId);
+        CreateTeddiursaSprites(taskId);
         break;
     case SPA_PSYDUCK:
         //CreatePsyduckSprites(taskId);
@@ -1421,6 +1421,7 @@ static void SpaItemHandleInput(u8 taskId)
         HandleItemsRattata(taskId);
         break;
     case SPA_TEDDIURSA:
+        HandleItemsTeddiursa(taskId);
         break;
     case SPA_PSYDUCK:
         break;

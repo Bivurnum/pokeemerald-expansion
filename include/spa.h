@@ -6,8 +6,10 @@
 #define tSelectedItem   gTasks[taskId].data[1]
 #define tActiveItemId   gTasks[taskId].data[2]
 #define tBerryBites     gTasks[taskId].data[3]
+#define tItchFadeCount  gTasks[taskId].data[3]
 #define tCounter        gTasks[taskId].data[4]
 #define tBiteState      gTasks[taskId].data[5]
+#define tScratchScore   gTasks[taskId].data[5]
 #define tPetArea        gTasks[taskId].data[6]
 #define tPetScore       gTasks[taskId].data[7]
 
@@ -33,6 +35,7 @@
 #define TAG_HONEY       0x1004
 
 #define TAG_MON     0x2000
+#define TAG_ITCH    0x2001
 
 #define ITEM_START_X    -22
 #define ITEM_END_X      10
@@ -109,6 +112,7 @@ enum SpaTaskStates
 extern struct SpaData sSpaData;
 
 extern const struct SpritePalette sSpritePalettes_SpaRattata[];
+extern const struct SpritePalette sSpritePalettes_SpaTeddiursa[];
 
 void CreateRattataSprites(u8 taskId);
 void ResetRattataSprites(void);
@@ -118,6 +122,9 @@ void StartRattataAngry(u8 taskId);
 void StartRattataPet(u8 taskId);
 void StopRattataPet(u8 taskId);
 void EndSpaBadRattata(u8 taskId);
+
+void CreateTeddiursaSprites(u8 taskId);
+void HandleItemsTeddiursa(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);
