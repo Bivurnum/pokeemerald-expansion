@@ -8,7 +8,6 @@
 #include "field_weather.h"
 #include "fieldmap.h"
 #include "main.h"
-#include "map_preview_screen.h"
 #include "menu.h"
 #include "palette.h"
 #include "random.h"
