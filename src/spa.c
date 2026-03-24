@@ -75,9 +75,6 @@ const u8 gText_SpaItemSelectInstructions[] = _("{DPAD_UPDOWN} : Move            
 const u8 gText_SpaItemInstructions[] = _("{A_BUTTON} : Put Away     hold{B_BUTTON} : Fast     hold{R_BUTTON} : Status");
 const u8 gText_GeneralBadTouch[] = _("It doesn't like to be touched there!");
 const u8 gText_FeelsBetter[] = _("That feels much better!");
-const u8 gText_HoneyLooksSticky[] = _("The honey looks very sticky.");
-const u8 gText_OuchBugsBite[] = _("Ouch! Those bugs bite!");
-const u8 gText_BugsAttacking[] = _("The bugs are attacking!");
 
 const u8 gText_RattataWary[] = _("Rattata is watching warily.");
 const u8 gText_RattataAtEase[] = _("Rattata seems to be more at ease.");
@@ -99,6 +96,9 @@ const u8 gText_TeddiursaLikesScratches[] = _("Teddiursa likes the back scratches
 const u8 gText_PsyduckNoInterest[] = _("Psyduck shows no interest.");
 const u8 gText_PsyduckInfested[] = _("Psyduck is infested!");
 const u8 gText_PsyduckUneasy[] = _("Psyduck is still a bit uneasy.");
+const u8 gText_HoneyLooksSticky[] = _("The honey looks very sticky.");
+const u8 gText_OuchBugsBite[] = _("Ouch! Those bugs bite!");
+const u8 gText_BugsAttacking[] = _("The bugs are attacking!");
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
