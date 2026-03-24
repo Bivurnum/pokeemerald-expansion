@@ -531,6 +531,7 @@ void StopRattataPet(u8 taskId)
 
 void ResetRattataSprites(void)
 {
+    StartSpriteAnim(&gSprites[sRatEyesSpriteId], 0);
     gSprites[sRatTailSpriteId].invisible = FALSE;
 }
 
@@ -714,16 +715,30 @@ static void SpriteCB_RatEyes(struct Sprite *sprite)
 {
     u32 taskId = sprite->sTaskId;
 
-        if (tPetArea == SPA_PET_HEAD)
+    if (tPetArea == SPA_PET_HEAD)
+    {
+        if (sprite->y2 > -3 && sprite->sCounter % 4 == 0)
         {
-            if (sprite->y2 > -3 && sprite->sCounter % 4 == 0)
-            {
-                sprite->y2--;
-            }
-            sprite->sCounter++;
+            sprite->y2--;
         }
-        else if (sprite->y2 < 0)
+        sprite->sCounter++;
+    }
+    else if (sprite->y2 < 0)
+    {
+        sprite->y2++;
+    }
+
+    if (sprite->animNum < 2)
+    {
+        if (sprite->sBlinkCounter == sprite->sInterval)
         {
-            sprite->y2++;
+            StartSpriteAnim(sprite, 1); // Blink.
+            sprite->sInterval = (Random() % BLINK_INTERVAL) + BLINK_INTERVAL; // 3 to 6 seconds.
+            sprite->sBlinkCounter = 0;
         }
+        else
+        {
+            sprite->sBlinkCounter++;
+        }
+    }
 }

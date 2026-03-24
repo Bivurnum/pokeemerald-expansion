@@ -1520,6 +1520,7 @@ static void Task_Spa(u8 taskId)
                     sSpaData.angrySpriteId = 0;
                 }
                 ResetSpaHand();
+                ResetSpaMonSprites();
                 DoSpaMonInstructions();
                 sSpaData.pausedSpriteId = 0;
             }

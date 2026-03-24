@@ -18,6 +18,7 @@
 #define sInterval       data[1]
 #define sCounter        data[2]
 #define sHeartOffset    data[3]
+#define sBlinkCounter   data[4]
 
 // Rattata Sprite Data
 #define sBerryBites data[3]
@@ -49,6 +50,8 @@
 #define SPA_ITEM_BIT_ORB    0x8
 
 #define SPA_PET_SCORE_TARGET    600
+
+#define BLINK_INTERVAL  180
 
 struct SpaData
 {
