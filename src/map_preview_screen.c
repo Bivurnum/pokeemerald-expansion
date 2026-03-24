@@ -463,31 +463,37 @@ u16 MapPreview_CreateMapNameWindow(mapsec_u8_t mapsec)
     return windowId;
 }
 
+#define tState      data[0]
+#define tCounter    data[1]
+#define tDuration   data[2]
+#define tMapSecId   data[3]
+#define tWindowId   data[4]
+
 void RunMapPreviewScreenNonFade(u8 mapSecId)
 {
     u8 taskId = CreateTask(Task_MapPreviewScreen_NonFade, 0);
-    gTasks[taskId].data[3] = mapSecId;
+    gTasks[taskId].tMapSecId = mapSecId;
 }
 
 void Task_MapPreviewScreen_NonFade(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
-    switch (data[0])
+    switch (tState)
     {
     case 0:
         SetWordTaskArg(taskId, 5, (uintptr_t)gMain.vblankCallback);
         SetVBlankCallback(NULL);
         MapPreview_InitBgs();
-        MapPreview_LoadGfx(data[3]);
+        MapPreview_LoadGfx(tMapSecId);
         BlendPalettes(PALETTES_ALL, 0x10, RGB_WHITE);
-        data[0]++;
+        tState++;
         break;
     case 1:
         if (!MapPreview_IsGfxLoadFinished())
         {
-            data[4] = MapPreview_CreateMapNameWindow(data[3]);
-            CopyWindowToVram(data[4], COPYWIN_FULL);
-            data[0]++;
+            tWindowId = MapPreview_CreateMapNameWindow(tMapSecId);
+            CopyWindowToVram(tWindowId, COPYWIN_FULL);
+            tState++;
         }
         break;
     case 2:
@@ -499,25 +505,25 @@ void Task_MapPreviewScreen_NonFade(u8 taskId)
                 BeginNormalPaletteFade(PALETTES_ALL, -1, 16, 0, RGB_BLACK);
 
             SetVBlankCallback((IntrCallback)GetWordTaskArg(taskId, 5));
-            data[0]++;
+            tState++;
         }
         break;
     case 3:
         if (!UpdatePaletteFade())
         {
-            data[2] = MapPreview_GetDuration(data[3]);
-            data[0]++;
+            tDuration = MapPreview_GetDuration(tMapSecId);
+            tState++;
         }
         break;
     case 4:
-        data[1]++;
-        if (data[1] > data[2] || JOY_NEW(B_BUTTON))
+        tCounter++;
+        if (tCounter > tDuration || JOY_NEW(B_BUTTON))
         {
             if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE) == TRUE)
                 BeginNormalPaletteFade(PALETTES_ALL, -2, 0, 16, RGB_WHITE);
             else
                 BeginNormalPaletteFade(PALETTES_ALL, MPS_BASIC_FADE_SPEED, 0, 16, RGB_BLACK);
-            data[0]++;
+            tState++;
         }
         break;
     case 5:
@@ -528,7 +534,7 @@ void Task_MapPreviewScreen_NonFade(u8 taskId)
             {
                 data[i] = 0;
             }
-            MapPreview_Unload(data[4]);
+            MapPreview_Unload(tWindowId);
             if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE) == TRUE)
                 gTasks[taskId].func = Task_EnterCaveTransition2;
             else
@@ -538,24 +544,39 @@ void Task_MapPreviewScreen_NonFade(u8 taskId)
     }
 }
 
+#undef tDuration
+#undef tMapSecId
+#undef tWindowId
+
+#define tBGPriority     data[2]
+#define tDISPCNT        data[3]
+#define tBLDCNT         data[4]
+#define tBLDALPHA       data[5]
+#define tWININ          data[6]
+#define tWINOUT         data[7]
+#define tBlendTgt1      data[8]
+#define tBlendTgt2      data[9]
+#define tDuration       data[10]
+#define tWindowId       data[11]
+
 void RunMapPreviewScreenFadeIn(mapsec_u8_t mapsec)
 {
     u8 taskId;
 
     taskId = CreateTask(Task_MapPreviewScreen_FadeIn, 0);
-    gTasks[taskId].data[2] = GetBgAttribute(0, BG_ATTR_PRIORITY);
-    gTasks[taskId].data[4] = GetGpuReg(REG_OFFSET_BLDCNT);
-    gTasks[taskId].data[5] = GetGpuReg(REG_OFFSET_BLDALPHA);
-    gTasks[taskId].data[3] = GetGpuReg(REG_OFFSET_DISPCNT);
-    gTasks[taskId].data[6] = GetGpuReg(REG_OFFSET_WININ);
-    gTasks[taskId].data[7] = GetGpuReg(REG_OFFSET_WINOUT);
-    gTasks[taskId].data[10] = MapPreview_GetDuration(mapsec);
-    gTasks[taskId].data[8] = 16;
-    gTasks[taskId].data[9] = 0;
+    gTasks[taskId].tBGPriority = GetBgAttribute(0, BG_ATTR_PRIORITY);
+    gTasks[taskId].tBLDCNT = GetGpuReg(REG_OFFSET_BLDCNT);
+    gTasks[taskId].tBLDALPHA = GetGpuReg(REG_OFFSET_BLDALPHA);
+    gTasks[taskId].tDISPCNT = GetGpuReg(REG_OFFSET_DISPCNT);
+    gTasks[taskId].tWININ = GetGpuReg(REG_OFFSET_WININ);
+    gTasks[taskId].tWINOUT = GetGpuReg(REG_OFFSET_WINOUT);
+    gTasks[taskId].tDuration = MapPreview_GetDuration(mapsec);
+    gTasks[taskId].tBlendTgt1 = 16;
+    gTasks[taskId].tBlendTgt2 = 0;
     SetBgAttribute(0, BG_ATTR_PRIORITY, 0);
     SetGpuRegBits(REG_OFFSET_WININ, WININ_WIN0_CLR | WININ_WIN1_CLR);
     SetGpuRegBits(REG_OFFSET_WINOUT, WINOUT_WIN01_CLR);
-    gTasks[taskId].data[11] = MapPreview_CreateMapNameWindow(mapsec);
+    gTasks[taskId].tWindowId = MapPreview_CreateMapNameWindow(mapsec);
     LockPlayerFieldControls();
 }
 
@@ -569,82 +590,93 @@ static void Task_MapPreviewScreen_FadeIn(u8 taskId)
     s16 * data;
 
     data = gTasks[taskId].data;
-    switch (data[0])
+    switch (tState)
     {
     case 0:
         if (!MapPreview_IsGfxLoadFinished() && !IsDma3ManagerBusyWithBgCopy())
         {
-            CopyWindowToVram(data[11], COPYWIN_FULL);
-            data[0]++;
+            CopyWindowToVram(tWindowId, COPYWIN_FULL);
+            tState++;
         }
         break;
     case 1:
         if (!IsDma3ManagerBusyWithBgCopy())
         {
             FadeInFromBlack();
-            data[0]++;
+            tState++;
         }
         break;
     case 2:
         if (IsWeatherNotFadingIn())
         {
             Overworld_PlaySpecialMapMusic();
-            data[0]++;
+            tState++;
         }
         break;
     case 3:
-        data[1]++;
-        if (data[1] > data[10] || JOY_NEW(B_BUTTON))
+        tCounter++;
+        if (tCounter > tDuration || JOY_NEW(B_BUTTON))
         {
             SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG0 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG2 | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BD);
             SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(16, 0));
-            data[1] = 0;
-            data[0]++;
+            tCounter = 0;
+            tState++;
         }
         break;
     case 4:
-        switch (data[1])
+        switch (tCounter)
         {
         case 0:
-            data[9]++;
-            if (data[9] > 16)
+            tBlendTgt2++;
+            if (tBlendTgt2 > 16)
             {
-                data[9] = 16;
+                tBlendTgt2 = 16;
             }
             break;
         case 1:
-            data[8]--;
-            if (data[8] < 0)
+            tBlendTgt1--;
+            if (tBlendTgt1 < 0)
             {
-                data[8] = 0;
+                tBlendTgt1 = 0;
             }
             break;
         }
-        data[1] = (data[1] + 1) % 3;
-        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(data[8], data[9]));
-        if (data[8] == 0 && data[9] == 16)
+        tCounter = (tCounter + 1) % 3;
+        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(tBlendTgt1, tBlendTgt2));
+        if (tBlendTgt1 == 0 && tBlendTgt2 == 16)
         {
             FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 32, 32);
             CopyBgTilemapBufferToVram(0);
-            data[0]++;
+            tState++;
         }
         break;
     case 5:
         if (!IsDma3ManagerBusyWithBgCopy())
         {
-            MapPreview_Unload(data[11]);
-            SetBgAttribute(0, BG_ATTR_PRIORITY, data[2]);
-            SetGpuReg(REG_OFFSET_DISPCNT, data[3]);
-            SetGpuReg(REG_OFFSET_BLDCNT, data[4]);
-            SetGpuReg(REG_OFFSET_BLDALPHA, data[5]);
-            SetGpuReg(REG_OFFSET_WININ, data[6]);
-            SetGpuReg(REG_OFFSET_WINOUT, data[7]);
+            MapPreview_Unload(tWindowId);
+            SetBgAttribute(0, BG_ATTR_PRIORITY, tBGPriority);
+            SetGpuReg(REG_OFFSET_DISPCNT, tDISPCNT);
+            SetGpuReg(REG_OFFSET_BLDCNT, tBLDCNT);
+            SetGpuReg(REG_OFFSET_BLDALPHA, tBLDALPHA);
+            SetGpuReg(REG_OFFSET_WININ, tWININ);
+            SetGpuReg(REG_OFFSET_WINOUT, tWINOUT);
             UnlockPlayerFieldControls();
             DestroyTask(taskId);
         }
         break;
     }
 }
+
+#undef tBGPriority
+#undef tDISPCNT
+#undef tBLDCNT
+#undef tBLDALPHA
+#undef tWININ
+#undef tWINOUT
+#undef tBlendTgt1
+#undef tBlendTgt2
+#undef tDuration
+#undef tWindowId
 
 u16 MapPreview_GetDuration(mapsec_u8_t mapsec)
 {
