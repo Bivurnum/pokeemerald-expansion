@@ -1072,16 +1072,17 @@ static void StartAngryAnim(u8 taskId)
     {
     case SPA_RATTATA:
         StartRattataAngry(taskId);
+        PlaySpaMonCry(CRY_MODE_ROAR_1);
         break;
     case SPA_TEDDIURSA:
         StartTeddiursaAngry(taskId);
+        PlaySpaMonCry(CRY_MODE_ROAR_1);
         break;
     case SPA_PSYDUCK:
         break;
     case SPA_FLETCHINDER:
         break;
     }
-    PlaySpaMonCry(CRY_MODE_ROAR_1);
 }
 
 static void StartPetAnim(u8 taskId)
