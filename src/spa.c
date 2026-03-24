@@ -1003,6 +1003,8 @@ static void ItemTraySlideOut(u8 taskId)
     }
 
     PlaySE(SE_BALL_TRAY_ENTER);
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaItemSelectInstructions, 0, 0, 0, NULL);
     tState = STATE_TRAY_OUT;
 }
 
@@ -1204,6 +1206,7 @@ void ResetSpaHand(void)
     gSprites[sSpaData.handSpriteId].invisible = FALSE;
     gSprites[sSpaData.handSpriteId].subpriority = 5;
     gSprites[sSpaData.handSpriteId].oam.priority = 0;
+    DoSpaMonInstructions();
     StartSpriteAnim(&gSprites[sSpaData.handSpriteId], 0);
 }
 
@@ -1663,6 +1666,8 @@ static void Task_Spa(u8 taskId)
                 DestroySprite(&gSprites[sSpaData.honeySpriteId]);
                 sSpaData.honeySpriteId = 0;
             }
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaItemInstructions, 0, 0, 0, NULL);
             tState = STATE_ITEM;
         }
         break;
