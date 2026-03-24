@@ -54,7 +54,7 @@ struct MapPreviewScreen
 
 u16 MapPreview_CreateMapNameWindow(u8 id);
 u16 MapPreview_GetDuration(u8 id);
-bool32 MapHasPreviewScreen(mapsec_u8_t mapsec, u8 type);
+bool32 CurrentMapHasPreviewScreen(u8 type);
 bool32 FadeInMapPreviewScreenIsRunning(void);
 void MapPreview_InitBgs(void);
 void MapPreview_LoadGfx(mapsec_u8_t mapsec);

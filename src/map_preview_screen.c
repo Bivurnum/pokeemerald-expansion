@@ -353,11 +353,11 @@ static u8 GetMapPreviewScreenIdx(mapsec_u8_t mapsec)
     return MPS_COUNT;
 }
 
-bool32 MapHasPreviewScreen(mapsec_u8_t mapsec, u8 type)
+bool32 CurrentMapHasPreviewScreen(u8 type)
 {
     u8 idx;
 
-    idx = GetMapPreviewScreenIdx(mapsec);
+    idx = GetMapPreviewScreenIdx(gMapHeader.regionMapSectionId);
     if (idx != MPS_COUNT)
     {
         if (type == MPS_TYPE_ANY)
@@ -485,7 +485,7 @@ void Task_MapPreviewScreen_NonFade(u8 taskId)
     case 2:
         if (!IsDma3ManagerBusyWithBgCopy())
         {
-            if (MapHasPreviewScreen(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE)
+            if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE) == TRUE)
                 BeginNormalPaletteFade(PALETTES_ALL, -1, 16, 0, RGB_WHITE);
             else
                 BeginNormalPaletteFade(PALETTES_ALL, -1, 16, 0, RGB_BLACK);
@@ -505,7 +505,7 @@ void Task_MapPreviewScreen_NonFade(u8 taskId)
         data[1]++;
         if (data[1] > data[2] || JOY_NEW(B_BUTTON))
         {
-            if (MapHasPreviewScreen(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE)
+            if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE) == TRUE)
             {
                 BeginNormalPaletteFade(PALETTES_ALL, -2, 0, 16, RGB_WHITE);
             }
@@ -524,7 +524,7 @@ void Task_MapPreviewScreen_NonFade(u8 taskId)
                 data[i] = 0;
             }
             MapPreview_Unload(data[4]);
-            if (MapHasPreviewScreen(gMapHeader.regionMapSectionId, MPS_TYPE_CAVE) == TRUE)
+            if (CurrentMapHasPreviewScreen(MPS_TYPE_CAVE) == TRUE)
             {
                 gTasks[taskId].func = Task_EnterCaveTransition2;
             }
@@ -764,7 +764,7 @@ void MapPreviewScript(struct ScriptContext *ctx)
     u32 duration = ScriptReadHalfword(ctx);
     u32 taskId;
 
-    if (!MapHasPreviewScreen(gMapHeader.regionMapSectionId, MPS_TYPE_ANY))
+    if (!CurrentMapHasPreviewScreen(MPS_TYPE_ANY))
         return;
 
     ScriptContext_Stop();
