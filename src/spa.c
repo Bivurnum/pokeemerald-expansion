@@ -1202,7 +1202,9 @@ void ResetSpaHand(void)
     gSprites[sSpaData.handSpriteId].x = HAND_START_X;
     gSprites[sSpaData.handSpriteId].y = HAND_START_Y;
     gSprites[sSpaData.handSpriteId].invisible = FALSE;
-
+    gSprites[sSpaData.handSpriteId].subpriority = 5;
+    gSprites[sSpaData.handSpriteId].oam.priority = 0;
+    StartSpriteAnim(&gSprites[sSpaData.handSpriteId], 0);
 }
 
 static const s16 HeartPos[][3][2] =
@@ -1276,7 +1278,6 @@ static void SpaHandHandleInput(u8 taskId)
         {
             tPetArea = SPA_PET_BAD;
             StartBadTouchAnim(taskId);
-            gSprites[sSpaData.handSpriteId].invisible = TRUE;
             DoSpaMonBadTouchText(sSpaData.isSatisfied);
             return;
         }
@@ -1726,7 +1727,7 @@ static const u8 SpaMonAttackDelay[SPA_NUM_MONS] =
 {
     60, // Rattata
     60, // Teddiursa
-    27, // Psyduck
+    30, // Psyduck
     60  // Fletchinder
 };
 

@@ -563,7 +563,7 @@ void CreatePsyduckSprites(u8 taskId)
                 continue;
             }
 
-            sSpaData.bugSpriteIds[i] = CreateSprite(&sSpriteTemplate_Bug, sBugStartPos[i][0], sBugStartPos[i][1], 4);
+            sSpaData.bugSpriteIds[i] = CreateSprite(&sSpriteTemplate_Bug, sBugStartPos[i][0], sBugStartPos[i][1], 3);
             gSprites[sSpaData.bugSpriteIds[i]].sTaskId = taskId;
             gSprites[sSpaData.bugSpriteIds[i]].sBugId = i;
             gSprites[sSpaData.bugSpriteIds[i]].sBugDirection = (Random32() % 8) + 1;
@@ -606,7 +606,10 @@ void StartPsyduckBugsBadTouch(u8 taskId)
         }
 
         StartSpriteAnim(&gSprites[sPsyduckEyesSpriteId], 1);
-        PauseUntilAnimEnds(taskId, sPsyduckEyesSpriteId);
+        sSpaData.pausedSpriteId = sPsyduckEyesSpriteId;
+        StartSpriteAnim(&gSprites[sSpaData.handSpriteId], 1);
+        gSprites[sSpaData.handSpriteId].subpriority = 4;
+    gSprites[sSpaData.handSpriteId].oam.priority = 1;
     }
     else
     {
