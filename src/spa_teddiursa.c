@@ -401,7 +401,7 @@ void CreateTeddiursaSprites(u8 taskId)
     sTeddyEyeSpriteId = CreateSprite(&sSpriteTemplate_TeddyEye, 115, 50, 8);
     gSprites[sTeddyEyeSpriteId].sTaskId = taskId;
     StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 3);
-    gSprites[sTeddyEyeSpriteId].sInterval = (Random() % 180) + 180;
+    gSprites[sTeddyEyeSpriteId].sInterval = (Random() % BLINK_INTERVAL) + BLINK_INTERVAL;
 
     sTeddyMouthSpriteId = CreateSprite(&sSpriteTemplate_TeddyMouth, 106, 63, 8);
     gSprites[sTeddyMouthSpriteId].sTaskId = taskId;
@@ -420,6 +420,20 @@ void TeddiursaReactToClaw(void)
     StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 2);
     StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 0);
     StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 0);
+}
+
+void ResetTeddiursaSpritesNormal(void)
+{
+    StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 0);
+    StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 0);
+    StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 0);
+}
+
+void ResetTeddiursaSpritesScratch(void)
+{
+    StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 1);
+    StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 3);
+    StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 3);
 }
 
 static bool32 IsClawInItchArea(void)
@@ -444,6 +458,7 @@ void HandleItemsTeddiursa(u8 taskId)
         {
             if (JOY_HELD(DPAD_ANY))
             {
+                tCounter = 0;
                 tScratchScore++;
                 if (tScratchScore % 15 == 0)
                 {
@@ -461,6 +476,20 @@ void HandleItemsTeddiursa(u8 taskId)
                     BlendPalettes(1 << (IndexOfSpritePaletteTag(TAG_ITCH) + 16), tItchFadeCount, RGB2GBA(230, 148, 92));
                 }
             }
+            else
+            {
+                if (tItchFadeCount < 16)
+                {
+                    if(!JOY_HELD(DPAD_ANY))
+                    {
+                        if (tCounter == 60)
+                        {
+                            ResetTeddiursaSpritesNormal();
+                        }
+                        tCounter++;
+                    }
+                }
+            }
         }
         break;
     case SPA_HONEY:
@@ -472,7 +501,19 @@ void HandleItemsTeddiursa(u8 taskId)
 
 static void SpriteCB_TeddyEye(struct Sprite *sprite)
 {
-
+    if (sprite->animNum == 0 || sprite->animNum == 4)
+    {
+        if (sprite->sBlinkCounter == sprite->sInterval)
+        {
+            StartSpriteAnim(sprite, 4); // Blink.
+            sprite->sInterval = (Random() % BLINK_INTERVAL) + BLINK_INTERVAL; // 3 to 6 seconds.
+            sprite->sBlinkCounter = 0;
+        }
+        else
+        {
+            sprite->sBlinkCounter++;
+        }
+    }
 }
 
 static void SpriteCB_TeddyMouth(struct Sprite *sprite)

@@ -603,7 +603,6 @@ void EndSpaBadRattata(u8 taskId)
     StartSpriteAnim(&gSprites[sRatEarRightSpriteId], 1);
     StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 2);
     StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 2);
-    //PauseUntilAnimEnds(taskId, sRatMouthSpriteId);
 }
 
 static void SpriteCB_RatBodyLeft(struct Sprite *sprite)

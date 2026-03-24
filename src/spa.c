@@ -1130,6 +1130,10 @@ static void ResetSpaMonSprites(void)
         ResetRattataSprites();
         break;
     case SPA_TEDDIURSA:
+        if (sSpaData.isSatisfied)
+            ResetTeddiursaSpritesNormal();
+        else
+            ResetTeddiursaSpritesScratch();
         break;
     case SPA_PSYDUCK:
         break;
