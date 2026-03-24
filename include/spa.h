@@ -24,6 +24,7 @@
 #define sBlinkCounter   data[4]
 #define sBugId          data[5]
 #define sBugInterval    data[6]
+#define sFrozen         data[7]
 
 // Rattata Sprite Data
 #define sBerryBites data[3]
@@ -68,10 +69,11 @@
 
 struct SpaData
 {
-    u8 mon:5;
+    u8 mon:4;
     u8 isSatisfied:1;
     u8 hasBeenPetBad:1;
     u8 statusIsShowing:1;
+    u8 bugsAttacking:1;
     u8 pausedSpriteId;
     u8 itemFlagBits;
     u8 monSpriteIds[11];
@@ -165,6 +167,8 @@ void StartTeddiursaPet(void);
 void EndSpaBadTeddiursa(void);
 
 void CreatePsyduckSprites(u8 taskId);
+void StartPsyduckBugsBadTouch(u8 taskId);
+void EndPsyduckBugsBadTouch(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);
@@ -172,6 +176,8 @@ void CreateAngrySprite(u8 taskId);
 bool32 IsBerryInFeedingZone(void);
 void DoSpaMonEnjoyedSnackText(void);
 void DoSpaMonFeelsBetterText(void);
+void ResetSpaHand(void);
+void Task_SpaEndBad(u8 taskId);
 
 static const struct OamData sOam_64x64 =
 {

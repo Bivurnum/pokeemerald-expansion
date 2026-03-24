@@ -47,7 +47,6 @@ static const u32 gPsyduckTail_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_
 static const u32 gPsyduckFoot_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_foot.4bpp");
 static const u32 gPsyduckArmFront_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_arm_front.4bpp");
 static const u32 gPsyduckArmBack_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_arm_back.4bpp");
-
 static const u32 gBug_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/bug.4bpp");
 
 static const union AnimCmd sAnim_Normal[] =
@@ -88,7 +87,8 @@ static const union AnimCmd * const sAnims_PsyduckHair[] =
 
 static const union AnimCmd sAnim_EyesScared[] =
 {
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 60),
     ANIMCMD_END
 };
 
@@ -572,6 +572,72 @@ void CreatePsyduckSprites(u8 taskId)
     }
 }
 
+void StartPsyduckBugsBadTouch(u8 taskId)
+{
+    u32 i;
+
+    if (!sSpaData.hasBeenPetBad)
+    {
+        for (i = 0; i < MAX_BUGS; i++)
+        {
+            if (!FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i))
+            {
+                switch (i)
+                {
+                case 0:
+                    gSprites[sSpaData.bugSpriteIds[i]].x2 =+ (gSprites[sSpaData.handSpriteId].x - gSprites[sSpaData.bugSpriteIds[i]].x - 6);
+                    gSprites[sSpaData.bugSpriteIds[i]].y2 =+ (gSprites[sSpaData.handSpriteId].y - gSprites[sSpaData.bugSpriteIds[i]].y - 6);
+                    break;
+                case 1:
+                    gSprites[sSpaData.bugSpriteIds[i]].x2 =+ (gSprites[sSpaData.handSpriteId].x - gSprites[sSpaData.bugSpriteIds[i]].x - 6);
+                    gSprites[sSpaData.bugSpriteIds[i]].y2 =+ (gSprites[sSpaData.handSpriteId].y - gSprites[sSpaData.bugSpriteIds[i]].y + 6);
+                    break;
+                case 2:
+                    gSprites[sSpaData.bugSpriteIds[i]].x2 =+ (gSprites[sSpaData.handSpriteId].x - gSprites[sSpaData.bugSpriteIds[i]].x + 6);
+                    gSprites[sSpaData.bugSpriteIds[i]].y2 =+ (gSprites[sSpaData.handSpriteId].y - gSprites[sSpaData.bugSpriteIds[i]].y - 6);
+                    break;
+                case 3:
+                    gSprites[sSpaData.bugSpriteIds[i]].x2 =+ (gSprites[sSpaData.handSpriteId].x - gSprites[sSpaData.bugSpriteIds[i]].x + 6);
+                    gSprites[sSpaData.bugSpriteIds[i]].y2 =+ (gSprites[sSpaData.handSpriteId].y - gSprites[sSpaData.bugSpriteIds[i]].y + 6);
+                    break;
+                }
+                gSprites[sSpaData.bugSpriteIds[i]].sFrozen = TRUE;
+            }
+        }
+
+        StartSpriteAnim(&gSprites[sPsyduckEyesSpriteId], 1);
+        PauseUntilAnimEnds(taskId, sPsyduckEyesSpriteId);
+    }
+    else
+    {
+        for (i = 0; i < MAX_BUGS; i++)
+        {
+            if (!FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i))
+            {
+                gSprites[sSpaData.bugSpriteIds[i]].sCounter = 0;
+            }
+        }
+        sSpaData.bugsAttacking = TRUE;
+        gSprites[sSpaData.handSpriteId].invisible = TRUE;
+        gTasks[taskId].func = Task_SpaEndBad;
+    }
+}
+
+void EndPsyduckBugsBadTouch(u8 taskId)
+{
+    u32 i;
+
+    for (i = 0; i < MAX_BUGS; i++)
+    {
+        if (!FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i))
+        {
+            gSprites[sSpaData.bugSpriteIds[i]].x2 = 0;
+            gSprites[sSpaData.bugSpriteIds[i]].y2 = 0;
+            gSprites[sSpaData.bugSpriteIds[i]].sFrozen = FALSE;
+        }
+    }
+}
+
 static void SpriteCB_Hair(struct Sprite *sprite)
 {
 
@@ -641,7 +707,35 @@ static void MoveBug(struct Sprite *sprite)
 
 static void SpriteCB_Bug(struct Sprite *sprite)
 {
+    if (sprite->sFrozen)
+        return;
+
     u32 taskId = sprite->sTaskId;
+
+    if (sSpaData.bugsAttacking)
+    {
+        if (sprite->sCounter == 20)
+        {
+            StartSpriteAffineAnim(sprite, 1);
+        }
+        if (sprite->sCounter >= 20 && sprite->sCounter < 30)
+        {
+            sprite->y2 -= 2;
+        }
+        else if (sprite->sCounter >= 30 && sprite->sCounter < 40)
+        {
+            sprite->y2--;
+        }
+        else if (sprite->sCounter >= 45 && sprite->sCounter < 55)
+        {
+            sprite->y2++;
+        }
+        else if (sprite->sCounter >= 55 && sprite->sCounter < 65)
+        {
+            sprite->y2 += 2;
+        }
+        sprite->sCounter++;
+    }
 
     if (tState == STATE_ITEM && tSelectedItem == SPA_HONEY)
     {

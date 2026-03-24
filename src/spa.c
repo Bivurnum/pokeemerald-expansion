@@ -31,7 +31,6 @@ static void CB2_StartSpa(void);
 static void Task_SpaWaitFade(u8 taskId);
 static void Task_Spa(u8 taskId);
 static void Task_SpaEndFade(u8 taskId);
-static void Task_SpaEndBad(u8 taskId);
 static void Task_SpaEndSuccess(u8 taskId);
 static void CreateSpaSprites(u8 taskId);
 static void CreateSpaMonSprites(u8 taskId);
@@ -780,6 +779,12 @@ static void DoSpaMonBadTouchText(bool8 isSatisfied)
         else
             AddTextPrinterParameterized(0, FONT_NARROW, gText_TeddiursaBadPet, 0, 0, 0, NULL);
         break;
+    case SPA_PSYDUCK:
+        if (!sSpaData.hasBeenPetBad)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_OuchBugsBite, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_BugsAttacking, 0, 0, 0, NULL);
+        break;
     }
 }
 
@@ -1054,16 +1059,19 @@ static void StartBadTouchAnim(u8 taskId)
     {
     case SPA_RATTATA:
         StartRattataBadTouch(taskId);
+        PlaySE(SE_CONTEST_CONDITION_LOSE);
         break;
     case SPA_TEDDIURSA:
         StartTeddiursaBadTouch(taskId);
+        PlaySE(SE_CONTEST_CONDITION_LOSE);
         break;
     case SPA_PSYDUCK:
+        StartPsyduckBugsBadTouch(taskId);
+        PlaySE(SE_M_BITE);
         break;
     case SPA_FLETCHINDER:
         break;
     }
-    PlaySE(SE_CONTEST_CONDITION_LOSE);
 }
 
 static void StartAngryAnim(u8 taskId)
@@ -1189,7 +1197,7 @@ static void StopPetting(u8 taskId)
     }
 }
 
-static void ResetSpaHand(void)
+void ResetSpaHand(void)
 {
     gSprites[sSpaData.handSpriteId].x = HAND_START_X;
     gSprites[sSpaData.handSpriteId].y = HAND_START_Y;
@@ -1543,7 +1551,11 @@ static void Task_Spa(u8 taskId)
                     else
                     {
                         ResetSpaMonSprites();
-                        StartAngryAnim(taskId);
+                        if (sSpaData.mon == SPA_PSYDUCK)
+                            EndPsyduckBugsBadTouch(taskId);
+                        else
+                            StartAngryAnim(taskId);
+
                         sSpaData.hasBeenPetBad = TRUE;
                     }
                     tPetArea = SPA_PET_NONE;
@@ -1714,11 +1726,11 @@ static const u8 SpaMonAttackDelay[SPA_NUM_MONS] =
 {
     60, // Rattata
     60, // Teddiursa
-    60, // Psyduck
+    27, // Psyduck
     60  // Fletchinder
 };
 
-static void Task_SpaEndBad(u8 taskId)
+void Task_SpaEndBad(u8 taskId)
 {
     if (tCounter == SpaMonAttackDelay[sSpaData.mon])
     {
@@ -1734,7 +1746,12 @@ static void Task_SpaEndBad(u8 taskId)
                 BeginNormalPaletteFade(PALETTES_ALL, 1, 8, 0, RGB_RED);
                 tState++;
             }
-            else
+            else if (tState > 0 && sSpaData.mon == SPA_PSYDUCK && tCounter > 120)
+            {
+                BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+                gTasks[taskId].func = Task_SpaEndFade;
+            }
+            else if (tState > 0 && sSpaData.mon != SPA_PSYDUCK )
             {
                 BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
                 gTasks[taskId].func = Task_SpaEndFade;
