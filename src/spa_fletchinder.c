@@ -129,16 +129,25 @@ static const union AnimCmd sAnim_WingFamished[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_WingBadTouch[] =
+{
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 1),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_FletchinderWingRight[] =
 {
     sAnim_Normal,
     sAnim_WingFamished,
+    sAnim_WingBadTouch,
 };
 
 static const union AnimCmd * const sAnims_FletchinderWingLeft[] =
 {
     sAnim_Normal,
     sAnim_WingFamished,
+    sAnim_WingBadTouch,
 };
 
 static const union AnimCmd * const sAnims_FletchinderTail[] =
@@ -182,12 +191,16 @@ static const struct SpriteFrameImage sPicTable_FletchinderWingRight[] =
 {
     spa_frame(gFletchinderWingRight_Gfx, 0, 8, 8),
     spa_frame(gFletchinderWingRight_Gfx, 1, 8, 8),
+    spa_frame(gFletchinderWingRight_Gfx, 2, 8, 8),
+    spa_frame(gFletchinderWingRight_Gfx, 3, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_FletchinderWingLeft[] =
 {
     spa_frame(gFletchinderWingLeft_Gfx, 0, 8, 8),
     spa_frame(gFletchinderWingLeft_Gfx, 1, 8, 8),
+    spa_frame(gFletchinderWingLeft_Gfx, 2, 8, 8),
+    spa_frame(gFletchinderWingLeft_Gfx, 3, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_FletchinderTail[] =
@@ -321,7 +334,7 @@ void CreateFletchinderSprites(u8 taskId)
         StartSpriteAnim(&gSprites[sFletchinderWingRightSpriteId], 1);
     }
 
-    sFletchinderWingLeftSpriteId = CreateSprite(&sSpriteTemplate_FletchinderWingLeft, 39, 52, 8);
+    sFletchinderWingLeftSpriteId = CreateSprite(&sSpriteTemplate_FletchinderWingLeft, 39, 56, 8);
     gSprites[sFletchinderWingLeftSpriteId].sTaskId = taskId;
     if (!sSpaData.isSatisfied)
     {
@@ -371,6 +384,8 @@ static void StartFletchinderBite(void)
 void StartFletchinderBadTouch(u8 taskId)
 {
     StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 7);
+    StartSpriteAnim(&gSprites[sFletchinderWingRightSpriteId], 2);
+    StartSpriteAnim(&gSprites[sFletchinderWingLeftSpriteId], 2);
     PauseUntilAnimEnds(taskId, sFletchinderHeadSpriteId);
 }
 

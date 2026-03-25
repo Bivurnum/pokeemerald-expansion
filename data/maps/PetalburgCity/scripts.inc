@@ -96,6 +96,48 @@ PetalburgCity_EventScript_Rattata::
 	releaseall
 	end
 
+PetalburgCity_EventScript_Teddiursa::
+	lock
+	startspa 1
+	releaseall
+	end
+
+PetalburgCity_EventScript_Psyduck::
+	lock
+	startspa 2
+	releaseall
+	end
+
+PetalburgCity_EventScript_Fletchinder::
+	lock
+	startspa 3
+	releaseall
+	end
+
+PetalburgCity_EventScript_ToggleBerry::
+	lock
+	setflag FLAG_SPA_OBTAINED_BERRY
+	releaseall
+	end
+
+PetalburgCity_EventScript_ToggleClaw::
+	lock
+	setflag FLAG_SPA_OBTAINED_CLAW
+	releaseall
+	end
+
+PetalburgCity_EventScript_ToggleHoney::
+	lock
+	setflag FLAG_SPA_OBTAINED_HONEY
+	releaseall
+	end
+
+PetalburgCity_EventScript_ToggleOrb::
+	lock
+	setflag FLAG_SPA_OBTAINED_ORB
+	releaseall
+	end
+
 PetalburgCity_EventScript_WallysMom::
 	msgbox PetalburgCity_Text_WhereIsWally, MSGBOX_NPC
 	end
