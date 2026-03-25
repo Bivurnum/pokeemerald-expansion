@@ -14,6 +14,7 @@
 #define tPetScore       gTasks[taskId].data[7]
 #define tScratchScore   gTasks[taskId].data[8]
 #define tBugsCaught     gTasks[taskId].data[8]
+#define tBugsEaten      gTasks[taskId].data[8]
 
 // Sprite Data
 #define sTaskId         data[0]
@@ -178,6 +179,11 @@ void ResetPsyduckSprites(void);
 void HandleItemsPsyduck(u8 taskId);
 
 void CreateFletchinderSprites(u8 taskId);
+bool32 HoneyHasBugs(void);
+void StartFletchinderPet(void);
+void FletchinderReactToHoney(void);
+void ResetFletchinderSpritesSatisfied(void);
+void ResetFletchinderSpritesStarving(void);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);

@@ -1019,6 +1019,10 @@ const s16 PettingZones[][5][5] =
     {
         { 126, 195, 47, 94, SPA_PET_BODY },
         { 69, 124, 60, 94, SPA_PET_HEAD },
+    },
+    [SPA_FLETCHINDER] =
+    {
+        { 75, 150, 30, 65, SPA_PET_BODY },
     }
 };
 
@@ -1102,6 +1106,7 @@ static void StartPetAnim(u8 taskId, u8 petArea)
             StartPsyduckPetBody();
         break;
     case SPA_FLETCHINDER:
+        StartFletchinderPet();
         break;
     }
 }
@@ -1120,6 +1125,7 @@ static void StopSpaPetAnim(u8 taskId)
         ResetPsyduckSprites();
         break;
     case SPA_FLETCHINDER:
+        ResetFletchinderSpritesSatisfied();
         break;
     }
 }
@@ -1381,6 +1387,10 @@ static void SpaItemChooseHandleInput(u8 taskId)
         {
             TeddiursaReactToClaw();
         }
+        if (sSpaData.mon == SPA_FLETCHINDER && tSelectedItem == SPA_HONEY && !sSpaData.isSatisfied && HoneyHasBugs())
+        {
+            FletchinderReactToHoney();
+        }
         tState = STATE_TRAY_IN_ITEM;
     }
     else if (JOY_NEW(DPAD_DOWN))
@@ -1427,6 +1437,8 @@ static void SpaItemHandleInput(u8 taskId)
     {
         if (sSpaData.mon == SPA_TEDDIURSA && !sSpaData.isSatisfied && tSelectedItem == SPA_CLAW)
             ResetTeddiursaSpritesScratch();
+        if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY && HoneyHasBugs())
+            ResetFletchinderSpritesStarving();
 
         tSelectedItem = 0;
         DestroySprite(&gSprites[tActiveItemId]);
@@ -1439,6 +1451,8 @@ static void SpaItemHandleInput(u8 taskId)
     {
         if (sSpaData.mon == SPA_TEDDIURSA && !sSpaData.isSatisfied && tSelectedItem == SPA_CLAW)
             ResetTeddiursaSpritesScratch();
+        if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY && HoneyHasBugs())
+            ResetFletchinderSpritesStarving();
             
         tSelectedItem = 0;
         DestroySprite(&gSprites[tActiveItemId]);
