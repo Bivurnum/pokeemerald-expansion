@@ -77,6 +77,7 @@ const u8 gText_SpaItemInstructions[] = _("{A_BUTTON} : Put Away     hold{B_BUTTO
 const u8 gText_GeneralBadTouch[] = _("It doesn't like to be touched there!");
 const u8 gText_NotSatisfiedBadPet[] = _("It doesn't want to be touched right now.");
 const u8 gText_FeelsBetter[] = _("That feels much better!");
+const u8 gText_NotInterested[] = _("It doesn't seem interested.");
 
 const u8 gText_RattataWary[] = _("Rattata is watching warily.");
 const u8 gText_RattataAtEase[] = _("Rattata seems to be more at ease.");
@@ -100,6 +101,15 @@ const u8 gText_PsyduckUneasy[] = _("Psyduck is still a bit uneasy.");
 const u8 gText_HoneyLooksSticky[] = _("The honey looks very sticky.");
 const u8 gText_OuchBugsBite[] = _("Ouch! Those bugs bite!");
 const u8 gText_BugsAttacking[] = _("The bugs are attacking!");
+
+const u8 gText_FletchinderLooksFamished[] = _("Fletchinder looks famished.");
+const u8 gText_FletchinderEnjoyedSnack[] = _("Fletchinder enjoyed the snack!");
+const u8 gText_FletchinderThankful[] = _("It seems thankful for the food.");
+const u8 gText_FletchinderUninterestedBerry[] = _("Strangely, it doesn't seem interested.");
+const u8 gText_FletchinderWantsHoney[] = _("Does it want the honey?");
+const u8 gText_FletchinderNoInterest[] = _("Fletchinder shows no interest.");
+const u8 gText_FletchinderWantsBerry[] = _("Looks like it wants the berry.");
+const u8 gText_FletchinderSatisfied[] = _("Fletchinder is completely satisfied!");
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -588,7 +598,7 @@ static void CB2_StartSpa(void)
 
         DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
         FillWindowPixelBuffer(0, PIXEL_FILL(1));
-        AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_SpaInstructions), gText_SpaInstructions, 0, 0, 0, NULL);
         FillPalette(RGB2GBA(238, 195, 154), BG_PLTT_ID(14) + 1, PLTT_SIZEOF(1));
         FillPalette(RGB2GBA(80, 50, 50), BG_PLTT_ID(14) + 2, PLTT_SIZEOF(1));
         FillPalette(RGB2GBA(180, 148, 117), BG_PLTT_ID(14) + 3, PLTT_SIZEOF(1));
@@ -655,7 +665,7 @@ static void CreateSpaMonSprites(u8 taskId)
 static void DoSpaMonInstructions(void)
 {
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
-    AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaInstructions, 0, 0, 0, NULL);
+    AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_SpaInstructions), gText_SpaInstructions, 0, 0, 0, NULL);
 }
 
 static void DoSpaMonBerryText(bool8 isSatisfied)
@@ -664,16 +674,22 @@ static void DoSpaMonBerryText(bool8 isSatisfied)
     switch (sSpaData.mon)
     {
     case SPA_RATTATA:
-        AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataInterestedBerry, 0, 0, 0, NULL);
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_RattataInterestedBerry), gText_RattataInterestedBerry, 0, 0, 0, NULL);
         break;
     case SPA_TEDDIURSA:
         if (isSatisfied)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaPretend, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_TeddiursaPretend), gText_TeddiursaPretend, 0, 0, 0, NULL);
         else
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaNoInterest, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_TeddiursaNoInterest), gText_TeddiursaNoInterest, 0, 0, 0, NULL);
         break;
     case SPA_PSYDUCK:
-        AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckNoInterest, 0, 0, 0, NULL);
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_PsyduckNoInterest), gText_PsyduckNoInterest, 0, 0, 0, NULL);
+        break;
+    case SPA_FLETCHINDER:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FletchinderWantsBerry), gText_FletchinderWantsBerry, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FletchinderUninterestedBerry), gText_FletchinderUninterestedBerry, 0, 0, 0, NULL);
         break;
     }
 }
@@ -683,14 +699,20 @@ static void DoSpaMonClawText(bool8 isSatisfied)
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
     switch (sSpaData.mon)
     {
+    case SPA_RATTATA:
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotInterested), gText_NotInterested, 0, 0, 0, NULL);
+        break;
     case SPA_TEDDIURSA:
         if (isSatisfied)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaLikesScratches, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_TeddiursaLikesScratches), gText_TeddiursaLikesScratches, 0, 0, 0, NULL);
         else
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaWondersClaw, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_TeddiursaWondersClaw), gText_TeddiursaWondersClaw, 0, 0, 0, NULL);
         break;
     case SPA_PSYDUCK:
-        AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckNoInterest, 0, 0, 0, NULL);
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_PsyduckNoInterest), gText_PsyduckNoInterest, 0, 0, 0, NULL);
+        break;
+    case SPA_FLETCHINDER:
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotInterested), gText_NotInterested, 0, 0, 0, NULL);
         break;
     }
 }
@@ -700,11 +722,23 @@ static void DoSpaMonHoneyText(bool8 isSatisfied)
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
     switch (sSpaData.mon)
     {
+    case SPA_RATTATA:
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotInterested), gText_NotInterested, 0, 0, 0, NULL);
+        break;
+    case SPA_TEDDIURSA:
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotInterested), gText_NotInterested, 0, 0, 0, NULL);
+        break;
     case SPA_PSYDUCK:
         if (isSatisfied)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckNoInterest, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_PsyduckNoInterest), gText_PsyduckNoInterest, 0, 0, 0, NULL);
         else
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_HoneyLooksSticky, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_HoneyLooksSticky), gText_HoneyLooksSticky, 0, 0, 0, NULL);
+        break;
+    case SPA_FLETCHINDER:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotInterested), gText_NotInterested, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FletchinderWantsHoney), gText_FletchinderWantsHoney, 0, 0, 0, NULL);
         break;
     }
 }
@@ -734,21 +768,27 @@ static void DoSpaMonStatusText(bool8 isSatisfied)
     {
     case SPA_RATTATA:
         if (isSatisfied)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataAtEase, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_RattataAtEase), gText_RattataAtEase, 0, 0, 0, NULL);
         else
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataWary, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_RattataWary), gText_RattataWary, 0, 0, 0, NULL);
         break;
     case SPA_TEDDIURSA:
         if (isSatisfied)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaGrateful, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_TeddiursaGrateful), gText_TeddiursaGrateful, 0, 0, 0, NULL);
         else
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaItchy, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_TeddiursaItchy), gText_TeddiursaItchy, 0, 0, 0, NULL);
         break;
     case SPA_PSYDUCK:
         if (isSatisfied)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckUneasy, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_PsyduckUneasy), gText_PsyduckUneasy, 0, 0, 0, NULL);
         else
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_PsyduckInfested, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_PsyduckInfested), gText_PsyduckInfested, 0, 0, 0, NULL);
+        break;
+    case SPA_FLETCHINDER:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FletchinderThankful), gText_FletchinderThankful, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FletchinderLooksFamished), gText_FletchinderLooksFamished, 0, 0, 0, NULL);
         break;
     }
 }
@@ -760,27 +800,27 @@ static void DoSpaMonBadTouchText(bool8 isSatisfied)
     {
     case SPA_RATTATA:
         if (isSatisfied)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_GeneralBadTouch, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_GeneralBadTouch), gText_GeneralBadTouch, 0, 0, 0, NULL);
         else
-            AddTextPrinterParameterized(0, FONT_NARROW, gText_RattataBadPet, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_RattataBadPet), gText_RattataBadPet, 0, 0, 0, NULL);
         break;
     case SPA_TEDDIURSA:
         if (isSatisfied)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_GeneralBadTouch, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_GeneralBadTouch), gText_GeneralBadTouch, 0, 0, 0, NULL);
         else
-            AddTextPrinterParameterized(0, FONT_NARROW, gText_NotSatisfiedBadPet, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotSatisfiedBadPet), gText_NotSatisfiedBadPet, 0, 0, 0, NULL);
         break;
     case SPA_PSYDUCK:
         if (!sSpaData.hasBeenPetBad)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_OuchBugsBite, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_OuchBugsBite), gText_OuchBugsBite, 0, 0, 0, NULL);
         else
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_BugsAttacking, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_BugsAttacking), gText_BugsAttacking, 0, 0, 0, NULL);
         break;
     case SPA_FLETCHINDER:
         if (isSatisfied)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_GeneralBadTouch, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_GeneralBadTouch), gText_GeneralBadTouch, 0, 0, 0, NULL);
         else
-            AddTextPrinterParameterized(0, FONT_NARROW, gText_NotSatisfiedBadPet, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotSatisfiedBadPet), gText_NotSatisfiedBadPet, 0, 0, 0, NULL);
         break;
     }
 }
@@ -791,10 +831,13 @@ static void DoSpaMonSatisfiedText(void)
     switch (sSpaData.mon)
     {
     case SPA_RATTATA:
-        AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataSatisfied, 0, 0, 0, NULL);
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_RattataSatisfied), gText_RattataSatisfied, 0, 0, 0, NULL);
         break;
     case SPA_TEDDIURSA:
-        AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaSatisfied, 0, 0, 0, NULL);
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_TeddiursaSatisfied), gText_TeddiursaSatisfied, 0, 0, 0, NULL);
+        break;
+    case SPA_FLETCHINDER:
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FletchinderSatisfied), gText_FletchinderSatisfied, 0, 0, 0, NULL);
         break;
     }
 }
@@ -805,10 +848,13 @@ void DoSpaMonEnjoyedSnackText(void)
     switch (sSpaData.mon)
     {
     case SPA_RATTATA:
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_RattataEnjoyedSnack, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_RattataEnjoyedSnack), gText_RattataEnjoyedSnack, 0, 0, 0, NULL);
         break;
     case SPA_TEDDIURSA:
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_TeddiursaEnjoyedSnack, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_TeddiursaEnjoyedSnack), gText_TeddiursaEnjoyedSnack, 0, 0, 0, NULL);
+        break;
+    case SPA_FLETCHINDER:
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FletchinderEnjoyedSnack), gText_FletchinderEnjoyedSnack, 0, 0, 0, NULL);
         break;
     }
 }
@@ -816,7 +862,7 @@ void DoSpaMonEnjoyedSnackText(void)
 void DoSpaMonFeelsBetterText(void)
 {
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
-    AddTextPrinterParameterized(0, FONT_NORMAL, gText_FeelsBetter, 0, 0, 0, NULL);
+    AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FeelsBetter), gText_FeelsBetter, 0, 0, 0, NULL);
 }
 
 static void PlaySpaMonCry(u8 mode)
@@ -855,11 +901,6 @@ static void PlaySpaMonAttackSE(void)
         PlaySE(SE_EFFECTIVE);
         break;
     }
-}
-
-static void CheckSpaStateChange(u8 taskId)
-{
-
 }
 
 static void MoveSpriteFromInput(struct Sprite *sprite)
@@ -1009,7 +1050,7 @@ static void ItemTraySlideOut(u8 taskId)
 
     PlaySE(SE_BALL_TRAY_ENTER);
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
-    AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaItemSelectInstructions, 0, 0, 0, NULL);
+    AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_SpaItemSelectInstructions), gText_SpaItemSelectInstructions, 0, 0, 0, NULL);
     tState = STATE_TRAY_OUT;
 }
 
@@ -1494,7 +1535,7 @@ static void SpaItemHandleInput(u8 taskId)
     if (!JOY_HELD(STATUS_BUTTON) && sSpaData.statusIsShowing)
     {
         FillWindowPixelBuffer(0, PIXEL_FILL(1));
-        AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaItemInstructions, 0, 0, 0, NULL);
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_SpaItemInstructions), gText_SpaItemInstructions, 0, 0, 0, NULL);
         sSpaData.statusIsShowing = FALSE;
     }
     else if (JOY_NEW(STATUS_BUTTON) && !sSpaData.statusIsShowing)
@@ -1711,7 +1752,7 @@ static void Task_Spa(u8 taskId)
                 sSpaData.honeySpriteId = 0;
             }
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            AddTextPrinterParameterized(0, FONT_NARROWER, gText_SpaItemInstructions, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_SpaItemInstructions), gText_SpaItemInstructions, 0, 0, 0, NULL);
             tState = STATE_ITEM;
         }
         break;
@@ -1759,8 +1800,6 @@ static void Task_Spa(u8 taskId)
         SpaItemHandleInput(taskId);
         break;
     }
-
-    CheckSpaStateChange(taskId);
 }
 
 static void Task_SpaEndFade(u8 taskId)

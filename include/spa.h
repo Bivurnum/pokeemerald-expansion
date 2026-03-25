@@ -265,4 +265,6 @@ static const struct OamData sOam_16x16_Affine =
 
 #define spa_frame(ptr, frame, width, height) {.data = (u8 *)ptr + (width * height * frame * 64)/2, .size = (width * height * 64)/2}
 
+#define SPA_FONT_WIDTH(string) GetFontIdToFit(string, FONT_NORMAL, 0, 192)
+
 #endif // GUARD_SPA_H
