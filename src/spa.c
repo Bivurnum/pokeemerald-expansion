@@ -1660,6 +1660,12 @@ static void Task_Spa(u8 taskId)
                     DestroySprite(&gSprites[sSpaData.angrySpriteId]);
                     sSpaData.angrySpriteId = 0;
                 }
+                if (tActiveItemId)
+                {
+                    tSelectedItem = 0;
+                    DestroySprite(&gSprites[tActiveItemId]);
+                    tActiveItemId = 0;
+                }
                 ResetSpaHand();
                 ResetSpaMonSprites();
                 DoSpaMonInstructions();
@@ -1917,7 +1923,18 @@ static void SpriteCB_Heart(struct Sprite *sprite)
 
 static void SpriteCB_Berry(struct Sprite *sprite)
 {
+    if (sprite->x < -32)
+        sprite->sCounter = 0;
 
+    if (sprite->sCounter > 0)
+    {
+        sprite->x -= 3;
+        if (sprite->sCounter == 10)
+        {
+            PlaySE(SE_FALL);
+        }
+        sprite->sCounter++;
+    }
 }
 
 static void SpriteCB_Claw(struct Sprite *sprite)

@@ -15,6 +15,8 @@
 #define sFletchinderWingBackRightSpriteId   sSpaData.monSpriteIds[7]
 #define sFletchinderWingBackLeftSpriteId    sSpaData.monSpriteIds[8]
 
+#define FLETCHINDER_SMACK_BERRY_THRESHOLD   75
+
 static const u16 gFletchinder_Pal[] = INCBIN_U16("graphics/_spa/fletchinder/fletchinder_head.gbapal");
 static const u32 gFletchinderHead_Gfx[] = INCBIN_U32("graphics/_spa/fletchinder/fletchinder_head.4bpp");
 static const u32 gFletchinderBodyRight_Gfx[] = INCBIN_U32("graphics/_spa/fletchinder/fletchinder_body_right.4bpp");
@@ -56,14 +58,13 @@ static const union AnimCmd sAnim_HeadReactToHoney[] =
 
 static const union AnimCmd sAnim_HeadReturnToFamished[] =
 {
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 6),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 30),
     ANIMCMD_FRAME(.imageValue = 4, .duration = 6),
     ANIMCMD_FRAME(.imageValue = 5, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 5, .duration = 30),
     ANIMCMD_FRAME(.imageValue = 4, .duration = 6),
-    ANIMCMD_JUMP(1)
+    ANIMCMD_JUMP(0)
 };
 
 static const union AnimCmd sAnim_HeadBite[] =
@@ -140,7 +141,7 @@ static const union AnimCmd sAnim_WingFamished[] =
 static const union AnimCmd sAnim_WingBadTouch[] =
 {
     ANIMCMD_FRAME(.imageValue = 3, .duration = 6),
-    ANIMCMD_FRAME(.imageValue = 2, .duration = 1),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 54),
     ANIMCMD_END
 };
 
@@ -525,6 +526,23 @@ void HandleItemsFletchinder(u8 taskId)
     switch (tSelectedItem)
     {
     case SPA_BERRY:
+        if (!sSpaData.isSatisfied)
+        {
+            if (gSprites[sSpaData.berrySpriteId].x > FLETCHINDER_SMACK_BERRY_THRESHOLD)
+            {
+                gSprites[sSpaData.berrySpriteId].sCounter = 1;
+                PlaySE(SE_CLICK);
+                StartSpriteAnim(&gSprites[sFletchinderWingRightSpriteId], 2);
+                StartSpriteAnim(&gSprites[sFletchinderWingLeftSpriteId], 2);
+                gSprites[sSpaData.handSpriteId].invisible = TRUE;
+                sSpaData.pausedSpriteId = sFletchinderWingRightSpriteId;
+                tState = STATE_HAND;
+            }
+        }
+        else
+        {
+
+        }
         break;
     case SPA_CLAW:
         break;
