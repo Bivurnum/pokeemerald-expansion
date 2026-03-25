@@ -451,7 +451,7 @@ void ResetFletchinderSpritesFamished(void)
 static const u16 FletchinderFeedingZone[4] =
 {
     // MIN_X, MAX_X, MIN_Y, MAX_Y
-       170,   195,   83,    110
+       170,   195,   80,    95
 };
 
 static bool32 IsHoneyInFeedingZone(void)
