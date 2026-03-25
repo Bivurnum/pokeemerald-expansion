@@ -101,6 +101,12 @@ static const union AnimCmd sAnim_HeadAngry[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_HeadEndSpaAngry[] =
+{
+    ANIMCMD_FRAME(.imageValue = 10, .duration = 1),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_FletchinderHead[] =
 {
     sAnim_Normal,
@@ -112,6 +118,7 @@ static const union AnimCmd * const sAnims_FletchinderHead[] =
     sAnim_HeadMusic,
     sAnim_HeadBadTouch,
     sAnim_HeadAngry,
+    sAnim_HeadEndSpaAngry,
 };
 
 static const union AnimCmd * const sAnims_FletchinderBodyRight[] =
@@ -137,11 +144,20 @@ static const union AnimCmd sAnim_WingBadTouch[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_WingEndSpaAngry[] =
+{
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 10),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 10),
+    ANIMCMD_JUMP(1)
+};
+
 static const union AnimCmd * const sAnims_FletchinderWingRight[] =
 {
     sAnim_Normal,
     sAnim_WingFamished,
     sAnim_WingBadTouch,
+    sAnim_WingEndSpaAngry,
 };
 
 static const union AnimCmd * const sAnims_FletchinderWingLeft[] =
@@ -149,6 +165,7 @@ static const union AnimCmd * const sAnims_FletchinderWingLeft[] =
     sAnim_Normal,
     sAnim_WingFamished,
     sAnim_WingBadTouch,
+    sAnim_WingEndSpaAngry,
 };
 
 static const union AnimCmd * const sAnims_FletchinderTail[] =
@@ -446,6 +463,17 @@ void ResetFletchinderSpritesFamished(void)
     StartSpriteAnim(&gSprites[sFletchinderWingBackLeftSpriteId], 0);
     gSprites[sFletchinderWingBackRightSpriteId].invisible = TRUE;
     gSprites[sFletchinderWingBackLeftSpriteId].invisible = TRUE;
+}
+
+void EndSpaBadFletchinder(void)
+{
+    StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 9);
+    StartSpriteAnim(&gSprites[sFletchinderWingRightSpriteId], 3);
+    StartSpriteAnim(&gSprites[sFletchinderWingLeftSpriteId], 3);
+    gSprites[sFletchinderWingBackRightSpriteId].invisible = FALSE;
+    gSprites[sFletchinderWingBackLeftSpriteId].invisible = FALSE;
+    StartSpriteAnim(&gSprites[sFletchinderWingBackRightSpriteId], 3);
+    StartSpriteAnim(&gSprites[sFletchinderWingBackLeftSpriteId], 3);
 }
 
 static const u16 FletchinderFeedingZone[4] =

@@ -194,6 +194,7 @@ void StartFletchinderHappyAnim(void);
 void FletchinderReactToHoney(void);
 void ResetFletchinderSpritesSatisfied(void);
 void ResetFletchinderSpritesFamished(void);
+void EndSpaBadFletchinder(void);
 void HandleItemsFletchinder(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);

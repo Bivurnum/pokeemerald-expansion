@@ -9,6 +9,7 @@
 #include "main.h"
 #include "malloc.h"
 #include "menu.h"
+#include "m4a.h"
 #include "overworld.h"
 #include "palette.h"
 #include "random.h"
@@ -850,6 +851,9 @@ static void PlaySpaMonAttackSE(void)
     case SPA_PSYDUCK:
         PlaySE(SE_M_CUT);
         break;
+    case SPA_FLETCHINDER:
+        PlaySE(SE_EFFECTIVE);
+        break;
     }
 }
 
@@ -1556,6 +1560,8 @@ static void EndSpaBad(u8 taskId)
     case SPA_PSYDUCK:
         break;
     case SPA_FLETCHINDER:
+        EndSpaBadFletchinder();
+        PlaySpaMonCry(CRY_MODE_ROAR_1);
         break;
     }
     gTasks[taskId].func = Task_SpaEndBad;
@@ -1769,13 +1775,18 @@ static const u8 SpaMonAttackDelay[SPA_NUM_MONS] =
     60, // Rattata
     60, // Teddiursa
     30, // Psyduck
-    60  // Fletchinder
+    70  // Fletchinder
 };
 
 void Task_SpaEndBad(u8 taskId)
 {
+    if (sSpaData.mon == SPA_FLETCHINDER && tCounter == 1)
+        PlaySE(SE_M_GUST);
+
     if (tCounter == SpaMonAttackDelay[sSpaData.mon])
     {
+        m4aMPlayStop(&gMPlayInfo_SE1);
+        m4aMPlayStop(&gMPlayInfo_SE2);
         PlaySpaMonAttackSE();
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 8, RGB_RED);
     }
