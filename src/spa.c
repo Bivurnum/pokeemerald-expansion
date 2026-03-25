@@ -1033,7 +1033,7 @@ const s16 PettingZones[][5][5] =
     },
     [SPA_FLETCHINDER] =
     {
-        { 75, 150, 50, 85, SPA_PET_BODY },
+        { 75, 155, 55, 100, SPA_PET_BODY },
     }
 };
 

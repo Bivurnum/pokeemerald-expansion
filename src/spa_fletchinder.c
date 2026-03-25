@@ -5,13 +5,15 @@
 #include "task.h"
 #include "constants/songs.h"
 
-#define sFletchinderHeadSpriteId        sSpaData.monSpriteIds[0]
-#define sFletchinderBodyRightSpriteId   sSpaData.monSpriteIds[1]
-#define sFletchinderBodyLeftSpriteId    sSpaData.monSpriteIds[2]
-#define sFletchinderWingRightSpriteId   sSpaData.monSpriteIds[3]
-#define sFletchinderWingLeftSpriteId    sSpaData.monSpriteIds[4]
-#define sFletchinderTailSpriteId        sSpaData.monSpriteIds[5]
-#define sFletchinderFeetSpriteId        sSpaData.monSpriteIds[6]
+#define sFletchinderHeadSpriteId            sSpaData.monSpriteIds[0]
+#define sFletchinderBodyRightSpriteId       sSpaData.monSpriteIds[1]
+#define sFletchinderBodyLeftSpriteId        sSpaData.monSpriteIds[2]
+#define sFletchinderWingRightSpriteId       sSpaData.monSpriteIds[3]
+#define sFletchinderWingLeftSpriteId        sSpaData.monSpriteIds[4]
+#define sFletchinderTailSpriteId            sSpaData.monSpriteIds[5]
+#define sFletchinderFeetSpriteId            sSpaData.monSpriteIds[6]
+#define sFletchinderWingBackRightSpriteId   sSpaData.monSpriteIds[7]
+#define sFletchinderWingBackLeftSpriteId    sSpaData.monSpriteIds[8]
 
 static const u16 gFletchinder_Pal[] = INCBIN_U16("graphics/_spa/fletchinder/fletchinder_head.gbapal");
 static const u32 gFletchinderHead_Gfx[] = INCBIN_U32("graphics/_spa/fletchinder/fletchinder_head.4bpp");
@@ -346,6 +348,16 @@ void CreateFletchinderSprites(u8 taskId)
 
     sFletchinderFeetSpriteId = CreateSprite(&sSpriteTemplate_FletchinderFeet, 128, 119, 10);
     gSprites[sFletchinderFeetSpriteId].sTaskId = taskId;
+
+    sFletchinderWingBackRightSpriteId = CreateSprite(&sSpriteTemplate_FletchinderWingRight, 150, 69, 11);
+    gSprites[sFletchinderWingBackRightSpriteId].sTaskId = taskId;
+    gSprites[sFletchinderWingBackRightSpriteId].hFlip = TRUE;
+    gSprites[sFletchinderWingBackRightSpriteId].invisible = TRUE;
+
+    sFletchinderWingBackLeftSpriteId = CreateSprite(&sSpriteTemplate_FletchinderWingLeft, 214, 59, 11);
+    gSprites[sFletchinderWingBackLeftSpriteId].sTaskId = taskId;
+    gSprites[sFletchinderWingBackLeftSpriteId].hFlip = TRUE;
+    gSprites[sFletchinderWingBackLeftSpriteId].invisible = TRUE;
 }
 
 bool32 HoneyHasBugs(void)
@@ -386,6 +398,10 @@ void StartFletchinderBadTouch(u8 taskId)
     StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 7);
     StartSpriteAnim(&gSprites[sFletchinderWingRightSpriteId], 2);
     StartSpriteAnim(&gSprites[sFletchinderWingLeftSpriteId], 2);
+    gSprites[sFletchinderWingBackRightSpriteId].invisible = FALSE;
+    gSprites[sFletchinderWingBackLeftSpriteId].invisible = FALSE;
+    StartSpriteAnim(&gSprites[sFletchinderWingBackRightSpriteId], 2);
+    StartSpriteAnim(&gSprites[sFletchinderWingBackLeftSpriteId], 2);
     PauseUntilAnimEnds(taskId, sFletchinderHeadSpriteId);
 }
 
@@ -412,6 +428,10 @@ void ResetFletchinderSpritesSatisfied(void)
     StartSpriteAnim(&gSprites[sFletchinderWingLeftSpriteId], 0);
     StartSpriteAnim(&gSprites[sFletchinderTailSpriteId], 0);
     StartSpriteAnim(&gSprites[sFletchinderFeetSpriteId], 0);
+    StartSpriteAnim(&gSprites[sFletchinderWingBackRightSpriteId], 0);
+    StartSpriteAnim(&gSprites[sFletchinderWingBackLeftSpriteId], 0);
+    gSprites[sFletchinderWingBackRightSpriteId].invisible = TRUE;
+    gSprites[sFletchinderWingBackLeftSpriteId].invisible = TRUE;
 }
 
 void ResetFletchinderSpritesFamished(void)
@@ -423,6 +443,10 @@ void ResetFletchinderSpritesFamished(void)
     StartSpriteAnim(&gSprites[sFletchinderWingLeftSpriteId], 1);
     StartSpriteAnim(&gSprites[sFletchinderTailSpriteId], 0);
     StartSpriteAnim(&gSprites[sFletchinderFeetSpriteId], 0);
+    StartSpriteAnim(&gSprites[sFletchinderWingBackRightSpriteId], 0);
+    StartSpriteAnim(&gSprites[sFletchinderWingBackLeftSpriteId], 0);
+    gSprites[sFletchinderWingBackRightSpriteId].invisible = TRUE;
+    gSprites[sFletchinderWingBackLeftSpriteId].invisible = TRUE;
 }
 
 static const u16 FletchinderFeedingZone[4] =
