@@ -494,10 +494,21 @@ static const u16 FletchinderFeedingZone[4] =
        170,   195,   80,    95
 };
 
-static bool32 IsHoneyInFeedingZone(void)
+static bool32 IsHoneyInFletchinderFeedingZone(void)
 {
     if (gSprites[sSpaData.honeySpriteId].x > FletchinderFeedingZone[0] && gSprites[sSpaData.honeySpriteId].x < FletchinderFeedingZone[1] 
      && gSprites[sSpaData.honeySpriteId].y > FletchinderFeedingZone[2] && gSprites[sSpaData.honeySpriteId].y < FletchinderFeedingZone[3])
+    {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+static bool32 IsBerryInFletchinderFeedingZone(void)
+{
+    if (gSprites[sSpaData.berrySpriteId].x > FletchinderFeedingZone[0] && gSprites[sSpaData.berrySpriteId].x < FletchinderFeedingZone[1] 
+     && gSprites[sSpaData.berrySpriteId].y > FletchinderFeedingZone[2] && gSprites[sSpaData.berrySpriteId].y < FletchinderFeedingZone[3])
     {
         return TRUE;
     }
@@ -521,6 +532,15 @@ static void FletchinderEatBug(u8 taskId)
     StartSpriteAnim(&gSprites[sSpaData.honeySpriteId], gSprites[sSpaData.honeySpriteId].animNum - 1);
 }
 
+static void FletchinderEatBerry(u8 taskId)
+{
+    tBerryBites++;
+    if (tBerryBites >= 3)
+        DestroySprite(&gSprites[sSpaData.berrySpriteId]);
+    else
+        StartSpriteAnim(&gSprites[sSpaData.berrySpriteId], tBerryBites);
+}
+
 void HandleItemsFletchinder(u8 taskId)
 {
     switch (tSelectedItem)
@@ -541,19 +561,53 @@ void HandleItemsFletchinder(u8 taskId)
         }
         else
         {
-
+                    DebugPrintf("Anim ended: %u", gSprites[sFletchinderHeadSpriteId].animEnded);
+            if (tBiteState == BITE_STATE_ACTIVE && gSprites[sFletchinderHeadSpriteId].animEnded)
+            {
+                if (tBerryBites >= 3)
+                {
+                    StartFletchinderHappyAnim();
+                    PauseUntilAnimEnds(taskId, sFletchinderHeadSpriteId);
+                    CreateMusicSprite(taskId);
+                    DoSpaMonEnjoyedSnackText();
+                    tBerryBites = 0;
+                }
+                tBiteState = BITE_STATE_NONE;
+            }
+            else if (IsBerryInFletchinderFeedingZone())
+            {
+                switch (tBiteState)
+                {
+                case BITE_STATE_NONE:
+                    StartFletchinderBite();
+                    tCounter = 0;
+                    tBiteState = BITE_STATE_ACTIVE;
+                    break;
+                case BITE_STATE_ACTIVE:
+                    if (gSprites[sFletchinderHeadSpriteId].animCmdIndex == 4)
+                    {
+                        FletchinderEatBerry(taskId);
+                    }
+                    else if (tCounter == 25)
+                    {
+                        PlaySE(SE_M_ABSORB);
+                    }
+                        tCounter++;
+                    break;
+                }
+            }
         }
         break;
     case SPA_CLAW:
         break;
     case SPA_HONEY:
-        if (tBiteState == BITE_STATE_ACTIVE && gSprites[sSpaData.honeySpriteId].oam.priority != 0 && !IsHoneyInFeedingZone())
+        if (tBiteState == BITE_STATE_ACTIVE && gSprites[sSpaData.honeySpriteId].oam.priority != 0 && !IsHoneyInFletchinderFeedingZone())
         {
             gSprites[sSpaData.honeySpriteId].oam.priority = 0;
             gSprites[sSpaData.honeySpriteId].subpriority = 5;
         }
 
-        if (gSprites[sSpaData.honeySpriteId].oam.priority != 1 && IsHoneyInFeedingZone())
+        if (gSprites[sSpaData.honeySpriteId].oam.priority != 1 && IsHoneyInFletchinderFeedingZone())
         {
             gSprites[sSpaData.honeySpriteId].oam.priority = 1;
             gSprites[sSpaData.honeySpriteId].subpriority = 11;
@@ -573,7 +627,8 @@ void HandleItemsFletchinder(u8 taskId)
             tBiteState = BITE_STATE_NONE;
         }
 
-        if (!sSpaData.isSatisfied && HoneyHasBugs() && IsHoneyInFeedingZone())
+        if (!sSpaData.isSatisfied && HoneyHasBugs() && IsHoneyInFletchinderFeedingZone())
+        {
             switch (tBiteState)
             {
             case BITE_STATE_NONE:
@@ -589,11 +644,11 @@ void HandleItemsFletchinder(u8 taskId)
                 else if (tCounter == 25)
                 {
                     PlaySE(SE_M_ABSORB);
-                    tCounter++;
                 }
-                    tCounter++;
+                tCounter++;
                 break;
             }
+        }
         break;
     case SPA_ORB:
         break;
