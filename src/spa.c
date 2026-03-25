@@ -825,6 +825,9 @@ static void PlaySpaMonCry(u8 mode)
     case SPA_PSYDUCK:
         PlayCry_ByMode(SPECIES_PSYDUCK, 0, mode);
         break;
+    case SPA_FLETCHINDER:
+        PlayCry_ByMode(SPECIES_FLETCHINDER, 0, mode);
+        break;
     }
 }
 
@@ -907,6 +910,7 @@ static const s16 MusicPos[][3] =
     [SPA_RATTATA] = { 190, 20, 0 },
     [SPA_TEDDIURSA] = { 84, 26, 1 },
     [SPA_PSYDUCK] = { 64, 37, 1 },
+    [SPA_FLETCHINDER] = { 190, 45, 0 },
 };
 
 void CreateMusicSprite(u8 taskId)
@@ -1487,6 +1491,7 @@ static void SpaItemHandleInput(u8 taskId)
         HandleItemsPsyduck(taskId);
         break;
     case SPA_FLETCHINDER:
+        HandleItemsFletchinder(taskId);
         break;
     }
 }

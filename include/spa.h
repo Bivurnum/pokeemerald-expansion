@@ -128,6 +128,13 @@ enum SpaTaskStates
     STATE_ITEM
 };
 
+enum BiteStates
+{
+    BITE_STATE_NONE,
+    BITE_STATE_ACTIVE,
+    BITE_STATE_END
+};
+
 enum BugDirections {
     BUG_NONE,
     BUG_NORTH,
@@ -184,6 +191,7 @@ void StartFletchinderPet(void);
 void FletchinderReactToHoney(void);
 void ResetFletchinderSpritesSatisfied(void);
 void ResetFletchinderSpritesStarving(void);
+void HandleItemsFletchinder(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);

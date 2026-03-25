@@ -1,7 +1,9 @@
 #include "global.h"
 #include "spa.h"
 #include "event_data.h"
+#include "sound.h"
 #include "task.h"
+#include "constants/songs.h"
 
 #define sFletchinderHeadSpriteId        sSpaData.monSpriteIds[0]
 #define sFletchinderBodyRightSpriteId   sSpaData.monSpriteIds[1]
@@ -62,6 +64,34 @@ static const union AnimCmd sAnim_HeadReturnToStarving[] =
     ANIMCMD_JUMP(1)
 };
 
+static const union AnimCmd sAnim_HeadBite[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 19),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 7, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 8, .duration = 7),
+    ANIMCMD_FRAME(.imageValue = 8, .duration = 1),
+    ANIMCMD_FRAME(.imageValue = 7, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_HeadMusic[] =
+{
+    ANIMCMD_FRAME(.imageValue = 9, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 9, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_HeadBadTouch[] =
+{
+    ANIMCMD_FRAME(.imageValue = 10, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 11, .duration = 54),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_FletchinderHead[] =
 {
     sAnim_Normal,
@@ -69,6 +99,8 @@ static const union AnimCmd * const sAnims_FletchinderHead[] =
     sAnim_HeadStarving,
     sAnim_HeadReactToHoney,
     sAnim_HeadReturnToStarving,
+    sAnim_HeadBite,
+    sAnim_HeadMusic,
 };
 
 static const union AnimCmd * const sAnims_FletchinderBodyRight[] =
@@ -117,6 +149,12 @@ static const struct SpriteFrameImage sPicTable_FletchinderHead[] =
     spa_frame(gFletchinderHead_Gfx, 3, 8, 8),
     spa_frame(gFletchinderHead_Gfx, 4, 8, 8),
     spa_frame(gFletchinderHead_Gfx, 5, 8, 8),
+    spa_frame(gFletchinderHead_Gfx, 6, 8, 8),
+    spa_frame(gFletchinderHead_Gfx, 7, 8, 8),
+    spa_frame(gFletchinderHead_Gfx, 8, 8, 8),
+    spa_frame(gFletchinderHead_Gfx, 9, 8, 8),
+    spa_frame(gFletchinderHead_Gfx, 10, 8, 8),
+    spa_frame(gFletchinderHead_Gfx, 11, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_FletchinderBodyRight[] =
@@ -247,7 +285,7 @@ void CreateFletchinderSprites(u8 taskId)
             tBugsEaten++;
     }
 
-    if (tBugsEaten == 4)
+    if (tBugsEaten >= 4)
     {
         sSpaData.isSatisfied = TRUE;
     }
@@ -309,6 +347,16 @@ void StartFletchinderPet(void)
     StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 1);
 }
 
+void StartFletchinderHappyAnim(void)
+{
+    StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 6);
+}
+
+static void StartFletchinderBite(void)
+{
+    StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 5);
+}
+
 void FletchinderReactToHoney(void)
 {
     StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 3);
@@ -336,4 +384,99 @@ void ResetFletchinderSpritesStarving(void)
     StartSpriteAnim(&gSprites[sFletchinderWingLeftSpriteId], 1);
     StartSpriteAnim(&gSprites[sFletchinderTailSpriteId], 0);
     StartSpriteAnim(&gSprites[sFletchinderFeetSpriteId], 0);
+}
+
+static const u16 FletchinderFeedingZone[4] =
+{
+    // MIN_X, MAX_X, MIN_Y, MAX_Y
+       170,   195,   83,    110
+};
+
+static bool32 IsHoneyInFeedingZone(void)
+{
+    if (gSprites[sSpaData.honeySpriteId].x > FletchinderFeedingZone[0] && gSprites[sSpaData.honeySpriteId].x < FletchinderFeedingZone[1] 
+     && gSprites[sSpaData.honeySpriteId].y > FletchinderFeedingZone[2] && gSprites[sSpaData.honeySpriteId].y < FletchinderFeedingZone[3])
+    {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+static void FletchinderEatBug(u8 taskId)
+{
+    u32 i;
+
+    for (i = 0; i < MAX_BUGS; i++)
+    {
+        if (!FlagGet(FLAG_SPA_BUG_0_EATEN + i))
+        {
+            FlagSet(FLAG_SPA_BUG_0_EATEN + i);
+            break;
+        }
+    }
+    tBugsEaten++;
+    StartSpriteAnim(&gSprites[sSpaData.honeySpriteId], gSprites[sSpaData.honeySpriteId].animNum - 1);
+}
+
+void HandleItemsFletchinder(u8 taskId)
+{
+    switch (tSelectedItem)
+    {
+    case SPA_BERRY:
+        break;
+    case SPA_CLAW:
+        break;
+    case SPA_HONEY:
+        if (tBiteState == BITE_STATE_ACTIVE && gSprites[sSpaData.honeySpriteId].oam.priority != 0 && !IsHoneyInFeedingZone())
+        {
+            gSprites[sSpaData.honeySpriteId].oam.priority = 0;
+            gSprites[sSpaData.honeySpriteId].subpriority = 5;
+        }
+
+        if (gSprites[sSpaData.honeySpriteId].oam.priority != 1 && IsHoneyInFeedingZone())
+        {
+            gSprites[sSpaData.honeySpriteId].oam.priority = 1;
+            gSprites[sSpaData.honeySpriteId].subpriority = 11;
+        }
+
+        if (tBiteState == BITE_STATE_ACTIVE && gSprites[sFletchinderHeadSpriteId].animEnded)
+        {
+            if (tBugsEaten >= 4)
+            {
+                DestroySprite(&gSprites[sSpaData.honeySpriteId]);
+                StartFletchinderHappyAnim();
+                PauseUntilAnimEnds(taskId, sFletchinderHeadSpriteId);
+                CreateMusicSprite(taskId);
+                DoSpaMonEnjoyedSnackText();
+                sSpaData.isSatisfied = TRUE;
+            }
+            tBiteState = BITE_STATE_NONE;
+        }
+
+        if (!sSpaData.isSatisfied && HoneyHasBugs() && IsHoneyInFeedingZone())
+            switch (tBiteState)
+            {
+            case BITE_STATE_NONE:
+                StartFletchinderBite();
+                tCounter = 0;
+                tBiteState = BITE_STATE_ACTIVE;
+                break;
+            case BITE_STATE_ACTIVE:
+                if (gSprites[sFletchinderHeadSpriteId].animCmdIndex == 4)
+                {
+                    FletchinderEatBug(taskId);
+                }
+                else if (tCounter == 25)
+                {
+                    PlaySE(SE_M_ABSORB);
+                    tCounter++;
+                }
+                    tCounter++;
+                break;
+            }
+        break;
+    case SPA_ORB:
+        break;
+    }
 }
