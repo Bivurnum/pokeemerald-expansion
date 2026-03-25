@@ -1156,7 +1156,10 @@ static void StartPetAnim(u8 taskId, u8 petArea)
     switch (sSpaData.mon)
     {
     case SPA_RATTATA:
-        StartRattataPet();
+        if (petArea == SPA_PET_HEAD)
+            StartRattataPetHead();
+        else
+            StartRattataPetBody();
         break;
     case SPA_TEDDIURSA:
         StartTeddiursaPet();
@@ -1197,7 +1200,7 @@ static void StartHappyAnim(u8 taskId)
     switch (sSpaData.mon)
     {
     case SPA_RATTATA:
-        StartRattataPet();
+        StartRattataHappyAnim();
         break;
     case SPA_TEDDIURSA:
         StartTeddiursaHappyAnim();

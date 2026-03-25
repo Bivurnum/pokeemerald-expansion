@@ -161,7 +161,9 @@ void ResetRattataSprites(void);
 void HandleItemsRattata(u8 taskId);
 void StartRattataBadTouch(u8 taskId);
 void StartRattataAngry(u8 taskId);
-void StartRattataPet(void);
+void StartRattataPetHead(void);
+void StartRattataPetBody(void);
+void StartRattataHappyAnim(void);
 void StopRattataPet(void);
 void EndSpaBadRattata(void);
 

@@ -105,7 +105,6 @@ static const union AnimCmd sAnim_RatSmile[] =
 {
     ANIMCMD_FRAME(.imageValue = 1, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 1, .duration = 60),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
@@ -191,7 +190,6 @@ static const union AnimCmd sAnim_RatEyesJoy[] =
 static const union AnimCmd sAnim_RatEyesBad[] =
 {
     ANIMCMD_FRAME(.imageValue = 6, .duration = 60),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
@@ -209,7 +207,6 @@ static const union AnimCmd sAnim_RatEyesAngry[] =
 {
     ANIMCMD_FRAME(.imageValue = 7, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 7, .duration = 59),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
@@ -227,7 +224,6 @@ static const union AnimCmd sAnim_RatEyesSmile[] =
 {
     ANIMCMD_FRAME(.imageValue = 10, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 10, .duration = 60),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
@@ -473,7 +469,7 @@ void CreateRattataSprites(u8 taskId)
     gSprites[sRatToesSpriteId].sTaskId = taskId;
 }
 
-static void StartRattataHappyAnim(void)
+void StartRattataHappyAnim(void)
 {
     StartSpriteAnim(&gSprites[sRatEyesSpriteId], 7);
     StartSpriteAnim(&gSprites[sRatMouthSpriteId], 2);
@@ -508,11 +504,17 @@ void StartRattataAngry(u8 taskId)
     CreateAngrySprite(taskId);
 }
 
-void StartRattataPet(void)
+void StartRattataPetHead(void)
 {
     StartSpriteAnim(&gSprites[sRatEyesSpriteId], 2);
     StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 1);
     StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 1);
+}
+
+void StartRattataPetBody(void)
+{
+    StartSpriteAnim(&gSprites[sRatEyesSpriteId], 2);
+    StartSpriteAnim(&gSprites[sRatTailSpriteId], 1);
 }
 
 void StopRattataPet(void)
@@ -520,11 +522,18 @@ void StopRattataPet(void)
     StartSpriteAnim(&gSprites[sRatEyesSpriteId], 0);
     StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 0);
     StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 0);
+    StartSpriteAnim(&gSprites[sRatTailSpriteId], 0);
 }
 
 void ResetRattataSprites(void)
 {
     StartSpriteAnim(&gSprites[sRatEyesSpriteId], 0);
+    StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 0);
+    StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 0);
+    StartSpriteAnim(&gSprites[sRatMouthSpriteId], 0);
+    StartSpriteAnim(&gSprites[sRatEarLeftSpriteId], 0);
+    StartSpriteAnim(&gSprites[sRatEarRightSpriteId], 0);
+    StartSpriteAnim(&gSprites[sRatTailSpriteId], 0);
     gSprites[sRatTailSpriteId].invisible = FALSE;
 }
 
