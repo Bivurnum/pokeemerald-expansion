@@ -152,12 +152,20 @@ static const union AnimCmd sAnim_WingEndSpaAngry[] =
     ANIMCMD_JUMP(1)
 };
 
+static const union AnimCmd sAnim_WingAngry[] =
+{
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_FletchinderWingRight[] =
 {
     sAnim_Normal,
     sAnim_WingFamished,
     sAnim_WingBadTouch,
     sAnim_WingEndSpaAngry,
+    sAnim_WingAngry,
 };
 
 static const union AnimCmd * const sAnims_FletchinderWingLeft[] =
@@ -166,6 +174,7 @@ static const union AnimCmd * const sAnims_FletchinderWingLeft[] =
     sAnim_WingFamished,
     sAnim_WingBadTouch,
     sAnim_WingEndSpaAngry,
+    sAnim_WingAngry,
 };
 
 static const union AnimCmd * const sAnims_FletchinderTail[] =
@@ -424,6 +433,8 @@ void StartFletchinderBadTouch(u8 taskId)
 void StartFletchinderAngry(u8 taskId)
 {
     StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 8);
+    StartSpriteAnim(&gSprites[sFletchinderWingRightSpriteId], 4);
+    StartSpriteAnim(&gSprites[sFletchinderWingLeftSpriteId], 4);
     PauseUntilAnimEnds(taskId, sFletchinderHeadSpriteId);
     CreateAngrySprite(taskId);
 }
