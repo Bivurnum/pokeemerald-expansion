@@ -34,7 +34,7 @@ static const union AnimCmd sAnim_HeadPet[] =
     ANIMCMD_END
 };
 
-static const union AnimCmd sAnim_HeadStarving[] =
+static const union AnimCmd sAnim_HeadFamished[] =
 {
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 30),
@@ -52,7 +52,7 @@ static const union AnimCmd sAnim_HeadReactToHoney[] =
     ANIMCMD_END
 };
 
-static const union AnimCmd sAnim_HeadReturnToStarving[] =
+static const union AnimCmd sAnim_HeadReturnToFamished[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 6),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
@@ -92,15 +92,25 @@ static const union AnimCmd sAnim_HeadBadTouch[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_HeadAngry[] =
+{
+    ANIMCMD_FRAME(.imageValue = 10, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 12, .duration = 54),
+    ANIMCMD_FRAME(.imageValue = 12, .duration = 60),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_FletchinderHead[] =
 {
     sAnim_Normal,
     sAnim_HeadPet,
-    sAnim_HeadStarving,
+    sAnim_HeadFamished,
     sAnim_HeadReactToHoney,
-    sAnim_HeadReturnToStarving,
+    sAnim_HeadReturnToFamished,
     sAnim_HeadBite,
     sAnim_HeadMusic,
+    sAnim_HeadBadTouch,
+    sAnim_HeadAngry,
 };
 
 static const union AnimCmd * const sAnims_FletchinderBodyRight[] =
@@ -113,7 +123,7 @@ static const union AnimCmd * const sAnims_FletchinderBodyLeft[] =
     sAnim_Normal,
 };
 
-static const union AnimCmd sAnim_WingStarving[] =
+static const union AnimCmd sAnim_WingFamished[] =
 {
     ANIMCMD_FRAME(.imageValue = 1, .duration = 1),
     ANIMCMD_END
@@ -122,13 +132,13 @@ static const union AnimCmd sAnim_WingStarving[] =
 static const union AnimCmd * const sAnims_FletchinderWingRight[] =
 {
     sAnim_Normal,
-    sAnim_WingStarving,
+    sAnim_WingFamished,
 };
 
 static const union AnimCmd * const sAnims_FletchinderWingLeft[] =
 {
     sAnim_Normal,
-    sAnim_WingStarving,
+    sAnim_WingFamished,
 };
 
 static const union AnimCmd * const sAnims_FletchinderTail[] =
@@ -155,6 +165,7 @@ static const struct SpriteFrameImage sPicTable_FletchinderHead[] =
     spa_frame(gFletchinderHead_Gfx, 9, 8, 8),
     spa_frame(gFletchinderHead_Gfx, 10, 8, 8),
     spa_frame(gFletchinderHead_Gfx, 11, 8, 8),
+    spa_frame(gFletchinderHead_Gfx, 12, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_FletchinderBodyRight[] =
@@ -357,6 +368,19 @@ static void StartFletchinderBite(void)
     StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 5);
 }
 
+void StartFletchinderBadTouch(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 7);
+    PauseUntilAnimEnds(taskId, sFletchinderHeadSpriteId);
+}
+
+void StartFletchinderAngry(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 8);
+    PauseUntilAnimEnds(taskId, sFletchinderHeadSpriteId);
+    CreateAngrySprite(taskId);
+}
+
 void FletchinderReactToHoney(void)
 {
     StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 3);
@@ -375,7 +399,7 @@ void ResetFletchinderSpritesSatisfied(void)
     StartSpriteAnim(&gSprites[sFletchinderFeetSpriteId], 0);
 }
 
-void ResetFletchinderSpritesStarving(void)
+void ResetFletchinderSpritesFamished(void)
 {
     StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 4);
     StartSpriteAnim(&gSprites[sFletchinderBodyRightSpriteId], 0);

@@ -188,9 +188,11 @@ void HandleItemsPsyduck(u8 taskId);
 void CreateFletchinderSprites(u8 taskId);
 bool32 HoneyHasBugs(void);
 void StartFletchinderPet(void);
+void StartFletchinderBadTouch(u8 taskId);
+void StartFletchinderAngry(u8 taskId);
 void FletchinderReactToHoney(void);
 void ResetFletchinderSpritesSatisfied(void);
-void ResetFletchinderSpritesStarving(void);
+void ResetFletchinderSpritesFamished(void);
 void HandleItemsFletchinder(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);

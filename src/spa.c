@@ -74,6 +74,7 @@ const u8 gText_SpaInstructions[] = _("{A_BUTTON} : Interact     hold{B_BUTTON} :
 const u8 gText_SpaItemSelectInstructions[] = _("{DPAD_UPDOWN} : Move            {A_BUTTON} : Select            {B_BUTTON} : Exit");
 const u8 gText_SpaItemInstructions[] = _("{A_BUTTON} : Put Away     hold{B_BUTTON} : Fast     hold{R_BUTTON} : Status");
 const u8 gText_GeneralBadTouch[] = _("It doesn't like to be touched there!");
+const u8 gText_NotSatisfiedBadPet[] = _("It doesn't want to be touched right now.");
 const u8 gText_FeelsBetter[] = _("That feels much better!");
 
 const u8 gText_RattataWary[] = _("Rattata is watching warily.");
@@ -87,7 +88,6 @@ const u8 gText_TeddiursaItchy[] = _("Teddiursa looks itchy!");
 const u8 gText_TeddiursaGrateful[] = _("Teddiursa appears grateful.");
 const u8 gText_TeddiursaNoInterest[] = _("Teddiursa shows no interest.");
 const u8 gText_TeddiursaPretend[] = _("It is pretending not to show interest.");
-const u8 gText_TeddiursaBadPet[] = _("It doesn't want to be touched right now.");
 const u8 gText_TeddiursaSatisfied[] = _("Teddiursa is completely satisfied!");
 const u8 gText_TeddiursaEnjoyedSnack[] = _("Teddiursa enjoyed the snack!");
 const u8 gText_TeddiursaWondersClaw[] = _("Teddiursa wonders what you'll do.");
@@ -767,13 +767,19 @@ static void DoSpaMonBadTouchText(bool8 isSatisfied)
         if (isSatisfied)
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_GeneralBadTouch, 0, 0, 0, NULL);
         else
-            AddTextPrinterParameterized(0, FONT_NARROW, gText_TeddiursaBadPet, 0, 0, 0, NULL);
+            AddTextPrinterParameterized(0, FONT_NARROW, gText_NotSatisfiedBadPet, 0, 0, 0, NULL);
         break;
     case SPA_PSYDUCK:
         if (!sSpaData.hasBeenPetBad)
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_OuchBugsBite, 0, 0, 0, NULL);
         else
             AddTextPrinterParameterized(0, FONT_NORMAL, gText_BugsAttacking, 0, 0, 0, NULL);
+        break;
+    case SPA_FLETCHINDER:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_GeneralBadTouch, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, FONT_NARROW, gText_NotSatisfiedBadPet, 0, 0, 0, NULL);
         break;
     }
 }
@@ -922,8 +928,9 @@ void CreateMusicSprite(u8 taskId)
 
 static const s16 AngryPos[][2] =
 {
-    [SPA_RATTATA] = { 165, 38 },
-    [SPA_TEDDIURSA] = { 155, 40 },
+    [SPA_RATTATA] =     { 165, 38 },
+    [SPA_TEDDIURSA] =   { 155, 40 },
+    [SPA_FLETCHINDER] = { 160, 40 },
 };
 
 void CreateAngrySprite(u8 taskId)
@@ -1026,7 +1033,7 @@ const s16 PettingZones[][5][5] =
     },
     [SPA_FLETCHINDER] =
     {
-        { 75, 150, 30, 65, SPA_PET_BODY },
+        { 75, 150, 50, 85, SPA_PET_BODY },
     }
 };
 
@@ -1070,6 +1077,8 @@ static void StartBadTouchAnim(u8 taskId)
         PlaySE(SE_M_BITE);
         break;
     case SPA_FLETCHINDER:
+        StartFletchinderBadTouch(taskId);
+        PlaySE(SE_CONTEST_CONDITION_LOSE);
         break;
     }
 }
@@ -1089,6 +1098,8 @@ static void StartAngryAnim(u8 taskId)
     case SPA_PSYDUCK:
         break;
     case SPA_FLETCHINDER:
+        StartFletchinderAngry(taskId);
+        PlaySpaMonCry(CRY_MODE_ROAR_1);
         break;
     }
 }
@@ -1177,6 +1188,10 @@ static void ResetSpaMonSprites(void)
         ResetPsyduckSprites();
         break;
     case SPA_FLETCHINDER:
+        if (sSpaData.isSatisfied)
+            ResetFletchinderSpritesSatisfied();
+        else
+            ResetFletchinderSpritesFamished();
         break;
     }
 }
@@ -1302,7 +1317,6 @@ static void SpaHandHandleInput(u8 taskId)
                 {
                     tPetArea = SPA_PET_BAD;
                     StartBadTouchAnim(taskId);
-                    gSprites[sSpaData.handSpriteId].invisible = TRUE;
                     DoSpaMonBadTouchText(sSpaData.isSatisfied);
                     return;
                 }
@@ -1442,7 +1456,7 @@ static void SpaItemHandleInput(u8 taskId)
         if (sSpaData.mon == SPA_TEDDIURSA && !sSpaData.isSatisfied && tSelectedItem == SPA_CLAW)
             ResetTeddiursaSpritesScratch();
         if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY && HoneyHasBugs())
-            ResetFletchinderSpritesStarving();
+            ResetFletchinderSpritesFamished();
 
         tSelectedItem = 0;
         DestroySprite(&gSprites[tActiveItemId]);
@@ -1456,7 +1470,7 @@ static void SpaItemHandleInput(u8 taskId)
         if (sSpaData.mon == SPA_TEDDIURSA && !sSpaData.isSatisfied && tSelectedItem == SPA_CLAW)
             ResetTeddiursaSpritesScratch();
         if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY && HoneyHasBugs())
-            ResetFletchinderSpritesStarving();
+            ResetFletchinderSpritesFamished();
             
         tSelectedItem = 0;
         DestroySprite(&gSprites[tActiveItemId]);
