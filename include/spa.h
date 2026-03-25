@@ -144,6 +144,9 @@ extern struct SpaData sSpaData;
 extern const struct SpritePalette sSpritePalettes_SpaRattata[];
 extern const struct SpritePalette sSpritePalettes_SpaTeddiursa[];
 extern const struct SpritePalette sSpritePalettes_SpaPsyduck[];
+extern const struct SpritePalette sSpritePalettes_SpaFletchinder[];
+
+extern const struct SpriteTemplate sSpriteTemplate_Bug;
 
 void CreateRattataSprites(u8 taskId);
 void ResetRattataSprites(void);
@@ -173,6 +176,8 @@ void StartPsyduckPetBody(void);
 void StartPsyduckHappyAnim(void);
 void ResetPsyduckSprites(void);
 void HandleItemsPsyduck(u8 taskId);
+
+void CreateFletchinderSprites(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);

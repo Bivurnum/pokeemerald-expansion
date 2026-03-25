@@ -470,7 +470,7 @@ static const struct SpriteTemplate sSpriteTemplate_PsyduckArmBack =
     .callback = SpriteCB_ArmBack
 };
 
-static const struct SpriteTemplate sSpriteTemplate_Bug =
+const struct SpriteTemplate sSpriteTemplate_Bug =
 {
     .tileTag = TAG_NONE,
     .paletteTag = TAG_MON,

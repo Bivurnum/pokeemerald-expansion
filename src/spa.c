@@ -508,6 +508,9 @@ static void LoadMonSpritePalettes(void)
     case SPA_PSYDUCK:
         LoadSpritePalettes(sSpritePalettes_SpaPsyduck);
         break;
+    case SPA_FLETCHINDER:
+        LoadSpritePalettes(sSpritePalettes_SpaFletchinder);
+        break;
     }
 }
 
@@ -641,6 +644,9 @@ static void CreateSpaMonSprites(u8 taskId)
         break;
     case SPA_PSYDUCK:
         CreatePsyduckSprites(taskId);
+        break;
+    case SPA_FLETCHINDER:
+        CreateFletchinderSprites(taskId);
         break;
     }
 }
