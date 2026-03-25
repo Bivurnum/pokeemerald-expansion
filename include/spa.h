@@ -190,6 +190,7 @@ bool32 HoneyHasBugs(void);
 void StartFletchinderPet(void);
 void StartFletchinderBadTouch(u8 taskId);
 void StartFletchinderAngry(u8 taskId);
+void StartFletchinderHappyAnim(void);
 void FletchinderReactToHoney(void);
 void ResetFletchinderSpritesSatisfied(void);
 void ResetFletchinderSpritesFamished(void);

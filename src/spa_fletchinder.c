@@ -83,7 +83,6 @@ static const union AnimCmd sAnim_HeadMusic[] =
 {
     ANIMCMD_FRAME(.imageValue = 9, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 9, .duration = 60),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
     ANIMCMD_END
 };
 
