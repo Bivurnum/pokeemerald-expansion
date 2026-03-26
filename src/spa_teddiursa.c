@@ -23,6 +23,8 @@
 #define sTeddyArmSpriteId           sSpaData.monSpriteIds[8]
 #define sTeddyItchSpriteId          sSpaData.monSpriteIds[9]
 
+#define TEDDIURSA_SNATCH_BERRY_THRESHOLD   75
+
 static void SpriteCB_TeddyEye(struct Sprite *sprite);
 static void SpriteCB_TeddyMouth(struct Sprite *sprite);
 static void SpriteCB_TeddyArm(struct Sprite *sprite);
@@ -105,6 +107,12 @@ static const union AnimCmd sAnim_EyeShutBad[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_EyeGrabBerry[] =
+{
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 60),
+    ANIMCMD_END
+};
+
 static const union AnimCmd sAnim_EyesBlink[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
@@ -122,6 +130,7 @@ static const union AnimCmd * const sAnims_TeddyEye[] =
     sAnim_EyeHappy,
     sAnim_EyeShutBad,
     sAnim_EyesBlink,
+    sAnim_EyeGrabBerry,
 };
 
 static const union AnimCmd sAnim_MouthHappyOpen[] =
@@ -148,6 +157,16 @@ static const union AnimCmd sAnim_MouthHappyClosed[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_MouthEatBerry[] =
+{
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 32),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 8),
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 4),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 4),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_TeddyMouth[] =
 {
     sAnim_Normal,
@@ -155,6 +174,7 @@ static const union AnimCmd * const sAnims_TeddyMouth[] =
     sAnim_MouthO,
     sAnim_MouthFrown,
     sAnim_MouthHappyClosed,
+    sAnim_MouthEatBerry,
 };
 
 static const union AnimCmd sAnim_ArmScratch[] =
@@ -190,6 +210,13 @@ static const union AnimCmd sAnim_ArmAttack[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_ArmGrabBerry[] =
+{
+    ANIMCMD_FRAME(.imageValue = 9, .duration = 8),
+    ANIMCMD_FRAME(.imageValue = 10, .duration = 52),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_TeddyArm[] =
 {
     sAnim_Normal,
@@ -197,6 +224,7 @@ static const union AnimCmd * const sAnims_TeddyArm[] =
     sAnim_ArmScratchToNormal,
     sAnim_ArmBadTouch,
     sAnim_ArmAttack,
+    sAnim_ArmGrabBerry,
 };
 
 static const union AnimCmd * const sAnims_TeddyItch[] =
@@ -242,6 +270,7 @@ static const struct SpriteFrameImage sPicTable_TeddyEye[] =
     spa_frame(gTeddiursaEye_Gfx, 3, 2, 2),
     spa_frame(gTeddiursaEye_Gfx, 4, 2, 2),
     spa_frame(gTeddiursaEye_Gfx, 5, 2, 2),
+    spa_frame(gTeddiursaEye_Gfx, 6, 2, 2),
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyMouth[] =
@@ -251,6 +280,8 @@ static const struct SpriteFrameImage sPicTable_TeddyMouth[] =
     spa_frame(gTeddiursaMouth_Gfx, 2, 2, 2),
     spa_frame(gTeddiursaMouth_Gfx, 3, 2, 2),
     spa_frame(gTeddiursaMouth_Gfx, 4, 2, 2),
+    spa_frame(gTeddiursaMouth_Gfx, 5, 2, 2),
+    spa_frame(gTeddiursaMouth_Gfx, 6, 2, 2),
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyArm[] =
@@ -264,6 +295,8 @@ static const struct SpriteFrameImage sPicTable_TeddyArm[] =
     spa_frame(gTeddiursaArm_Gfx, 6, 8, 8),
     spa_frame(gTeddiursaArm_Gfx, 7, 8, 8),
     spa_frame(gTeddiursaArm_Gfx, 8, 8, 8),
+    spa_frame(gTeddiursaArm_Gfx, 9, 8, 8),
+    spa_frame(gTeddiursaArm_Gfx, 10, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_TeddyItch[] =
@@ -490,6 +523,14 @@ void StartTeddiursaAngry(u8 taskId)
     CreateAngrySprite(taskId);
 }
 
+static void StartTeddiursaGrabBerry(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 5);
+    StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 5);
+    gSprites[sSpaData.berrySpriteId].oam.priority = 1;
+    gSprites[sSpaData.berrySpriteId].subpriority = 12;
+}
+
 void EndSpaBadTeddiursa(void)
 {
     StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 4);
@@ -513,6 +554,57 @@ void HandleItemsTeddiursa(u8 taskId)
     switch (tSelectedItem)
     {
     case SPA_BERRY:
+        if (sSpaData.isSatisfied)
+        {
+            if (tBerryBites >= 3)
+            {
+                tBerryBites = 0;
+                StartTeddiursaHappyAnim();
+                PauseUntilAnimEnds(taskId, sTeddyEyeSpriteId);
+                DoSpaMonEnjoyedSnackText();
+                CreateMusicSprite(taskId);
+                return;
+            }
+
+            if (!sSpaData.pausedSpriteId && gSprites[sSpaData.berrySpriteId].sCounter == 0 && gSprites[sSpaData.berrySpriteId].x > TEDDIURSA_SNATCH_BERRY_THRESHOLD)
+            {
+                gSprites[sSpaData.berrySpriteId].sCounter = 1;
+                PlaySE(SE_CLICK);
+                StartTeddiursaGrabBerry(taskId);
+            }
+
+            if (gSprites[sSpaData.berrySpriteId].sCounter != 0 && gSprites[sTeddyArmSpriteId].animEnded)
+            {
+                switch (tBiteState)
+                {
+                case BITE_STATE_NONE:
+                    StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 5);
+                    tCounter = 0;
+                    tBiteState = BITE_STATE_ACTIVE;
+                    break;
+                case BITE_STATE_ACTIVE:
+                    if (gSprites[sTeddyMouthSpriteId].animEnded)
+                    {
+                        tBerryBites++;
+                        if (tBerryBites < 3)
+                            StartSpriteAnim(&gSprites[sSpaData.berrySpriteId], gSprites[sSpaData.berrySpriteId].animNum + 1);
+                        else
+                            DestroySprite(&gSprites[sSpaData.berrySpriteId]);
+                        tBiteState = BITE_STATE_NONE;
+                    }
+                    else if (tCounter == 56)
+                    {
+                        PlaySE(SE_M_BITE);
+                        tCounter++;
+                    }
+                    else if (tCounter < 56)
+                    {
+                        tCounter++;
+                    }
+                    break;
+                }
+            }
+        }
         break;
     case SPA_CLAW:
         if (tItchFadeCount >= 16)
@@ -523,7 +615,6 @@ void HandleItemsTeddiursa(u8 taskId)
             DoSpaMonFeelsBetterText();
             DestroySprite(&gSprites[sTeddyItchSpriteId]);
             sSpaData.isSatisfied = TRUE;
-            tBerryBites = 0;
         }
         else if (IsClawInItchArea())
         {

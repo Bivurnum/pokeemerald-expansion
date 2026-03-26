@@ -6,15 +6,15 @@
 #define tSelectedItem   gTasks[taskId].data[1]
 #define tActiveItemId   gTasks[taskId].data[2]
 #define tBerryBites     gTasks[taskId].data[3]
-#define tItchFadeCount  gTasks[taskId].data[3]
 #define tCounter        gTasks[taskId].data[4]
 #define tBiteState      gTasks[taskId].data[5]
-#define tScratchState   gTasks[taskId].data[5]
 #define tPetArea        gTasks[taskId].data[6]
 #define tPetScore       gTasks[taskId].data[7]
 #define tScratchScore   gTasks[taskId].data[8]
 #define tBugsCaught     gTasks[taskId].data[8]
 #define tBugsEaten      gTasks[taskId].data[8]
+#define tItchFadeCount  gTasks[taskId].data[9]
+#define tScratchState   gTasks[taskId].data[10]
 
 // Sprite Data
 #define sTaskId         data[0]

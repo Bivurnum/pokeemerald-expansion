@@ -1507,47 +1507,50 @@ static void SpaItemChooseHandleInput(u8 taskId)
 
 static void SpaItemHandleInput(u8 taskId)
 {
-    if (JOY_NEW(INTERACT_BUTTON))
+    if (!(tActiveItemId == SPA_BERRY && gSprites[sSpaData.berrySpriteId].sCounter != 0))
     {
-        if (sSpaData.mon == SPA_TEDDIURSA && !sSpaData.isSatisfied && tSelectedItem == SPA_CLAW)
-            ResetTeddiursaSpritesScratch();
-        if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY && HoneyHasBugs())
-            ResetFletchinderSpritesFamished();
+        if (JOY_NEW(INTERACT_BUTTON))
+        {
+            if (sSpaData.mon == SPA_TEDDIURSA && !sSpaData.isSatisfied && tSelectedItem == SPA_CLAW)
+                ResetTeddiursaSpritesScratch();
+            if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY && HoneyHasBugs())
+                ResetFletchinderSpritesFamished();
 
-        tSelectedItem = 0;
-        DestroySprite(&gSprites[tActiveItemId]);
-        tActiveItemId = 0;
-        ResetSpaHand();
-        tState = STATE_HAND;
-        return;
-    }
-    else if (JOY_NEW(ITEM_MENU_BUTTON))
-    {
-        if (sSpaData.mon == SPA_TEDDIURSA && !sSpaData.isSatisfied && tSelectedItem == SPA_CLAW)
-            ResetTeddiursaSpritesScratch();
-        if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY && HoneyHasBugs())
-            ResetFletchinderSpritesFamished();
-            
-        tSelectedItem = 0;
-        DestroySprite(&gSprites[tActiveItemId]);
-        tActiveItemId = 0;
-        ItemTraySlideOut(taskId);
-        return;
-    }
+            tSelectedItem = 0;
+            DestroySprite(&gSprites[tActiveItemId]);
+            tActiveItemId = 0;
+            ResetSpaHand();
+            tState = STATE_HAND;
+            return;
+        }
+        else if (JOY_NEW(ITEM_MENU_BUTTON))
+        {
+            if (sSpaData.mon == SPA_TEDDIURSA && !sSpaData.isSatisfied && tSelectedItem == SPA_CLAW)
+                ResetTeddiursaSpritesScratch();
+            if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY && HoneyHasBugs())
+                ResetFletchinderSpritesFamished();
 
-    if (!JOY_HELD(STATUS_BUTTON) && sSpaData.statusIsShowing)
-    {
-        FillWindowPixelBuffer(0, PIXEL_FILL(1));
-        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_SpaItemInstructions), gText_SpaItemInstructions, 0, 0, 0, NULL);
-        sSpaData.statusIsShowing = FALSE;
-    }
-    else if (JOY_NEW(STATUS_BUTTON) && !sSpaData.statusIsShowing)
-    {
-        DoSpaMonItemText(taskId, sSpaData.isSatisfied);
-        sSpaData.statusIsShowing = TRUE;
-    }
+            tSelectedItem = 0;
+            DestroySprite(&gSprites[tActiveItemId]);
+            tActiveItemId = 0;
+            ItemTraySlideOut(taskId);
+            return;
+        }
 
-    MoveSpriteFromInput(&gSprites[tActiveItemId]);
+        if (!JOY_HELD(STATUS_BUTTON) && sSpaData.statusIsShowing)
+        {
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_SpaItemInstructions), gText_SpaItemInstructions, 0, 0, 0, NULL);
+            sSpaData.statusIsShowing = FALSE;
+        }
+        else if (JOY_NEW(STATUS_BUTTON) && !sSpaData.statusIsShowing)
+        {
+            DoSpaMonItemText(taskId, sSpaData.isSatisfied);
+            sSpaData.statusIsShowing = TRUE;
+        }
+
+        MoveSpriteFromInput(&gSprites[tActiveItemId]);
+    }
 
     switch (sSpaData.mon)
     {
@@ -1924,6 +1927,8 @@ static void SpriteCB_Heart(struct Sprite *sprite)
         sprite->y--;
 }
 
+#define sTeddyArmSpriteId           sSpaData.monSpriteIds[8]
+
 static void SpriteCB_Berry(struct Sprite *sprite)
 {
     if (sprite->x < -32)
@@ -1931,14 +1936,32 @@ static void SpriteCB_Berry(struct Sprite *sprite)
 
     if (sprite->sCounter > 0)
     {
-        sprite->x -= 3;
-        if (sprite->sCounter == 10)
+        if (sSpaData.mon == SPA_TEDDIURSA)
         {
-            PlaySE(SE_FALL);
+            if (gSprites[sTeddyArmSpriteId].animCmdIndex == 0)
+            {
+                sprite->x = 90;
+                sprite->y = 80;
+            }
+            else if (gSprites[sTeddyArmSpriteId].animCmdIndex == 1)
+            {
+                sprite->x = 88;
+                sprite->y = 65;
+            }
+        }
+        else if (sSpaData.mon == SPA_FLETCHINDER)
+        {
+            sprite->x -= 3;
+            if (sprite->sCounter == 10)
+            {
+                PlaySE(SE_FALL);
+            }
         }
         sprite->sCounter++;
     }
 }
+
+#undef sTeddyArmSpriteId
 
 static void SpriteCB_Claw(struct Sprite *sprite)
 {

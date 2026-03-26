@@ -178,9 +178,19 @@ static const union AnimCmd * const sAnims_FletchinderWingLeft[] =
     sAnim_WingAngry,
 };
 
+static const union AnimCmd sAnim_TailWag[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
+    ANIMCMD_JUMP(0)
+};
+
 static const union AnimCmd * const sAnims_FletchinderTail[] =
 {
     sAnim_Normal,
+    sAnim_TailWag,
 };
 
 static const union AnimCmd * const sAnims_FletchinderFeet[] =
@@ -234,6 +244,8 @@ static const struct SpriteFrameImage sPicTable_FletchinderWingLeft[] =
 static const struct SpriteFrameImage sPicTable_FletchinderTail[] =
 {
     spa_frame(gFletchinderTail_Gfx, 0, 8, 8),
+    spa_frame(gFletchinderTail_Gfx, 1, 8, 8),
+    spa_frame(gFletchinderTail_Gfx, 2, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_FletchinderFeet[] =
@@ -407,6 +419,7 @@ bool32 HoneyHasBugs(void)
 void StartFletchinderPet(void)
 {
     StartSpriteAnim(&gSprites[sFletchinderHeadSpriteId], 1);
+    StartSpriteAnim(&gSprites[sFletchinderTailSpriteId], 1);
 }
 
 void StartFletchinderHappyAnim(void)
@@ -561,7 +574,6 @@ void HandleItemsFletchinder(u8 taskId)
         }
         else
         {
-                    DebugPrintf("Anim ended: %u", gSprites[sFletchinderHeadSpriteId].animEnded);
             if (tBiteState == BITE_STATE_ACTIVE && gSprites[sFletchinderHeadSpriteId].animEnded)
             {
                 if (tBerryBites >= 3)
