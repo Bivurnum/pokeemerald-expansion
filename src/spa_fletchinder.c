@@ -634,6 +634,7 @@ void HandleItemsFletchinder(u8 taskId)
                 PauseUntilAnimEnds(taskId, sFletchinderHeadSpriteId);
                 CreateMusicSprite(taskId);
                 DoSpaMonEnjoyedSnackText();
+                FlagSet(FLAG_SPA_FLETCHINDER_SATISFIED);
                 sSpaData.isSatisfied = TRUE;
             }
             tBiteState = BITE_STATE_NONE;

@@ -429,6 +429,9 @@ const struct SpritePalette sSpritePalettes_SpaTeddiursa[] =
 
 void CreateTeddiursaSprites(u8 taskId)
 {
+    if (FlagGet(FLAG_SPA_TEDDIURSA_SATISFIED))
+        sSpaData.isSatisfied = TRUE;
+
     sTeddyHeadLeftSpriteId = CreateSprite(&sSpriteTemplate_TeddyHeadLeft, 100, 48, 9);
     gSprites[sTeddyHeadLeftSpriteId].sTaskId = taskId;
 
@@ -449,19 +452,25 @@ void CreateTeddiursaSprites(u8 taskId)
 
     sTeddyEyeSpriteId = CreateSprite(&sSpriteTemplate_TeddyEye, 115, 50, 8);
     gSprites[sTeddyEyeSpriteId].sTaskId = taskId;
-    StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 3);
     gSprites[sTeddyEyeSpriteId].sInterval = (Random() % BLINK_INTERVAL) + BLINK_INTERVAL;
+    if (!sSpaData.isSatisfied)
+        StartSpriteAnim(&gSprites[sTeddyEyeSpriteId], 3);
 
     sTeddyMouthSpriteId = CreateSprite(&sSpriteTemplate_TeddyMouth, 106, 63, 8);
     gSprites[sTeddyMouthSpriteId].sTaskId = taskId;
-    StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 3);
+    if (!sSpaData.isSatisfied)
+        StartSpriteAnim(&gSprites[sTeddyMouthSpriteId], 3);
 
     sTeddyArmSpriteId = CreateSprite(&sSpriteTemplate_TeddyArm, 109, 81, 8);
     gSprites[sTeddyArmSpriteId].sTaskId = taskId;
-    StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 1);
+    if (!sSpaData.isSatisfied)
+        StartSpriteAnim(&gSprites[sTeddyArmSpriteId], 1);
 
-    sTeddyItchSpriteId = CreateSprite(&sSpriteTemplate_TeddyItch, 141, 92, 9);
-    gSprites[sTeddyItchSpriteId].sTaskId = taskId;
+    if (!sSpaData.isSatisfied)
+    {
+        sTeddyItchSpriteId = CreateSprite(&sSpriteTemplate_TeddyItch, 141, 92, 9);
+        gSprites[sTeddyItchSpriteId].sTaskId = taskId;
+    }
 }
 
 void TeddiursaReactToClaw(void)
@@ -614,6 +623,7 @@ void HandleItemsTeddiursa(u8 taskId)
             CreateMusicSprite(taskId);
             DoSpaMonFeelsBetterText();
             DestroySprite(&gSprites[sTeddyItchSpriteId]);
+            FlagSet(FLAG_SPA_TEDDIURSA_SATISFIED);
             sSpaData.isSatisfied = TRUE;
         }
         else if (IsClawInItchArea())

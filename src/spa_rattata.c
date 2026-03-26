@@ -435,6 +435,9 @@ const struct SpritePalette sSpritePalettes_SpaRattata[] =
 
 void CreateRattataSprites(u8 taskId)
 {
+    if (FlagGet(FLAG_SPA_RATTATA_SATISFIED))
+        sSpaData.isSatisfied = TRUE;
+        
     sRatEyesSpriteId = CreateSprite(&sSpriteTemplate_RatEyes, 154, 63, 8);
     gSprites[sRatEyesSpriteId].sTaskId = taskId;
     gSprites[sRatEyesSpriteId].sInterval = (Random() % 180) + 180;
@@ -548,6 +551,7 @@ void HandleItemsRattata(u8 taskId)
             PauseUntilAnimEnds(taskId, sRatEyesSpriteId);
             CreateMusicSprite(taskId);
             DoSpaMonEnjoyedSnackText();
+            FlagSet(FLAG_SPA_RATTATA_SATISFIED);
             sSpaData.isSatisfied = TRUE;
             tBerryBites = 0;
         }

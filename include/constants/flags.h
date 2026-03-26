@@ -664,22 +664,23 @@
 #define FLAG_HIDDEN_ITEM_ROUTE_123_RARE_CANDY                (FLAG_HIDDEN_ITEMS_START + 0x6E)
 #define FLAG_HIDDEN_ITEM_ROUTE_105_BIG_PEARL                 (FLAG_HIDDEN_ITEMS_START + 0x6F)
 
-#define FLAG_SPA_OBTAINED_BERRY     0x264
-#define FLAG_SPA_OBTAINED_CLAW      0x265
-#define FLAG_SPA_OBTAINED_HONEY     0x266
-#define FLAG_SPA_OBTAINED_ORB       0x267
-#define FLAG_SPA_PSYDUCK_SATISFIED  0x268
-#define FLAG_SPA_PSYDUCK_BUG_0      0x269
-#define FLAG_SPA_PSYDUCK_BUG_1      0x26A
-#define FLAG_SPA_PSYDUCK_BUG_2      0x26B
-#define FLAG_SPA_PSYDUCK_BUG_3      0x26C
-#define FLAG_SPA_BUG_0_EATEN        0x26D
-#define FLAG_SPA_BUG_1_EATEN        0x26E
-#define FLAG_SPA_BUG_2_EATEN        0x26F
-#define FLAG_SPA_BUG_3_EATEN        0x270
-#define FLAG_UNUSED_0x271  0x271 // Unused Flag
-#define FLAG_UNUSED_0x272  0x272 // Unused Flag
-#define FLAG_UNUSED_0x273  0x273 // Unused Flag
+// Spa
+#define FLAG_SPA_OBTAINED_BERRY         0x264
+#define FLAG_SPA_OBTAINED_CLAW          0x265
+#define FLAG_SPA_OBTAINED_HONEY         0x266
+#define FLAG_SPA_OBTAINED_ORB           0x267
+#define FLAG_SPA_PSYDUCK_SATISFIED      0x268
+#define FLAG_SPA_PSYDUCK_BUG_0          0x269
+#define FLAG_SPA_PSYDUCK_BUG_1          0x26A
+#define FLAG_SPA_PSYDUCK_BUG_2          0x26B
+#define FLAG_SPA_PSYDUCK_BUG_3          0x26C
+#define FLAG_SPA_BUG_0_EATEN            0x26D
+#define FLAG_SPA_BUG_1_EATEN            0x26E
+#define FLAG_SPA_BUG_2_EATEN            0x26F
+#define FLAG_SPA_BUG_3_EATEN            0x270
+#define FLAG_SPA_RATTATA_SATISFIED      0x271
+#define FLAG_SPA_TEDDIURSA_SATISFIED    0x272
+#define FLAG_SPA_FLETCHINDER_SATISFIED  0x273
 #define FLAG_UNUSED_0x274  0x274 // Unused Flag
 #define FLAG_UNUSED_0x275  0x275 // Unused Flag
 #define FLAG_UNUSED_0x276  0x276 // Unused Flag
