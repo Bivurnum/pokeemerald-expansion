@@ -95,7 +95,7 @@ const u8 gText_TeddiursaEnjoyedSnack[] = _("Teddiursa enjoyed the snack!");
 const u8 gText_TeddiursaWondersClaw[] = _("Teddiursa wonders what you'll do.");
 const u8 gText_TeddiursaLikesScratches[] = _("Teddiursa likes the back scratches.");
 
-const u8 gText_PsyduckNoInterest[] = _("Psyduck shows no interest.");
+const u8 gText_PsyduckNoInterest[] = _("Psyduck is staring blankly.");
 const u8 gText_PsyduckInfested[] = _("Psyduck is infested!");
 const u8 gText_PsyduckUneasy[] = _("Psyduck is still a bit uneasy.");
 const u8 gText_HoneyLooksSticky[] = _("The honey looks very sticky.");
