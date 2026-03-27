@@ -69,8 +69,8 @@ static const u32 gHoney_Gfx[] = INCBIN_U32("graphics/_spa/honey.4bpp");
 const u8 gText_SpaInstructions[] = _("{A_BUTTON} : Interact     hold{B_BUTTON} : Fast     hold{R_BUTTON} : Status");
 const u8 gText_SpaItemSelectInstructions[] = _("{DPAD_UPDOWN} : Move            {A_BUTTON} : Select            {B_BUTTON} : Exit");
 const u8 gText_SpaItemInstructions[] = _("{A_BUTTON} : Put Away     hold{B_BUTTON} : Fast     hold{R_BUTTON} : Status");
-const u8 gText_GeneralBadTouch[] = _("It doesn't like to be touched there!");
-const u8 gText_NotSatisfiedBadPet[] = _("It doesn't want to be touched right now.");
+const u8 gText_GeneralBadTouch[] = _("It doesn't like to be pet there!");
+const u8 gText_NotSatisfiedBadPet[] = _("It doesn't want to be pet right now.");
 const u8 gText_FeelsBetter[] = _("That feels much better!");
 const u8 gText_NotInterested[] = _("It doesn't seem interested.");
 
