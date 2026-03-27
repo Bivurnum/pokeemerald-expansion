@@ -36,15 +36,10 @@ static void Task_SpaEndSuccess(u8 taskId);
 static void CreateSpaSprites(u8 taskId);
 static void CreateSpaMonSprites(u8 taskId);
 
-static void SpriteCB_Hand(struct Sprite *sprite);
 static void SpriteCB_Music(struct Sprite *sprite);
-static void SpriteCB_ItemTray(struct Sprite *sprite);
 static void SpriteCB_Selector(struct Sprite *sprite);
-static void SpriteCB_Angry(struct Sprite *sprite);
 static void SpriteCB_Heart(struct Sprite *sprite);
 static void SpriteCB_Berry(struct Sprite *sprite);
-static void SpriteCB_Claw(struct Sprite *sprite);
-static void SpriteCB_Honey(struct Sprite *sprite);
 
 static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.smol");
 static const u32 gSpaBG_Tilemap[] = INCBIN_U32("graphics/_spa/spa_bg.bin.smolTM");
@@ -368,7 +363,7 @@ static const struct SpriteTemplate sSpriteTemplate_Hand =
     .anims = sAnims_Hand,
     .images = sPicTable_Hand,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_Hand
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Music =
@@ -412,7 +407,7 @@ static const struct SpriteTemplate sSpriteTemplate_ItemTray =
     .anims = sAnims_ItemTray,
     .images = sPicTable_ItemTray,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_ItemTray
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Selector =
@@ -434,7 +429,7 @@ static const struct SpriteTemplate sSpriteTemplate_Angry =
     .anims = sAnims_Angry,
     .images = sPicTable_Angry,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_Angry
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Heart =
@@ -467,7 +462,7 @@ static const struct SpriteTemplate sSpriteTemplate_Claw =
     .anims = sAnims_Claw,
     .images = sPicTable_Claw,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_Claw
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Honey =
@@ -478,7 +473,7 @@ static const struct SpriteTemplate sSpriteTemplate_Honey =
     .anims = sAnims_Honey,
     .images = sPicTable_Honey,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_Honey
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpritePalette sSpritePalettes_Spa[] =
@@ -1880,11 +1875,6 @@ static void Task_SpaEndSuccess(u8 taskId)
     tCounter++;
 }
 
-static void SpriteCB_Hand(struct Sprite *sprite)
-{
-
-}
-
 static void SpriteCB_Music(struct Sprite *sprite)
 {
     if (sprite->sCounter == 10)
@@ -1892,11 +1882,6 @@ static void SpriteCB_Music(struct Sprite *sprite)
         PlaySpaMonCry(CRY_MODE_HIGH_PITCH);
     }
     sprite->sCounter++;
-}
-
-static void SpriteCB_ItemTray(struct Sprite *sprite)
-{
-
 }
 
 static void SpriteCB_Selector(struct Sprite *sprite)
@@ -1915,11 +1900,6 @@ static void SpriteCB_Selector(struct Sprite *sprite)
 
         sprite->sCounter++;
     }
-}
-
-static void SpriteCB_Angry(struct Sprite *sprite)
-{
-
 }
 
 static void SpriteCB_Heart(struct Sprite *sprite)
@@ -1965,13 +1945,3 @@ static void SpriteCB_Berry(struct Sprite *sprite)
 }
 
 #undef sTeddyArmSpriteId
-
-static void SpriteCB_Claw(struct Sprite *sprite)
-{
-
-}
-
-static void SpriteCB_Honey(struct Sprite *sprite)
-{
-
-}

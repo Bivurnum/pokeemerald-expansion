@@ -26,9 +26,6 @@
 #define TEDDIURSA_SNATCH_BERRY_THRESHOLD   75
 
 static void SpriteCB_TeddyEye(struct Sprite *sprite);
-static void SpriteCB_TeddyMouth(struct Sprite *sprite);
-static void SpriteCB_TeddyArm(struct Sprite *sprite);
-static void SpriteCB_TeddyItch(struct Sprite *sprite);
 
 static const u16 gTeddiursa_Pal[] = INCBIN_U16("graphics/_spa/teddiursa/teddiursa_head_left.gbapal");
 static const u32 gTeddiursaHeadLeft_Gfx[] = INCBIN_U32("graphics/_spa/teddiursa/teddiursa_head_left.4bpp");
@@ -389,7 +386,7 @@ static const struct SpriteTemplate sSpriteTemplate_TeddyMouth =
     .anims = sAnims_TeddyMouth,
     .images = sPicTable_TeddyMouth,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_TeddyMouth
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpriteTemplate sSpriteTemplate_TeddyArm =
@@ -400,7 +397,7 @@ static const struct SpriteTemplate sSpriteTemplate_TeddyArm =
     .anims = sAnims_TeddyArm,
     .images = sPicTable_TeddyArm,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_TeddyArm
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpriteTemplate sSpriteTemplate_TeddyItch =
@@ -411,7 +408,7 @@ static const struct SpriteTemplate sSpriteTemplate_TeddyItch =
     .anims = sAnims_TeddyItch,
     .images = sPicTable_TeddyItch,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_TeddyItch
+    .callback = SpriteCallbackDummy
 };
 
 const struct SpritePalette sSpritePalettes_SpaTeddiursa[] =
@@ -692,19 +689,4 @@ static void SpriteCB_TeddyEye(struct Sprite *sprite)
             sprite->sBlinkCounter++;
         }
     }
-}
-
-static void SpriteCB_TeddyMouth(struct Sprite *sprite)
-{
-    
-}
-
-static void SpriteCB_TeddyArm(struct Sprite *sprite)
-{
-    
-}
-
-static void SpriteCB_TeddyItch(struct Sprite *sprite)
-{
-    
 }

@@ -19,9 +19,6 @@
 #define sRatWhiskerRightSpriteId    sSpaData.monSpriteIds[8]
 #define sRatToesSpriteId            sSpaData.monSpriteIds[9]
 
-static void SpriteCB_RatBodyLeft(struct Sprite *sprite);
-static void SpriteCB_RatBodyRight(struct Sprite *sprite);
-static void SpriteCB_RatTail(struct Sprite *sprite);
 static void SpriteCB_RatEarLeft(struct Sprite *sprite);
 static void SpriteCB_RatEarRight(struct Sprite *sprite);
 static void SpriteCB_RatMouth(struct Sprite *sprite);
@@ -322,7 +319,7 @@ static const struct SpriteTemplate sSpriteTemplate_RatBodyLeft =
     .anims = sAnims_RatBodyLeft,
     .images = sPicTable_RatBodyLeft,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatBodyLeft
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpriteTemplate sSpriteTemplate_RatBodyRight =
@@ -333,7 +330,7 @@ static const struct SpriteTemplate sSpriteTemplate_RatBodyRight =
     .anims = sAnims_RatBodyRight,
     .images = sPicTable_RatBodyRight,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatBodyRight
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpriteTemplate sSpriteTemplate_RatTail =
@@ -344,7 +341,7 @@ static const struct SpriteTemplate sSpriteTemplate_RatTail =
     .anims = sAnims_RatTail,
     .images = sPicTable_RatTail,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_RatTail
+    .callback = SpriteCallbackDummy
 };
 
 static const struct SpriteTemplate sSpriteTemplate_RatEarLeft =
@@ -609,21 +606,6 @@ void EndSpaBadRattata(void)
     StartSpriteAnim(&gSprites[sRatEarRightSpriteId], 1);
     StartSpriteAnim(&gSprites[sRatWhiskerLeftSpriteId], 2);
     StartSpriteAnim(&gSprites[sRatWhiskerRightSpriteId], 2);
-}
-
-static void SpriteCB_RatBodyLeft(struct Sprite *sprite)
-{
-
-}
-
-static void SpriteCB_RatBodyRight(struct Sprite *sprite)
-{
-
-}
-
-static void SpriteCB_RatTail(struct Sprite *sprite)
-{
-
 }
 
 static void SpriteCB_RatEarLeft(struct Sprite *sprite)
