@@ -1834,7 +1834,10 @@ static const u8 SpaMonAttackDelay[SPA_NUM_MONS] =
 void Task_SpaEndBad(u8 taskId)
 {
     if (sSpaData.mon == SPA_FLETCHINDER && tCounter == 1)
+    {
         PlaySE(SE_M_GUST);
+        CreateTornadoSprites(taskId);
+    }
 
     if (tCounter == SpaMonAttackDelay[sSpaData.mon])
     {

@@ -1,6 +1,8 @@
 #include "global.h"
 #include "spa.h"
+#include "decompress.h"
 #include "event_data.h"
+#include "graphics.h"
 #include "sound.h"
 #include "task.h"
 #include "constants/songs.h"
@@ -14,8 +16,12 @@
 #define sFletchinderFeetSpriteId            sSpaData.monSpriteIds[6]
 #define sFletchinderWingBackRightSpriteId   sSpaData.monSpriteIds[7]
 #define sFletchinderWingBackLeftSpriteId    sSpaData.monSpriteIds[8]
+#define sTornadoLeftSpriteId                sSpaData.monSpriteIds[9]
+#define sTornadoRightSpriteId               sSpaData.monSpriteIds[10]
 
 #define FLETCHINDER_SMACK_BERRY_THRESHOLD   75
+
+static void SpriteCB_Tornado(struct Sprite *sprite);
 
 static const u16 gFletchinder_Pal[] = INCBIN_U16("graphics/_spa/fletchinder/fletchinder_head.gbapal");
 static const u32 gFletchinderHead_Gfx[] = INCBIN_U32("graphics/_spa/fletchinder/fletchinder_head.4bpp");
@@ -198,6 +204,38 @@ static const union AnimCmd * const sAnims_FletchinderFeet[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd sAnim_TornadoSpin[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 8),
+    ANIMCMD_FRAME(.imageValue = 64, .duration = 8),
+    ANIMCMD_FRAME(.imageValue = 128, .duration = 8),
+    ANIMCMD_JUMP(0)
+};
+
+static const union AnimCmd * const sAnims_Tornado[] =
+{
+    sAnim_TornadoSpin,
+};
+
+static const union AffineAnimCmd sAffineAnim_None[] =
+{
+    AFFINEANIMCMD_FRAME(100, 100, 0, 0),
+    AFFINEANIMCMD_END
+};
+
+static const union AffineAnimCmd sAffineAnim_TornadoAttack[] =
+{
+    AFFINEANIMCMD_FRAME(150, 150, 0, 0),
+    AFFINEANIMCMD_FRAME(4, 4, 0, 60),
+    AFFINEANIMCMD_END
+};
+
+static const union AffineAnimCmd * const sAffineAnims_Tornado[] =
+{
+    sAffineAnim_None,
+    sAffineAnim_TornadoAttack
+};
+
 static const struct SpriteFrameImage sPicTable_FletchinderHead[] =
 {
     spa_frame(gFletchinderHead_Gfx, 0, 8, 8),
@@ -251,6 +289,13 @@ static const struct SpriteFrameImage sPicTable_FletchinderTail[] =
 static const struct SpriteFrameImage sPicTable_FletchinderFeet[] =
 {
     spa_frame(gFletchinderFeet_Gfx, 0, 8, 4),
+};
+
+static const struct CompressedSpriteSheet sSpriteSheet_Tornado =
+{
+    .data = gBattleAnimSpriteGfx_Tornado,
+    .size = 6144,
+    .tag = TAG_TORNADO
 };
 
 static const struct SpriteTemplate sSpriteTemplate_FletchinderHead =
@@ -330,11 +375,26 @@ static const struct SpriteTemplate sSpriteTemplate_FletchinderFeet =
     .callback = SpriteCallbackDummy
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Tornado =
+{
+    .tileTag = TAG_TORNADO,
+    .paletteTag = TAG_TORNADO,
+    .oam = &sOam_64x64_Affine,
+    .anims = sAnims_Tornado,
+    .images = NULL,
+    .affineAnims = sAffineAnims_Tornado,
+    .callback = SpriteCB_Tornado
+};
+
 const struct SpritePalette sSpritePalettes_SpaFletchinder[] =
 {
     {
         .data = gFletchinder_Pal,
         .tag = TAG_MON
+    },
+    {
+        .data = gBattleAnimSpritePal_Tornado,
+        .tag = TAG_TORNADO
     },
     {NULL},
 };
@@ -666,4 +726,21 @@ void HandleItemsFletchinder(u8 taskId)
     case SPA_ORB:
         break;
     }
+}
+
+void CreateTornadoSprites(u8 taskId)
+{
+    LoadCompressedSpriteSheet(&sSpriteSheet_Tornado);
+    sTornadoLeftSpriteId = CreateSprite(&sSpriteTemplate_Tornado, 70, 80, 1);
+    gSprites[sTornadoLeftSpriteId].sTornadoId = 0;
+    StartSpriteAffineAnim(&gSprites[sTornadoLeftSpriteId], 1);
+
+    sTornadoRightSpriteId = CreateSprite(&sSpriteTemplate_Tornado, 200, 80, 1);
+    gSprites[sTornadoRightSpriteId].sTornadoId = 1;
+    StartSpriteAffineAnim(&gSprites[sTornadoRightSpriteId], 1);
+}
+
+static void SpriteCB_Tornado(struct Sprite *sprite)
+{
+
 }

@@ -22,6 +22,7 @@
 #define sCounter        data[2]
 #define sHeartOffset    data[3]
 #define sBugDirection   data[3]
+#define sTornadoId      data[3]
 #define sBlinkCounter   data[4]
 #define sBugId          data[5]
 #define sBugInterval    data[6]
@@ -45,6 +46,7 @@
 #define TAG_MON     0x2000
 #define TAG_ITCH    0x2001
 #define TAG_BUGS    0x2001
+#define TAG_TORNADO 0x2002
 
 #define ITEM_START_X    -22
 #define ITEM_END_X      10
@@ -198,6 +200,7 @@ void ResetFletchinderSpritesSatisfied(void);
 void ResetFletchinderSpritesFamished(void);
 void EndSpaBadFletchinder(void);
 void HandleItemsFletchinder(u8 taskId);
+void CreateTornadoSprites(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);
@@ -262,6 +265,14 @@ static const struct OamData sOam_16x16_Affine =
     .affineMode = ST_OAM_AFFINE_DOUBLE,
     .shape = SPRITE_SHAPE(16x16),
     .size = SPRITE_SIZE(16x16),
+    .priority = 1,
+};
+
+static const struct OamData sOam_64x64_Affine =
+{
+    .affineMode = ST_OAM_AFFINE_DOUBLE,
+    .shape = SPRITE_SHAPE(64x64),
+    .size = SPRITE_SIZE(64x64),
     .priority = 1,
 };
 
