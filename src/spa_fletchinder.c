@@ -217,12 +217,6 @@ static const union AnimCmd * const sAnims_Tornado[] =
     sAnim_TornadoSpin,
 };
 
-static const union AffineAnimCmd sAffineAnim_None[] =
-{
-    AFFINEANIMCMD_FRAME(100, 100, 0, 0),
-    AFFINEANIMCMD_END
-};
-
 static const union AffineAnimCmd sAffineAnim_TornadoAttack[] =
 {
     AFFINEANIMCMD_FRAME(150, 150, 0, 0),
@@ -232,7 +226,6 @@ static const union AffineAnimCmd sAffineAnim_TornadoAttack[] =
 
 static const union AffineAnimCmd * const sAffineAnims_Tornado[] =
 {
-    sAffineAnim_None,
     sAffineAnim_TornadoAttack
 };
 
@@ -733,11 +726,11 @@ void CreateTornadoSprites(u8 taskId)
     LoadCompressedSpriteSheet(&sSpriteSheet_Tornado);
     sTornadoLeftSpriteId = CreateSprite(&sSpriteTemplate_Tornado, 70, 80, 1);
     gSprites[sTornadoLeftSpriteId].sTornadoId = 0;
-    StartSpriteAffineAnim(&gSprites[sTornadoLeftSpriteId], 1);
+    StartSpriteAffineAnim(&gSprites[sTornadoLeftSpriteId], 0);
 
     sTornadoRightSpriteId = CreateSprite(&sSpriteTemplate_Tornado, 200, 80, 1);
     gSprites[sTornadoRightSpriteId].sTornadoId = 1;
-    StartSpriteAffineAnim(&gSprites[sTornadoRightSpriteId], 1);
+    StartSpriteAffineAnim(&gSprites[sTornadoRightSpriteId], 0);
 }
 
 static void SpriteCB_Tornado(struct Sprite *sprite)
