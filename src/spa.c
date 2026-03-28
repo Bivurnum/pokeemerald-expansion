@@ -517,6 +517,9 @@ static void LoadMonSpritePalettes(void)
     case SPA_FLETCHINDER:
         LoadSpritePalettes(sSpritePalettes_SpaFletchinder);
         break;
+    case SPA_LOMBRE:
+        LoadSpritePalettes(sSpritePalettes_SpaLombre);
+        break;
     }
 }
 
@@ -653,6 +656,9 @@ static void CreateSpaMonSprites(u8 taskId)
         break;
     case SPA_FLETCHINDER:
         CreateFletchinderSprites(taskId);
+        break;
+    case SPA_LOMBRE:
+        CreateLombreSprites(taskId);
         break;
     }
 }

@@ -46,6 +46,7 @@
 #define TAG_MON     0x2000
 #define TAG_ITCH    0x2001
 #define TAG_BUGS    0x2001
+#define TAG_ICE     0x2001
 #define TAG_TORNADO 0x2002
 
 #define ITEM_START_X    -22
@@ -81,6 +82,7 @@ struct SpaData
     u8 monSpriteIds[11];
     u8 bugSpriteIds[4];
     u8 heartSpriteIds[3];
+    u8 iceSpriteIds[6];
     u8 musicSpriteId;
     u8 angrySpriteId;
     u8 handSpriteId;
@@ -101,6 +103,7 @@ enum SpaMons
     SPA_TEDDIURSA,
     SPA_PSYDUCK,
     SPA_FLETCHINDER,
+    SPA_LOMBRE,
     SPA_NUM_MONS
 };
 
@@ -155,6 +158,7 @@ extern const struct SpritePalette sSpritePalettes_SpaRattata[];
 extern const struct SpritePalette sSpritePalettes_SpaTeddiursa[];
 extern const struct SpritePalette sSpritePalettes_SpaPsyduck[];
 extern const struct SpritePalette sSpritePalettes_SpaFletchinder[];
+extern const struct SpritePalette sSpritePalettes_SpaLombre[];
 
 extern const struct SpriteTemplate sSpriteTemplate_Bug;
 
@@ -201,6 +205,8 @@ void ResetFletchinderSpritesFamished(void);
 void EndSpaBadFletchinder(void);
 void HandleItemsFletchinder(u8 taskId);
 void CreateTornadoSprites(u8 taskId);
+
+void CreateLombreSprites(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);
@@ -271,6 +277,14 @@ static const struct OamData sOam_16x16_Affine =
 static const struct OamData sOam_64x64_Affine =
 {
     .affineMode = ST_OAM_AFFINE_DOUBLE,
+    .shape = SPRITE_SHAPE(64x64),
+    .size = SPRITE_SIZE(64x64),
+    .priority = 1,
+};
+
+static const struct OamData sOam_64x64_Blend =
+{
+    .objMode = ST_OAM_OBJ_BLEND,
     .shape = SPRITE_SHAPE(64x64),
     .size = SPRITE_SIZE(64x64),
     .priority = 1,

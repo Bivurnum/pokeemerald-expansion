@@ -114,6 +114,12 @@ PetalburgCity_EventScript_Fletchinder::
 	releaseall
 	end
 
+PetalburgCity_EventScript_Lombre::
+	lock
+	startspa 4
+	releaseall
+	end
+
 PetalburgCity_EventScript_ToggleBerry::
 	lock
 	setflag FLAG_SPA_OBTAINED_BERRY
