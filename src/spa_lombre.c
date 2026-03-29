@@ -90,6 +90,12 @@ static const union AnimCmd sAnim_HeadAngry[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_HeadHappy[] =
+{
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_LombreHeadTopLeft[] =
 {
     sAnim_Normal,
@@ -98,6 +104,7 @@ static const union AnimCmd * const sAnims_LombreHeadTopLeft[] =
     sAnim_HeadPet,
     sAnim_HeadBadTouch,
     sAnim_HeadAngry,
+    sAnim_HeadHappy,
 };
 
 static const union AnimCmd * const sAnims_LombreHeadTopRight[] =
@@ -108,6 +115,7 @@ static const union AnimCmd * const sAnims_LombreHeadTopRight[] =
     sAnim_HeadPet,
     sAnim_HeadBadTouch,
     sAnim_HeadAngry,
+    sAnim_HeadHappy,
 };
 
 static const union AnimCmd * const sAnims_LombreHeadBottomLeft[] =
@@ -115,6 +123,7 @@ static const union AnimCmd * const sAnims_LombreHeadBottomLeft[] =
     sAnim_Normal,
     sAnim_HeadAfterThaw,
     sAnim_HeadSatisfied,
+    sAnim_HeadHappy,
 };
 
 static const union AnimCmd * const sAnims_LombreHeadBottomRight[] =
@@ -122,6 +131,7 @@ static const union AnimCmd * const sAnims_LombreHeadBottomRight[] =
     sAnim_Normal,
     sAnim_HeadAfterThaw,
     sAnim_HeadSatisfied,
+    sAnim_HeadHappy,
 };
 
 static const union AnimCmd * const sAnims_LombreBody[] =
@@ -481,6 +491,14 @@ void StartLombreAngry(u8 taskId)
     StartSpriteAnim(&gSprites[sLombreHeadTopRightSpriteId], 5);
     PauseUntilAnimEnds(taskId, sLombreHeadTopLeftSpriteId);
     CreateAngrySprite(taskId);
+}
+
+void StartLombreHappyAnim(void)
+{
+    StartSpriteAnim(&gSprites[sLombreHeadTopLeftSpriteId], 6);
+    StartSpriteAnim(&gSprites[sLombreHeadTopRightSpriteId], 6);
+    StartSpriteAnim(&gSprites[sLombreHeadBottomLeftSpriteId], 3);
+    StartSpriteAnim(&gSprites[sLombreHeadBottomRightSpriteId], 3);
 }
 
 void ResetLombreSprites(void)

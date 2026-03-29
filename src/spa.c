@@ -1292,6 +1292,9 @@ static void StartHappyAnim(u8 taskId)
     case SPA_FLETCHINDER:
         StartFletchinderHappyAnim();
         break;
+    case SPA_LOMBRE:
+        StartLombreHappyAnim();
+        break;
     }
 }
 
@@ -1388,6 +1391,11 @@ static const s16 HeartPos[][3][2] =
         { 130, 40 },
         { 150, 35 },
         { 170, 45 },
+    },
+    [SPA_LOMBRE] = {
+        { 120, 35 },
+        { 140, 30 },
+        { 160, 40 },
     }
 };
 
