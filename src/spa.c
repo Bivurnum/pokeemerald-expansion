@@ -1010,10 +1010,11 @@ void PauseUntilAnimEnds(u8 taskId, u8 spriteId)
 
 static const s16 MusicPos[][3] =
 {
-    [SPA_RATTATA] = { 190, 20, 0 },
-    [SPA_TEDDIURSA] = { 84, 26, 1 },
-    [SPA_PSYDUCK] = { 64, 37, 1 },
+    [SPA_RATTATA] =     { 190, 20, 0 },
+    [SPA_TEDDIURSA] =   {  84, 26, 1 },
+    [SPA_PSYDUCK] =     {  64, 37, 1 },
     [SPA_FLETCHINDER] = { 190, 45, 0 },
+    [SPA_LOMBRE] =      { 180, 25, 0 },
 };
 
 void CreateMusicSprite(u8 taskId)
@@ -1140,6 +1141,12 @@ const s16 PettingZones[][5][5] =
         { 90, 135, 55, 100, SPA_PET_BODY },
         { 134, 160, 30, 100, SPA_PET_HEAD },
         { 65, 100, 15, 50, SPA_PET_BAD },
+    },
+    [SPA_LOMBRE] =
+    {
+        { 115, 170, 69, 95, SPA_PET_BODY },
+        { 75, 182, 0, 70, SPA_PET_HEAD },
+        { 115, 170, 95, 125, SPA_PET_BAD },
     }
 };
 
@@ -1184,6 +1191,10 @@ static void StartBadTouchAnim(u8 taskId)
         break;
     case SPA_FLETCHINDER:
         StartFletchinderBadTouch(taskId);
+        PlaySE(SE_CONTEST_CONDITION_LOSE);
+        break;
+    case SPA_LOMBRE:
+        StartLombreBadTouch(taskId);
         PlaySE(SE_CONTEST_CONDITION_LOSE);
         break;
     }
@@ -1232,6 +1243,9 @@ static void StartPetAnim(u8 taskId, u8 petArea)
     case SPA_FLETCHINDER:
         StartFletchinderPet();
         break;
+    case SPA_LOMBRE:
+        StartLombrePet();
+        break;
     }
 }
 
@@ -1250,6 +1264,9 @@ static void StopSpaPetAnim(u8 taskId)
         break;
     case SPA_FLETCHINDER:
         ResetFletchinderSpritesSatisfied();
+        break;
+    case SPA_LOMBRE:
+        ResetLombreSprites();
         break;
     }
 }
@@ -1302,6 +1319,10 @@ static void ResetSpaMonSprites(void)
             ResetFletchinderSpritesSatisfied();
         else
             ResetFletchinderSpritesFamished();
+        break;
+    case SPA_LOMBRE:
+        if (sSpaData.isSatisfied)
+            ResetLombreSprites();
         break;
     }
 }
@@ -1564,6 +1585,9 @@ static void SpaItemChooseHandleInput(u8 taskId)
     }
 }
 
+#define sLombreIceBlankLeft             sSpaData.iceSpriteIds[0]
+#define sLombreIceBlankRight            sSpaData.iceSpriteIds[1]
+
 static void SpaItemHandleInput(u8 taskId)
 {
     if (!(tActiveItemId == SPA_BERRY && gSprites[sSpaData.berrySpriteId].sCounter != 0))
@@ -1574,6 +1598,14 @@ static void SpaItemHandleInput(u8 taskId)
                 ResetTeddiursaSpritesScratch();
             if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY && HoneyHasBugs())
                 ResetFletchinderSpritesFamished();
+            if (sSpaData.mon == SPA_LOMBRE && sSpaData.iceMelting)
+            {
+                gSprites[sLombreIceBlankLeft].sIceMelting = FALSE;
+                gSprites[sLombreIceBlankLeft].sCounter = 0;
+                gSprites[sLombreIceBlankRight].sIceMelting = FALSE;
+                gSprites[sLombreIceBlankRight].sCounter = 0;
+                sSpaData.iceMelting = FALSE;
+            }
 
             tSelectedItem = 0;
             DestroySprite(&gSprites[tActiveItemId]);
@@ -1588,6 +1620,14 @@ static void SpaItemHandleInput(u8 taskId)
                 ResetTeddiursaSpritesScratch();
             if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY && HoneyHasBugs())
                 ResetFletchinderSpritesFamished();
+            if (sSpaData.mon == SPA_LOMBRE && sSpaData.iceMelting)
+            {
+                gSprites[sLombreIceBlankLeft].sIceMelting = FALSE;
+                gSprites[sLombreIceBlankLeft].sCounter = 0;
+                gSprites[sLombreIceBlankRight].sIceMelting = FALSE;
+                gSprites[sLombreIceBlankRight].sCounter = 0;
+                sSpaData.iceMelting = FALSE;
+            }
 
             tSelectedItem = 0;
             DestroySprite(&gSprites[tActiveItemId]);
@@ -1630,6 +1670,9 @@ static void SpaItemHandleInput(u8 taskId)
         break;
     }
 }
+
+#undef sLombreIceBlankLeft
+#undef sLombreIceBlankRight
 
 static const s16 FeedingZones[][2][2] =
 {
