@@ -23,8 +23,10 @@
 #define sHeartOffset    data[3]
 #define sBugDirection   data[3]
 #define sTornadoId      data[3]
+#define sIceMelting     data[3]
 #define sBlinkCounter   data[4]
 #define sBugId          data[5]
+#define sIceId          data[5]
 #define sBugInterval    data[6]
 #define sFrozen         data[7]
 
@@ -74,11 +76,12 @@
 
 struct SpaData
 {
-    u8 mon:4;
+    u8 mon:3;
     u8 isSatisfied:1;
     u8 hasBeenPetBad:1;
     u8 statusIsShowing:1;
     u8 bugsAttacking:1;
+    u8 iceMelting:1;
     u8 pausedSpriteId;
     u8 monSpriteIds[11];
     u8 bugSpriteIds[4];
@@ -208,6 +211,7 @@ void HandleItemsFletchinder(u8 taskId);
 void CreateTornadoSprites(u8 taskId);
 
 void CreateLombreSprites(u8 taskId);
+void HandleItemsLombre(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
 void CreateMusicSprite(u8 taskId);

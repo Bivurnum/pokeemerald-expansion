@@ -2,6 +2,9 @@
 #include "spa.h"
 #include "event_data.h"
 #include "gpu_regs.h"
+#include "sound.h"
+#include "task.h"
+#include "constants/songs.h"
 
 #define sLombreHeadTopLeftSpriteId      sSpaData.monSpriteIds[0]
 #define sLombreHeadTopRightSpriteId     sSpaData.monSpriteIds[1]
@@ -22,6 +25,8 @@
 #define sLombreIceMeltFrontLeft         sSpaData.iceSpriteIds[4]
 #define sLombreIceMeltFrontRight        sSpaData.iceSpriteIds[5]
 
+static void SpriteCB_IceBlank(struct Sprite *sprite);
+
 static const u16 gLombre_Pal[] = INCBIN_U16("graphics/_spa/lombre/lombre_body.gbapal");
 static const u32 gLombreHeadTopLeft_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_head_top_left.4bpp");
 static const u32 gLombreHeadTopRight_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_head_top_right.4bpp");
@@ -37,6 +42,13 @@ static const u16 gIce_Pal[] = INCBIN_U16("graphics/_spa/lombre/lombre_ice_arm_le
 static const u32 gLombreIceArmLeft_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_ice_arm_left.4bpp");
 static const u32 gLombreIceArmRight_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_ice_arm_right.4bpp");
 static const u32 gIceBlank_Gfx[] = INCBIN_U32("graphics/_spa/lombre/ice_blank.4bpp");
+
+enum IceZones
+{
+    ICE_ZONE_NONE,
+    ICE_ZONE_LEFT,
+    ICE_ZONE_RIGHT
+};
 
 static const union AnimCmd sAnim_Normal[] =
 {
@@ -293,7 +305,7 @@ static const struct SpriteTemplate sSpriteTemplate_IceBlank =
     .anims = sAnims_LombreIceBlank,
     .images = sPicTable_IceBlank,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
+    .callback = SpriteCB_IceBlank
 };
 
 const struct SpritePalette sSpritePalettes_SpaLombre[] =
@@ -350,11 +362,12 @@ void CreateLombreSprites(u8 taskId)
         {
             gSprites[sLombreArmLeftSpriteId].invisible = TRUE;
 
-            sLombreIceArmLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreIceArmLeft, 75, 95, 8);
+            sLombreIceArmLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreIceArmLeft, 75, 97, 8);
             gSprites[sLombreIceArmLeftSpriteId].sTaskId = taskId;
 
-            sLombreIceBlankLeft = CreateSprite(&sSpriteTemplate_IceBlank, 67, 36, 6);
+            sLombreIceBlankLeft = CreateSprite(&sSpriteTemplate_IceBlank, 67, 38, 6);
             gSprites[sLombreIceBlankLeft].sTaskId = taskId;
+            gSprites[sLombreIceBlankLeft].sIceId = sLombreIceBlankLeft;
         }
 
         if (!FlagGet(FLAG_SPA_LOMBRE_THAWED_RIGHT))
@@ -366,6 +379,108 @@ void CreateLombreSprites(u8 taskId)
 
             sLombreIceBlankRight = CreateSprite(&sSpriteTemplate_IceBlank, 197, 38, 6);
             gSprites[sLombreIceBlankRight].sTaskId = taskId;
+            gSprites[sLombreIceBlankRight].sIceId = sLombreIceBlankRight;
         }
+    }
+}
+
+static const u16 IceZones[][4] =
+{
+    [ICE_ZONE_LEFT] =  {  40, 104, 60, 130 },
+    [ICE_ZONE_RIGHT] = { 157, 225, 60, 130 }
+};
+
+static u32 GetCurrentIceMeltZone(void)
+{
+    u32 i;
+
+    for (i = 1; i <= ICE_ZONE_RIGHT; i++)
+    {
+        if (gSprites[sSpaData.orbSpriteId].x > IceZones[i][0] && gSprites[sSpaData.orbSpriteId].x < IceZones[i][1] 
+         && gSprites[sSpaData.orbSpriteId].y > IceZones[i][2] && gSprites[sSpaData.orbSpriteId].y < IceZones[i][3])
+            return i;
+    }
+
+    return ICE_ZONE_NONE;
+}
+
+void HandleItemsLombre(u8 taskId)
+{
+    switch (tSelectedItem)
+    {
+    case SPA_BERRY:
+        break;
+    case SPA_CLAW:
+        break;
+    case SPA_HONEY:
+        break;
+    case SPA_ORB:
+        if (!sSpaData.isSatisfied)
+        {
+            u32 iceZone = GetCurrentIceMeltZone();
+
+            if (iceZone && !sSpaData.iceMelting)
+            {
+                if (iceZone == ICE_ZONE_LEFT && !FlagGet(FLAG_SPA_LOMBRE_THAWED_LEFT))
+                {
+                    gSprites[sLombreIceBlankLeft].sIceMelting = TRUE;
+                }
+                else if (iceZone == ICE_ZONE_RIGHT && !FlagGet(FLAG_SPA_LOMBRE_THAWED_RIGHT))
+                {
+                    gSprites[sLombreIceBlankRight].sIceMelting = TRUE;
+                }
+
+                sSpaData.iceMelting = TRUE;
+            }
+            else if (!iceZone && sSpaData.iceMelting)
+            {
+                gSprites[sLombreIceBlankLeft].sIceMelting = FALSE;
+                gSprites[sLombreIceBlankLeft].sCounter = 0;
+                gSprites[sLombreIceBlankRight].sIceMelting = FALSE;
+                gSprites[sLombreIceBlankRight].sCounter = 0;
+                sSpaData.iceMelting = FALSE;
+            }
+        }
+        break;
+    }
+}
+
+static void IncrementIceScore(u32 id)
+{
+    if (id == sLombreIceBlankLeft)
+        VarSet(VAR_ICE_LEFT_SCORE, VarGet(VAR_ICE_LEFT_SCORE) + 1);
+    else
+        VarSet(VAR_ICE_RIGHT_SCORE, VarGet(VAR_ICE_RIGHT_SCORE) + 1);
+}
+
+static void SpriteCB_IceBlank(struct Sprite *sprite)
+{
+    if (sprite->sIceMelting)
+    {
+        if (sprite->sCounter % 8 == 0)
+        {
+            sprite->y++;
+            IncrementIceScore(sprite->sIceId);
+        }
+
+        if (sprite->y >= 78)
+        {
+            sSpaData.iceMelting = FALSE;
+            PlaySE(SE_ICE_BREAK);
+            if (sprite->sIceId == sLombreIceBlankLeft)
+            {
+                FlagSet(FLAG_SPA_LOMBRE_THAWED_LEFT);
+                DestroySprite(&gSprites[sLombreIceArmLeftSpriteId]);
+            }
+            else
+            {
+                FlagSet(FLAG_SPA_LOMBRE_THAWED_RIGHT);
+                DestroySprite(&gSprites[sLombreIceArmRightSpriteId]);
+            }
+
+            DestroySprite(sprite);
+        }
+
+        sprite->sCounter++;
     }
 }

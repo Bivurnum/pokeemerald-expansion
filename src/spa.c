@@ -1625,6 +1625,9 @@ static void SpaItemHandleInput(u8 taskId)
     case SPA_FLETCHINDER:
         HandleItemsFletchinder(taskId);
         break;
+    case SPA_LOMBRE:
+        HandleItemsLombre(taskId);
+        break;
     }
 }
 
@@ -1824,6 +1827,11 @@ static void Task_Spa(u8 taskId)
                 DestroySprite(&gSprites[sSpaData.honeySpriteId]);
                 sSpaData.honeySpriteId = 0;
             }
+            if (tSelectedItem != SPA_ORB && sSpaData.orbSpriteId)
+            {
+                DestroySprite(&gSprites[sSpaData.orbSpriteId]);
+                sSpaData.orbSpriteId = 0;
+            }
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
             AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_SpaItemInstructions), gText_SpaItemInstructions, 0, 0, 0, NULL);
             tState = STATE_ITEM;
@@ -1843,6 +1851,8 @@ static void Task_Spa(u8 taskId)
                 gSprites[sSpaData.clawSpriteId].x -= 2;
             if (sSpaData.honeySpriteId)
                 gSprites[sSpaData.honeySpriteId].x -= 2;
+            if (sSpaData.orbSpriteId)
+                gSprites[sSpaData.orbSpriteId].x -= 2;
         }
         else
         {
@@ -1863,6 +1873,11 @@ static void Task_Spa(u8 taskId)
             {
                 DestroySprite(&gSprites[sSpaData.honeySpriteId]);
                 sSpaData.honeySpriteId = 0;
+            }
+            if (sSpaData.orbSpriteId)
+            {
+                DestroySprite(&gSprites[sSpaData.orbSpriteId]);
+                sSpaData.orbSpriteId = 0;
             }
             ResetSpaHand();
             tSelectedItem = 0;
