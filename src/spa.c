@@ -45,6 +45,10 @@ static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.smol");
 static const u32 gSpaBG_Tilemap[] = INCBIN_U32("graphics/_spa/spa_bg.bin.smolTM");
 static const u16 gSpaBG_Pal[] = INCBIN_U16("graphics/_spa/spa_bg.gbapal");
 
+static const u32 gLombreArms_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_arms_bg_tiles.4bpp.smol");
+static const u32 gLombreArms_Tilemap[] = INCBIN_U32("graphics/_spa/lombre/lombre_arms_bg_tiles.bin.smolTM");
+static const u16 gLombreArms_Pal[] = INCBIN_U16("graphics/_spa/lombre/lombre_arms_bg_tiles.gbapal");
+
 static const u16 gHand_Pal[] = INCBIN_U16("graphics/_spa/hand.gbapal");
 static const u32 gHand_Gfx[] = INCBIN_U32("graphics/_spa/hand.4bpp");
 static const u32 gMusic_Gfx[] = INCBIN_U32("graphics/_spa/music.4bpp");
@@ -133,20 +137,20 @@ static const struct BgTemplate sBgTemplates[3] =
     },
     {
         .bg = 2,
-        .charBaseIndex = 1,
-        .mapBaseIndex = 6,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 2,
-        .baseTile = 0
-    },
-    {
-        .bg = 3,
         .charBaseIndex = 0,
         .mapBaseIndex = 7,
         .screenSize = 0,
         .paletteMode = 0,
         .priority = 1,
+        .baseTile = 0
+    },
+    {
+        .bg = 3,
+        .charBaseIndex = 0,
+        .mapBaseIndex = 6,
+        .screenSize = 0,
+        .paletteMode = 0,
+        .priority = 2,
         .baseTile = 0
     },
 };
@@ -561,8 +565,16 @@ static void CB2_StartSpa(void)
         SetVBlankCallback(NULL);
         ChangeBgX(0, 0, BG_COORD_SET);
         ChangeBgY(0, 0, BG_COORD_SET);
+        ChangeBgX(1, 0, BG_COORD_SET);
+        ChangeBgY(1, 0, BG_COORD_SET);
         ChangeBgX(2, 0, BG_COORD_SET);
         ChangeBgY(2, 0, BG_COORD_SET);
+        ChangeBgX(3, 0, BG_COORD_SET);
+        ChangeBgY(3, 0, BG_COORD_SET);
+        HideBg(0);
+        HideBg(1);
+        HideBg(2);
+        HideBg(3);
         DmaFillLarge16(3, 0, (u8 *)VRAM, VRAM_SIZE, 0x1000);
         DmaClear32(3, OAM, OAM_SIZE);
         DmaClear16(3, PLTT, PLTT_SIZE);
@@ -581,8 +593,14 @@ static void CB2_StartSpa(void)
     case 2:
         u8 taskId;
 
-        DecompressDataWithHeaderVram(gSpaBG_Gfx, (void*) BG_CHAR_ADDR(1));
+        DecompressDataWithHeaderVram(gSpaBG_Gfx, (void *)VRAM);
         DecompressDataWithHeaderVram(gSpaBG_Tilemap, (u16*) BG_SCREEN_ADDR(6));
+
+        if (sSpaData.mon == SPA_LOMBRE)
+        {
+            DecompressDataWithHeaderVram(gLombreArms_Tilemap, (u16*) BG_SCREEN_ADDR(7));
+            LoadPalette(gLombreArms_Pal, BG_PLTT_ID(6), PLTT_SIZE_4BPP);
+        }
 
         ResetBgsAndClearDma3BusyFlags(0);
         InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
@@ -612,6 +630,7 @@ static void CB2_StartSpa(void)
 
         ShowBg(0);
         ShowBg(2);
+        ShowBg(3);
 
         taskId = CreateTask(Task_SpaWaitFade, 1);
 

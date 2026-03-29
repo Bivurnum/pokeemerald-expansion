@@ -342,6 +342,9 @@ void CreateLombreSprites(u8 taskId)
 
     if (!sSpaData.isSatisfied)
     {
+        gSprites[sLombreArmLeftSpriteId].invisible = TRUE;
+        gSprites[sLombreArmRightSpriteId].invisible = TRUE;
+
         sLombreIceArmLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreIceArmLeft, 75, 95, 8);
         gSprites[sLombreIceArmLeftSpriteId].sTaskId = taskId;
 
