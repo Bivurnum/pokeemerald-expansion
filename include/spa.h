@@ -42,6 +42,7 @@
 #define TAG_BERRY       0x1002
 #define TAG_CLAW        0x1003
 #define TAG_HONEY       0x1004
+#define TAG_ORB         0x1005
 
 #define TAG_MON     0x2000
 #define TAG_ITCH    0x2001

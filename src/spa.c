@@ -70,6 +70,9 @@ static const u32 gClaw_Gfx[] = INCBIN_U32("graphics/_spa/claw.4bpp");
 static const u16 gHoney_Pal[] = INCBIN_U16("graphics/_spa/honey.gbapal");
 static const u32 gHoney_Gfx[] = INCBIN_U32("graphics/_spa/honey.4bpp");
 
+static const u16 gOrb_Pal[] = INCBIN_U16("graphics/_spa/orb.gbapal");
+static const u32 gOrb_Gfx[] = INCBIN_U32("graphics/_spa/orb.4bpp");
+
 const u8 gText_SpaInstructions[] = _("{A_BUTTON} : Interact     hold{B_BUTTON} : Fast     hold{R_BUTTON} : Status");
 const u8 gText_SpaItemSelectInstructions[] = _("{DPAD_UPDOWN} : Move            {A_BUTTON} : Select            {B_BUTTON} : Exit");
 const u8 gText_SpaItemInstructions[] = _("{A_BUTTON} : Put Away     hold{B_BUTTON} : Fast     hold{R_BUTTON} : Status");
@@ -292,6 +295,11 @@ static const union AnimCmd * const sAnims_Honey[] =
     sAnim_Honey4Bugs,
 };
 
+static const union AnimCmd * const sAnims_Orb[] =
+{
+    sAnim_Normal,
+};
+
 static const struct SpriteFrameImage sPicTable_Hand[] =
 {
     spa_frame(gHand_Gfx, 0, 4, 4),
@@ -357,6 +365,11 @@ static const struct SpriteFrameImage sPicTable_Honey[] =
     spa_frame(gHoney_Gfx, 2, 4, 4),
     spa_frame(gHoney_Gfx, 3, 4, 4),
     spa_frame(gHoney_Gfx, 4, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Orb[] =
+{
+    spa_frame(gOrb_Gfx, 0, 4, 4),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Hand =
@@ -480,6 +493,17 @@ static const struct SpriteTemplate sSpriteTemplate_Honey =
     .callback = SpriteCallbackDummy
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Orb =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_ORB,
+    .oam = &sOam_32x32,
+    .anims = sAnims_Orb,
+    .images = sPicTable_Orb,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
 static const struct SpritePalette sSpritePalettes_Spa[] =
 {
     {
@@ -501,6 +525,10 @@ static const struct SpritePalette sSpritePalettes_Spa[] =
     {
         .data = gHoney_Pal,
         .tag = TAG_HONEY
+    },
+    {
+        .data = gOrb_Pal,
+        .tag = TAG_ORB
     },
     {NULL},
 };
@@ -1070,6 +1098,13 @@ static void ItemTraySlideOut(u8 taskId)
                 numBugs++;
         }
         StartSpriteAnim(&gSprites[sSpaData.honeySpriteId], numBugs);
+    }
+
+    if (FlagGet(FLAG_SPA_OBTAINED_ORB))
+    {
+        sSpaData.orbSpriteId = CreateSprite(&sSpriteTemplate_Orb, (ITEM_START_X), SpaItemsY[3][0], 0);
+        gSprites[sSpaData.orbSpriteId].sTaskId = taskId;
+        gSprites[sSpaData.orbSpriteId].oam.priority = 0;
     }
 
     PlaySE(SE_BALL_TRAY_ENTER);
@@ -1725,6 +1760,8 @@ static void Task_Spa(u8 taskId)
                 gSprites[sSpaData.clawSpriteId].x += 2;
             if (sSpaData.honeySpriteId)
                 gSprites[sSpaData.honeySpriteId].x += 2;
+            if (sSpaData.orbSpriteId)
+                gSprites[sSpaData.orbSpriteId].x += 2;
         }
         else
         {
