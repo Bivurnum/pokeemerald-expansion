@@ -1,6 +1,7 @@
 #include "global.h"
 #include "spa.h"
 #include "event_data.h"
+#include "gpu_regs.h"
 
 #define sLombreHeadTopLeftSpriteId      sSpaData.monSpriteIds[0]
 #define sLombreHeadTopRightSpriteId     sSpaData.monSpriteIds[1]
@@ -342,13 +343,29 @@ void CreateLombreSprites(u8 taskId)
 
     if (!sSpaData.isSatisfied)
     {
-        gSprites[sLombreArmLeftSpriteId].invisible = TRUE;
-        gSprites[sLombreArmRightSpriteId].invisible = TRUE;
+        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_OBJ | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG2 | BLDCNT_TGT2_BG3);
+        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 16));
 
-        sLombreIceArmLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreIceArmLeft, 75, 95, 8);
-        gSprites[sLombreIceArmLeftSpriteId].sTaskId = taskId;
+        if (!FlagGet(FLAG_SPA_LOMBRE_THAWED_LEFT))
+        {
+            gSprites[sLombreArmLeftSpriteId].invisible = TRUE;
 
-        sLombreIceArmRightSpriteId = CreateSprite(&sSpriteTemplate_LombreIceArmRight, 191, 97, 8);
-        gSprites[sLombreIceArmRightSpriteId].sTaskId = taskId;
+            sLombreIceArmLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreIceArmLeft, 75, 95, 8);
+            gSprites[sLombreIceArmLeftSpriteId].sTaskId = taskId;
+
+            sLombreIceBlankLeft = CreateSprite(&sSpriteTemplate_IceBlank, 67, 36, 6);
+            gSprites[sLombreIceBlankLeft].sTaskId = taskId;
+        }
+
+        if (!FlagGet(FLAG_SPA_LOMBRE_THAWED_RIGHT))
+        {
+            gSprites[sLombreArmRightSpriteId].invisible = TRUE;
+
+            sLombreIceArmRightSpriteId = CreateSprite(&sSpriteTemplate_LombreIceArmRight, 191, 97, 8);
+            gSprites[sLombreIceArmRightSpriteId].sTaskId = taskId;
+
+            sLombreIceBlankRight = CreateSprite(&sSpriteTemplate_IceBlank, 197, 38, 6);
+            gSprites[sLombreIceBlankRight].sTaskId = taskId;
+        }
     }
 }
