@@ -629,8 +629,9 @@ static void CB2_StartSpa(void)
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
 
         ShowBg(0);
-        ShowBg(2);
         ShowBg(3);
+        if (sSpaData.mon == SPA_LOMBRE)
+            ShowBg(2);
 
         taskId = CreateTask(Task_SpaWaitFade, 1);
 
@@ -900,6 +901,9 @@ static void PlaySpaMonCry(u8 mode)
         break;
     case SPA_FLETCHINDER:
         PlayCry_ByMode(SPECIES_FLETCHINDER, 0, mode);
+        break;
+    case SPA_LOMBRE:
+        PlayCry_ByMode(SPECIES_LOMBRE, 0, mode);
         break;
     }
 }
