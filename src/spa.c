@@ -1029,6 +1029,7 @@ static const s16 AngryPos[][2] =
     [SPA_RATTATA] =     { 165, 38 },
     [SPA_TEDDIURSA] =   { 155, 40 },
     [SPA_FLETCHINDER] = { 160, 40 },
+    [SPA_LOMBRE] =      {  90, 40 },
 };
 
 void CreateAngrySprite(u8 taskId)
@@ -1216,6 +1217,10 @@ static void StartAngryAnim(u8 taskId)
         break;
     case SPA_FLETCHINDER:
         StartFletchinderAngry(taskId);
+        PlaySpaMonCry(CRY_MODE_ROAR_1);
+        break;
+    case SPA_LOMBRE:
+        StartLombreAngry(taskId);
         PlaySpaMonCry(CRY_MODE_ROAR_1);
         break;
     }
@@ -1434,7 +1439,11 @@ static void SpaHandHandleInput(u8 taskId)
 
     if (JOY_NEW(INTERACT_BUTTON))
     {
-        if (petArea == SPA_PET_BAD)
+        if (sSpaData.mon == SPA_LOMBRE && !sSpaData.isSatisfied)
+        {
+
+        }
+        else if (petArea == SPA_PET_BAD)
         {
             tPetArea = SPA_PET_BAD;
             StartBadTouchAnim(taskId);
@@ -1444,7 +1453,11 @@ static void SpaHandHandleInput(u8 taskId)
     }
     else if (JOY_HELD(INTERACT_BUTTON))
     {
-        if (petArea)
+        if (sSpaData.mon == SPA_LOMBRE && !sSpaData.isSatisfied)
+        {
+
+        }
+        else if (petArea)
         {
             if (tPetArea != petArea)
             {

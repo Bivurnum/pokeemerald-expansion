@@ -214,6 +214,7 @@ void CreateLombreSprites(u8 taskId);
 void ResetLombreSprites(void);
 void StartLombrePet(void);
 void StartLombreBadTouch(u8 taskId);
+void StartLombreAngry(u8 taskId);
 void HandleItemsLombre(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);

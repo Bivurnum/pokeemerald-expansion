@@ -77,12 +77,27 @@ static const union AnimCmd sAnim_HeadPet[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_HeadBadTouch[] =
+{
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 60),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_HeadAngry[] =
+{
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 60),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_LombreHeadTopLeft[] =
 {
     sAnim_Normal,
     sAnim_HeadAfterThaw,
     sAnim_HeadSatisfied,
     sAnim_HeadPet,
+    sAnim_HeadBadTouch,
+    sAnim_HeadAngry,
 };
 
 static const union AnimCmd * const sAnims_LombreHeadTopRight[] =
@@ -91,6 +106,8 @@ static const union AnimCmd * const sAnims_LombreHeadTopRight[] =
     sAnim_HeadAfterThaw,
     sAnim_HeadSatisfied,
     sAnim_HeadPet,
+    sAnim_HeadBadTouch,
+    sAnim_HeadAngry,
 };
 
 static const union AnimCmd * const sAnims_LombreHeadBottomLeft[] =
@@ -154,6 +171,8 @@ static const struct SpriteFrameImage sPicTable_LombreHeadTopLeft[] =
     spa_frame(gLombreHeadTopLeft_Gfx, 2, 8, 8),
     spa_frame(gLombreHeadTopLeft_Gfx, 3, 8, 8),
     spa_frame(gLombreHeadTopLeft_Gfx, 4, 8, 8),
+    spa_frame(gLombreHeadTopLeft_Gfx, 5, 8, 8),
+    spa_frame(gLombreHeadTopLeft_Gfx, 6, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_LombreHeadTopRight[] =
@@ -163,6 +182,8 @@ static const struct SpriteFrameImage sPicTable_LombreHeadTopRight[] =
     spa_frame(gLombreHeadTopRight_Gfx, 2, 8, 8),
     spa_frame(gLombreHeadTopRight_Gfx, 3, 8, 8),
     spa_frame(gLombreHeadTopRight_Gfx, 4, 8, 8),
+    spa_frame(gLombreHeadTopRight_Gfx, 5, 8, 8),
+    spa_frame(gLombreHeadTopRight_Gfx, 6, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_LombreHeadBottomLeft[] =
@@ -449,11 +470,17 @@ void StartLombrePet(void)
 
 void StartLombreBadTouch(u8 taskId)
 {
-    StartSpriteAnim(&gSprites[sLombreHeadTopLeftSpriteId], 1);
-    StartSpriteAnim(&gSprites[sLombreHeadTopRightSpriteId], 1);
-    StartSpriteAnim(&gSprites[sLombreHeadBottomLeftSpriteId], 1);
-    StartSpriteAnim(&gSprites[sLombreHeadBottomRightSpriteId], 1);
+    StartSpriteAnim(&gSprites[sLombreHeadTopLeftSpriteId], 4);
+    StartSpriteAnim(&gSprites[sLombreHeadTopRightSpriteId], 4);
     PauseUntilAnimEnds(taskId, sLombreHeadTopLeftSpriteId);
+}
+
+void StartLombreAngry(u8 taskId)
+{
+    StartSpriteAnim(&gSprites[sLombreHeadTopLeftSpriteId], 5);
+    StartSpriteAnim(&gSprites[sLombreHeadTopRightSpriteId], 5);
+    PauseUntilAnimEnds(taskId, sLombreHeadTopLeftSpriteId);
+    CreateAngrySprite(taskId);
 }
 
 void ResetLombreSprites(void)
