@@ -657,7 +657,7 @@ void HandleItemsFletchinder(u8 taskId)
                     {
                         PlaySE(SE_M_ABSORB);
                     }
-                        tCounter++;
+                    tCounter++;
                     break;
                 }
             }

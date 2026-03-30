@@ -52,9 +52,9 @@ static const union AnimCmd sAnim_Normal[] =
 
 static const union AnimCmd sAnim_HeadAfterThawTop[] =
 {
-    ANIMCMD_FRAME(.imageValue = 7, .duration = 6),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 6),
-    ANIMCMD_FRAME(.imageValue = 8, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 7, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 8, .duration = 3),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_END
@@ -62,9 +62,9 @@ static const union AnimCmd sAnim_HeadAfterThawTop[] =
 
 static const union AnimCmd sAnim_HeadAfterThawBottom[] =
 {
-    ANIMCMD_FRAME(.imageValue = 4, .duration = 6),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 6),
-    ANIMCMD_FRAME(.imageValue = 5, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 3),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_END
@@ -97,7 +97,30 @@ static const union AnimCmd sAnim_HeadAngry[] =
 
 static const union AnimCmd sAnim_HeadHappy[] =
 {
-    ANIMCMD_FRAME(.imageValue = 3, .duration = 16),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_HeadBiteTop[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 32),
+    ANIMCMD_FRAME(.imageValue = 9, .duration = 8),
+    ANIMCMD_FRAME(.imageValue = 9, .duration = 15),
+    ANIMCMD_FRAME(.imageValue = 9, .duration = 1),
+    ANIMCMD_FRAME(.imageValue = 9, .duration = 4),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 4),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_HeadBiteBottom[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 32),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 8),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 15),
+    ANIMCMD_FRAME(.imageValue = 6, .duration = 1),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 4),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 4),
     ANIMCMD_END
 };
 
@@ -110,6 +133,7 @@ static const union AnimCmd * const sAnims_LombreHeadTopLeft[] =
     sAnim_HeadBadTouch,
     sAnim_HeadAngry,
     sAnim_HeadHappy,
+    sAnim_HeadBiteTop,
 };
 
 static const union AnimCmd * const sAnims_LombreHeadTopRight[] =
@@ -121,6 +145,7 @@ static const union AnimCmd * const sAnims_LombreHeadTopRight[] =
     sAnim_HeadBadTouch,
     sAnim_HeadAngry,
     sAnim_HeadHappy,
+    sAnim_HeadBiteTop,
 };
 
 static const union AnimCmd * const sAnims_LombreHeadBottomLeft[] =
@@ -129,6 +154,7 @@ static const union AnimCmd * const sAnims_LombreHeadBottomLeft[] =
     sAnim_HeadAfterThawBottom,
     sAnim_HeadSatisfied,
     sAnim_HeadHappy,
+    sAnim_HeadBiteBottom,
 };
 
 static const union AnimCmd * const sAnims_LombreHeadBottomRight[] =
@@ -137,6 +163,7 @@ static const union AnimCmd * const sAnims_LombreHeadBottomRight[] =
     sAnim_HeadAfterThawBottom,
     sAnim_HeadSatisfied,
     sAnim_HeadHappy,
+    sAnim_HeadBiteBottom,
 };
 
 static const union AnimCmd * const sAnims_LombreBody[] =
@@ -190,6 +217,7 @@ static const struct SpriteFrameImage sPicTable_LombreHeadTopLeft[] =
     spa_frame(gLombreHeadTopLeft_Gfx, 6, 8, 8),
     spa_frame(gLombreHeadTopLeft_Gfx, 7, 8, 8),
     spa_frame(gLombreHeadTopLeft_Gfx, 8, 8, 8),
+    spa_frame(gLombreHeadTopLeft_Gfx, 9, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_LombreHeadTopRight[] =
@@ -203,6 +231,7 @@ static const struct SpriteFrameImage sPicTable_LombreHeadTopRight[] =
     spa_frame(gLombreHeadTopRight_Gfx, 6, 8, 8),
     spa_frame(gLombreHeadTopRight_Gfx, 7, 8, 8),
     spa_frame(gLombreHeadTopRight_Gfx, 8, 8, 8),
+    spa_frame(gLombreHeadTopRight_Gfx, 9, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_LombreHeadBottomLeft[] =
@@ -213,6 +242,7 @@ static const struct SpriteFrameImage sPicTable_LombreHeadBottomLeft[] =
     spa_frame(gLombreHeadBottomLeft_Gfx, 3, 8, 4),
     spa_frame(gLombreHeadBottomLeft_Gfx, 4, 8, 4),
     spa_frame(gLombreHeadBottomLeft_Gfx, 5, 8, 4),
+    spa_frame(gLombreHeadBottomLeft_Gfx, 6, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_LombreHeadBottomRight[] =
@@ -223,6 +253,7 @@ static const struct SpriteFrameImage sPicTable_LombreHeadBottomRight[] =
     spa_frame(gLombreHeadBottomRight_Gfx, 3, 8, 4),
     spa_frame(gLombreHeadBottomRight_Gfx, 4, 8, 4),
     spa_frame(gLombreHeadBottomRight_Gfx, 5, 8, 4),
+    spa_frame(gLombreHeadBottomRight_Gfx, 6, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_LombreBody[] =
@@ -514,6 +545,14 @@ void StartLombreHappyAnim(void)
     StartSpriteAnim(&gSprites[sLombreHeadBottomRightSpriteId], 3);
 }
 
+static void StartLombreBite(void)
+{
+    StartSpriteAnim(&gSprites[sLombreHeadTopLeftSpriteId], 7);
+    StartSpriteAnim(&gSprites[sLombreHeadTopRightSpriteId], 7);
+    StartSpriteAnim(&gSprites[sLombreHeadBottomLeftSpriteId], 4);
+    StartSpriteAnim(&gSprites[sLombreHeadBottomRightSpriteId], 4);
+}
+
 void ResetLombreSprites(void)
 {
     StartSpriteAnim(&gSprites[sLombreHeadTopLeftSpriteId], 2);
@@ -544,11 +583,71 @@ u32 GetCurrentIceMeltZone(struct Sprite *sprite)
     return ICE_ZONE_NONE;
 }
 
+static const u16 LombreFeedingZone[4] =
+{
+    // MIN_X, MAX_X, MIN_Y, MAX_Y
+       120,   165,   70,    90
+};
+
+static bool32 IsBerryInLombreFeedingZone(void)
+{
+    if (gSprites[sSpaData.berrySpriteId].x > LombreFeedingZone[0] && gSprites[sSpaData.berrySpriteId].x < LombreFeedingZone[1] 
+     && gSprites[sSpaData.berrySpriteId].y > LombreFeedingZone[2] && gSprites[sSpaData.berrySpriteId].y < LombreFeedingZone[3])
+    {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+static void LombreEatBerry(u8 taskId)
+{
+    tBerryBites++;
+    if (tBerryBites >= 3)
+        DestroySprite(&gSprites[sSpaData.berrySpriteId]);
+    else
+        StartSpriteAnim(&gSprites[sSpaData.berrySpriteId], tBerryBites);
+}
+
 void HandleItemsLombre(u8 taskId)
 {
     switch (tSelectedItem)
     {
     case SPA_BERRY:
+        if (sSpaData.isSatisfied)
+        {
+            if (tBiteState == BITE_STATE_ACTIVE && gSprites[sLombreHeadTopLeftSpriteId].animEnded)
+            {
+                if (tBerryBites >= 3)
+                {
+                    StartLombreHappyAnim();
+                    PauseUntilAnimEnds(taskId, sLombreHeadTopLeftSpriteId);
+                    CreateMusicSprite(taskId);
+                    DoSpaMonEnjoyedSnackText();
+                    tBerryBites = 0;
+                }
+                tBiteState = BITE_STATE_NONE;
+            }
+            else if (IsBerryInLombreFeedingZone())
+            {
+                switch (tBiteState)
+                {
+                case BITE_STATE_NONE:
+                    StartLombreBite();
+                    tCounter = 0;
+                    tBiteState = BITE_STATE_ACTIVE;
+                    break;
+                case BITE_STATE_ACTIVE:
+                    if (gSprites[sLombreHeadTopLeftSpriteId].animCmdIndex == 3)
+                    {
+                        LombreEatBerry(taskId);
+                        PlaySE(SE_M_BITE);
+                    }
+                    tCounter++;
+                    break;
+                }
+            }
+        }
         break;
     case SPA_CLAW:
         break;
