@@ -517,14 +517,14 @@ static const u16 IceZones[][4] =
     [ICE_ZONE_RIGHT] = { 157, 225, 60, 130 }
 };
 
-static u32 GetCurrentIceMeltZone(void)
+u32 GetCurrentIceMeltZone(struct Sprite *sprite)
 {
     u32 i;
 
     for (i = 1; i <= ICE_ZONE_RIGHT; i++)
     {
-        if (gSprites[sSpaData.orbSpriteId].x > IceZones[i][0] && gSprites[sSpaData.orbSpriteId].x < IceZones[i][1] 
-         && gSprites[sSpaData.orbSpriteId].y > IceZones[i][2] && gSprites[sSpaData.orbSpriteId].y < IceZones[i][3])
+        if (sprite->x > IceZones[i][0] && sprite->x < IceZones[i][1] 
+         && sprite->y > IceZones[i][2] && sprite->y < IceZones[i][3])
             return i;
     }
 
@@ -544,7 +544,7 @@ void HandleItemsLombre(u8 taskId)
     case SPA_ORB:
         if (!sSpaData.isSatisfied)
         {
-            u32 iceZone = GetCurrentIceMeltZone();
+            u32 iceZone = GetCurrentIceMeltZone(&gSprites[sSpaData.orbSpriteId]);
 
             if (iceZone && !sSpaData.iceMelting)
             {

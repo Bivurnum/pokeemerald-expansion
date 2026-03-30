@@ -216,6 +216,7 @@ void StartLombrePet(void);
 void StartLombreBadTouch(u8 taskId);
 void StartLombreAngry(u8 taskId);
 void StartLombreHappyAnim(void);
+u32 GetCurrentIceMeltZone(struct Sprite *sprite);
 void HandleItemsLombre(u8 taskId);
 
 void PauseUntilAnimEnds(u8 taskId, u8 spriteId);
