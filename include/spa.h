@@ -90,6 +90,7 @@ struct SpaData
     u8 musicSpriteId;
     u8 angrySpriteId;
     u8 handSpriteId;
+    u8 frozenHandSpriteId;
     u8 itemsIconSpriteId;
     u8 itemsExitSpriteId;
     u8 itemTraySpriteId1;
@@ -154,6 +155,13 @@ enum BugDirections {
     BUG_SE,
     BUG_SW,
     BUG_NW
+};
+
+enum IceZones
+{
+    ICE_ZONE_NONE,
+    ICE_ZONE_LEFT,
+    ICE_ZONE_RIGHT
 };
 
 extern struct SpaData sSpaData;

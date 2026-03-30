@@ -40,6 +40,7 @@ static void SpriteCB_Music(struct Sprite *sprite);
 static void SpriteCB_Selector(struct Sprite *sprite);
 static void SpriteCB_Heart(struct Sprite *sprite);
 static void SpriteCB_Berry(struct Sprite *sprite);
+static void SpriteCB_FrozenHand(struct Sprite *sprite);
 
 static const u32 gSpaBG_Gfx[] = INCBIN_U32("graphics/_spa/spa_bg.4bpp.smol");
 static const u32 gSpaBG_Tilemap[] = INCBIN_U32("graphics/_spa/spa_bg.bin.smolTM");
@@ -48,6 +49,7 @@ static const u16 gSpaBG_Pal[] = INCBIN_U16("graphics/_spa/spa_bg.gbapal");
 static const u32 gLombreArms_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_arms_bg_tiles.4bpp.smol");
 static const u32 gLombreArms_Tilemap[] = INCBIN_U32("graphics/_spa/lombre/lombre_arms_bg_tiles.bin.smolTM");
 static const u16 gLombreArms_Pal[] = INCBIN_U16("graphics/_spa/lombre/lombre_arms_bg_tiles.gbapal");
+static const u32 gFrozenHand_Gfx[] = INCBIN_U32("graphics/_spa/lombre/frozen_hand.4bpp");
 
 static const u16 gHand_Pal[] = INCBIN_U16("graphics/_spa/hand.gbapal");
 static const u32 gHand_Gfx[] = INCBIN_U32("graphics/_spa/hand.4bpp");
@@ -300,6 +302,11 @@ static const union AnimCmd * const sAnims_Orb[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd * const sAnims_FrozenHand[] =
+{
+    sAnim_Normal,
+};
+
 static const struct SpriteFrameImage sPicTable_Hand[] =
 {
     spa_frame(gHand_Gfx, 0, 4, 4),
@@ -370,6 +377,11 @@ static const struct SpriteFrameImage sPicTable_Honey[] =
 static const struct SpriteFrameImage sPicTable_Orb[] =
 {
     spa_frame(gOrb_Gfx, 0, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_FrozenHand[] =
+{
+    spa_frame(gFrozenHand_Gfx, 0, 4, 4),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Hand =
@@ -502,6 +514,17 @@ static const struct SpriteTemplate sSpriteTemplate_Orb =
     .images = sPicTable_Orb,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy
+};
+
+static const struct SpriteTemplate sSpriteTemplate_FrozenHand =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_ICE,
+    .oam = &sOam_32x32,
+    .anims = sAnims_FrozenHand,
+    .images = sPicTable_FrozenHand,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_FrozenHand
 };
 
 static const struct SpritePalette sSpritePalettes_Spa[] =
@@ -1359,6 +1382,15 @@ static void StopPetting(u8 taskId)
     }
 }
 
+static void StartHandFrozen(u8 taskId)
+{
+    gSprites[sSpaData.handSpriteId].invisible = TRUE;
+    sSpaData.frozenHandSpriteId = CreateSprite(&sSpriteTemplate_FrozenHand, gSprites[sSpaData.handSpriteId].x, gSprites[sSpaData.handSpriteId].y, 1);
+    gSprites[sSpaData.frozenHandSpriteId].oam.priority = 0;
+    gSprites[sSpaData.frozenHandSpriteId].sCounter = 0;
+    PlaySE(SE_ICE_STAIRS);
+}
+
 void ResetSpaHand(void)
 {
     gSprites[sSpaData.handSpriteId].x = HAND_START_X;
@@ -1449,7 +1481,14 @@ static void SpaHandHandleInput(u8 taskId)
     {
         if (sSpaData.mon == SPA_LOMBRE && !sSpaData.isSatisfied)
         {
+            u32 iceZone = GetCurrentIceMeltZone(&gSprites[sSpaData.handSpriteId]);
 
+            if ((iceZone == ICE_ZONE_LEFT && !FlagGet(FLAG_SPA_LOMBRE_THAWED_LEFT) && gSprites[sSpaData.handSpriteId].y > (gSprites[sSpaData.iceSpriteIds[0]].y + 38))
+             || (iceZone == ICE_ZONE_RIGHT && !FlagGet(FLAG_SPA_LOMBRE_THAWED_RIGHT) && gSprites[sSpaData.handSpriteId].y > (gSprites[sSpaData.iceSpriteIds[1]].y + 38)))
+            {
+                StartHandFrozen(taskId);
+                return;
+            }
         }
         else if (petArea == SPA_PET_BAD)
         {
@@ -2090,3 +2129,41 @@ static void SpriteCB_Berry(struct Sprite *sprite)
 }
 
 #undef sTeddyArmSpriteId
+
+static void SpriteCB_FrozenHand(struct Sprite *sprite)
+{
+    if (sprite->sCounter > 0)
+    {
+        if (sprite->sCounter == 1)
+        {
+            sprite->x += 1;
+            PlaySE(SE_ICE_CRACK);
+        }
+        else if (sprite->sCounter == 5)
+        {
+            sprite->x -= 2;
+        }
+        else if (sprite->sCounter == 9)
+        {
+            sprite->x += 1;
+        }
+        else if (sprite->sCounter >= 13)
+        {
+            sprite->sInterval++;
+            sprite->sCounter = 0;
+            if (sprite->sInterval >= 3)
+            {
+                PlaySE(SE_ICE_BREAK);
+                DestroySprite(sprite);
+                gSprites[sSpaData.handSpriteId].invisible = FALSE;
+            }
+            return;
+        }
+
+        sprite->sCounter++;
+    }
+    else if (JOY_NEW(B_BUTTON | DPAD_ANY))
+    {
+        sprite->sCounter = 1;
+    }
+}

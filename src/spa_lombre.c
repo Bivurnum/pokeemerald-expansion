@@ -44,13 +44,6 @@ static const u32 gLombreIceArmLeft_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lomb
 static const u32 gLombreIceArmRight_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_ice_arm_right.4bpp");
 static const u32 gIceBlank_Gfx[] = INCBIN_U32("graphics/_spa/lombre/ice_blank.4bpp");
 
-enum IceZones
-{
-    ICE_ZONE_NONE,
-    ICE_ZONE_LEFT,
-    ICE_ZONE_RIGHT
-};
-
 static const union AnimCmd sAnim_Normal[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
