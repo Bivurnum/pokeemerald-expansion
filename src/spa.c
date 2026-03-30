@@ -1974,6 +1974,8 @@ static void Task_Spa(u8 taskId)
                 gSprites[sSpaData.clawSpriteId].x -= 2;
             if (tSelectedItem != SPA_HONEY && sSpaData.honeySpriteId)
                 gSprites[sSpaData.honeySpriteId].x -= 2;
+            if (tSelectedItem != SPA_ORB && sSpaData.orbSpriteId)
+                gSprites[sSpaData.orbSpriteId].x -= 2;
         }
         else
         {
