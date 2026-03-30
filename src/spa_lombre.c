@@ -3,6 +3,7 @@
 #include "bg.h"
 #include "event_data.h"
 #include "gpu_regs.h"
+#include "random.h"
 #include "sound.h"
 #include "task.h"
 #include "constants/songs.h"
@@ -29,6 +30,7 @@
 
 static void SpriteCB_IceBlank(struct Sprite *sprite);
 static void SpriteCB_LombreFist(struct Sprite *sprite);
+static void SpriteCB_Droplet(struct Sprite *sprite);
 
 static const u16 gLombre_Pal[] = INCBIN_U16("graphics/_spa/lombre/lombre_body.gbapal");
 static const u32 gLombreHeadTopLeft_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_head_top_left.4bpp");
@@ -46,6 +48,7 @@ static const u16 gIce_Pal[] = INCBIN_U16("graphics/_spa/lombre/lombre_ice_arm_le
 static const u32 gLombreIceArmLeft_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_ice_arm_left.4bpp");
 static const u32 gLombreIceArmRight_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_ice_arm_right.4bpp");
 static const u32 gIceBlank_Gfx[] = INCBIN_U32("graphics/_spa/lombre/ice_blank.4bpp");
+static const u32 gDroplet_Gfx[] = INCBIN_U32("graphics/_spa/lombre/droplet.4bpp");
 
 static const union AnimCmd sAnim_Normal[] =
 {
@@ -190,15 +193,23 @@ static const union AnimCmd sAnim_ArmLeftPunch[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_ArmBadTouch[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 32),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_LombreArmLeft[] =
 {
     sAnim_Normal,
+    sAnim_ArmBadTouch,
     sAnim_ArmLeftPunch,
 };
 
 static const union AnimCmd * const sAnims_LombreArmRight[] =
 {
     sAnim_Normal,
+    sAnim_ArmBadTouch,
 };
 
 static const union AnimCmd * const sAnims_LombreIceArmLeft[] =
@@ -219,6 +230,22 @@ static const union AnimCmd * const sAnims_LombreIceBlank[] =
 static const union AnimCmd * const sAnims_LombreLombreFist[] =
 {
     sAnim_Normal,
+};
+
+static const union AnimCmd sAnim_DropletDrop[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 6),
+    ANIMCMD_END
+};
+
+static const union AnimCmd * const sAnims_Droplet[] =
+{
+    sAnim_DropletDrop,
 };
 
 static const union AffineAnimCmd sAffineAnim_None[] =
@@ -314,6 +341,7 @@ static const struct SpriteFrameImage sPicTable_LombreArmLeft[] =
 static const struct SpriteFrameImage sPicTable_LombreArmRight[] =
 {
     spa_frame(gLombreArmRight_Gfx, 0, 8, 8),
+    spa_frame(gLombreArmRight_Gfx, 1, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_LombreIceArmLeft[] =
@@ -334,6 +362,16 @@ static const struct SpriteFrameImage sPicTable_IceBlank[] =
 static const struct SpriteFrameImage sPicTable_LombreFist[] =
 {
     spa_frame(gLombreFist_Gfx, 0, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Droplet[] =
+{
+    spa_frame(gDroplet_Gfx, 0, 2, 4),
+    spa_frame(gDroplet_Gfx, 1, 2, 4),
+    spa_frame(gDroplet_Gfx, 2, 2, 4),
+    spa_frame(gDroplet_Gfx, 3, 2, 4),
+    spa_frame(gDroplet_Gfx, 4, 2, 4),
+    spa_frame(gDroplet_Gfx, 5, 2, 4),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_LombreHeadTopLeft =
@@ -479,6 +517,17 @@ static const struct SpriteTemplate sSpriteTemplate_LombreFist =
     .callback = SpriteCB_LombreFist
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Droplet =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_ICE,
+    .oam = &sOam_16x32,
+    .anims = sAnims_Droplet,
+    .images = sPicTable_Droplet,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_Droplet
+};
+
 const struct SpritePalette sSpritePalettes_SpaLombre[] =
 {
     {
@@ -518,10 +567,10 @@ void CreateLombreSprites(u8 taskId)
     sLombreLegRightSpriteId = CreateSprite(&sSpriteTemplate_LombreLegRight, 156, 115, 9);
     gSprites[sLombreLegRightSpriteId].sTaskId = taskId;
 
-    sLombreArmLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreArmLeft, 73, 97, 9);
+    sLombreArmLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreArmLeft, 73, 97, 8);
     gSprites[sLombreArmLeftSpriteId].sTaskId = taskId;
 
-    sLombreArmRightSpriteId = CreateSprite(&sSpriteTemplate_LombreArmRight, 191, 97, 9);
+    sLombreArmRightSpriteId = CreateSprite(&sSpriteTemplate_LombreArmRight, 191, 97, 8);
     gSprites[sLombreArmRightSpriteId].sTaskId = taskId;
 
     if (!sSpaData.isSatisfied)
@@ -577,6 +626,8 @@ void StartLombreBadTouch(u8 taskId)
 {
     StartSpriteAnim(&gSprites[sLombreHeadTopLeftSpriteId], 4);
     StartSpriteAnim(&gSprites[sLombreHeadTopRightSpriteId], 4);
+    StartSpriteAnim(&gSprites[sLombreArmLeftSpriteId], 1);
+    StartSpriteAnim(&gSprites[sLombreArmRightSpriteId], 1);
     PauseUntilAnimEnds(taskId, sLombreHeadTopLeftSpriteId);
 }
 
@@ -618,7 +669,7 @@ void EndSpaBadLombre(void)
 {
     StartSpriteAnim(&gSprites[sLombreHeadTopLeftSpriteId], 5);
     StartSpriteAnim(&gSprites[sLombreHeadTopRightSpriteId], 5);
-    StartSpriteAnim(&gSprites[sLombreArmLeftSpriteId], 1);
+    StartSpriteAnim(&gSprites[sLombreArmLeftSpriteId], 2);
     sLombreFistSpriteId = CreateSprite(&sSpriteTemplate_LombreFist, 87, 93, 5);
     gSprites[sLombreFistSpriteId].sTaskId = gSprites[sLombreArmLeftSpriteId].sTaskId;
 }
@@ -668,6 +719,12 @@ static void LombreEatBerry(u8 taskId)
     else
         StartSpriteAnim(&gSprites[sSpaData.berrySpriteId], tBerryBites);
 }
+
+static s16 DropletXBounds[][2] =
+{
+    [ICE_ZONE_LEFT] =  { 50, 95 },
+    [ICE_ZONE_RIGHT] = { 168, 213 }
+};
 
 void HandleItemsLombre(u8 taskId)
 {
@@ -722,10 +779,20 @@ void HandleItemsLombre(u8 taskId)
             {
                 if (iceZone == ICE_ZONE_LEFT && !FlagGet(FLAG_SPA_LOMBRE_THAWED_LEFT))
                 {
+                    u32 dropletX = (Random() % (DropletXBounds[ICE_ZONE_LEFT][1] - DropletXBounds[ICE_ZONE_LEFT][0])) + DropletXBounds[ICE_ZONE_LEFT][0];
+                    u32 spriteId = CreateSprite(&sSpriteTemplate_Droplet, dropletX, gSprites[sLombreIceBlankLeft].y + 40, 4);
+
+                    gSprites[spriteId].sIceId = sLombreIceBlankLeft;
+                    StartSpriteAnim(&gSprites[spriteId], 0);
                     gSprites[sLombreIceBlankLeft].sIceMelting = TRUE;
                 }
                 else if (iceZone == ICE_ZONE_RIGHT && !FlagGet(FLAG_SPA_LOMBRE_THAWED_RIGHT))
                 {
+                    u32 dropletX = (Random() % (DropletXBounds[ICE_ZONE_RIGHT][1] - DropletXBounds[ICE_ZONE_RIGHT][0])) + DropletXBounds[ICE_ZONE_RIGHT][0];
+                    u32 spriteId = CreateSprite(&sSpriteTemplate_Droplet, dropletX, gSprites[sLombreIceBlankRight].y + 40, 4);
+
+                    gSprites[spriteId].sIceId = sLombreIceBlankRight;
+                    StartSpriteAnim(&gSprites[spriteId], 0);
                     gSprites[sLombreIceBlankRight].sIceMelting = TRUE;
                 }
 
@@ -815,4 +882,32 @@ static void SpriteCB_LombreFist(struct Sprite *sprite)
             sprite->y--;
         }
     }
+}
+
+static void SpriteCB_Droplet(struct Sprite *sprite)
+{
+    if (sprite->sCounter == 10 && sSpaData.iceMelting)
+    {
+        if (sprite->sIceId == sLombreIceBlankLeft)
+        {
+            u32 spriteId;
+            u32 dropletX = (Random() % (DropletXBounds[ICE_ZONE_LEFT][1] - DropletXBounds[ICE_ZONE_LEFT][0])) + DropletXBounds[ICE_ZONE_LEFT][0];
+
+            spriteId = CreateSprite(&sSpriteTemplate_Droplet, dropletX, gSprites[sLombreIceBlankLeft].y + 40, 4);
+            gSprites[spriteId].sIceId = sLombreIceBlankLeft;
+        }
+        else if (sprite->sIceId == sLombreIceBlankRight)
+        {
+            u32 spriteId;
+            u32 dropletX = (Random() % (DropletXBounds[ICE_ZONE_RIGHT][1] - DropletXBounds[ICE_ZONE_RIGHT][0])) + DropletXBounds[ICE_ZONE_RIGHT][0];
+
+            spriteId = CreateSprite(&sSpriteTemplate_Droplet, dropletX, gSprites[sLombreIceBlankRight].y + 40, 4);
+            gSprites[spriteId].sIceId = sLombreIceBlankRight;
+        }
+    }
+
+    if (sprite->animEnded)
+        DestroySprite(sprite);
+
+    sprite->sCounter++;
 }

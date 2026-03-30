@@ -286,6 +286,13 @@ static const struct OamData sOam_16x16 =
     .priority = 1,
 };
 
+static const struct OamData sOam_16x32 =
+{
+    .shape = SPRITE_SHAPE(16x32),
+    .size = SPRITE_SIZE(16x32),
+    .priority = 1,
+};
+
 static const struct OamData sOam_16x16_Affine =
 {
     .affineMode = ST_OAM_AFFINE_DOUBLE,
