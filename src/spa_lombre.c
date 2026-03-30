@@ -50,9 +50,21 @@ static const union AnimCmd sAnim_Normal[] =
     ANIMCMD_END
 };
 
-static const union AnimCmd sAnim_HeadAfterThaw[] =
+static const union AnimCmd sAnim_HeadAfterThawTop[] =
 {
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 8),
+    ANIMCMD_FRAME(.imageValue = 7, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 8, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_HeadAfterThawBottom[] =
+{
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 6),
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 6),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_END
@@ -92,7 +104,7 @@ static const union AnimCmd sAnim_HeadHappy[] =
 static const union AnimCmd * const sAnims_LombreHeadTopLeft[] =
 {
     sAnim_Normal,
-    sAnim_HeadAfterThaw,
+    sAnim_HeadAfterThawTop,
     sAnim_HeadSatisfied,
     sAnim_HeadPet,
     sAnim_HeadBadTouch,
@@ -103,7 +115,7 @@ static const union AnimCmd * const sAnims_LombreHeadTopLeft[] =
 static const union AnimCmd * const sAnims_LombreHeadTopRight[] =
 {
     sAnim_Normal,
-    sAnim_HeadAfterThaw,
+    sAnim_HeadAfterThawTop,
     sAnim_HeadSatisfied,
     sAnim_HeadPet,
     sAnim_HeadBadTouch,
@@ -114,7 +126,7 @@ static const union AnimCmd * const sAnims_LombreHeadTopRight[] =
 static const union AnimCmd * const sAnims_LombreHeadBottomLeft[] =
 {
     sAnim_Normal,
-    sAnim_HeadAfterThaw,
+    sAnim_HeadAfterThawBottom,
     sAnim_HeadSatisfied,
     sAnim_HeadHappy,
 };
@@ -122,7 +134,7 @@ static const union AnimCmd * const sAnims_LombreHeadBottomLeft[] =
 static const union AnimCmd * const sAnims_LombreHeadBottomRight[] =
 {
     sAnim_Normal,
-    sAnim_HeadAfterThaw,
+    sAnim_HeadAfterThawBottom,
     sAnim_HeadSatisfied,
     sAnim_HeadHappy,
 };
@@ -176,6 +188,8 @@ static const struct SpriteFrameImage sPicTable_LombreHeadTopLeft[] =
     spa_frame(gLombreHeadTopLeft_Gfx, 4, 8, 8),
     spa_frame(gLombreHeadTopLeft_Gfx, 5, 8, 8),
     spa_frame(gLombreHeadTopLeft_Gfx, 6, 8, 8),
+    spa_frame(gLombreHeadTopLeft_Gfx, 7, 8, 8),
+    spa_frame(gLombreHeadTopLeft_Gfx, 8, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_LombreHeadTopRight[] =
@@ -187,6 +201,8 @@ static const struct SpriteFrameImage sPicTable_LombreHeadTopRight[] =
     spa_frame(gLombreHeadTopRight_Gfx, 4, 8, 8),
     spa_frame(gLombreHeadTopRight_Gfx, 5, 8, 8),
     spa_frame(gLombreHeadTopRight_Gfx, 6, 8, 8),
+    spa_frame(gLombreHeadTopRight_Gfx, 7, 8, 8),
+    spa_frame(gLombreHeadTopRight_Gfx, 8, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_LombreHeadBottomLeft[] =
@@ -195,6 +211,8 @@ static const struct SpriteFrameImage sPicTable_LombreHeadBottomLeft[] =
     spa_frame(gLombreHeadBottomLeft_Gfx, 1, 8, 4),
     spa_frame(gLombreHeadBottomLeft_Gfx, 2, 8, 4),
     spa_frame(gLombreHeadBottomLeft_Gfx, 3, 8, 4),
+    spa_frame(gLombreHeadBottomLeft_Gfx, 4, 8, 4),
+    spa_frame(gLombreHeadBottomLeft_Gfx, 5, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_LombreHeadBottomRight[] =
@@ -203,6 +221,8 @@ static const struct SpriteFrameImage sPicTable_LombreHeadBottomRight[] =
     spa_frame(gLombreHeadBottomRight_Gfx, 1, 8, 4),
     spa_frame(gLombreHeadBottomRight_Gfx, 2, 8, 4),
     spa_frame(gLombreHeadBottomRight_Gfx, 3, 8, 4),
+    spa_frame(gLombreHeadBottomRight_Gfx, 4, 8, 4),
+    spa_frame(gLombreHeadBottomRight_Gfx, 5, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_LombreBody[] =
