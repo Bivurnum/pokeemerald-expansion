@@ -115,6 +115,14 @@ const u8 gText_FletchinderNoInterest[] = _("Fletchinder shows no interest.");
 const u8 gText_FletchinderWantsBerry[] = _("Looks like it wants the berry.");
 const u8 gText_FletchinderSatisfied[] = _("Fletchinder is completely satisfied!");
 
+const u8 gText_LombreEnjoyedSnack[] = _("Lombre enjoyed the snack!");
+const u8 gText_LombreSatisfied[] = _("Lombre is completely satisfied!");
+const u8 gText_LombreFrozen[] = _("Lombre's arms are frozen!");
+const u8 gText_LombreThawed[] = _("Lombre is glad to be thawed.");
+const u8 gText_LombreHotEnough[] = _("Will this be hot enough?");
+const u8 gText_LombreNoResponse[] = _("Lombre shows no response.");
+const u8 gText_LombreWantBerry[] = _("Does Lombre want a snack?");
+
 static const struct WindowTemplate sWindowTemplates[] =
 {
     {
@@ -763,6 +771,12 @@ static void DoSpaMonBerryText(bool8 isSatisfied)
         else
             AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FletchinderUninterestedBerry), gText_FletchinderUninterestedBerry, 0, 0, 0, NULL);
         break;
+    case SPA_LOMBRE:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_LombreWantBerry), gText_LombreWantBerry, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_LombreNoResponse), gText_LombreNoResponse, 0, 0, 0, NULL);
+        break;
     }
 }
 
@@ -785,6 +799,12 @@ static void DoSpaMonClawText(bool8 isSatisfied)
         break;
     case SPA_FLETCHINDER:
         AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotInterested), gText_NotInterested, 0, 0, 0, NULL);
+        break;
+    case SPA_LOMBRE:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotInterested), gText_NotInterested, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_LombreNoResponse), gText_LombreNoResponse, 0, 0, 0, NULL);
         break;
     }
 }
@@ -812,6 +832,38 @@ static void DoSpaMonHoneyText(bool8 isSatisfied)
         else
             AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FletchinderWantsHoney), gText_FletchinderWantsHoney, 0, 0, 0, NULL);
         break;
+    case SPA_LOMBRE:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotInterested), gText_NotInterested, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_LombreNoResponse), gText_LombreNoResponse, 0, 0, 0, NULL);
+        break;
+    }
+}
+
+static void DoSpaMonOrbText(bool8 isSatisfied)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    switch (sSpaData.mon)
+    {
+    case SPA_RATTATA:
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotInterested), gText_NotInterested, 0, 0, 0, NULL);
+        break;
+    case SPA_TEDDIURSA:
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotInterested), gText_NotInterested, 0, 0, 0, NULL);
+        break;
+    case SPA_PSYDUCK:
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_PsyduckNoInterest), gText_PsyduckNoInterest, 0, 0, 0, NULL);
+        break;
+    case SPA_FLETCHINDER:
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotInterested), gText_NotInterested, 0, 0, 0, NULL);
+        break;
+    case SPA_LOMBRE:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotInterested), gText_NotInterested, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_LombreHotEnough), gText_LombreHotEnough, 0, 0, 0, NULL);
+        break;
     }
 }
 
@@ -829,6 +881,7 @@ static void DoSpaMonItemText(u8 taskId, bool8 isSatisfied)
         DoSpaMonHoneyText(isSatisfied);
         break;
     case SPA_ORB:
+        DoSpaMonOrbText(isSatisfied);
         break;
     }
 }
@@ -862,6 +915,12 @@ static void DoSpaMonStatusText(bool8 isSatisfied)
         else
             AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FletchinderLooksFamished), gText_FletchinderLooksFamished, 0, 0, 0, NULL);
         break;
+    case SPA_LOMBRE:
+        if (isSatisfied)
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_LombreThawed), gText_LombreThawed, 0, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_LombreFrozen), gText_LombreFrozen, 0, 0, 0, NULL);
+        break;
     }
 }
 
@@ -894,6 +953,9 @@ static void DoSpaMonBadTouchText(bool8 isSatisfied)
         else
             AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_NotSatisfiedBadPet), gText_NotSatisfiedBadPet, 0, 0, 0, NULL);
         break;
+    case SPA_LOMBRE:
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_GeneralBadTouch), gText_GeneralBadTouch, 0, 0, 0, NULL);
+        break;
     }
 }
 
@@ -911,6 +973,9 @@ static void DoSpaMonSatisfiedText(void)
     case SPA_FLETCHINDER:
         AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FletchinderSatisfied), gText_FletchinderSatisfied, 0, 0, 0, NULL);
         break;
+    case SPA_LOMBRE:
+        AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_LombreSatisfied), gText_LombreSatisfied, 0, 0, 0, NULL);
+        break;
     }
 }
 
@@ -927,6 +992,9 @@ void DoSpaMonEnjoyedSnackText(void)
         break;
     case SPA_FLETCHINDER:
             AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_FletchinderEnjoyedSnack), gText_FletchinderEnjoyedSnack, 0, 0, 0, NULL);
+        break;
+    case SPA_LOMBRE:
+            AddTextPrinterParameterized(0, SPA_FONT_WIDTH(gText_LombreEnjoyedSnack), gText_LombreEnjoyedSnack, 0, 0, 0, NULL);
         break;
     }
 }
