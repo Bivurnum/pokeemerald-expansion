@@ -18,6 +18,7 @@
 #define sLombreArmRightSpriteId         sSpaData.monSpriteIds[8]
 #define sLombreIceArmLeftSpriteId       sSpaData.monSpriteIds[9]
 #define sLombreIceArmRightSpriteId      sSpaData.monSpriteIds[10]
+#define sLombreFistSpriteId             sSpaData.monSpriteIds[11]
 
 #define sLombreIceBlankLeft             sSpaData.iceSpriteIds[0]
 #define sLombreIceBlankRight            sSpaData.iceSpriteIds[1]
@@ -27,6 +28,7 @@
 #define sLombreIceMeltFrontRight        sSpaData.iceSpriteIds[5]
 
 static void SpriteCB_IceBlank(struct Sprite *sprite);
+static void SpriteCB_LombreFist(struct Sprite *sprite);
 
 static const u16 gLombre_Pal[] = INCBIN_U16("graphics/_spa/lombre/lombre_body.gbapal");
 static const u32 gLombreHeadTopLeft_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_head_top_left.4bpp");
@@ -38,6 +40,7 @@ static const u32 gLombreLegLeft_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_
 static const u32 gLombreLegRight_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_leg_right.4bpp");
 static const u32 gLombreArmLeft_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_arm_left.4bpp");
 static const u32 gLombreArmRight_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_arm_right.4bpp");
+static const u32 gLombreFist_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_fist.4bpp");
 
 static const u16 gIce_Pal[] = INCBIN_U16("graphics/_spa/lombre/lombre_ice_arm_left.gbapal");
 static const u32 gLombreIceArmLeft_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_ice_arm_left.4bpp");
@@ -181,9 +184,16 @@ static const union AnimCmd * const sAnims_LombreLegRight[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd sAnim_ArmLeftPunch[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 32),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_LombreArmLeft[] =
 {
     sAnim_Normal,
+    sAnim_ArmLeftPunch,
 };
 
 static const union AnimCmd * const sAnims_LombreArmRight[] =
@@ -204,6 +214,29 @@ static const union AnimCmd * const sAnims_LombreIceArmRight[] =
 static const union AnimCmd * const sAnims_LombreIceBlank[] =
 {
     sAnim_Normal,
+};
+
+static const union AnimCmd * const sAnims_LombreLombreFist[] =
+{
+    sAnim_Normal,
+};
+
+static const union AffineAnimCmd sAffineAnim_None[] =
+{
+    AFFINEANIMCMD_FRAME(256, 256, 0, 0),
+    AFFINEANIMCMD_END
+};
+
+static const union AffineAnimCmd sAffineAnim_LombreFist[] =
+{
+    AFFINEANIMCMD_FRAME(25, 25, 1, 15),
+    AFFINEANIMCMD_END
+};
+
+static const union AffineAnimCmd * const sAffineAnims_LombreFist[] =
+{
+    sAffineAnim_None,
+    sAffineAnim_LombreFist,
 };
 
 static const struct SpriteFrameImage sPicTable_LombreHeadTopLeft[] =
@@ -274,6 +307,8 @@ static const struct SpriteFrameImage sPicTable_LombreLegRight[] =
 static const struct SpriteFrameImage sPicTable_LombreArmLeft[] =
 {
     spa_frame(gLombreArmLeft_Gfx, 0, 8, 8),
+    spa_frame(gLombreArmLeft_Gfx, 1, 8, 8),
+    spa_frame(gLombreArmLeft_Gfx, 2, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_LombreArmRight[] =
@@ -294,6 +329,11 @@ static const struct SpriteFrameImage sPicTable_LombreIceArmRight[] =
 static const struct SpriteFrameImage sPicTable_IceBlank[] =
 {
     spa_frame(gIceBlank_Gfx, 0, 8, 8),
+};
+
+static const struct SpriteFrameImage sPicTable_LombreFist[] =
+{
+    spa_frame(gLombreFist_Gfx, 0, 4, 4),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_LombreHeadTopLeft =
@@ -428,6 +468,17 @@ static const struct SpriteTemplate sSpriteTemplate_IceBlank =
     .callback = SpriteCB_IceBlank
 };
 
+static const struct SpriteTemplate sSpriteTemplate_LombreFist =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_MON,
+    .oam = &sOam_32x32_Affine,
+    .anims = sAnims_LombreLombreFist,
+    .images = sPicTable_LombreFist,
+    .affineAnims = sAffineAnims_LombreFist,
+    .callback = SpriteCB_LombreFist
+};
+
 const struct SpritePalette sSpritePalettes_SpaLombre[] =
 {
     {
@@ -559,8 +610,17 @@ void ResetLombreSprites(void)
     StartSpriteAnim(&gSprites[sLombreHeadTopRightSpriteId], 2);
     StartSpriteAnim(&gSprites[sLombreHeadBottomLeftSpriteId], 2);
     StartSpriteAnim(&gSprites[sLombreHeadBottomRightSpriteId], 2);
+    StartSpriteAnim(&gSprites[sLombreArmLeftSpriteId], 0);
+    StartSpriteAnim(&gSprites[sLombreArmRightSpriteId], 0);
+}
+
+void EndSpaBadLombre(void)
+{
+    StartSpriteAnim(&gSprites[sLombreHeadTopLeftSpriteId], 5);
+    StartSpriteAnim(&gSprites[sLombreHeadTopRightSpriteId], 5);
     StartSpriteAnim(&gSprites[sLombreArmLeftSpriteId], 1);
-    StartSpriteAnim(&gSprites[sLombreArmRightSpriteId], 1);
+    sLombreFistSpriteId = CreateSprite(&sSpriteTemplate_LombreFist, 87, 93, 5);
+    gSprites[sLombreFistSpriteId].sTaskId = gSprites[sLombreArmLeftSpriteId].sTaskId;
 }
 
 static const u16 IceZones[][4] =
@@ -732,5 +792,27 @@ static void SpriteCB_IceBlank(struct Sprite *sprite)
         }
 
         sprite->sCounter++;
+    }
+}
+
+static void SpriteCB_LombreFist(struct Sprite *sprite)
+{
+    if (sprite->affineAnimBeginning)
+        sprite->sInterval = 1;
+
+    if (sprite->sInterval == 1)
+    {
+        if (sprite->affineAnimEnded)
+        {
+            sprite->sInterval = 0;
+            sprite->sCounter = 0;
+        }
+
+        sprite->sCounter++;
+        if (sprite->sCounter % 4 == 0)
+        {
+            sprite->x++;
+            sprite->y--;
+        }
     }
 }

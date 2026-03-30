@@ -1043,6 +1043,9 @@ static void PlaySpaMonAttackSE(void)
     case SPA_FLETCHINDER:
         PlaySE(SE_EFFECTIVE);
         break;
+    case SPA_LOMBRE:
+        PlaySE(SE_EFFECTIVE);
+        break;
     }
 }
 
@@ -1238,7 +1241,7 @@ const s16 PettingZones[][5][5] =
     {
         { 115, 170, 69, 95, SPA_PET_BODY },
         { 75, 182, 0, 70, SPA_PET_HEAD },
-        { 115, 170, 95, 125, SPA_PET_BAD },
+        { 105, 172, 95, 125, SPA_PET_BAD },
     }
 };
 
@@ -1845,6 +1848,10 @@ static void EndSpaBad(u8 taskId)
         EndSpaBadFletchinder();
         PlaySpaMonCry(CRY_MODE_ROAR_1);
         break;
+    case SPA_LOMBRE:
+        EndSpaBadLombre();
+        PlaySpaMonCry(CRY_MODE_ROAR_1);
+        break;
     }
     gTasks[taskId].func = Task_SpaEndBad;
     tState = 0;
@@ -2077,8 +2084,11 @@ static const u8 SpaMonAttackDelay[SPA_NUM_MONS] =
     60, // Rattata
     60, // Teddiursa
     30, // Psyduck
-    70  // Fletchinder
+    70, // Fletchinder
+    75 // Lombre
 };
+
+#define sLombreFistSpriteId             sSpaData.monSpriteIds[11]
 
 void Task_SpaEndBad(u8 taskId)
 {
@@ -2086,6 +2096,11 @@ void Task_SpaEndBad(u8 taskId)
     {
         PlaySE(SE_M_GUST);
         CreateTornadoSprites(taskId);
+    }
+    if (sSpaData.mon == SPA_LOMBRE && tCounter == 60)
+    {
+        PlaySE(SE_FALL);
+        StartSpriteAffineAnim(&gSprites[sLombreFistSpriteId], 1);
     }
 
     if (tCounter == SpaMonAttackDelay[sSpaData.mon])
@@ -2118,6 +2133,8 @@ void Task_SpaEndBad(u8 taskId)
     }
     tCounter++;
 }
+
+#undef sLombreFistSpriteId
 
 static void Task_SpaEndSuccess(u8 taskId)
 {

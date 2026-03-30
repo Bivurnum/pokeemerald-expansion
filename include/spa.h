@@ -83,7 +83,7 @@ struct SpaData
     u8 bugsAttacking:1;
     u8 iceMelting:1;
     u8 pausedSpriteId;
-    u8 monSpriteIds[11];
+    u8 monSpriteIds[12];
     u8 bugSpriteIds[4];
     u8 heartSpriteIds[3];
     u8 iceSpriteIds[6];
@@ -224,6 +224,7 @@ void StartLombrePet(void);
 void StartLombreBadTouch(u8 taskId);
 void StartLombreAngry(u8 taskId);
 void StartLombreHappyAnim(void);
+void EndSpaBadLombre(void);
 u32 GetCurrentIceMeltZone(struct Sprite *sprite);
 void HandleItemsLombre(u8 taskId);
 
@@ -290,6 +291,14 @@ static const struct OamData sOam_16x16_Affine =
     .affineMode = ST_OAM_AFFINE_DOUBLE,
     .shape = SPRITE_SHAPE(16x16),
     .size = SPRITE_SIZE(16x16),
+    .priority = 1,
+};
+
+static const struct OamData sOam_32x32_Affine =
+{
+    .affineMode = ST_OAM_AFFINE_DOUBLE,
+    .shape = SPRITE_SHAPE(32x32),
+    .size = SPRITE_SIZE(32x32),
     .priority = 1,
 };
 
