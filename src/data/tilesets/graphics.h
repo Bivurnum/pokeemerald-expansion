@@ -3048,3 +3048,41 @@ const u16 ALIGNED(4) gTilesetPalettes_General_Frlg[][16] =
 const u32 gTilesetTiles_General_Frlg[] = INCBIN_U32("data/tilesets/primary/general_frlg/tiles.4bpp.smol");
 
 #endif // IS_FRLG
+
+const u16 gTilesetPalettes_SpaExterior[][16] =
+{
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/00.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/01.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/02.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/03.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/04.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/05.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/06.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/07.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/08.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/09.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/10.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/11.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/spa_exterior/palettes/12.gbapal"),
+};
+
+const u32 gTilesetTiles_SpaExterior[] = INCBIN_U32("data/tilesets/secondary/spa_exterior/tiles.4bpp.lz");
+
+const u16 gTilesetPalettes_GeneralORAS[][16] =
+{
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/00.gbapal"),
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/01.gbapal"),
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/02.gbapal"),
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/03.gbapal"),
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/04.gbapal"),
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/05.gbapal"),
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/06.gbapal"),
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/07.gbapal"),
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/08.gbapal"),
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/09.gbapal"),
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/10.gbapal"),
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/11.gbapal"),
+    INCBIN_U16("data/tilesets/primary/general_oras/palettes/12.gbapal"),
+};
+
+const u32 gTilesetTiles_GeneralORAS[] = INCBIN_U32("data/tilesets/primary/general_oras/tiles.4bpp.lz");

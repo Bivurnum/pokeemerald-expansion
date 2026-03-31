@@ -9323,6 +9323,16 @@
       "border_height": 2,
       "border_width": 2,
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_SPA_FRONT",
+      "name": "SpaFront_Layout",
+      "width": 26,
+      "height": 50,
+      "primary_tileset": "gTileset_GeneralORAS",
+      "secondary_tileset": "gTileset_SpaExterior",
+      "border_filepath": "data/layouts/SpaFront/border.bin",
+      "blockdata_filepath": "data/layouts/SpaFront/map.bin"
     }
   ]
 }
