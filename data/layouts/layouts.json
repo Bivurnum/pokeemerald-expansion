@@ -9328,7 +9328,7 @@
       "id": "LAYOUT_SPA_FRONT",
       "name": "SpaFront_Layout",
       "width": 26,
-      "height": 50,
+      "height": 48,
       "primary_tileset": "gTileset_GeneralORAS",
       "secondary_tileset": "gTileset_SpaExterior",
       "border_filepath": "data/layouts/SpaFront/border.bin",

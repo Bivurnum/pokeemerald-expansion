@@ -1,0 +1,29 @@
+mapscripts SpaFront_MapScripts {
+
+}
+
+script SpaFront_EventScript_RoadRight {
+    lock
+    msgbox("You should make your way to the temple.")
+    waitmessage
+    closemessage
+    applymovement(LOCALID_PLAYER, moves(
+        walk_left
+    ))
+    waitmovement(0)
+    releaseall
+    end
+}
+
+script SpaFront_EventScript_RoadLeft {
+    lock
+    msgbox("You should make your way to the temple.")
+    waitmessage
+    closemessage
+    applymovement(LOCALID_PLAYER, moves(
+        walk_right
+    ))
+    waitmovement(0)
+    releaseall
+    end
+}
