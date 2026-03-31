@@ -1,6 +1,5 @@
 {
   "group_order": [
-    "gMapGroup_Spa",
     "gMapGroup_TownsAndRoutes",
     "gMapGroup_IndoorLittleroot",
     "gMapGroup_IndoorOldale",
@@ -75,10 +74,8 @@
     "gMapGroup_IndoorFiveIslandRoute_Frlg",
     "gMapGroup_IndoorTwoIslandRoute_Frlg",
     "gMapGroup_IndoorSixIslandRoute_Frlg",
-    "gMapGroup_IndoorSevenIslandRoute_Frlg"
-  ],
-  "gMapGroup_Spa": [
-    "SpaFront"
+    "gMapGroup_IndoorSevenIslandRoute_Frlg",
+    "gMapGroup_Spa"
   ],
   "gMapGroup_TownsAndRoutes": [
     "PetalburgCity",
@@ -1164,5 +1161,8 @@
   ],
   "gMapGroup_IndoorSevenIslandRoute_Frlg": [
     "SevenIsland_SevaultCanyon_House_Frlg"
+  ],
+  "gMapGroup_Spa": [
+    "SpaFront"
   ]
 }

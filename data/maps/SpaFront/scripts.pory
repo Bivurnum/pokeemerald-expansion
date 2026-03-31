@@ -1,5 +1,68 @@
-mapscripts SpaFront_MapScripts {
+const TRUCK_ID = 1
+const PLAYER_ID = LOCALID_PLAYER
 
+mapscripts SpaFront_MapScripts {
+    MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
+        VAR_SPA_INTRO_STATE, 0 {
+            turnobject(PLAYER_ID, DIR_NORTH)
+            hideplayer
+            setvar(VAR_SPA_INTRO_STATE, 1)
+            end
+        }
+    ]
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_SPA_INTRO_STATE, 1: SpaFront_OnFrame_0
+    ]
+}
+
+script SpaFront_OnFrame_0 {
+    lock
+    playse(SE_TRUCK_MOVE)
+    delay(32)
+    applymovement(TRUCK_ID, moves(
+        walk_left * 5
+    ))
+    waitmovement(0)
+    playse(SE_TRUCK_STOP)
+    applymovement(TRUCK_ID, moves(
+        walk_slow_left * 3
+    ))
+    waitmovement(0)
+    waitse
+    playse(SE_TRUCK_DOOR)
+    showplayer
+    delay(16)
+    applymovement(PLAYER_ID, moves(
+        walk_up
+        face_down
+    ))
+    waitmovement(0)
+    msgbox("You sure this is the place?\nNot a lot of folks come by here.")
+    waitmessage
+    closemessage
+    applymovement(PLAYER_ID, moves(
+        walk_in_place_down * 2
+    ))
+    waitmovement(0)
+    msgbox("Alright, then.\nYou take care of yourself.\pSee ya!")
+    waitmessage
+    closemessage
+    delay(8)
+    playse(SE_TRUCK_MOVE)
+    delay(8)
+    applymovement(TRUCK_ID, moves(
+        walk_slow_left * 3
+        walk_left * 8
+    ))
+    delay(128)
+    playse(SE_TRUCK_STOP)
+    waitmovement(0)
+    playbgm(MUS_ABANDONED_SHIP, TRUE)
+    removeobject(TRUCK_ID)
+    turnobject(PLAYER_ID, DIR_NORTH)
+    setvar(VAR_SPA_INTRO_STATE, 2)
+    releaseall
+    end
 }
 
 script SpaFront_EventScript_RoadRight {
@@ -7,7 +70,7 @@ script SpaFront_EventScript_RoadRight {
     msgbox("You should make your way to the temple.")
     waitmessage
     closemessage
-    applymovement(LOCALID_PLAYER, moves(
+    applymovement(PLAYER_ID, moves(
         walk_left
     ))
     waitmovement(0)
@@ -20,7 +83,7 @@ script SpaFront_EventScript_RoadLeft {
     msgbox("You should make your way to the temple.")
     waitmessage
     closemessage
-    applymovement(LOCALID_PLAYER, moves(
+    applymovement(PLAYER_ID, moves(
         walk_right
     ))
     waitmovement(0)
