@@ -79,56 +79,60 @@ SpaFront_OnFrame_0::
 # 53 "data/maps/SpaFront/scripts.pory"
 	applymovement 1, SpaFront_OnFrame_0_Movement_4
 # 57 "data/maps/SpaFront/scripts.pory"
-	delay 128
+	delay 28
 # 58 "data/maps/SpaFront/scripts.pory"
-	playse SE_TRUCK_STOP
+	turnobject LOCALID_PLAYER, DIR_WEST
 # 59 "data/maps/SpaFront/scripts.pory"
-	waitmovement 0
+	delay 100
 # 60 "data/maps/SpaFront/scripts.pory"
-	playbgm MUS_ABANDONED_SHIP, TRUE
+	playse SE_TRUCK_STOP
 # 61 "data/maps/SpaFront/scripts.pory"
-	removeobject 1
+	waitmovement 0
 # 62 "data/maps/SpaFront/scripts.pory"
-	turnobject LOCALID_PLAYER, DIR_NORTH
+	playbgm MUS_ABANDONED_SHIP, TRUE
 # 63 "data/maps/SpaFront/scripts.pory"
-	setvar VAR_SPA_INTRO_STATE, 2
+	removeobject 1
 # 64 "data/maps/SpaFront/scripts.pory"
+	turnobject LOCALID_PLAYER, DIR_NORTH
+# 65 "data/maps/SpaFront/scripts.pory"
+	setvar VAR_SPA_INTRO_STATE, 2
+# 66 "data/maps/SpaFront/scripts.pory"
 	releaseall
 	end
 
 
 SpaFront_EventScript_RoadRight::
-# 69 "data/maps/SpaFront/scripts.pory"
-	lock
-# 70 "data/maps/SpaFront/scripts.pory"
-	msgbox SpaFront_EventScript_RoadRight_Text_0
 # 71 "data/maps/SpaFront/scripts.pory"
-	waitmessage
+	lock
 # 72 "data/maps/SpaFront/scripts.pory"
-	closemessage
+	msgbox SpaFront_EventScript_RoadRight_Text_0
 # 73 "data/maps/SpaFront/scripts.pory"
+	waitmessage
+# 74 "data/maps/SpaFront/scripts.pory"
+	closemessage
+# 75 "data/maps/SpaFront/scripts.pory"
 	applymovement LOCALID_PLAYER, SpaFront_EventScript_RoadRight_Movement_0
-# 76 "data/maps/SpaFront/scripts.pory"
+# 78 "data/maps/SpaFront/scripts.pory"
 	waitmovement 0
-# 77 "data/maps/SpaFront/scripts.pory"
+# 79 "data/maps/SpaFront/scripts.pory"
 	releaseall
 	end
 
 
 SpaFront_EventScript_RoadLeft::
-# 82 "data/maps/SpaFront/scripts.pory"
-	lock
-# 83 "data/maps/SpaFront/scripts.pory"
-	msgbox SpaFront_EventScript_RoadRight_Text_0
 # 84 "data/maps/SpaFront/scripts.pory"
-	waitmessage
+	lock
 # 85 "data/maps/SpaFront/scripts.pory"
-	closemessage
+	msgbox SpaFront_EventScript_RoadRight_Text_0
 # 86 "data/maps/SpaFront/scripts.pory"
+	waitmessage
+# 87 "data/maps/SpaFront/scripts.pory"
+	closemessage
+# 88 "data/maps/SpaFront/scripts.pory"
 	applymovement LOCALID_PLAYER, SpaFront_EventScript_RoadLeft_Movement_0
-# 89 "data/maps/SpaFront/scripts.pory"
+# 91 "data/maps/SpaFront/scripts.pory"
 	waitmovement 0
-# 90 "data/maps/SpaFront/scripts.pory"
+# 92 "data/maps/SpaFront/scripts.pory"
 	releaseall
 	end
 
@@ -199,26 +203,26 @@ SpaFront_OnFrame_0_Movement_4:
 	walk_left
 	step_end
 
-# 73 "data/maps/SpaFront/scripts.pory"
+# 75 "data/maps/SpaFront/scripts.pory"
 SpaFront_EventScript_RoadRight_Movement_0:
-# 74 "data/maps/SpaFront/scripts.pory"
+# 76 "data/maps/SpaFront/scripts.pory"
 	walk_left
 	step_end
 
-# 86 "data/maps/SpaFront/scripts.pory"
+# 88 "data/maps/SpaFront/scripts.pory"
 SpaFront_EventScript_RoadLeft_Movement_0:
-# 87 "data/maps/SpaFront/scripts.pory"
+# 89 "data/maps/SpaFront/scripts.pory"
 	walk_right
 	step_end
 
 SpaFront_OnFrame_0_Text_0:
 # 40 "data/maps/SpaFront/scripts.pory"
-	.string "You sure this is the place?\nNot a lot of folks come by here.$"
+	.string "You sure this is the place?\nNot a lot of folks come by here.\pAnd I hear there are some\nstrange people up at the temple.\pThis is your destination?$"
 
 SpaFront_OnFrame_0_Text_1:
 # 47 "data/maps/SpaFront/scripts.pory"
 	.string "Alright, then.\nYou take care of yourself.\pSee ya!$"
 
 SpaFront_EventScript_RoadRight_Text_0:
-# 70 "data/maps/SpaFront/scripts.pory"
+# 72 "data/maps/SpaFront/scripts.pory"
 	.string "You should make your way to the temple.$"

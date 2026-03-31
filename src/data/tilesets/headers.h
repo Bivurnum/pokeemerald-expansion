@@ -1563,3 +1563,14 @@ const struct Tileset gTileset_GeneralORAS =
     .metatileAttributes = gMetatileAttributes_GeneralORAS,
     .callback = NULL,
 };
+
+const struct Tileset gTileset_SpaInterior =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_SpaInterior,
+    .palettes = gTilesetPalettes_SpaInterior,
+    .metatiles = gMetatiles_SpaInterior,
+    .metatileAttributes = gMetatileAttributes_SpaInterior,
+    .callback = NULL,
+};

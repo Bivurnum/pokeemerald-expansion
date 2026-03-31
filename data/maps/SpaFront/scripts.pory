@@ -37,7 +37,7 @@ script SpaFront_OnFrame_0 {
         face_down
     ))
     waitmovement(0)
-    msgbox("You sure this is the place?\nNot a lot of folks come by here.")
+    msgbox("You sure this is the place?\nNot a lot of folks come by here.\pAnd I hear there are some\nstrange people up at the temple.\pThis is your destination?")
     waitmessage
     closemessage
     applymovement(PLAYER_ID, moves(
@@ -54,7 +54,9 @@ script SpaFront_OnFrame_0 {
         walk_slow_left * 3
         walk_left * 8
     ))
-    delay(128)
+    delay(28)
+    turnobject(PLAYER_ID, DIR_WEST)
+    delay(100)
     playse(SE_TRUCK_STOP)
     waitmovement(0)
     playbgm(MUS_ABANDONED_SHIP, TRUE)

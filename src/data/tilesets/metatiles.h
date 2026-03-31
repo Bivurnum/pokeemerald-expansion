@@ -414,3 +414,6 @@ const u16 gMetatileAttributes_SpaExterior[] = INCBIN_U16("data/tilesets/secondar
 
 const u16 gMetatiles_GeneralORAS[] = INCBIN_U16("data/tilesets/primary/general_oras/metatiles.bin");
 const u16 gMetatileAttributes_GeneralORAS[] = INCBIN_U16("data/tilesets/primary/general_oras/metatile_attributes.bin");
+
+const u16 gMetatiles_SpaInterior[] = INCBIN_U16("data/tilesets/secondary/spa_interior/metatiles.bin");
+const u16 gMetatileAttributes_SpaInterior[] = INCBIN_U16("data/tilesets/secondary/spa_interior/metatile_attributes.bin");

@@ -1,0 +1,35 @@
+{
+  "id": "MAP_SPA_INTERIOR",
+  "name": "SpaInterior",
+  "layout": "LAYOUT_SPA_INTERIOR",
+  "music": "MUS_B_PALACE",
+  "region_map_section": "MAPSEC_ABANDONED_SHIP",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_INDOOR",
+  "allow_cycling": false,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": false,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [],
+  "warp_events": [
+    {
+      "x": 25,
+      "y": 18,
+      "elevation": 0,
+      "dest_map": "MAP_SPA_FRONT",
+      "dest_warp_id": "1"
+    },
+    {
+      "x": 26,
+      "y": 18,
+      "elevation": 0,
+      "dest_map": "MAP_SPA_FRONT",
+      "dest_warp_id": "1"
+    }
+  ],
+  "coord_events": [],
+  "bg_events": []
+}

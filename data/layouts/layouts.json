@@ -9333,6 +9333,16 @@
       "secondary_tileset": "gTileset_SpaExterior",
       "border_filepath": "data/layouts/SpaFront/border.bin",
       "blockdata_filepath": "data/layouts/SpaFront/map.bin"
+    },
+    {
+      "id": "LAYOUT_SPA_INTERIOR",
+      "name": "SpaInterior_Layout",
+      "width": 37,
+      "height": 20,
+      "primary_tileset": "gTileset_GeneralORAS",
+      "secondary_tileset": "gTileset_SpaInterior",
+      "border_filepath": "data/layouts/SpaInterior/border.bin",
+      "blockdata_filepath": "data/layouts/SpaInterior/map.bin"
     }
   ]
 }

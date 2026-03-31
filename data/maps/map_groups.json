@@ -1163,6 +1163,7 @@
     "SevenIsland_SevaultCanyon_House_Frlg"
   ],
   "gMapGroup_Spa": [
-    "SpaFront"
+    "SpaFront",
+    "SpaInterior"
   ]
 }

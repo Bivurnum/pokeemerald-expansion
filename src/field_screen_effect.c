@@ -295,7 +295,8 @@ static void SetUpWarpExitTask(void)
 
 void FieldCB_DefaultWarpExit(void)
 {
-    Overworld_PlaySpecialMapMusic();
+    if (VarGet(VAR_SPA_INTRO_STATE) > 1)
+        Overworld_PlaySpecialMapMusic();
     WarpFadeInScreen();
     SetUpWarpExitTask();
     FollowerNPC_WarpSetEnd();

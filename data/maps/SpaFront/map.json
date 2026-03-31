@@ -2,7 +2,7 @@
   "id": "MAP_SPA_FRONT",
   "name": "SpaFront",
   "layout": "LAYOUT_SPA_FRONT",
-  "music": "MUS_DUMMY",
+  "music": "MUS_ABANDONED_SHIP",
   "region_map_section": "MAPSEC_ABANDONED_SHIP",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -34,6 +34,13 @@
       "y": 43,
       "elevation": 0,
       "dest_map": "MAP_SPA_FRONT",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 14,
+      "y": 7,
+      "elevation": 0,
+      "dest_map": "MAP_SPA_INTERIOR",
       "dest_warp_id": "0"
     }
   ],
