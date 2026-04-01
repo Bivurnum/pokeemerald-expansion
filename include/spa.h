@@ -4,6 +4,7 @@
 // Task Data
 #define tState          gTasks[taskId].data[0]
 #define tSelectedItem   gTasks[taskId].data[1]
+#define tShouldSave     gTasks[taskId].data[1]
 #define tActiveItemId   gTasks[taskId].data[2]
 #define tBerryBites     gTasks[taskId].data[3]
 #define tCounter        gTasks[taskId].data[4]
@@ -95,6 +96,7 @@ struct SpaData
     u8 itemsExitSpriteId;
     u8 itemTraySpriteId1;
     u8 itemTraySpriteId2;
+    u8 saveSpriteId;
     u8 itemSelectorSpriteId;
     u8 berrySpriteId;
     u8 clawSpriteId;
@@ -236,6 +238,7 @@ void DoSpaMonEnjoyedSnackText(void);
 void DoSpaMonFeelsBetterText(void);
 void ResetSpaHand(void);
 void Task_SpaEndBad(u8 taskId);
+void Task_SpaStartMenuTask(u8 taskId);
 
 static const struct OamData sOam_64x64 =
 {

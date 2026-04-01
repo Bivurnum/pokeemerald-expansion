@@ -36,6 +36,7 @@
 #include "scanline_effect.h"
 #include "script.h"
 #include "sound.h"
+#include "spa.h"
 #include "start_menu.h"
 #include "strings.h"
 #include "string_util.h"
@@ -140,7 +141,6 @@ static u8 BattlePyramidRetireInputCallback(void);
 
 // Task callbacks
 static void StartMenuTask(u8 taskId);
-static void SaveGameTask(u8 taskId);
 static void Task_SaveAfterLinkBattle(u8 taskId);
 static void Task_WaitForBattleTowerLinkSave(u8 taskId);
 static bool8 FieldCB_ReturnToFieldStartMenu(void);
@@ -240,7 +240,7 @@ static const struct WindowTemplate sSaveInfoWindowTemplate = {
     .tilemapLeft = 1,
     .tilemapTop = 1,
     .width = 14,
-    .height = 10,
+    .height = 6,
     .paletteNum = 15,
     .baseBlock = 8
 };
@@ -577,8 +577,7 @@ static void CreateStartMenuTask(TaskFunc followupFunc)
 
     sInitStartMenuData[0] = 0;
     sInitStartMenuData[1] = 0;
-    taskId = CreateTask(StartMenuTask, 0x50);
-    SetTaskFuncWithFollowupFunc(taskId, StartMenuTask, followupFunc);
+    taskId = CreateTask(Task_SpaStartMenuTask, 10);
 }
 
 static bool8 FieldCB_ReturnToFieldStartMenu(void)
@@ -888,15 +887,16 @@ static bool8 SaveCallback(void)
         return FALSE;
     case SAVE_CANCELED: // Back to start menu
         ClearDialogWindowAndFrameToTransparent(0, FALSE);
-        InitStartMenu();
-        gMenuCallback = HandleStartMenuInput;
+        ScriptUnfreezeObjectEvents();
+        UnlockPlayerFieldControls();
+        //InitStartMenu();
+        //gMenuCallback = HandleStartMenuInput;
         return FALSE;
     case SAVE_SUCCESS:
     case SAVE_ERROR:    // Close start menu
-        ClearDialogWindowAndFrameToTransparent(0, TRUE);
+        ClearDialogWindowAndFrameToTransparent(0, FALSE);
         ScriptUnfreezeObjectEvents();
         UnlockPlayerFieldControls();
-        SoftResetInBattlePyramid();
         return TRUE;
     }
 
@@ -974,7 +974,7 @@ static void ShowSaveMessage(const u8 *message, u8 (*saveCallback)(void))
     sSaveDialogCallback = saveCallback;
 }
 
-static void SaveGameTask(u8 taskId)
+void SaveGameTask(u8 taskId)
 {
     u8 status = RunSaveCallback();
 
@@ -1432,6 +1432,7 @@ static void ShowSaveInfoWindow(void)
     xOffset = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar4, 0x70);
     PrintPlayerNameOnWindow(sSaveInfoWindowId, gStringVar4, xOffset, yOffset);
 
+    /*
     // Print badge count
     yOffset += 16;
     AddTextPrinterParameterized(sSaveInfoWindowId, FONT_NORMAL, gText_SavingBadges, 0, yOffset, TEXT_SKIP_DRAW, NULL);
@@ -1448,6 +1449,7 @@ static void ShowSaveInfoWindow(void)
         xOffset = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar4, 0x70);
         AddTextPrinterParameterized(sSaveInfoWindowId, FONT_NORMAL, gStringVar4, xOffset, yOffset, TEXT_SKIP_DRAW, NULL);
     }
+    */
 
     // Print play time
     yOffset += 16;
@@ -1512,6 +1514,14 @@ static bool8 StartMenuDexNavCallback(void)
 }
 
 void Script_ForceSaveGame(struct ScriptContext *ctx)
+{
+    SaveGame();
+    ShowSaveInfoWindow();
+    gMenuCallback = SaveCallback;
+    sSaveDialogCallback = SaveSavingMessageCallback;
+}
+
+void SaveSpaGame(void)
 {
     SaveGame();
     ShowSaveInfoWindow();

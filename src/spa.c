@@ -3,6 +3,7 @@
 #include "bg.h"
 #include "decompress.h"
 #include "event_data.h"
+#include "event_object_movement.h"
 #include "field_weather.h"
 #include "gpu_regs.h"
 #include "international_string_util.h"
@@ -13,9 +14,11 @@
 #include "overworld.h"
 #include "palette.h"
 #include "random.h"
+#include "save.h"
 #include "scanline_effect.h"
 #include "script.h"
 #include "sound.h"
+#include "start_menu.h"
 #include "strings.h"
 #include "task.h"
 #include "text.h"
@@ -62,6 +65,7 @@ static const u32 gItemTray_Gfx[] = INCBIN_U32("graphics/_spa/item_tray.4bpp");
 static const u32 gSelector_Gfx[] = INCBIN_U32("graphics/_spa/selector.4bpp");
 static const u32 gAngry_Gfx[] = INCBIN_U32("graphics/_spa/angry.4bpp");
 static const u32 gHeart_Gfx[] = INCBIN_U32("graphics/_spa/heart.4bpp");
+static const u32 gSave_Gfx[] = INCBIN_U32("graphics/_spa/save.4bpp");
 
 static const u16 gBerry_Pal[] = INCBIN_U16("graphics/_spa/berry.gbapal");
 static const u32 gBerry_Gfx[] = INCBIN_U32("graphics/_spa/berry.4bpp");
@@ -315,6 +319,11 @@ static const union AnimCmd * const sAnims_FrozenHand[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd * const sAnims_Save[] =
+{
+    sAnim_Normal,
+};
+
 static const struct SpriteFrameImage sPicTable_Hand[] =
 {
     spa_frame(gHand_Gfx, 0, 4, 4),
@@ -385,6 +394,11 @@ static const struct SpriteFrameImage sPicTable_Honey[] =
 static const struct SpriteFrameImage sPicTable_Orb[] =
 {
     spa_frame(gOrb_Gfx, 0, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Save[] =
+{
+    spa_frame(gSave_Gfx, 0, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_FrozenHand[] =
@@ -520,6 +534,17 @@ static const struct SpriteTemplate sSpriteTemplate_Orb =
     .oam = &sOam_32x32,
     .anims = sAnims_Orb,
     .images = sPicTable_Orb,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Save =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_ITEMS_ICON,
+    .oam = &sOam_64x32,
+    .anims = sAnims_Save,
+    .images = sPicTable_Save,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy
 };
@@ -2251,5 +2276,168 @@ static void SpriteCB_FrozenHand(struct Sprite *sprite)
     else if (JOY_NEW(B_BUTTON | DPAD_ANY))
     {
         sprite->sCounter = 1;
+    }
+}
+
+void Task_SpaStartMenuTask(u8 taskId)
+{
+    switch (tState)
+    {
+    case 0:
+        LoadSpritePalettes(sSpritePalettes_Spa);
+        tState++;
+        break;
+    case 1:
+        sSpaData.itemTraySpriteId1 = CreateSprite(&sSpriteTemplate_ItemTray, ITEM_START_X, 48, 1);
+        gSprites[sSpaData.itemTraySpriteId1].sTaskId = taskId;
+
+        sSpaData.itemTraySpriteId2 = CreateSprite(&sSpriteTemplate_ItemTray, ITEM_START_X, 112, 1);
+        gSprites[sSpaData.itemTraySpriteId2].sTaskId = taskId;
+        gSprites[sSpaData.itemTraySpriteId2].vFlip = TRUE;
+
+        sSpaData.saveSpriteId = CreateSprite(&sSpriteTemplate_Save, 32, -16, 1);
+        gSprites[sSpaData.saveSpriteId].sTaskId = taskId;
+
+        if (FlagGet(FLAG_SPA_OBTAINED_BERRY))
+        {
+            sSpaData.berrySpriteId = CreateSprite(&sSpriteTemplate_Berry, (ITEM_START_X), SpaItemsY[0][0], 0);
+            gSprites[sSpaData.berrySpriteId].sTaskId = taskId;
+            gSprites[sSpaData.berrySpriteId].oam.priority = 0;
+            StartSpriteAnim(&gSprites[sSpaData.berrySpriteId], tBerryBites);
+        }
+
+        if (FlagGet(FLAG_SPA_OBTAINED_CLAW))
+        {
+            sSpaData.clawSpriteId = CreateSprite(&sSpriteTemplate_Claw, (ITEM_START_X), SpaItemsY[1][0], 0);
+            gSprites[sSpaData.clawSpriteId].sTaskId = taskId;
+            gSprites[sSpaData.clawSpriteId].oam.priority = 0;
+        }
+
+        if (FlagGet(FLAG_SPA_OBTAINED_HONEY))
+        {
+            u8 numBugs = 0;
+            u8 i;
+
+            sSpaData.honeySpriteId = CreateSprite(&sSpriteTemplate_Honey, (ITEM_START_X), SpaItemsY[2][0], 0);
+            gSprites[sSpaData.honeySpriteId].sTaskId = taskId;
+            gSprites[sSpaData.honeySpriteId].oam.priority = 0;
+            for (i = 0; i < MAX_BUGS; i++)
+            {
+                if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i) && !FlagGet(FLAG_SPA_BUG_0_EATEN + i))
+                    numBugs++;
+            }
+            StartSpriteAnim(&gSprites[sSpaData.honeySpriteId], numBugs);
+        }
+
+        if (FlagGet(FLAG_SPA_OBTAINED_ORB))
+        {
+            sSpaData.orbSpriteId = CreateSprite(&sSpriteTemplate_Orb, (ITEM_START_X), SpaItemsY[3][0], 0);
+            gSprites[sSpaData.orbSpriteId].sTaskId = taskId;
+            gSprites[sSpaData.orbSpriteId].oam.priority = 0;
+        }
+
+        PlaySE(SE_BALL_TRAY_ENTER);
+        tState++;
+        break;
+    case 2:
+        if (gSprites[sSpaData.itemTraySpriteId1].x < (ITEM_END_X))
+        {
+            gSprites[sSpaData.itemTraySpriteId1].x += 2;
+            gSprites[sSpaData.itemTraySpriteId2].x += 2;
+            gSprites[sSpaData.saveSpriteId].y += 2;
+
+            if (sSpaData.berrySpriteId)
+                gSprites[sSpaData.berrySpriteId].x += 2;
+            if (sSpaData.clawSpriteId)
+                gSprites[sSpaData.clawSpriteId].x += 2;
+            if (sSpaData.honeySpriteId)
+                gSprites[sSpaData.honeySpriteId].x += 2;
+            if (sSpaData.orbSpriteId)
+                gSprites[sSpaData.orbSpriteId].x += 2;
+        }
+        else
+        {
+            tState++;
+        }
+        break;
+    case 3:
+        if (JOY_NEW(B_BUTTON | START_BUTTON))
+        {
+            PlaySE(SE_BALL_TRAY_ENTER);
+            tState = 4;
+        }
+        else if (JOY_NEW(A_BUTTON))
+        {
+            PlaySE(SE_SELECT);
+            tShouldSave = TRUE;
+            tState = 5;
+        }
+        break;
+    case 4:
+        if (gSprites[sSpaData.itemTraySpriteId1].x > ITEM_START_X)
+        {
+            gSprites[sSpaData.itemTraySpriteId1].x -= 2;
+            gSprites[sSpaData.itemTraySpriteId2].x -= 2;
+            gSprites[sSpaData.saveSpriteId].y -= 2;
+
+            if (sSpaData.berrySpriteId)
+                gSprites[sSpaData.berrySpriteId].x -= 2;
+            if (sSpaData.clawSpriteId)
+                gSprites[sSpaData.clawSpriteId].x -= 2;
+            if (sSpaData.honeySpriteId) 
+                gSprites[sSpaData.honeySpriteId].x -= 2;
+            if (sSpaData.orbSpriteId)
+                gSprites[sSpaData.orbSpriteId].x -= 2;
+        }
+        else
+        {
+            tState++;
+        }
+        break;
+    case 5:
+        DestroySprite(&gSprites[sSpaData.itemTraySpriteId1]);
+        sSpaData.itemTraySpriteId1 = 0;
+        DestroySprite(&gSprites[sSpaData.itemTraySpriteId2]);
+        sSpaData.itemTraySpriteId2 = 0;
+        DestroySprite(&gSprites[sSpaData.saveSpriteId]);
+        sSpaData.saveSpriteId = 0;
+
+        if (sSpaData.berrySpriteId)
+        {
+            DestroySprite(&gSprites[sSpaData.berrySpriteId]);
+            sSpaData.berrySpriteId = 0;
+        }
+        if (sSpaData.clawSpriteId)
+        {
+            DestroySprite(&gSprites[sSpaData.clawSpriteId]);
+            sSpaData.clawSpriteId = 0;
+        }
+        if (sSpaData.honeySpriteId)
+        {
+            DestroySprite(&gSprites[sSpaData.honeySpriteId]);
+            sSpaData.honeySpriteId = 0;
+        }
+        if (sSpaData.orbSpriteId)
+        {
+            DestroySprite(&gSprites[sSpaData.orbSpriteId]);
+            sSpaData.orbSpriteId = 0;
+        }
+        if (tShouldSave)
+            tState = 6;
+        else
+            tState = 7;
+        break;
+    case 6:
+        SaveSpaGame();
+        tState = 8;
+        break;
+    case 7:
+        UnfreezeObjectEvents();
+        UnlockPlayerFieldControls();
+        tState++;
+        break;
+    case 8:
+        DestroyTask(taskId);
+        break;
     }
 }
