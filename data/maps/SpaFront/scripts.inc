@@ -149,12 +149,12 @@ SpaFront_OnFrame_0_Movement_0:
 	walk_left
 # 23 "data/maps/SpaFront/scripts.pory"
 	walk_left
+# 23 "data/maps/SpaFront/scripts.pory"
+	walk_left
 	step_end
 
 # 27 "data/maps/SpaFront/scripts.pory"
 SpaFront_OnFrame_0_Movement_1:
-# 28 "data/maps/SpaFront/scripts.pory"
-	walk_slow_left
 # 28 "data/maps/SpaFront/scripts.pory"
 	walk_slow_left
 # 28 "data/maps/SpaFront/scripts.pory"

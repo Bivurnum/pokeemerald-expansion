@@ -20,12 +20,12 @@ script SpaFront_OnFrame_0 {
     playse(SE_TRUCK_MOVE)
     delay(32)
     applymovement(TRUCK_ID, moves(
-        walk_left * 5
+        walk_left * 6
     ))
     waitmovement(0)
     playse(SE_TRUCK_STOP)
     applymovement(TRUCK_ID, moves(
-        walk_slow_left * 3
+        walk_slow_left * 2
     ))
     waitmovement(0)
     waitse
