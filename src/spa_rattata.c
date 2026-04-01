@@ -435,37 +435,37 @@ void CreateRattataSprites(u8 taskId)
     if (FlagGet(FLAG_SPA_RATTATA_SATISFIED))
         sSpaData.isSatisfied = TRUE;
         
-    sRatEyesSpriteId = CreateSprite(&sSpriteTemplate_RatEyes, 154, 63, 8);
+    sRatEyesSpriteId = CreateSprite(&sSpriteTemplate_RatEyes, 154, 73, 8);
     gSprites[sRatEyesSpriteId].sTaskId = taskId;
     gSprites[sRatEyesSpriteId].sInterval = (Random() % 180) + 180;
 
-    sRatBodyLeftSpriteId = CreateSprite(&sSpriteTemplate_RatBodyLeft, 94, 73, 12);
+    sRatBodyLeftSpriteId = CreateSprite(&sSpriteTemplate_RatBodyLeft, 94, 83, 12);
     gSprites[sRatBodyLeftSpriteId].sTaskId = taskId;
     StartSpriteAnim(&gSprites[sRatBodyLeftSpriteId], 1);
 
-    sRatBodyRightSpriteId = CreateSprite(&sSpriteTemplate_RatBodyRight, 158, 81, 12);
+    sRatBodyRightSpriteId = CreateSprite(&sSpriteTemplate_RatBodyRight, 158, 91, 12);
     gSprites[sRatBodyRightSpriteId].sTaskId = taskId;
     StartSpriteAnim(&gSprites[sRatBodyRightSpriteId], 1);
 
-    sRatTailSpriteId = CreateSprite(&sSpriteTemplate_RatTail, 88, 33, 11);
+    sRatTailSpriteId = CreateSprite(&sSpriteTemplate_RatTail, 88, 43, 11);
     gSprites[sRatTailSpriteId].sTaskId = taskId;
 
-    sRatEarLeftSpriteId = CreateSprite(&sSpriteTemplate_RatEarLeft, 119, 32, 10);
+    sRatEarLeftSpriteId = CreateSprite(&sSpriteTemplate_RatEarLeft, 119, 42, 10);
     gSprites[sRatEarLeftSpriteId].sTaskId = taskId;
 
-    sRatEarRightSpriteId = CreateSprite(&sSpriteTemplate_RatEarRight, 183, 32, 10);
+    sRatEarRightSpriteId = CreateSprite(&sSpriteTemplate_RatEarRight, 183, 42, 10);
     gSprites[sRatEarRightSpriteId].sTaskId = taskId;
 
-    sRatMouthSpriteId = CreateSprite(&sSpriteTemplate_RatMouth, 152, 80, 10);
+    sRatMouthSpriteId = CreateSprite(&sSpriteTemplate_RatMouth, 152, 90, 10);
     gSprites[sRatMouthSpriteId].sTaskId = taskId;
 
-    sRatWhiskerLeftSpriteId = CreateSprite(&sSpriteTemplate_RatWhiskerLeft, 96, 59, 9);
+    sRatWhiskerLeftSpriteId = CreateSprite(&sSpriteTemplate_RatWhiskerLeft, 96, 69, 9);
     gSprites[sRatWhiskerLeftSpriteId].sTaskId = taskId;
 
-    sRatWhiskerRightSpriteId = CreateSprite(&sSpriteTemplate_RatWhiskerRight, 207, 57, 9);
+    sRatWhiskerRightSpriteId = CreateSprite(&sSpriteTemplate_RatWhiskerRight, 207, 67, 9);
     gSprites[sRatWhiskerRightSpriteId].sTaskId = taskId;
 
-    sRatToesSpriteId = CreateSprite(&sSpriteTemplate_RatToes, 104, 109, 12);
+    sRatToesSpriteId = CreateSprite(&sSpriteTemplate_RatToes, 104, 119, 12);
     gSprites[sRatToesSpriteId].sTaskId = taskId;
 }
 

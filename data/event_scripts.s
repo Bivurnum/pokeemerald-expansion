@@ -1741,3 +1741,5 @@ EventScript_PalletTown_PlayersHouse_2F_TurnOnPC::
 	.include "data/maps/SpaFront/scripts.inc"
 
 	.include "data/maps/SpaInterior/scripts.inc"
+
+	.include "data/maps/SpaMountain/scripts.inc"

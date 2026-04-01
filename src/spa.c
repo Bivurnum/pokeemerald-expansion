@@ -1104,7 +1104,7 @@ void PauseUntilAnimEnds(u8 taskId, u8 spriteId)
 
 static const s16 MusicPos[][3] =
 {
-    [SPA_RATTATA] =     { 190, 20, 0 },
+    [SPA_RATTATA] =     { 190, 30, 0 },
     [SPA_TEDDIURSA] =   {  84, 26, 1 },
     [SPA_PSYDUCK] =     {  64, 37, 1 },
     [SPA_FLETCHINDER] = { 190, 45, 0 },
@@ -1120,7 +1120,7 @@ void CreateMusicSprite(u8 taskId)
 
 static const s16 AngryPos[][2] =
 {
-    [SPA_RATTATA] =     { 165, 38 },
+    [SPA_RATTATA] =     { 165, 48 },
     [SPA_TEDDIURSA] =   { 155, 40 },
     [SPA_FLETCHINDER] = { 160, 40 },
     [SPA_LOMBRE] =      {  90, 40 },
@@ -1215,11 +1215,11 @@ const s16 PettingZones[][5][5] =
 
     [SPA_RATTATA] =
     {
-        { 78, 118, 49, 97, SPA_PET_BODY },
-        { 127, 175, 32, 72, SPA_PET_HEAD },
-        { 72, 112, 8, 31, SPA_PET_BAD },
-        { 64, 80, 25, 73, SPA_PET_BAD },
-        { 155, 168, 91, 104, SPA_PET_BAD }
+        { 78, 118, 59, 107, SPA_PET_BODY },
+        { 127, 175, 42, 82, SPA_PET_HEAD },
+        { 72, 112, 18, 41, SPA_PET_BAD },
+        { 64, 80, 35, 83, SPA_PET_BAD },
+        { 155, 168, 101, 114, SPA_PET_BAD }
     },
     [SPA_TEDDIURSA] =
     {
@@ -1476,9 +1476,9 @@ void ResetSpaHand(void)
 static const s16 HeartPos[][3][2] =
 {
     [SPA_RATTATA] = {
-        { 130, 40 },
-        { 150, 35 },
-        { 170, 45 },
+        { 130, 50 },
+        { 150, 45 },
+        { 170, 55 },
     },
     [SPA_TEDDIURSA] = {
         { 110, 40 },
@@ -1810,7 +1810,7 @@ static const s16 FeedingZones[][2][2] =
     [SPA_RATTATA] =
     {
         { 135, 170 },
-        { 83, 110 }
+        { 93, 120 }
     },
     [SPA_TEDDIURSA] =
     {

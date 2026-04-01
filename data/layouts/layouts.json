@@ -9343,6 +9343,16 @@
       "secondary_tileset": "gTileset_SpaInterior",
       "border_filepath": "data/layouts/SpaInterior/border.bin",
       "blockdata_filepath": "data/layouts/SpaInterior/map.bin"
+    },
+    {
+      "id": "LAYOUT_SPA_MOUNTAIN",
+      "name": "SpaMountain_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_GeneralORAS",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/SpaMountain/border.bin",
+      "blockdata_filepath": "data/layouts/SpaMountain/map.bin"
     }
   ]
 }
