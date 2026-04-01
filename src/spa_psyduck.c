@@ -491,46 +491,46 @@ const struct SpritePalette sSpritePalettes_SpaPsyduck[] =
 };
 
 static const s16 sBugStartPos[MAX_BUGS][2] = {
-    [0] = { 92, 64 },
-    [1] = { 176, 74 },
-    [2] = { 162, 50 },
-    [3] = { 150, 82 }
+    [0] = { 92, 69 },
+    [1] = { 176, 79 },
+    [2] = { 162, 55 },
+    [3] = { 150, 87 }
 };
 
 void CreatePsyduckSprites(u8 taskId)
 {
-    sPsyduckHeadLeftSpriteId = CreateSprite(&sSpriteTemplate_PsyduckHeadLeft, 72, 77, 8);
+    sPsyduckHeadLeftSpriteId = CreateSprite(&sSpriteTemplate_PsyduckHeadLeft, 72, 82, 8);
     gSprites[sPsyduckHeadLeftSpriteId].sTaskId = taskId;
 
-    sPsyduckHeadRightSpriteId = CreateSprite(&sSpriteTemplate_PsyduckHeadRight, 120, 77, 8);
+    sPsyduckHeadRightSpriteId = CreateSprite(&sSpriteTemplate_PsyduckHeadRight, 120, 82, 8);
     gSprites[sPsyduckHeadRightSpriteId].sTaskId = taskId;
 
-    sPsyduckBillSpriteId = CreateSprite(&sSpriteTemplate_PsyduckBill, 73, 98, 7);
+    sPsyduckBillSpriteId = CreateSprite(&sSpriteTemplate_PsyduckBill, 73, 103, 7);
     gSprites[sPsyduckBillSpriteId].sTaskId = taskId;
 
-    sPsyduckHairSpriteId = CreateSprite(&sSpriteTemplate_PsyduckHair, 104, 44, 7);
+    sPsyduckHairSpriteId = CreateSprite(&sSpriteTemplate_PsyduckHair, 104, 49, 7);
     gSprites[sPsyduckHairSpriteId].sTaskId = taskId;
 
-    sPsyduckEyesSpriteId = CreateSprite(&sSpriteTemplate_PsyduckEyes, 89, 73, 6);
+    sPsyduckEyesSpriteId = CreateSprite(&sSpriteTemplate_PsyduckEyes, 89, 78, 6);
     gSprites[sPsyduckEyesSpriteId].sTaskId = taskId;
     if (!FlagGet(FLAG_SPA_PSYDUCK_SATISFIED))
     {
         StartSpriteAnim(&gSprites[sPsyduckEyesSpriteId], 1);
     }
 
-    sPsyduckBodyLeftSpriteId = CreateSprite(&sSpriteTemplate_PsyduckBodyLeft, 128, 67, 10);
+    sPsyduckBodyLeftSpriteId = CreateSprite(&sSpriteTemplate_PsyduckBodyLeft, 128, 72, 10);
     gSprites[sPsyduckBodyLeftSpriteId].sTaskId = taskId;
 
-    sPsyduckBodyRightSpriteId = CreateSprite(&sSpriteTemplate_PsyduckBodyRight, 192, 67, 10);
+    sPsyduckBodyRightSpriteId = CreateSprite(&sSpriteTemplate_PsyduckBodyRight, 192, 72, 10);
     gSprites[sPsyduckBodyRightSpriteId].sTaskId = taskId;
 
-    sPsyduckTailSpriteId = CreateSprite(&sSpriteTemplate_PsyduckTail, 180, 33, 9);
+    sPsyduckTailSpriteId = CreateSprite(&sSpriteTemplate_PsyduckTail, 180, 38, 9);
     gSprites[sPsyduckTailSpriteId].sTaskId = taskId;
 
-    sPsyduckFootSpriteId = CreateSprite(&sSpriteTemplate_PsyduckFoot, 205, 76, 9);
+    sPsyduckFootSpriteId = CreateSprite(&sSpriteTemplate_PsyduckFoot, 205, 81, 9);
     gSprites[sPsyduckFootSpriteId].sTaskId = taskId;
 
-    sPsyduckArmFrontSpriteId = CreateSprite(&sSpriteTemplate_PsyduckArmFront, 138, 92, 5);
+    sPsyduckArmFrontSpriteId = CreateSprite(&sSpriteTemplate_PsyduckArmFront, 138, 97, 5);
     gSprites[sPsyduckArmFrontSpriteId].sTaskId = taskId;
     if (FlagGet(FLAG_SPA_PSYDUCK_SATISFIED))
     {
@@ -544,7 +544,7 @@ void CreatePsyduckSprites(u8 taskId)
         StartSpriteAnim(&gSprites[sPsyduckArmFrontSpriteId], 1);
         gSprites[sPsyduckArmFrontSpriteId].x2 = -16;
 
-        sPsyduckArmBackSpriteId = CreateSprite(&sSpriteTemplate_PsyduckArmBack, 57, 78, 5);
+        sPsyduckArmBackSpriteId = CreateSprite(&sSpriteTemplate_PsyduckArmBack, 57, 83, 5);
         gSprites[sPsyduckArmBackSpriteId].sTaskId = taskId;
 
         for (i = 0; i < MAX_BUGS; i++)
@@ -601,7 +601,7 @@ void StartPsyduckBugsBadTouch(u8 taskId)
         sSpaData.pausedSpriteId = sPsyduckEyesSpriteId;
         StartSpriteAnim(&gSprites[sSpaData.handSpriteId], 1);
         gSprites[sSpaData.handSpriteId].subpriority = 4;
-    gSprites[sSpaData.handSpriteId].oam.priority = 1;
+        gSprites[sSpaData.handSpriteId].oam.priority = 1;
     }
     else
     {
@@ -718,10 +718,10 @@ static void SpriteCB_ArmBack(struct Sprite *sprite)
 }
 
 static const s16 sBugBoundCoords[MAX_BUGS][2] = {
-    [0] = { 70, 59 },
-    [1] = { 148, 50 },
-    [2] = { 131, 43 },
-    [3] = { 126, 61 },
+    [0] = { 70, 64 },
+    [1] = { 148, 55 },
+    [2] = { 131, 48 },
+    [3] = { 126, 66 },
 };
 
 static void MoveBug(struct Sprite *sprite)

@@ -1106,7 +1106,7 @@ static const s16 MusicPos[][3] =
 {
     [SPA_RATTATA] =     { 190, 30, 0 },
     [SPA_TEDDIURSA] =   {  84, 26, 1 },
-    [SPA_PSYDUCK] =     {  64, 37, 1 },
+    [SPA_PSYDUCK] =     {  64, 42, 1 },
     [SPA_FLETCHINDER] = { 190, 45, 0 },
     [SPA_LOMBRE] =      { 180, 25, 0 },
 };
@@ -1228,8 +1228,8 @@ const s16 PettingZones[][5][5] =
     },
     [SPA_PSYDUCK] =
     {
-        { 126, 195, 47, 94, SPA_PET_BODY },
-        { 69, 124, 60, 94, SPA_PET_HEAD },
+        { 126, 195, 52, 99, SPA_PET_BODY },
+        { 69, 124, 65, 99, SPA_PET_HEAD },
     },
     [SPA_FLETCHINDER] =
     {
@@ -1359,7 +1359,8 @@ static void StopSpaPetAnim(u8 taskId)
         ResetTeddiursaSpritesNormal();
         break;
     case SPA_PSYDUCK:
-        ResetPsyduckSprites();
+        if (sSpaData.isSatisfied)
+            ResetPsyduckSprites();
         break;
     case SPA_FLETCHINDER:
         ResetFletchinderSpritesSatisfied();
@@ -1414,7 +1415,8 @@ static void ResetSpaMonSprites(void)
             ResetTeddiursaSpritesScratch();
         break;
     case SPA_PSYDUCK:
-        ResetPsyduckSprites();
+        if (sSpaData.isSatisfied)
+            ResetPsyduckSprites();
         break;
     case SPA_FLETCHINDER:
         if (sSpaData.isSatisfied)
@@ -1486,9 +1488,9 @@ static const s16 HeartPos[][3][2] =
         { 150, 45 },
     },
     [SPA_PSYDUCK] = {
-        { 70, 50 },
-        { 90, 45 },
-        { 110, 55 },
+        { 70, 55 },
+        { 90, 50 },
+        { 110, 60 },
     },
     [SPA_FLETCHINDER] = {
         { 130, 40 },
