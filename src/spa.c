@@ -656,10 +656,7 @@ static void CB2_StartSpa(void)
         DecompressDataWithHeaderVram(gSpaBG_Tilemap, (u16*) BG_SCREEN_ADDR(6));
 
         if (sSpaData.mon == SPA_LOMBRE)
-        {
             DecompressDataWithHeaderVram(gLombreArms_Tilemap, (u16*) BG_SCREEN_ADDR(7));
-            LoadPalette(gLombreArms_Pal, BG_PLTT_ID(6), PLTT_SIZE_4BPP);
-        }
 
         ResetBgsAndClearDma3BusyFlags(0);
         InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
