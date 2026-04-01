@@ -388,6 +388,8 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysA;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysN;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SSAnne;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Cynthia;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_KimonoBlue;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_KimonoRed;
 // Begin pokemon event objects
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PokeBall;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Follower;
@@ -793,6 +795,8 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_SS_ANNE]                  = &gObjectEventGraphicsInfo_SSAnne,
 #endif // IS_FRLG
     [OBJ_EVENT_GFX_CYNTHIA]                  = &gObjectEventGraphicsInfo_Cynthia,
+    [OBJ_EVENT_GFX_KIMONO_BLUE]              = &gObjectEventGraphicsInfo_KimonoBlue,
+    [OBJ_EVENT_GFX_KIMONO_RED]               = &gObjectEventGraphicsInfo_KimonoRed,
 };
 
 const struct ObjectEventGraphicsInfo *const gMauvilleOldManGraphicsInfoPointers[] = {
