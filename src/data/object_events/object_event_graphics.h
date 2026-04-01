@@ -365,6 +365,7 @@ const u32 gObjectEventPic_PokeBall[] = INCBIN_U32("graphics/object_events/pics/m
 const u32 gObjectEventPic_Cynthia[] = INCBIN_U32("graphics/object_events/pics/people/cynthia.4bpp");
 const u32 gObjectEventPic_KimonoBlue[] = INCBIN_U32("graphics/object_events/pics/people/kimono_blue.4bpp");
 const u32 gObjectEventPic_KimonoRed[] = INCBIN_U32("graphics/object_events/pics/people/kimono_red.4bpp");
+const u32 gObjectEventPic_CynthiaSick[] = INCBIN_U32("graphics/object_events/pics/people/cynthia_sick.4bpp");
 
 const u32 gObjectEventPic_DeoxysOld[] = INCBIN_U32("graphics/object_events/pics/pokemon_old/deoxys.4bpp");
 const u32 gObjectEventPic_MewOld[] = INCBIN_U32("graphics/object_events/pics/pokemon_old/mew.4bpp");

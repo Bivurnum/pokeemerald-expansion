@@ -415,6 +415,7 @@
 #define OBJ_EVENT_GFX_CYNTHIA                    388
 #define OBJ_EVENT_GFX_KIMONO_BLUE                389
 #define OBJ_EVENT_GFX_KIMONO_RED                 390
+#define OBJ_EVENT_GFX_CYNTHIA_SICK               391
 
 // FRLG equivalents
 
@@ -426,7 +427,7 @@
 // NOTE: The maximum amount of object events has been expanded from 255 to 65535.
 // Since dynamic graphics ids still require at least 16 free values, the actual limit
 // is 65519, but even considering follower Pokémon, this should be more than enough :)
-#define NUM_OBJ_EVENT_GFX                        391
+#define NUM_OBJ_EVENT_GFX                        392
 
 
 // These are dynamic object gfx ids.
