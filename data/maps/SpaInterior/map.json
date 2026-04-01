@@ -16,18 +16,32 @@
   "object_events": [],
   "warp_events": [
     {
-      "x": 25,
-      "y": 18,
+      "x": 24,
+      "y": 19,
       "elevation": 0,
       "dest_map": "MAP_SPA_FRONT",
       "dest_warp_id": "1"
     },
     {
-      "x": 26,
-      "y": 18,
+      "x": 25,
+      "y": 19,
       "elevation": 0,
       "dest_map": "MAP_SPA_FRONT",
       "dest_warp_id": "1"
+    },
+    {
+      "x": 24,
+      "y": 3,
+      "elevation": 0,
+      "dest_map": "MAP_SPA_INTERIOR",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 25,
+      "y": 3,
+      "elevation": 0,
+      "dest_map": "MAP_SPA_INTERIOR",
+      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],

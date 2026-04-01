@@ -9337,8 +9337,8 @@
     {
       "id": "LAYOUT_SPA_INTERIOR",
       "name": "SpaInterior_Layout",
-      "width": 37,
-      "height": 20,
+      "width": 38,
+      "height": 21,
       "primary_tileset": "gTileset_GeneralORAS",
       "secondary_tileset": "gTileset_SpaInterior",
       "border_filepath": "data/layouts/SpaInterior/border.bin",
