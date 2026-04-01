@@ -666,13 +666,13 @@ void HandleItemsFletchinder(u8 taskId)
     case SPA_CLAW:
         break;
     case SPA_HONEY:
-        if (tBiteState == BITE_STATE_ACTIVE && gSprites[sSpaData.honeySpriteId].oam.priority != 0 && !IsHoneyInFletchinderFeedingZone())
+        if ((tBiteState == BITE_STATE_ACTIVE && gSprites[sSpaData.honeySpriteId].oam.priority != 0 && !IsHoneyInFletchinderFeedingZone()) || !HoneyHasBugs())
         {
             gSprites[sSpaData.honeySpriteId].oam.priority = 0;
             gSprites[sSpaData.honeySpriteId].subpriority = 5;
         }
 
-        if (gSprites[sSpaData.honeySpriteId].oam.priority != 1 && IsHoneyInFletchinderFeedingZone())
+        if (gSprites[sSpaData.honeySpriteId].oam.priority != 1 && IsHoneyInFletchinderFeedingZone() && HoneyHasBugs())
         {
             gSprites[sSpaData.honeySpriteId].oam.priority = 1;
             gSprites[sSpaData.honeySpriteId].subpriority = 11;
