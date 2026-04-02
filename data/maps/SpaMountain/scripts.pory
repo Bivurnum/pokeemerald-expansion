@@ -1,5 +1,57 @@
-mapscripts SpaMountain_MapScripts {
+const PLAYER_ID = LOCALID_PLAYER
+const BLUE_ID = BLUE_MTN_ID
+const RED_ID = RED_MTN_ID
 
+mapscripts SpaMountain_MapScripts {
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_SPA_INTRO_STATE, 3: SpaMountain_OnFrame_0
+    ]
+}
+
+script SpaMountain_OnFrame_0 {
+    lock
+    applymovement(PLAYER_ID, moves(
+        walk_up
+    ))
+    waitmovement(0)
+    playse(SE_PIN)
+    applymovement(RED_MTN_ID, moves(
+        emote_exclamation_mark
+    ))
+    applymovement(BLUE_ID, moves(
+        emote_exclamation_mark
+    ))
+    waitmovement(0)
+    delay(60)
+    applymovement(PLAYER_ID, moves(
+        walk_up
+    ))
+    applymovement(RED_MTN_ID, moves(
+        walk_fast_up * 3
+        face_left
+    ))
+    applymovement(BLUE_ID, moves(
+        walk_fast_up * 2
+        walk_fast_left
+        walk_fast_up
+        face_right
+    ))
+    waitmovement(BLUE_ID)
+    msgbox("{COLOR RED}Oh, my!
+            Is she alright?")
+    applymovement(BLUE_ID, moves(
+        walk_in_place_right * 4
+    ))
+    waitmovement(0)
+    msgbox("{COLOR BLUE}She's still breathing,
+            But she's out cold.
+            
+            Let's get her inside.
+            Quickly!")
+    closemessage
+    setvar(VAR_SPA_INTRO_STATE, 4)
+    warp(MAP_SPA_INTERIOR, 8, 15)
+    waitstate
 }
 
 script SpaMountain_EventScript_Rattata {

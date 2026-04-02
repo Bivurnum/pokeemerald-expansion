@@ -98,7 +98,7 @@
       "flag": "FLAG_HIDE_CYNTHIA_SICK_MTN"
     },
     {
-      "local_id": "RED_ID",
+      "local_id": "RED_MTN_ID",
       "graphics_id": "OBJ_EVENT_GFX_KIMONO_RED",
       "x": 17,
       "y": 46,
@@ -112,7 +112,7 @@
       "flag": "FLAG_HIDE_KIMONO_RED_MOUNTAIN"
     },
     {
-      "local_id": "BLUE_ID",
+      "local_id": "BLUE_MTN_ID",
       "graphics_id": "OBJ_EVENT_GFX_KIMONO_BLUE",
       "x": 16,
       "y": 46,
