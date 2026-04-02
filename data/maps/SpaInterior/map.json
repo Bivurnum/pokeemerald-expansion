@@ -56,6 +56,20 @@
       "elevation": 0,
       "dest_map": "MAP_SPA_MOUNTAIN",
       "dest_warp_id": "0"
+    },
+    {
+      "x": 36,
+      "y": 10,
+      "elevation": 0,
+      "dest_map": "MAP_SPA_ORCHARD",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 36,
+      "y": 11,
+      "elevation": 0,
+      "dest_map": "MAP_SPA_ORCHARD",
+      "dest_warp_id": "1"
     }
   ],
   "coord_events": [],
