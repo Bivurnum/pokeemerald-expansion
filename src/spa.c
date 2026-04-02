@@ -1235,8 +1235,10 @@ static void ItemTraySlideOut(u8 taskId)
         gSprites[sSpaData.honeySpriteId].oam.priority = 0;
         for (i = 0; i < MAX_BUGS; i++)
         {
-            if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i) && !FlagGet(FLAG_SPA_BUG_0_EATEN + i))
+            if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i))
                 numBugs++;
+            if (FlagGet(FLAG_SPA_BUG_0_EATEN + i))
+                numBugs--;
         }
         StartSpriteAnim(&gSprites[sSpaData.honeySpriteId], numBugs);
     }
@@ -1774,7 +1776,7 @@ static void SpaItemHandleInput(u8 taskId)
         {
             if (sSpaData.mon == SPA_TEDDIURSA && !sSpaData.isSatisfied && tSelectedItem == SPA_CLAW)
                 ResetTeddiursaSpritesScratch();
-            if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY && HoneyHasBugs())
+            if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY)
                 ResetFletchinderSpritesFamished();
             if (sSpaData.mon == SPA_LOMBRE && sSpaData.iceMelting)
             {
@@ -1796,7 +1798,7 @@ static void SpaItemHandleInput(u8 taskId)
         {
             if (sSpaData.mon == SPA_TEDDIURSA && !sSpaData.isSatisfied && tSelectedItem == SPA_CLAW)
                 ResetTeddiursaSpritesScratch();
-            if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY && HoneyHasBugs())
+            if (sSpaData.mon == SPA_FLETCHINDER && !sSpaData.isSatisfied && tSelectedItem == SPA_HONEY)
                 ResetFletchinderSpritesFamished();
             if (sSpaData.mon == SPA_LOMBRE && sSpaData.iceMelting)
             {
@@ -2349,8 +2351,10 @@ void Task_SpaStartMenuTask(u8 taskId)
             gSprites[sSpaData.honeySpriteId].oam.priority = 0;
             for (i = 0; i < MAX_BUGS; i++)
             {
-                if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i) && !FlagGet(FLAG_SPA_BUG_0_EATEN + i))
+                if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i))
                     numBugs++;
+                if (FlagGet(FLAG_SPA_BUG_0_EATEN + i))
+                    numBugs--;
             }
             StartSpriteAnim(&gSprites[sSpaData.honeySpriteId], numBugs);
         }

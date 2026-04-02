@@ -9347,8 +9347,8 @@
     {
       "id": "LAYOUT_SPA_MOUNTAIN",
       "name": "SpaMountain_Layout",
-      "width": 20,
-      "height": 20,
+      "width": 37,
+      "height": 54,
       "primary_tileset": "gTileset_GeneralORAS",
       "secondary_tileset": "gTileset_SpaExterior",
       "border_filepath": "data/layouts/SpaMountain/border.bin",

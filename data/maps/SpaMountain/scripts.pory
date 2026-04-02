@@ -1,0 +1,38 @@
+mapscripts SpaMountain_MapScripts {
+
+}
+
+script SpaMountain_EventScript_Rattata {
+    lock
+    startspa(0)
+    releaseall
+    end
+}
+
+script SpaMountain_EventScript_Teddiursa {
+    lock
+    startspa(1)
+    releaseall
+    end
+}
+
+script SpaMountain_EventScript_Psyduck {
+    lock
+    startspa(2)
+    releaseall
+    end
+}
+
+script SpaMountain_EventScript_Fletchinder {
+    lock
+    startspa(3)
+    releaseall
+    end
+}
+
+script SpaMountain_EventScript_Lombre {
+    lock
+    startspa(4)
+    releaseall
+    end
+}

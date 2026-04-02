@@ -44,17 +44,17 @@
       "dest_warp_id": "1"
     },
     {
-      "x": 24,
-      "y": 3,
-      "elevation": 0,
-      "dest_map": "MAP_SPA_INTERIOR",
-      "dest_warp_id": "0"
-    },
-    {
       "x": 25,
       "y": 3,
       "elevation": 0,
-      "dest_map": "MAP_SPA_INTERIOR",
+      "dest_map": "MAP_SPA_MOUNTAIN",
+      "dest_warp_id": "1"
+    },
+    {
+      "x": 24,
+      "y": 3,
+      "elevation": 0,
+      "dest_map": "MAP_SPA_MOUNTAIN",
       "dest_warp_id": "0"
     }
   ],
