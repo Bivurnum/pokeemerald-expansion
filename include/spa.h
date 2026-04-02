@@ -97,6 +97,7 @@ struct SpaData
     u8 itemTraySpriteId1;
     u8 itemTraySpriteId2;
     u8 saveSpriteId;
+    u8 optionsSpriteId;
     u8 itemSelectorSpriteId;
     u8 berrySpriteId;
     u8 clawSpriteId;

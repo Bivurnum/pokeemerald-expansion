@@ -66,6 +66,7 @@ static const u32 gSelector_Gfx[] = INCBIN_U32("graphics/_spa/selector.4bpp");
 static const u32 gAngry_Gfx[] = INCBIN_U32("graphics/_spa/angry.4bpp");
 static const u32 gHeart_Gfx[] = INCBIN_U32("graphics/_spa/heart.4bpp");
 static const u32 gSave_Gfx[] = INCBIN_U32("graphics/_spa/save.4bpp");
+static const u32 gOptions_Gfx[] = INCBIN_U32("graphics/_spa/options.4bpp");
 
 static const u16 gBerry_Pal[] = INCBIN_U16("graphics/_spa/berry.gbapal");
 static const u32 gBerry_Gfx[] = INCBIN_U32("graphics/_spa/berry.4bpp");
@@ -87,7 +88,7 @@ const u8 gText_NotSatisfiedBadPet[] = _("It doesn't want to be pet right now.");
 const u8 gText_FeelsBetter[] = _("That feels much better!");
 const u8 gText_NotInterested[] = _("It doesn't seem interested.");
 
-const u8 gText_RattataWary[] = _("Rattata is watching warily.");
+const u8 gText_RattataWary[] = _("{R_BUTTON} Options are making this very long and");
 const u8 gText_RattataAtEase[] = _("Rattata seems to be more at ease.");
 const u8 gText_RattataBadPet[] = _("It doesn't trust you enough to pet it.");
 const u8 gText_RattataInterestedBerry[] = _("It seems interested in the berry.");
@@ -324,6 +325,11 @@ static const union AnimCmd * const sAnims_Save[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd * const sAnims_Options[] =
+{
+    sAnim_Normal,
+};
+
 static const struct SpriteFrameImage sPicTable_Hand[] =
 {
     spa_frame(gHand_Gfx, 0, 4, 4),
@@ -399,6 +405,11 @@ static const struct SpriteFrameImage sPicTable_Orb[] =
 static const struct SpriteFrameImage sPicTable_Save[] =
 {
     spa_frame(gSave_Gfx, 0, 8, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Options[] =
+{
+    spa_frame(gOptions_Gfx, 0, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_FrozenHand[] =
@@ -545,6 +556,17 @@ static const struct SpriteTemplate sSpriteTemplate_Save =
     .oam = &sOam_64x32,
     .anims = sAnims_Save,
     .images = sPicTable_Save,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Options =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_ITEMS_ICON,
+    .oam = &sOam_64x32,
+    .anims = sAnims_Options,
+    .images = sPicTable_Options,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy
 };
@@ -2298,6 +2320,9 @@ void Task_SpaStartMenuTask(u8 taskId)
         sSpaData.saveSpriteId = CreateSprite(&sSpriteTemplate_Save, 32, -16, 1);
         gSprites[sSpaData.saveSpriteId].sTaskId = taskId;
 
+        sSpaData.optionsSpriteId = CreateSprite(&sSpriteTemplate_Options, 32, 176, 1);
+        gSprites[sSpaData.optionsSpriteId].sTaskId = taskId;
+
         if (FlagGet(FLAG_SPA_OBTAINED_BERRY))
         {
             sSpaData.berrySpriteId = CreateSprite(&sSpriteTemplate_Berry, (ITEM_START_X), SpaItemsY[0][0], 0);
@@ -2345,6 +2370,7 @@ void Task_SpaStartMenuTask(u8 taskId)
             gSprites[sSpaData.itemTraySpriteId1].x += 2;
             gSprites[sSpaData.itemTraySpriteId2].x += 2;
             gSprites[sSpaData.saveSpriteId].y += 2;
+            gSprites[sSpaData.optionsSpriteId].y -= 2;
 
             if (sSpaData.berrySpriteId)
                 gSprites[sSpaData.berrySpriteId].x += 2;
@@ -2379,6 +2405,7 @@ void Task_SpaStartMenuTask(u8 taskId)
             gSprites[sSpaData.itemTraySpriteId1].x -= 2;
             gSprites[sSpaData.itemTraySpriteId2].x -= 2;
             gSprites[sSpaData.saveSpriteId].y -= 2;
+            gSprites[sSpaData.optionsSpriteId].y += 2;
 
             if (sSpaData.berrySpriteId)
                 gSprites[sSpaData.berrySpriteId].x -= 2;
@@ -2401,6 +2428,8 @@ void Task_SpaStartMenuTask(u8 taskId)
         sSpaData.itemTraySpriteId2 = 0;
         DestroySprite(&gSprites[sSpaData.saveSpriteId]);
         sSpaData.saveSpriteId = 0;
+        DestroySprite(&gSprites[sSpaData.optionsSpriteId]);
+        sSpaData.optionsSpriteId = 0;
 
         if (sSpaData.berrySpriteId)
         {
