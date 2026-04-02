@@ -11,6 +11,7 @@
 #include "malloc.h"
 #include "menu.h"
 #include "m4a.h"
+#include "option_menu.h"
 #include "overworld.h"
 #include "palette.h"
 #include "random.h"
@@ -88,7 +89,7 @@ const u8 gText_NotSatisfiedBadPet[] = _("It doesn't want to be pet right now.");
 const u8 gText_FeelsBetter[] = _("That feels much better!");
 const u8 gText_NotInterested[] = _("It doesn't seem interested.");
 
-const u8 gText_RattataWary[] = _("{R_BUTTON} Options are making this very long and");
+const u8 gText_RattataWary[] = _("Rattata is watching warily.");
 const u8 gText_RattataAtEase[] = _("Rattata seems to be more at ease.");
 const u8 gText_RattataBadPet[] = _("It doesn't trust you enough to pet it.");
 const u8 gText_RattataInterestedBerry[] = _("It seems interested in the berry.");
@@ -2392,11 +2393,16 @@ void Task_SpaStartMenuTask(u8 taskId)
             PlaySE(SE_BALL_TRAY_ENTER);
             tState = 4;
         }
-        else if (JOY_NEW(A_BUTTON))
+        else if (JOY_NEW(L_BUTTON))
         {
             PlaySE(SE_SELECT);
             tShouldSave = TRUE;
             tState = 5;
+        }
+        else if (JOY_NEW(R_BUTTON))
+        {
+            FadeScreen(FADE_TO_BLACK, 0);
+            tState = 9;
         }
         break;
     case 4:
@@ -2467,6 +2473,16 @@ void Task_SpaStartMenuTask(u8 taskId)
         break;
     case 8:
         DestroyTask(taskId);
+        break;
+    case 9:
+        if (!gPaletteFade.active)
+        {
+            PlayRainStoppingSoundEffect();
+            CleanupOverworldWindowsAndTilemaps();
+            SetMainCallback2(CB2_InitOptionMenu); // Display option menu
+            gMain.savedCallback = CB2_ReturnToField;
+            tState = 8;
+        }
         break;
     }
 }
