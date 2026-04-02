@@ -11,6 +11,7 @@
 #include "event_scripts.h"
 #include "fieldmap.h"
 #include "field_effect.h"
+#include "field_message_box.h"
 #include "field_player_avatar.h"
 #include "field_specials.h"
 #include "field_weather.h"
@@ -144,6 +145,7 @@ static void StartMenuTask(u8 taskId);
 static void Task_SaveAfterLinkBattle(u8 taskId);
 static void Task_WaitForBattleTowerLinkSave(u8 taskId);
 static bool8 FieldCB_ReturnToFieldStartMenu(void);
+static void SaveGameTask(u8 taskId);
 
 static const struct WindowTemplate sWindowTemplate_SafariBalls = {
     .bg = 0,
@@ -887,14 +889,13 @@ static bool8 SaveCallback(void)
         return FALSE;
     case SAVE_CANCELED: // Back to start menu
         ClearDialogWindowAndFrameToTransparent(0, FALSE);
-        ScriptUnfreezeObjectEvents();
-        UnlockPlayerFieldControls();
-        //InitStartMenu();
-        //gMenuCallback = HandleStartMenuInput;
+        InitStartMenu();
+        gMenuCallback = HandleStartMenuInput;
         return FALSE;
     case SAVE_SUCCESS:
     case SAVE_ERROR:    // Close start menu
-        ClearDialogWindowAndFrameToTransparent(0, FALSE);
+        ClearDialogWindowAndFrameToTransparent(0, TRUE);
+        HideFieldMessageBox();
         ScriptUnfreezeObjectEvents();
         UnlockPlayerFieldControls();
         return TRUE;
@@ -974,7 +975,7 @@ static void ShowSaveMessage(const u8 *message, u8 (*saveCallback)(void))
     sSaveDialogCallback = saveCallback;
 }
 
-void SaveGameTask(u8 taskId)
+static void SaveGameTask(u8 taskId)
 {
     u8 status = RunSaveCallback();
 
@@ -1194,6 +1195,7 @@ static u8 SaveReturnSuccessCallback(void)
     if (!IsSEPlaying() && SaveSuccesTimer())
     {
         HideSaveInfoWindow();
+        HideFieldMessageBox();
         return SAVE_SUCCESS;
     }
     else

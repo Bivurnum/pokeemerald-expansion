@@ -240,9 +240,9 @@ static void Task_NewGameBirchSpeech_Cleanup(u8);
 static void SpriteCB_Null(struct Sprite *);
 static void Task_NewGameBirchSpeech_ReturnFromNamingScreenShowTextbox(u8);
 static void MainMenu_FormatSavegamePlayer(void);
-static void MainMenu_FormatSavegamePokedex(void);
+//static void MainMenu_FormatSavegamePokedex(void);
 static void MainMenu_FormatSavegameTime(void);
-static void MainMenu_FormatSavegameBadges(void);
+//static void MainMenu_FormatSavegameBadges(void);
 
 // .rodata
 
@@ -2179,6 +2179,7 @@ static void MainMenu_FormatSavegameTime(void)
     AddTextPrinterParameterized3(2, FONT_NORMAL, GetStringRightAlignXOffset(FONT_NORMAL, str, 0xD0), 17, sTextColor_MenuInfo, TEXT_SKIP_DRAW, str);
 }
 
+/*
 static void MainMenu_FormatSavegamePokedex(void)
 {
     u8 str[0x20];
@@ -2213,6 +2214,7 @@ static void MainMenu_FormatSavegameBadges(void)
     ConvertIntToDecimalStringN(str, badgeCount, STR_CONV_MODE_LEADING_ZEROS, 1);
     AddTextPrinterParameterized3(2, FONT_NORMAL, GetStringRightAlignXOffset(FONT_NORMAL, str, 0xD0), 33, sTextColor_MenuInfo, TEXT_SKIP_DRAW, str);
 }
+*/
 
 static void LoadMainMenuWindowFrameTiles(u8 bgId, u16 tileOffset)
 {
