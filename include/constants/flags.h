@@ -690,12 +690,12 @@
 #define FLAG_HIDE_PSYDUCK               0x27A
 #define FLAG_HIDE_FLETCHINDER           0x27B
 #define FLAG_HIDE_LOMBRE                0x27C
-#define FLAG_UNUSED_0x27D  0x27D // Unused Flag
-#define FLAG_UNUSED_0x27E  0x27E // Unused Flag
-#define FLAG_UNUSED_0x27F  0x27F // Unused Flag
-#define FLAG_UNUSED_0x280  0x280 // Unused Flag
-#define FLAG_UNUSED_0x281  0x281 // Unused Flag
-#define FLAG_UNUSED_0x282  0x282 // Unused Flag
+#define FLAG_HIDE_KIMONO_RED_INTERIOR   0x27D
+#define FLAG_HIDE_KIMONO_BLUE_INTERIOR  0x27E
+#define FLAG_HIDE_CYNTHIA_SICK_INT      0x27F
+#define FLAG_HIDE_CYNTHIA_SICK_MTN      0x280
+#define FLAG_HIDE_KIMONO_RED_MOUNTAIN   0x281
+#define FLAG_HIDE_KIMONO_BLUE_MOUNTAIN  0x282
 #define FLAG_UNUSED_0x283  0x283 // Unused Flag
 #define FLAG_UNUSED_0x284  0x284 // Unused Flag
 #define FLAG_UNUSED_0x285  0x285 // Unused Flag

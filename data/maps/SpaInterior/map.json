@@ -24,6 +24,34 @@
       "movement_range_y": 3,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
+      "script": "SpaInterior_EventScript_CynthiaSick",
+      "flag": "FLAG_HIDE_CYNTHIA_SICK_INT"
+    },
+    {
+      "local_id": "RED_ID",
+      "graphics_id": "OBJ_EVENT_GFX_KIMONO_RED",
+      "x": 27,
+      "y": 7,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "SpaInterior_EventScript_KimonoRed",
+      "flag": "FLAG_HIDE_KIMONO_RED_INTERIOR"
+    },
+    {
+      "local_id": "BLUE_ID",
+      "graphics_id": "OBJ_EVENT_GFX_KIMONO_BLUE",
+      "x": 6,
+      "y": 14,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
       "script": "NULL",
       "flag": "0"
     }

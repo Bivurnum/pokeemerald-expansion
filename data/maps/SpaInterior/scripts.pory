@@ -1,0 +1,222 @@
+const PLAYER_ID = LOCALID_PLAYER
+// Itami
+// Ureshi
+
+mapscripts SpaInterior_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        switch (var(VAR_SPA_INTRO_STATE)) {
+            case 2: 
+                setobjectxyperm(RED_ID, 24, 15)
+                setobjectxyperm(BLUE_ID, 31, 11)
+        }
+    }
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_SPA_INTRO_STATE, 2: SpaInterior_OnFrame_0
+    ]
+}
+
+script SpaInterior_OnTransition_0 {
+    setobjectxyperm(RED_ID, 24, 15)
+    setobjectxyperm(BLUE_ID, 31, 11)
+    return
+}
+
+script SpaInterior_OnFrame_0 {
+    lock
+    applymovement(PLAYER_ID, moves(
+        walk_up
+    ))
+    waitmovement(PLAYER_ID)
+    playse(SE_PIN)
+    applymovement(RED_ID, moves(
+        face_down
+        emote_exclamation_mark
+    ))
+    waitmovement(0)
+    delay(60)
+    applymovement(RED_ID, moves(
+        walk_down
+    ))
+    applymovement(PLAYER_ID, moves(
+        walk_up
+    ))
+    waitmovement(PLAYER_ID)
+    msgbox("{COLOR RED}Welcome!\nYou must be the new temple apprentice.\pYou've arrived at a good time.\nEverything's so exciting!\pCome with me.\pI'll introduce you to my partner.")
+    waitmessage
+    closemessage
+    delay(30)
+    turnobject(RED_ID, DIR_EAST)
+    msgbox("{COLOR RED}URESHI!!!!!")
+    waitmessage
+    closemessage
+    turnobject(PLAYER_ID, DIR_EAST)
+    delay(30)
+    applymovement(BLUE_ID, moves(
+        walk_down * 5
+        walk_left * 6
+        delay_8
+    ))
+    waitmovement(0)
+    msgbox("{COLOR BLUE}What do you want, Itami?!")
+    waitmessage
+    closemessage
+    delay(8)
+    msgbox("{COLOR RED}New apprentice, I'd like you to\nmeet Ureshi.\pWhile I'm keeping the temple clean\nand proper, she's outside playing\lin the dirt.")
+    waitmessage
+    closemessage
+    delay(8)
+    playse(SE_LEDGE)
+    applymovement(BLUE_ID, moves(
+        jump_in_place_left
+    ))
+    waitmovement(0)
+    msgbox("{COLOR BLUE}Humph!\nI keep the plants healthy and\lthe grounds beautiful.\pAt least I get some sun instead of\nsitting inside all day.")
+    waitmessage
+    closemessage
+    delay(8)
+    playse(SE_LEDGE)
+    applymovement(RED_ID, moves(
+        jump_in_place_right
+    ))
+    waitmovement(0)
+    msgbox("{COLOR RED}Harumph!")
+    waitmessage
+    closemessage
+    delay(8)
+    msgbox("{COLOR BLUE}Aren't you going to tell our\nnew apprentice about the excitement\laround here?")
+    waitmessage
+    closemessage
+    delay(8)
+    msgbox("{COLOR RED}I was just about to!")
+    closemessage
+    turnobject(RED_ID, DIR_SOUTH)
+    delay(8)
+    turnobject(BLUE_ID, DIR_SOUTH)
+    turnobject(PLAYER_ID, DIR_NORTH)
+    msgbox("{COLOR RED}Ahem.
+            As you know, hundreds of years ago
+            this temple was a place for
+            mythical Pokémon to come and be cared
+            for by the temple stewards.
+            
+            It has been many ages since any
+            mythical Pokémon have been seen.
+            However, just recently some Pokémon
+            with strange patterns have been
+            showing up in droves on the mountain!
+
+            Isn't that inte--?"
+            )
+    msgbox("{COLOR BLUE}So we called in an expert on
+            Pokémon mythology.
+            She's out there right now
+            figuring out what to do."
+            )
+    waitmessage
+    turnobject(BLUE_ID, DIR_WEST)
+    msgbox("{COLOR BLUE}What was her name?
+            Korrina?"
+            )
+    waitmessage
+    turnobject(RED_ID, DIR_EAST)
+    msgbox("{COLOR RED}No, no,
+            I think it was Candice."
+            )
+    waitmessage
+    delay(16)
+    msgbox("{COLOR BLUE}In any case, she's been out there
+            a long time.
+            Do you think we should check on her?")
+    msgbox("{COLOR RED}Why, Ureshi!
+            I do believe that is the first good
+            idea you've had all day.
+            Let's go find her.")
+    turnobject(RED_ID, DIR_SOUTH)
+    turnobject(BLUE_ID, DIR_SOUTH)
+    delay(16)
+    msgbox("{COLOR RED}You should come too, apprentice.")
+    closemessage
+    applymovement(RED_ID, moves(
+        walk_left * 6
+        walk_up * 10
+        walk_right * 7
+        face_up
+    ))
+    applymovement(BLUE_ID, moves(
+        walk_left * 7
+        walk_up * 10
+        walk_right * 6
+        face_up
+    ))
+    applymovement(PLAYER_ID, moves(
+        delay_16
+        walk_up
+        walk_left * 6
+        walk_up * 10
+        walk_right * 5
+        face_up
+    ))
+    waitmovement(PLAYER_ID)
+    delay(30)
+    applymovement(BLUE_ID, moves(
+        walk_up
+    ))
+    waitmovement(0)
+    applymovement(BLUE_ID, moves(
+        walk_in_place_up * 4
+    ))
+    msgbox("{COLOR BLUE}Oh, Clair! Can you hear us?
+            Come meet our new apprentice!")
+    closemessage
+    delay(90)
+    turnobject(BLUE_ID, DIR_SOUTH)
+    msgbox("{COLOR BLUE}That's peculiar.
+            She ALWAYS responds to me.
+
+            Do you think something could've
+            happened to her?")
+    msgbox("{COLOR RED}You're right.
+            This is concerning.
+            
+            I know she told us not to go out there,
+            but should we check on her?")
+    msgbox("{COLOR BLUE}There's no harm in taking a peek, right?
+            Come on.")
+    closemessage
+    applymovement(BLUE_ID, moves(
+        delay_16
+        walk_up * 2
+        set_invisible
+    ))
+    applymovement(RED_ID, moves(
+        walk_left
+        walk_up * 3
+        set_invisible
+    ))
+    applymovement(PLAYER_ID, moves(
+        delay_16
+        walk_right
+        walk_up * 3
+    ))
+    waitmovement(PLAYER_ID)
+    setvar(VAR_SPA_INTRO_STATE, 3)
+    warp(MAP_SPA_MOUNTAIN, 0)
+    waitstate
+}
+
+script SpaInterior_EventScript_KimonoRed {
+    
+}
+
+script SpaInterior_EventScript_KimonoBlue {
+    
+}
+
+script SpaInterior_EventScript_CynthiaSick {
+    lock
+    msgbox("She's sleeping peacefully.")
+    waitmessage
+    closemessage
+    releaseall
+    end
+}
