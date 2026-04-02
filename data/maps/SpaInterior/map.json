@@ -28,7 +28,7 @@
       "flag": "FLAG_HIDE_CYNTHIA_SICK_INT"
     },
     {
-      "local_id": "RED_ID",
+      "local_id": "RED_INT_ID",
       "graphics_id": "OBJ_EVENT_GFX_KIMONO_RED",
       "x": 27,
       "y": 7,
@@ -42,7 +42,7 @@
       "flag": "FLAG_HIDE_KIMONO_RED_INTERIOR"
     },
     {
-      "local_id": "BLUE_ID",
+      "local_id": "BLUE_INT_ID",
       "graphics_id": "OBJ_EVENT_GFX_KIMONO_BLUE",
       "x": 6,
       "y": 14,

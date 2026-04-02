@@ -39,6 +39,7 @@ script SpaMountain_OnFrame_0 {
     waitmovement(BLUE_ID)
     msgbox("{COLOR RED}Oh, my!
             Is she alright?")
+    closemessage
     applymovement(BLUE_ID, moves(
         walk_in_place_right * 4
     ))
@@ -49,6 +50,9 @@ script SpaMountain_OnFrame_0 {
             Let's get her inside.
             Quickly!")
     closemessage
+    setflag(FLAG_HIDE_CYNTHIA_SICK_MTN)
+    setflag(FLAG_HIDE_KIMONO_RED_MOUNTAIN)
+    setflag(FLAG_HIDE_KIMONO_BLUE_MOUNTAIN)
     setvar(VAR_SPA_INTRO_STATE, 4)
     warp(MAP_SPA_INTERIOR, 8, 15)
     waitstate

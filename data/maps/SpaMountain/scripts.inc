@@ -37,68 +37,76 @@ SpaMountain_OnFrame_0::
 # 40 "data/maps/SpaMountain/scripts.pory"
 	msgbox SpaMountain_OnFrame_0_Text_0
 # 42 "data/maps/SpaMountain/scripts.pory"
-	applymovement BLUE_MTN_ID, SpaMountain_OnFrame_0_Movement_4
-# 45 "data/maps/SpaMountain/scripts.pory"
-	waitmovement 0
-# 46 "data/maps/SpaMountain/scripts.pory"
-	msgbox SpaMountain_OnFrame_0_Text_1
-# 51 "data/maps/SpaMountain/scripts.pory"
 	closemessage
+# 43 "data/maps/SpaMountain/scripts.pory"
+	applymovement BLUE_MTN_ID, SpaMountain_OnFrame_0_Movement_4
+# 46 "data/maps/SpaMountain/scripts.pory"
+	waitmovement 0
+# 47 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_OnFrame_0_Text_1
 # 52 "data/maps/SpaMountain/scripts.pory"
-	setvar VAR_SPA_INTRO_STATE, 4
+	closemessage
 # 53 "data/maps/SpaMountain/scripts.pory"
-	warp MAP_SPA_INTERIOR, 8, 15
+	setflag FLAG_HIDE_CYNTHIA_SICK_MTN
 # 54 "data/maps/SpaMountain/scripts.pory"
+	setflag FLAG_HIDE_KIMONO_RED_MOUNTAIN
+# 55 "data/maps/SpaMountain/scripts.pory"
+	setflag FLAG_HIDE_KIMONO_BLUE_MOUNTAIN
+# 56 "data/maps/SpaMountain/scripts.pory"
+	setvar VAR_SPA_INTRO_STATE, 4
+# 57 "data/maps/SpaMountain/scripts.pory"
+	warp MAP_SPA_INTERIOR, 8, 15
+# 58 "data/maps/SpaMountain/scripts.pory"
 	waitstate
 	return
 
 
 SpaMountain_EventScript_Rattata::
-# 58 "data/maps/SpaMountain/scripts.pory"
+# 62 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 59 "data/maps/SpaMountain/scripts.pory"
+# 63 "data/maps/SpaMountain/scripts.pory"
 	startspa 0
-# 60 "data/maps/SpaMountain/scripts.pory"
+# 64 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
 
 SpaMountain_EventScript_Teddiursa::
-# 65 "data/maps/SpaMountain/scripts.pory"
+# 69 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 66 "data/maps/SpaMountain/scripts.pory"
+# 70 "data/maps/SpaMountain/scripts.pory"
 	startspa 1
-# 67 "data/maps/SpaMountain/scripts.pory"
+# 71 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
 
 SpaMountain_EventScript_Psyduck::
-# 72 "data/maps/SpaMountain/scripts.pory"
+# 76 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 73 "data/maps/SpaMountain/scripts.pory"
+# 77 "data/maps/SpaMountain/scripts.pory"
 	startspa 2
-# 74 "data/maps/SpaMountain/scripts.pory"
+# 78 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
 
 SpaMountain_EventScript_Fletchinder::
-# 79 "data/maps/SpaMountain/scripts.pory"
+# 83 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 80 "data/maps/SpaMountain/scripts.pory"
+# 84 "data/maps/SpaMountain/scripts.pory"
 	startspa 3
-# 81 "data/maps/SpaMountain/scripts.pory"
+# 85 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
 
 SpaMountain_EventScript_Lombre::
-# 86 "data/maps/SpaMountain/scripts.pory"
+# 90 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 87 "data/maps/SpaMountain/scripts.pory"
+# 91 "data/maps/SpaMountain/scripts.pory"
 	startspa 4
-# 88 "data/maps/SpaMountain/scripts.pory"
+# 92 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
@@ -141,15 +149,15 @@ SpaMountain_OnFrame_0_Movement_3:
 	face_right
 	step_end
 
-# 42 "data/maps/SpaMountain/scripts.pory"
+# 43 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_OnFrame_0_Movement_4:
-# 43 "data/maps/SpaMountain/scripts.pory"
+# 44 "data/maps/SpaMountain/scripts.pory"
 	walk_in_place_right
-# 43 "data/maps/SpaMountain/scripts.pory"
+# 44 "data/maps/SpaMountain/scripts.pory"
 	walk_in_place_right
-# 43 "data/maps/SpaMountain/scripts.pory"
+# 44 "data/maps/SpaMountain/scripts.pory"
 	walk_in_place_right
-# 43 "data/maps/SpaMountain/scripts.pory"
+# 44 "data/maps/SpaMountain/scripts.pory"
 	walk_in_place_right
 	step_end
 
@@ -159,8 +167,8 @@ SpaMountain_OnFrame_0_Text_0:
 	.string "Is she alright?$"
 
 SpaMountain_OnFrame_0_Text_1:
-# 46 "data/maps/SpaMountain/scripts.pory"
-	.string "She's still breathing,\n"
+# 47 "data/maps/SpaMountain/scripts.pory"
+	.string "{COLOR BLUE}She's still breathing,\n"
 	.string "But she's out cold.\p"
 	.string "Let's get her inside.\n"
 	.string "Quickly!$"

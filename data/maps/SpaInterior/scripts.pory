@@ -1,6 +1,6 @@
 const PLAYER_ID = LOCALID_PLAYER
-// Itami
-// Ureshi
+const BLUE_ID = BLUE_INT_ID // Ureshi
+const RED_ID = RED_INT_ID // Itami
 
 mapscripts SpaInterior_MapScripts {
     MAP_SCRIPT_ON_TRANSITION {
@@ -8,10 +8,20 @@ mapscripts SpaInterior_MapScripts {
             case 2: 
                 setobjectxyperm(RED_ID, 24, 15)
                 setobjectxyperm(BLUE_ID, 31, 11)
+            case 4:
+                setobjectxyperm(RED_ID, 4, 14)
         }
     }
+    MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
+        VAR_SPA_INTRO_STATE, 4 {
+            turnobject(PLAYER_ID, DIR_WEST)
+            turnobject(RED_ID, DIR_EAST)
+            end
+        }
+    ]
     MAP_SCRIPT_ON_FRAME_TABLE [
         VAR_SPA_INTRO_STATE, 2: SpaInterior_OnFrame_0
+        VAR_SPA_INTRO_STATE, 4: SpaInterior_OnFrame_1
     ]
 }
 
@@ -58,9 +68,8 @@ script SpaInterior_OnFrame_0 {
     ))
     waitmovement(0)
     msgbox("{COLOR BLUE}What do you want, Itami?!")
-    waitmessage
     closemessage
-    delay(8)
+    delay(16)
     msgbox("{COLOR RED}New apprentice, I'd like you to\nmeet Ureshi.\pWhile I'm keeping the temple clean\nand proper, she's outside playing\lin the dirt.")
     waitmessage
     closemessage
@@ -80,13 +89,11 @@ script SpaInterior_OnFrame_0 {
     ))
     waitmovement(0)
     msgbox("{COLOR RED}Harumph!")
-    waitmessage
     closemessage
-    delay(8)
+    delay(16)
     msgbox("{COLOR BLUE}Aren't you going to tell our\nnew apprentice about the excitement\laround here?")
-    waitmessage
     closemessage
-    delay(8)
+    delay(16)
     msgbox("{COLOR RED}I was just about to!")
     closemessage
     turnobject(RED_ID, DIR_SOUTH)
@@ -114,19 +121,25 @@ script SpaInterior_OnFrame_0 {
             )
     waitmessage
     turnobject(BLUE_ID, DIR_WEST)
+    closemessage
+    delay(16)
     msgbox("{COLOR BLUE}What was her name?
             Korrina?"
             )
     waitmessage
     turnobject(RED_ID, DIR_EAST)
+    closemessage
+    delay(16)
     msgbox("{COLOR RED}No, no,
             I think it was Candice."
             )
-    waitmessage
+    closemessage
     delay(16)
     msgbox("{COLOR BLUE}In any case, she's been out there
             a long time.
             Do you think we should check on her?")
+    closemessage
+    delay(16)
     msgbox("{COLOR RED}Why, Ureshi!
             I do believe that is the first good
             idea you've had all day.
@@ -175,11 +188,15 @@ script SpaInterior_OnFrame_0 {
 
             Do you think something could've
             happened to her?")
+    closemessage
+    delay(16)
     msgbox("{COLOR RED}You're right.
             This is concerning.
             
             I know she told us not to go out there,
             but should we check on her?")
+    closemessage
+    delay(16)
     msgbox("{COLOR BLUE}There's no harm in taking a peek, right?
             Come on.")
     closemessage
@@ -202,6 +219,96 @@ script SpaInterior_OnFrame_0 {
     setvar(VAR_SPA_INTRO_STATE, 3)
     warp(MAP_SPA_MOUNTAIN, 0)
     waitstate
+}
+
+script SpaInterior_OnFrame_1 {
+    lock
+    delay(60)
+    applymovement(RED_ID, moves(
+        walk_down * 2
+        walk_right * 4
+        face_up
+    ))
+    waitmovement(0)
+    turnobject(PLAYER_ID, DIR_SOUTH)
+    delay(8)
+    msgbox("{COLOR RED}She doesn't seem to be in bad shape, but
+            we just can't seem to wake her.
+            
+            We fear the Pokémon of myth were
+            displeased and put a curse on her.
+            
+            The only way to wake her might be to
+            calm the deities by tending to them
+            like in ancient times.")
+    closemessage
+    turnobject(PLAYER_ID, DIR_WEST)
+    turnobject(RED_ID, DIR_WEST)
+    delay(90)
+    turnobject(PLAYER_ID, DIR_SOUTH)
+    turnobject(RED_ID, DIR_NORTH)
+    msgbox("{COLOR RED}We'd, uh, love to do it ourselves,
+            but we've been explicitly told not to go
+            up onto the mountain.
+            
+            I'm sure you understand.
+            C'mon. I'll get you set up.")
+    closemessage
+    applymovement(RED_ID, moves(
+        walk_right
+        walk_up
+        walk_right * 2
+        walk_up * 5
+        walk_right * 6
+        walk_up * 3
+        walk_right * 10
+        face_left
+    ))
+    applymovement(PLAYER_ID, moves(
+        delay_16 * 2
+        walk_right * 3
+        walk_up * 5
+        walk_right * 6
+        walk_up * 3
+        walk_right * 9
+    ))
+    waitmovement(PLAYER_ID)
+    msgbox("{COLOR RED}Wait right here. I'm going to go get some
+            supplies for you.")
+    closemessage
+    applymovement(RED_ID, moves(
+        walk_right * 4
+        walk_down * 3
+        walk_right * 4
+        delay_16 * 4
+        walk_left * 4
+        walk_up * 3
+        walk_left * 4
+    ))
+    waitmovement(0)
+    msgbox("{COLOR RED}Here. Take these.")
+    closemessage
+    delay(16)
+    playfanfare(MUS_OBTAIN_BERRY)
+    setflag(FLAG_SPA_OBTAINED_BERRY)
+    msgbox("Received a bunch of berries!")
+    waitfanfare
+    waitmessage
+    closemessage
+    delay(16)
+    msgbox("{COLOR RED}Even some Pokémon deities should
+            like to eat berries.
+            I hope they'll come in handy.
+            
+            Now go out and pamper those Pokémon!
+            Consider this your first assignment
+            as temple apprentice.
+            
+            Come talk to me if you need
+            any assistance.")
+    setvar(VAR_SPA_INTRO_STATE, 5)
+    releaseall
+    end
 }
 
 script SpaInterior_EventScript_KimonoRed {
