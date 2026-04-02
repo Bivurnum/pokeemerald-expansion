@@ -6,6 +6,7 @@ mapscripts SpaFront_MapScripts {
         VAR_SPA_INTRO_STATE, 0 {
             turnobject(PLAYER_ID, DIR_NORTH)
             hideplayer
+            playbgm(MUS_DUMMY, FALSE)
             setvar(VAR_SPA_INTRO_STATE, 1)
             end
         }
@@ -44,6 +45,7 @@ script SpaFront_OnFrame_0 {
         walk_in_place_down * 2
     ))
     waitmovement(0)
+    delay(32)
     msgbox("Alright, then.\nYou take care of yourself.\pSee ya!")
     waitmessage
     closemessage
