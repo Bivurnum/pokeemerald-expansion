@@ -312,6 +312,8 @@ script SpaInterior_OnFrame_1 {
 }
 
 script SpaInterior_EventScript_KimonoRed {
+    lock
+    faceplayer
     switch (var(VAR_SPA_INTRO_STATE)) {
         case 5:
             msgbox("{COLOR RED}See if any of the Pokémon will
