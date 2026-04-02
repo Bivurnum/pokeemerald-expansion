@@ -620,6 +620,8 @@ void HandleItemsTeddiursa(u8 taskId)
             CreateMusicSprite(taskId);
             DoSpaMonFeelsBetterText();
             DestroySprite(&gSprites[sTeddyItchSpriteId]);
+            if (VarGet(VAR_SPA_INTRO_STATE) < 8)
+                VarSet(VAR_SPA_INTRO_STATE, 8);
             FlagSet(FLAG_SPA_TEDDIURSA_SATISFIED);
             sSpaData.isSatisfied = TRUE;
         }

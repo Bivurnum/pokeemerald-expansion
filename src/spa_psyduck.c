@@ -807,6 +807,8 @@ static void SpriteCB_Bug(struct Sprite *sprite)
             PlaySE(SE_PUDDLE);
             StartSpriteAnim(&gSprites[sSpaData.honeySpriteId], honeyAnimNum);
             FlagSet(FLAG_SPA_PSYDUCK_BUG_0 + sprite->sBugId);
+            if (VarGet(VAR_SPA_INTRO_STATE) < 10)
+                VarSet(VAR_SPA_INTRO_STATE, 10);
             tBugsCaught++;
             DestroySprite(sprite);
         }

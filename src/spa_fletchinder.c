@@ -634,6 +634,8 @@ void HandleItemsFletchinder(u8 taskId)
                     StartFletchinderHappyAnim();
                     PauseUntilAnimEnds(taskId, sFletchinderHeadSpriteId);
                     CreateMusicSprite(taskId);
+                    if (VarGet(VAR_SPA_INTRO_STATE) < 12)
+                        VarSet(VAR_SPA_INTRO_STATE, 12);
                     DoSpaMonEnjoyedSnackText();
                     tBerryBites = 0;
                 }

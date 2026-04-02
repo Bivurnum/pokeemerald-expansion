@@ -312,11 +312,82 @@ script SpaInterior_OnFrame_1 {
 }
 
 script SpaInterior_EventScript_KimonoRed {
-    
+    switch (var(VAR_SPA_INTRO_STATE)) {
+        case 5:
+            msgbox("{COLOR RED}See if any of the Pokémon will
+                    eat a berry.
+                    
+                    I'm sure they'd love to be hand fed,
+                    so hold it close to their mouth.
+                    
+                    Try different Pokémon and see if
+                    you get any takers.")
+        case 6:
+            msgbox("{COLOR RED}If a Pokémon trusts you enough
+                    to eat a berry from your hand,
+                    try petting it.
+                    
+                    All Pokémon love to be pet,
+                    especially on the head.")
+        case 7:
+            msgbox("{COLOR RED}That claw look perfect for
+                    satisfying a persistent itch.
+                    
+                    Maybe you can help a Pokémon with it.")
+        case 8:
+        case 12:
+        case 14:
+            msgbox("{COLOR RED}Don't forget to pet those Pokémon
+                    if they'll let you.
+                    
+                    Nothing beats a good head pat!")
+        case 9:
+            msgbox("{COLOR RED}Carful with that sticky honey!
+                    It might attract bugs.")
+        case 10:
+            getnumbugs
+            if (var(VAR_RESULT) > 0) {
+                msgbox("{COLOR RED}AHH! Bugs belong outside where
+                        the birds can eat them!")
+            }
+            else {
+                msgbox("{COLOR RED}Carful with that sticky honey!
+                        It might attract bugs.")
+            }
+        case 11:
+            getnumbugs
+            if (var(VAR_RESULT) > 0) {
+                msgbox("{COLOR RED}AHH! Bugs belong outside where
+                        the birds can eat them!")
+            }
+            else {
+                msgbox("{COLOR RED}Don't forget to pet those Pokémon
+                        if they'll let you.
+
+                        Nothing beats a good head pat!")
+            }
+        case 13:
+            msgbox("{COLOR RED}Yow! That orb looks hot!
+                    Careful that it doesn't melt anything.")
+        case 15:
+            msgbox("{COLOR RED}You helped all of the Pokémon?
+                    I think there might be one more
+                    somewhere.")
+    }
+    closemessage
+    releaseall
+    end
 }
 
 script SpaInterior_EventScript_KimonoBlue {
-    
+    lock
+    faceplayer
+    msgbox("{COLOR BLUE}I'm making sure she's comfortable.
+            Hopefully she will wake soon.")
+    closemessage
+    turnobject(BLUE_ID, DIR_WEST)
+    releaseall
+    end
 }
 
 script SpaInterior_EventScript_CynthiaSick {

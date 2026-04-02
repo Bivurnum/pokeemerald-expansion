@@ -2189,6 +2189,29 @@ static void Task_SpaEndSuccess(u8 taskId)
 {
     if (tCounter == 180)
     {
+        switch (sSpaData.mon)
+        {
+        case SPA_RATTATA:
+            if (VarGet(VAR_SPA_INTRO_STATE) < 7)
+                VarSet(VAR_SPA_INTRO_STATE, 7);
+            break;
+        case SPA_TEDDIURSA:
+            if (VarGet(VAR_SPA_INTRO_STATE) < 9)
+                VarSet(VAR_SPA_INTRO_STATE, 9);
+            break;
+        case SPA_PSYDUCK:
+            if (VarGet(VAR_SPA_INTRO_STATE) < 11)
+                VarSet(VAR_SPA_INTRO_STATE, 11);
+            break;
+        case SPA_FLETCHINDER:
+            if (VarGet(VAR_SPA_INTRO_STATE) < 13)
+                VarSet(VAR_SPA_INTRO_STATE, 13);
+            break;
+        case SPA_LOMBRE:
+            if (VarGet(VAR_SPA_INTRO_STATE) < 15)
+                VarSet(VAR_SPA_INTRO_STATE, 15);
+            break;
+        }
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
         gTasks[taskId].func = Task_SpaEndFade;
     }
@@ -2489,4 +2512,19 @@ void Task_SpaStartMenuTask(u8 taskId)
         }
         break;
     }
+}
+
+void Script_GetNumBugs(void)
+{
+    u32 i, numBugs = 0;
+
+    for (i = 0; i < MAX_BUGS; i++)
+    {
+        if (FlagGet(FLAG_SPA_PSYDUCK_BUG_0 + i))
+            numBugs++;
+        if (FlagGet(FLAG_SPA_BUG_0_EATEN + i))
+            numBugs--;
+    }
+
+    VarSet(VAR_RESULT, numBugs);
 }

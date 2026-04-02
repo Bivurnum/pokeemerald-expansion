@@ -549,6 +549,8 @@ void HandleItemsRattata(u8 taskId)
             CreateMusicSprite(taskId);
             DoSpaMonEnjoyedSnackText();
             FlagSet(FLAG_SPA_RATTATA_SATISFIED);
+            if (VarGet(VAR_SPA_INTRO_STATE) < 6)
+                VarSet(VAR_SPA_INTRO_STATE, 6);
             sSpaData.isSatisfied = TRUE;
             tBerryBites = 0;
         }

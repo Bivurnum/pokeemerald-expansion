@@ -2698,6 +2698,10 @@
 	waitstate
 	.endm
 
+	.macro getnumbugs
+	callnative Script_GetNumBugs
+	.endm
+
 @ Follower NPCs
 
 	@ Sets an existing NPC up to follow the player.

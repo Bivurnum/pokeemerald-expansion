@@ -853,6 +853,8 @@ static void SpriteCB_IceBlank(struct Sprite *sprite)
                 HideBg(2);
                 StartLombreThawedHappy(sprite->sTaskId);
                 CreateMusicSprite(sprite->sTaskId);
+                if (VarGet(VAR_SPA_INTRO_STATE) < 14)
+                    VarSet(VAR_SPA_INTRO_STATE, 14);
             }
 
             DestroySprite(sprite);
