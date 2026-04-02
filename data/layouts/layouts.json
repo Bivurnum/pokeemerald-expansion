@@ -9353,6 +9353,16 @@
       "secondary_tileset": "gTileset_SpaExterior",
       "border_filepath": "data/layouts/SpaMountain/border.bin",
       "blockdata_filepath": "data/layouts/SpaMountain/map.bin"
+    },
+    {
+      "id": "LAYOUT_SPA_ORCHARD",
+      "name": "SpaOrchard_Layout",
+      "width": 30,
+      "height": 20,
+      "primary_tileset": "gTileset_GeneralORAS",
+      "secondary_tileset": "gTileset_SpaExterior",
+      "border_filepath": "data/layouts/SpaOrchard/border.bin",
+      "blockdata_filepath": "data/layouts/SpaOrchard/map.bin"
     }
   ]
 }
