@@ -2702,6 +2702,11 @@
 	callnative Script_GetNumBugs
 	.endm
 
+	.macro startspacredits
+	callnative StartSpaCredits
+	waitstate
+	.endm
+
 @ Follower NPCs
 
 	@ Sets an existing NPC up to follow the player.

@@ -2533,3 +2533,8 @@ void Script_GetNumBugs(void)
 
     VarSet(VAR_RESULT, numBugs);
 }
+
+void StartSpaCredits(void)
+{
+    
+}

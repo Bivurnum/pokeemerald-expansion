@@ -449,10 +449,7 @@ script SpaMountain_EventScript_AfterBoulder {
     closemessage
     fadescreenspeed(FADE_TO_BLACK, 3)
     fadeoutbgm(1)
-    
-
-
-
-
     setvar(VAR_SPA_INTRO_STATE, 16)
+    startspacredits
+    end
 }

@@ -551,9 +551,11 @@ SpaMountain_EventScript_AfterBoulder::
 	fadescreenspeed FADE_TO_BLACK, 3
 # 451 "data/maps/SpaMountain/scripts.pory"
 	fadeoutbgm 1
-# 457 "data/maps/SpaMountain/scripts.pory"
+# 452 "data/maps/SpaMountain/scripts.pory"
 	setvar VAR_SPA_INTRO_STATE, 16
-	return
+# 453 "data/maps/SpaMountain/scripts.pory"
+	startspacredits
+	end
 
 
 # 18 "data/maps/SpaMountain/scripts.pory"
