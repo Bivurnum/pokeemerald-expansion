@@ -40,18 +40,18 @@
 #define STATUS_BUTTON       R_BUTTON
 #define EXIT_BUTTON         SELECT_BUTTON
 
-#define TAG_HAND        0x1000
-#define TAG_ITEMS_ICON  0x1001
-#define TAG_BERRY       0x1002
-#define TAG_CLAW        0x1003
-#define TAG_HONEY       0x1004
-#define TAG_ORB         0x1005
+#define TAG_HAND        0x2000
+#define TAG_ITEMS_ICON  0x2001
+#define TAG_BERRY       0x2002
+#define TAG_CLAW        0x2003
+#define TAG_HONEY       0x2004
+#define TAG_ORB         0x2005
 
-#define TAG_MON     0x2000
-#define TAG_ITCH    0x2001
-#define TAG_BUGS    0x2001
-#define TAG_ICE     0x2001
-#define TAG_TORNADO 0x2002
+#define TAG_MON     0x2500
+#define TAG_ITCH    0x2501
+#define TAG_BUGS    0x2501
+#define TAG_ICE     0x2501
+#define TAG_TORNADO 0x2502
 
 #define ITEM_START_X    -22
 #define ITEM_END_X      10
