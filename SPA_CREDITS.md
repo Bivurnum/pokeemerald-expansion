@@ -19,3 +19,5 @@
 - pret for the decomps.
 - RHH and all of their contributors for expansion.
 - Nintendo and GameFreak for creating the base game.
+
+If I missed you in these credits, please let me know and I will happily add you.
