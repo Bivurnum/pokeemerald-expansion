@@ -280,3 +280,113 @@ script SpaMountain_EventScript_Boulder {
     releaseall
     end
 }
+
+script SpaMountain_EventScript_AfterBoulder {
+    lock
+    msgbox("Hey!")
+    closemessage
+    turnobject(PLAYER_ID, DIR_SOUTH)
+    addobject(CYNTHIA_ID, MAP_SPA_MOUNTAIN)
+    applymovement(CYNTHIA_ID, moves(
+        walk_up * 6
+    ))
+    waitmovement(0)
+    msgbox("Sorry to startle you.
+            I'm Cynthia.
+            I came here to investigate reports of
+            alleged mythical Pokémon.")
+    closemessage
+    playse(SE_PIN)
+    applymovement(CYNTHIA_ID, moves(
+        emote_exclamation_mark
+    ))
+    waitmovement(0)
+    delay(60)
+    msgbox("Wait!
+            Don't tell me you tended to all
+            of these strange Pokémon yourself.
+            
+            That's quite the feat.
+            But I'm afraid those weren't
+            Pokémon deities.
+            
+            Here.
+            Let me show you.")
+    closemessage
+    applymovement(PLAYER_ID, moves(
+        face_left
+        lock_facing_direction
+        walk_right
+        unlock_facing_direction
+        face_up
+    ))
+    applymovement(CYNTHIA_ID, moves(
+        delay_4
+        walk_up * 4
+        face_right
+    ))
+    waitmovement(CYNTHIA_ID)
+    msgbox("Come on out.")
+    closemessage
+    delay(40)
+    addobject(SMEARGLE_ID, MAP_SPA_MOUNTAIN)
+    playmoncry(SPECIES_SMEARGLE, CRY_MODE_NORMAL)
+    waitmoncry
+    applymovement(SMEARGLE_ID, moves(
+        walk_down
+        face_left
+    ))
+    waitmovement(0)
+    waitmoncry
+    playse(SE_LEDGE)
+    applymovement(SMEARGLE_ID, moves(
+        jump_in_place_left
+    ))
+    waitmovement(0)
+    playse(SE_LEDGE)
+    applymovement(SMEARGLE_ID, moves(
+        jump_in_place_left
+    ))
+    waitmovement(0)
+    delay(30)
+    turnobject(SMEARGLE_ID, DIR_SOUTH)
+    turnobject(CYNTHIA_ID, DIR_SOUTH)
+    msgbox("It turns out this guy was the
+            cause of everything.")
+    closemessage
+    applymovement(CYNTHIA_ID, moves(
+        walk_down * 4
+        face_right
+    ))
+    applymovement(SMEARGLE_ID, moves(
+        walk_left
+        walk_down * 3
+        face_right
+    ))
+    waitmovement(0)
+    turnobject(PLAYER_ID, DIR_WEST)
+    msgbox("Smeargle here heard the stories
+            of how the temple used to cater to
+            mythical Pokémon ages ago.
+            
+            It knew of a handful of other Pokémon
+            that needed assistance and brought
+            them here.
+            
+            Smeargle 'disguised' the Pokémon as
+            deities by painting them with unique
+            patterns, hoping the temple would
+            fulfill its duties once again.")
+    closemessage
+    playse(SE_LEDGE)
+    applymovement(SMEARGLE_ID, moves(
+        jump_in_place_right
+    ))
+    waitmovement(0)
+    playmoncry(SPECIES_SMEARGLE, CRY_MODE_NORMAL)
+    waitmoncry
+
+
+
+    setvar(VAR_SPA_INTRO_STATE, 16)
+}

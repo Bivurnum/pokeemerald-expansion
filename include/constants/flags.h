@@ -697,8 +697,8 @@
 #define FLAG_HIDE_KIMONO_RED_MOUNTAIN   0x281
 #define FLAG_HIDE_KIMONO_BLUE_MOUNTAIN  0x282
 #define FLAG_BOULDER_MOVED              0x283
-#define FLAG_UNUSED_0x284  0x284 // Unused Flag
-#define FLAG_UNUSED_0x285  0x285 // Unused Flag
+#define FLAG_HIDE_SMEARGLE              0x284
+#define FLAG_HIDE_CYNTHIA               0x285
 #define FLAG_UNUSED_0x286  0x286 // Unused Flag
 #define FLAG_UNUSED_0x287  0x287 // Unused Flag
 #define FLAG_UNUSED_0x288  0x288 // Unused Flag

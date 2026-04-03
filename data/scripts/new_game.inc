@@ -273,6 +273,8 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_SKY_PILLAR_WALLACE
 	setflag FLAG_HIDE_SKY_PILLAR_TOP_RAYQUAZA_STILL
 	setflag FLAG_SYS_B_DASH
+	setflag FLAG_HIDE_SMEARGLE
+	setflag FLAG_HIDE_CYNTHIA
 	call EventScript_ResetAllBerries
 	end
 
