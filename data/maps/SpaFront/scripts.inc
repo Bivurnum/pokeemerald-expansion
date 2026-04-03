@@ -141,6 +141,18 @@ SpaFront_EventScript_RoadLeft::
 	end
 
 
+SpaFront_EventScript_Sign::
+# 99 "data/maps/SpaFront/scripts.pory"
+	lock
+# 100 "data/maps/SpaFront/scripts.pory"
+	msgbox SpaFront_EventScript_Sign_Text_0
+# 101 "data/maps/SpaFront/scripts.pory"
+	closemessage
+# 102 "data/maps/SpaFront/scripts.pory"
+	releaseall
+	end
+
+
 # 23 "data/maps/SpaFront/scripts.pory"
 SpaFront_OnFrame_0_Movement_0:
 # 24 "data/maps/SpaFront/scripts.pory"
@@ -230,3 +242,7 @@ SpaFront_OnFrame_0_Text_1:
 SpaFront_EventScript_RoadRight_Text_0:
 # 74 "data/maps/SpaFront/scripts.pory"
 	.string "You should make your way to the temple.$"
+
+SpaFront_EventScript_Sign_Text_0:
+# 100 "data/maps/SpaFront/scripts.pory"
+	.string "'Kodai Temple'$"
