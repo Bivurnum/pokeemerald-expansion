@@ -50,6 +50,9 @@ static const u32 gLombreIceArmRight_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lom
 static const u32 gIceBlank_Gfx[] = INCBIN_U32("graphics/_spa/lombre/ice_blank.4bpp");
 static const u32 gDroplet_Gfx[] = INCBIN_U32("graphics/_spa/lombre/droplet.4bpp");
 
+static const u16 gLombrePattern_Pal[] = INCBIN_U16("graphics/_spa/lombre/lombre_pattern.gbapal");
+static const u32 gLombrePattern_Gfx[] = INCBIN_U32("graphics/_spa/lombre/lombre_pattern.4bpp");
+
 static const union AnimCmd sAnim_Normal[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 16),
@@ -248,6 +251,11 @@ static const union AnimCmd * const sAnims_Droplet[] =
     sAnim_DropletDrop,
 };
 
+static const union AnimCmd * const sAnims_Pattern[] =
+{
+    sAnim_Normal,
+};
+
 static const union AffineAnimCmd sAffineAnim_None[] =
 {
     AFFINEANIMCMD_FRAME(256, 256, 0, 0),
@@ -372,6 +380,11 @@ static const struct SpriteFrameImage sPicTable_Droplet[] =
     spa_frame(gDroplet_Gfx, 3, 2, 4),
     spa_frame(gDroplet_Gfx, 4, 2, 4),
     spa_frame(gDroplet_Gfx, 5, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Pattern[] =
+{
+    spa_frame(gLombrePattern_Gfx, 0, 8, 4),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_LombreHeadTopLeft =
@@ -528,6 +541,17 @@ static const struct SpriteTemplate sSpriteTemplate_Droplet =
     .callback = SpriteCB_Droplet
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Pattern =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_L_PATTERN,
+    .oam = &sOam_64x32,
+    .anims = sAnims_Pattern,
+    .images = sPicTable_Pattern,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
 const struct SpritePalette sSpritePalettes_SpaLombre[] =
 {
     {
@@ -538,6 +562,10 @@ const struct SpritePalette sSpritePalettes_SpaLombre[] =
         .data = gIce_Pal,
         .tag = TAG_ICE
     },
+    {
+        .data = gLombrePattern_Pal,
+        .tag = TAG_L_PATTERN
+    },
     {NULL},
 };
 
@@ -546,28 +574,30 @@ void CreateLombreSprites(u8 taskId)
     if (FlagGet(FLAG_SPA_LOMBRE_SATISFIED))
         sSpaData.isSatisfied = TRUE;
 
-    sLombreHeadTopLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreHeadTopLeft, 100, 33, 9);
+    sLombreHeadTopLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreHeadTopLeft, 100, 33, 8);
     gSprites[sLombreHeadTopLeftSpriteId].sTaskId = taskId;
 
-    sLombreHeadTopRightSpriteId = CreateSprite(&sSpriteTemplate_LombreHeadTopRight, 164, 33, 9);
+    sLombreHeadTopRightSpriteId = CreateSprite(&sSpriteTemplate_LombreHeadTopRight, 164, 33, 8);
     gSprites[sLombreHeadTopRightSpriteId].sTaskId = taskId;
 
-    sLombreHeadBottomLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreHeadBottomLeft, 100, 81, 9);
+    sLombreHeadBottomLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreHeadBottomLeft, 100, 81, 8);
     gSprites[sLombreHeadBottomLeftSpriteId].sTaskId = taskId;
 
-    sLombreHeadBottomRightSpriteId = CreateSprite(&sSpriteTemplate_LombreHeadBottomRight, 164, 81, 9);
+    sLombreHeadBottomRightSpriteId = CreateSprite(&sSpriteTemplate_LombreHeadBottomRight, 164, 81, 8);
     gSprites[sLombreHeadBottomRightSpriteId].sTaskId = taskId;
 
     sLombreBodySpriteId = CreateSprite(&sSpriteTemplate_LombreBody, 132, 90, 10);
     gSprites[sLombreBodySpriteId].sTaskId = taskId;
 
-    sLombreLegLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreLegLeft, 112, 115, 9);
+    CreateSprite(&sSpriteTemplate_Pattern, 135, 94, 9);
+
+    sLombreLegLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreLegLeft, 112, 115, 8);
     gSprites[sLombreLegLeftSpriteId].sTaskId = taskId;
 
-    sLombreLegRightSpriteId = CreateSprite(&sSpriteTemplate_LombreLegRight, 156, 115, 9);
+    sLombreLegRightSpriteId = CreateSprite(&sSpriteTemplate_LombreLegRight, 156, 115, 8);
     gSprites[sLombreLegRightSpriteId].sTaskId = taskId;
 
-    sLombreArmLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreArmLeft, 73, 97, 8);
+    sLombreArmLeftSpriteId = CreateSprite(&sSpriteTemplate_LombreArmLeft, 73, 97, 7);
     gSprites[sLombreArmLeftSpriteId].sTaskId = taskId;
 
     sLombreArmRightSpriteId = CreateSprite(&sSpriteTemplate_LombreArmRight, 191, 97, 8);

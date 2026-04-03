@@ -52,6 +52,7 @@
 #define TAG_BUGS    0x2501
 #define TAG_ICE     0x2501
 #define TAG_TORNADO 0x2502
+#define TAG_L_PATTERN 0x2502
 
 #define ITEM_START_X    -22
 #define ITEM_END_X      10
