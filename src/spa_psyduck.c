@@ -35,7 +35,7 @@ static void SpriteCB_ArmFront(struct Sprite *sprite);
 static void SpriteCB_ArmBack(struct Sprite *sprite);
 static void SpriteCB_Bug(struct Sprite *sprite);
 
-static const u16 gPsyduck_Pal[] = INCBIN_U16("graphics/_spa/psyduck/psyduck_head_left.gbapal");
+static const u16 gPsyduck_Pal[] = INCBIN_U16("graphics/_spa/psyduck/psyduck_body_left.gbapal");
 static const u32 gPsyduckHeadLeft_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_head_left.4bpp");
 static const u32 gPsyduckHeadRight_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_head_right.4bpp");
 static const u32 gPsyduckBill_Gfx[] = INCBIN_U32("graphics/_spa/psyduck/psyduck_bill.4bpp");
