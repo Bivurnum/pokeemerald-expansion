@@ -58,9 +58,9 @@ static const union AnimCmd sAnim_Normal[] =
 
 static const union AnimCmd sAnim_HeadAfterThawTop[] =
 {
-    ANIMCMD_FRAME(.imageValue = 7, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 8, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 7, .duration = 5),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 5),
+    ANIMCMD_FRAME(.imageValue = 8, .duration = 5),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_END
@@ -68,9 +68,9 @@ static const union AnimCmd sAnim_HeadAfterThawTop[] =
 
 static const union AnimCmd sAnim_HeadAfterThawBottom[] =
 {
-    ANIMCMD_FRAME(.imageValue = 4, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 1, .duration = 3),
-    ANIMCMD_FRAME(.imageValue = 5, .duration = 3),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 5),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 5),
+    ANIMCMD_FRAME(.imageValue = 5, .duration = 5),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 3, .duration = 60),
     ANIMCMD_END
