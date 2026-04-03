@@ -170,6 +170,7 @@ script SpaMountain_EventScript_Psyduck {
             walk_fast_left * 9
         ))
         waitmovement(0)
+        removeobject(PSYDUCK_ID)
     }
     elif (var(VAR_RESULT) == 2){
         playse(SE_NOT_EFFECTIVE)
@@ -189,7 +190,20 @@ script SpaMountain_EventScript_Fletchinder {
     lock
     startspa(3)
     if (var(VAR_RESULT) == 1) {
-        // Give item
+        faceplayer
+        setflag(FLAG_SPA_OBTAINED_ORB)
+        playfanfare(MUS_OBTAIN_ITEM)
+        msgbox("The Fletchinder gave you a flame orb!")
+        waitfanfare
+        waitmessage
+        closemessage
+        playse(SE_M_FLY)
+        applymovement(FLETCHINDER_ID, moves(
+            walk_diag_northwest * 3
+            walk_diag_northeast * 3
+        ))
+        waitmovement(0)
+        removeobject(FLETCHINDER_ID)
     }
     elif (var(VAR_RESULT) == 2){
         playse(SE_NOT_EFFECTIVE)
@@ -221,6 +235,15 @@ script SpaMountain_EventScript_Lombre {
         ))
         waitmovement(0)
     }
+    releaseall
+    end
+}
+
+script SpaMountain_EventScript_Boulder {
+    lock
+    msgbox("This boulder is too big for
+            you to move.")
+    closemessage
     releaseall
     end
 }

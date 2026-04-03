@@ -197,11 +197,11 @@ SpaMountain_EventScript_Psyduck::
 # 156 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq SpaMountain_EventScript_Psyduck_2
-# 174 "data/maps/SpaMountain/scripts.pory"
+# 175 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 2
 	goto_if_eq SpaMountain_EventScript_Psyduck_3
 SpaMountain_EventScript_Psyduck_1:
-# 184 "data/maps/SpaMountain/scripts.pory"
+# 185 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
@@ -224,60 +224,84 @@ SpaMountain_EventScript_Psyduck_2:
 	applymovement PSYDUCK_ID, SpaMountain_EventScript_Psyduck_Movement_0
 # 172 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
+# 173 "data/maps/SpaMountain/scripts.pory"
+	removeobject PSYDUCK_ID
 	goto SpaMountain_EventScript_Psyduck_1
 
 SpaMountain_EventScript_Psyduck_3:
-# 175 "data/maps/SpaMountain/scripts.pory"
-	playse SE_NOT_EFFECTIVE
 # 176 "data/maps/SpaMountain/scripts.pory"
+	playse SE_NOT_EFFECTIVE
+# 177 "data/maps/SpaMountain/scripts.pory"
 	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Psyduck_Movement_1
-# 182 "data/maps/SpaMountain/scripts.pory"
+# 183 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 	goto SpaMountain_EventScript_Psyduck_1
 
 
 SpaMountain_EventScript_Fletchinder::
-# 189 "data/maps/SpaMountain/scripts.pory"
-	lock
 # 190 "data/maps/SpaMountain/scripts.pory"
-	startspa 3
+	lock
 # 191 "data/maps/SpaMountain/scripts.pory"
+	startspa 3
+# 192 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq SpaMountain_EventScript_Fletchinder_2
-# 194 "data/maps/SpaMountain/scripts.pory"
+# 208 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 2
 	goto_if_eq SpaMountain_EventScript_Fletchinder_3
 SpaMountain_EventScript_Fletchinder_1:
-# 204 "data/maps/SpaMountain/scripts.pory"
+# 218 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
 SpaMountain_EventScript_Fletchinder_2:
+# 193 "data/maps/SpaMountain/scripts.pory"
+	faceplayer
+# 194 "data/maps/SpaMountain/scripts.pory"
+	setflag FLAG_SPA_OBTAINED_ORB
+# 195 "data/maps/SpaMountain/scripts.pory"
+	playfanfare MUS_OBTAIN_ITEM
+# 196 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_Fletchinder_Text_0
+# 197 "data/maps/SpaMountain/scripts.pory"
+	waitfanfare
+# 198 "data/maps/SpaMountain/scripts.pory"
+	waitmessage
+# 199 "data/maps/SpaMountain/scripts.pory"
+	closemessage
+# 200 "data/maps/SpaMountain/scripts.pory"
+	playse SE_M_FLY
+# 201 "data/maps/SpaMountain/scripts.pory"
+	applymovement FLETCHINDER_ID, SpaMountain_EventScript_Fletchinder_Movement_0
+# 205 "data/maps/SpaMountain/scripts.pory"
+	waitmovement 0
+# 206 "data/maps/SpaMountain/scripts.pory"
+	removeobject FLETCHINDER_ID
 	goto SpaMountain_EventScript_Fletchinder_1
 
 SpaMountain_EventScript_Fletchinder_3:
-# 195 "data/maps/SpaMountain/scripts.pory"
+# 209 "data/maps/SpaMountain/scripts.pory"
 	playse SE_NOT_EFFECTIVE
-# 196 "data/maps/SpaMountain/scripts.pory"
+# 210 "data/maps/SpaMountain/scripts.pory"
 	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Rattata_Movement_2
-# 202 "data/maps/SpaMountain/scripts.pory"
+# 216 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 	goto SpaMountain_EventScript_Fletchinder_1
 
 
 SpaMountain_EventScript_Lombre::
-# 209 "data/maps/SpaMountain/scripts.pory"
+# 223 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 210 "data/maps/SpaMountain/scripts.pory"
+# 224 "data/maps/SpaMountain/scripts.pory"
 	startspa 4
-# 211 "data/maps/SpaMountain/scripts.pory"
+# 225 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq SpaMountain_EventScript_Lombre_2
-# 214 "data/maps/SpaMountain/scripts.pory"
+# 228 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 2
 	goto_if_eq SpaMountain_EventScript_Lombre_3
 SpaMountain_EventScript_Lombre_1:
-# 224 "data/maps/SpaMountain/scripts.pory"
+# 238 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
@@ -285,11 +309,11 @@ SpaMountain_EventScript_Lombre_2:
 	goto SpaMountain_EventScript_Lombre_1
 
 SpaMountain_EventScript_Lombre_3:
-# 215 "data/maps/SpaMountain/scripts.pory"
+# 229 "data/maps/SpaMountain/scripts.pory"
 	playse SE_NOT_EFFECTIVE
-# 216 "data/maps/SpaMountain/scripts.pory"
+# 230 "data/maps/SpaMountain/scripts.pory"
 	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Lombre_Movement_0
-# 222 "data/maps/SpaMountain/scripts.pory"
+# 236 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 	goto SpaMountain_EventScript_Lombre_1
 
@@ -450,27 +474,43 @@ SpaMountain_EventScript_Psyduck_Movement_0:
 	walk_fast_left
 	step_end
 
-# 176 "data/maps/SpaMountain/scripts.pory"
-SpaMountain_EventScript_Psyduck_Movement_1:
 # 177 "data/maps/SpaMountain/scripts.pory"
-	face_down
+SpaMountain_EventScript_Psyduck_Movement_1:
 # 178 "data/maps/SpaMountain/scripts.pory"
-	lock_facing_direction
+	face_down
 # 179 "data/maps/SpaMountain/scripts.pory"
-	walk_fast_up
+	lock_facing_direction
 # 180 "data/maps/SpaMountain/scripts.pory"
+	walk_fast_up
+# 181 "data/maps/SpaMountain/scripts.pory"
 	unlock_facing_direction
 	step_end
 
-# 216 "data/maps/SpaMountain/scripts.pory"
+# 201 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_Fletchinder_Movement_0:
+# 202 "data/maps/SpaMountain/scripts.pory"
+	walk_diag_northwest
+# 202 "data/maps/SpaMountain/scripts.pory"
+	walk_diag_northwest
+# 202 "data/maps/SpaMountain/scripts.pory"
+	walk_diag_northwest
+# 203 "data/maps/SpaMountain/scripts.pory"
+	walk_diag_northeast
+# 203 "data/maps/SpaMountain/scripts.pory"
+	walk_diag_northeast
+# 203 "data/maps/SpaMountain/scripts.pory"
+	walk_diag_northeast
+	step_end
+
+# 230 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_EventScript_Lombre_Movement_0:
-# 217 "data/maps/SpaMountain/scripts.pory"
+# 231 "data/maps/SpaMountain/scripts.pory"
 	face_right
-# 218 "data/maps/SpaMountain/scripts.pory"
+# 232 "data/maps/SpaMountain/scripts.pory"
 	lock_facing_direction
-# 219 "data/maps/SpaMountain/scripts.pory"
+# 233 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_left
-# 220 "data/maps/SpaMountain/scripts.pory"
+# 234 "data/maps/SpaMountain/scripts.pory"
 	unlock_facing_direction
 	step_end
 
@@ -498,3 +538,7 @@ SpaMountain_EventScript_Psyduck_Text_0:
 # 159 "data/maps/SpaMountain/scripts.pory"
 	.string "The Psyduck has nothing to give you,\n"
 	.string "but it is thankful nonetheless.$"
+
+SpaMountain_EventScript_Fletchinder_Text_0:
+# 196 "data/maps/SpaMountain/scripts.pory"
+	.string "The Fletchinder gave you a flame orb!$"
