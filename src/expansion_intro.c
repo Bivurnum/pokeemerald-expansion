@@ -11,6 +11,7 @@
 #include "intro.h"
 #include "intro_frlg.h"
 #include "m4a.h"
+#include "title_screen.h"
 #include "expansion_intro.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
@@ -283,7 +284,7 @@ void Task_HandleExpansionIntro(u8 taskId)
             else
             {
                 CreateTask(Task_Scene1_Load, 0);
-                SetMainCallback2(MainCB2_Intro);
+                SetMainCallback2(CB2_InitTitleScreen);
             }
         }
         break;

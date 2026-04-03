@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle.h"
+#include "bg.h"
 #include "title_screen.h"
 #include "sprite.h"
 #include "gba/m4a_internal.h"
@@ -60,8 +61,8 @@ static void SpriteCB_PokemonLogoShine(struct Sprite *sprite);
 // const rom data
 static const u16 sUnusedUnknownPal[] = INCBIN_U16("graphics/title_screen/unused.gbapal");
 
-static const u32 sTitleScreenRayquazaGfx[] = INCBIN_U32("graphics/title_screen/rayquaza.4bpp.smol");
-static const u32 sTitleScreenRayquazaTilemap[] = INCBIN_U32("graphics/title_screen/rayquaza.bin.smolTM");
+static const u32 sTitleScreenRayquazaGfx[] = INCBIN_U32("graphics/title_screen/new_title_screen.4bpp.smol");
+static const u32 sTitleScreenRayquazaTilemap[] = INCBIN_U32("graphics/title_screen/new_title_screen.bin.smolTM");
 static const u32 sTitleScreenLogoShineGfx[] = INCBIN_U32("graphics/title_screen/logo_shine.4bpp.smol");
 static const u32 sTitleScreenCloudsGfx[] = INCBIN_U32("graphics/title_screen/clouds.4bpp.smol");
 
@@ -600,8 +601,7 @@ void CB2_InitTitleScreen(void)
         DecompressDataWithHeaderVram(sTitleScreenRayquazaGfx, (void *)(BG_CHAR_ADDR(2)));
         DecompressDataWithHeaderVram(sTitleScreenRayquazaTilemap, (void *)(BG_SCREEN_ADDR(26)));
         // bg1
-        DecompressDataWithHeaderVram(sTitleScreenCloudsGfx, (void *)(BG_CHAR_ADDR(3)));
-        DecompressDataWithHeaderVram(gTitleScreenCloudsTilemap, (void *)(BG_SCREEN_ADDR(27)));
+        HideBg(1);
         ScanlineEffect_Stop();
         ResetTasks();
         ResetSpriteData();
