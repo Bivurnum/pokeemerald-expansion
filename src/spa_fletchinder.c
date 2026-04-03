@@ -23,7 +23,7 @@
 
 static void SpriteCB_Tornado(struct Sprite *sprite);
 
-static const u16 gFletchinder_Pal[] = INCBIN_U16("graphics/_spa/fletchinder/fletchinder_head.gbapal");
+static const u16 gFletchinder_Pal[] = INCBIN_U16("graphics/_spa/fletchinder/fletchinder_body_left.gbapal");
 static const u32 gFletchinderHead_Gfx[] = INCBIN_U32("graphics/_spa/fletchinder/fletchinder_head.4bpp");
 static const u32 gFletchinderBodyRight_Gfx[] = INCBIN_U32("graphics/_spa/fletchinder/fletchinder_body_right.4bpp");
 static const u32 gFletchinderBodyLeft_Gfx[] = INCBIN_U32("graphics/_spa/fletchinder/fletchinder_body_left.4bpp");
