@@ -1025,8 +1025,8 @@ SpaMountain_EventScript_AfterBoulder_Text_7:
 
 SpaMountain_EventScript_AfterBoulder_Text_8:
 # 415 "data/maps/SpaMountain/scripts.pory"
-	.string "{COLOR BLUE}If those weren't mythical Pokémon, then\n"
-	.string "how did you become cursed to sleep?$"
+	.string "{COLOR BLUE}If those weren't mythical Pokémon, why\n"
+	.string "were you sleeping as if under a curse?$"
 
 SpaMountain_EventScript_AfterBoulder_Text_9:
 # 419 "data/maps/SpaMountain/scripts.pory"

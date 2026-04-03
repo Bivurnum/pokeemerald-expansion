@@ -412,8 +412,8 @@ script SpaMountain_EventScript_AfterBoulder {
         walk_down
     ))
     waitmovement(RED_ID)
-    msgbox("{COLOR BLUE}If those weren't mythical Pokémon, then
-            how did you become cursed to sleep?")
+    msgbox("{COLOR BLUE}If those weren't mythical Pokémon, why
+            were you sleeping as if under a curse?")
     closemessage
     delay(16)
     msgbox("Hahaha!

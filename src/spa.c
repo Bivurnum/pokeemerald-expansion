@@ -39,6 +39,7 @@ static void Task_SpaEndFade(u8 taskId);
 static void Task_SpaEndSuccess(u8 taskId);
 static void CreateSpaSprites(u8 taskId);
 static void CreateSpaMonSprites(u8 taskId);
+static void CB2_SpaThankYou(void);
 
 static void SpriteCB_Music(struct Sprite *sprite);
 static void SpriteCB_Selector(struct Sprite *sprite);
@@ -58,6 +59,10 @@ static const u32 gFrozenHand_Gfx[] = INCBIN_U32("graphics/_spa/lombre/frozen_han
 static const u16 gHand_Pal[] = INCBIN_U16("graphics/_spa/hand.gbapal");
 static const u32 gHand_Gfx[] = INCBIN_U32("graphics/_spa/hand.4bpp");
 static const u32 gMusic_Gfx[] = INCBIN_U32("graphics/_spa/music.4bpp");
+
+static const u32 gSpaThankYou_Gfx[] = INCBIN_U32("graphics/_spa/thank_you.4bpp.smol");
+static const u32 gSpaThankYou_Tilemap[] = INCBIN_U32("graphics/_spa/thank_you.bin.smolTM");
+static const u16 gSpaThankYou_Pal[] = INCBIN_U16("graphics/_spa/thank_you.gbapal");
 
 static const u16 gItemsIcon_Pal[] = INCBIN_U16("graphics/_spa/items_icon.gbapal");
 static const u32 gItemsIcon_Gfx[] = INCBIN_U32("graphics/_spa/items_icon.4bpp");
@@ -165,7 +170,7 @@ static const struct BgTemplate sBgTemplates[3] =
     },
     {
         .bg = 3,
-        .charBaseIndex = 0,
+        .charBaseIndex = 1,
         .mapBaseIndex = 6,
         .screenSize = 0,
         .paletteMode = 0,
@@ -700,7 +705,7 @@ static void CB2_StartSpa(void)
     case 2:
         u8 taskId;
 
-        DecompressDataWithHeaderVram(gSpaBG_Gfx, (void *)VRAM);
+        DecompressDataWithHeaderVram(gSpaBG_Gfx, (void *)(BG_CHAR_ADDR(1)));
         DecompressDataWithHeaderVram(gSpaBG_Tilemap, (u16*) BG_SCREEN_ADDR(6));
 
         if (sSpaData.mon == SPA_LOMBRE)
@@ -2536,5 +2541,84 @@ void Script_GetNumBugs(void)
 
 void StartSpaCredits(void)
 {
-    
+    PlayRainStoppingSoundEffect();
+    CleanupOverworldWindowsAndTilemaps();
+    SetMainCallback2(CB2_SpaThankYou);
+}
+
+static void CB2_SpaThankYou(void)
+{
+    switch (gMain.state)
+    {
+    case 0:
+    default:
+        SetVBlankCallback(NULL);
+        ChangeBgX(0, 0, BG_COORD_SET);
+        ChangeBgY(0, 0, BG_COORD_SET);
+        ChangeBgX(1, 0, BG_COORD_SET);
+        ChangeBgY(1, 0, BG_COORD_SET);
+        ChangeBgX(2, 0, BG_COORD_SET);
+        ChangeBgY(2, 0, BG_COORD_SET);
+        ChangeBgX(3, 0, BG_COORD_SET);
+        ChangeBgY(3, 0, BG_COORD_SET);
+        HideBg(0);
+        HideBg(1);
+        HideBg(2);
+        HideBg(3);
+        DmaFillLarge16(3, 0, (u8 *)VRAM, VRAM_SIZE, 0x1000);
+        DmaClear32(3, OAM, OAM_SIZE);
+        DmaClear16(3, PLTT, PLTT_SIZE);
+        gMain.state = 1;
+        break;
+    case 1:
+        ScanlineEffect_Stop();
+        DeactivateAllTextPrinters();
+        ResetTasks();
+        ResetSpriteData();
+        ResetPaletteFade();
+        FreeAllSpritePalettes();
+        ResetAllPicSprites();
+        gMain.state++;
+        break;
+    case 2:
+        DecompressDataWithHeaderVram(gSpaThankYou_Gfx, (void *)(BG_CHAR_ADDR(1)));
+        DecompressDataWithHeaderVram(gSpaThankYou_Tilemap, (u16*) BG_SCREEN_ADDR(6));
+        ResetBgsAndClearDma3BusyFlags(0);
+        InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
+        InitWindows(sWindowTemplates);
+
+        LoadPalette(gSpaThankYou_Pal, BG_PLTT_ID(0), 16 * PLTT_SIZE_4BPP);
+        ScheduleBgCopyTilemapToVram(0);
+
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+
+        EnableInterrupts(DISPSTAT_VBLANK);
+        SetVBlankCallback(VblankCB_SpaGame);
+
+        SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
+
+        ShowBg(3);
+        sSpaData.saveSpriteId = 0;
+        PlayBGM(MUS_RG_SLOW_PALLET);
+
+        gMain.state++;
+        break;
+    case 3:
+        BuildOamBuffer();
+        DoScheduledBgTilemapCopiesToVram();
+        UpdatePaletteFade();
+        if (!gPaletteFade.active)
+        {
+            if (sSpaData.saveSpriteId >= 200)
+            {
+                if (JOY_NEW(A_BUTTON | B_BUTTON | START_BUTTON))
+                    DoSoftReset();
+            }
+            else
+            {
+                sSpaData.saveSpriteId++;
+            }
+        }
+        break;
+    }
 }

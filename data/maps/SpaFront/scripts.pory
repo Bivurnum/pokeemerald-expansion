@@ -94,3 +94,11 @@ script SpaFront_EventScript_RoadLeft {
     releaseall
     end
 }
+
+script SpaFront_EventScript_Sign {
+    lock
+    msgbox("'Kodai Temple'")
+    closemessage
+    releaseall
+    end
+}
