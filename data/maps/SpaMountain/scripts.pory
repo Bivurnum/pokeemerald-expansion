@@ -154,7 +154,22 @@ script SpaMountain_EventScript_Psyduck {
     lock
     startspa(2)
     if (var(VAR_RESULT) == 1) {
-        // Give item
+        faceplayer
+        playmoncry(SPECIES_PSYDUCK, CRY_MODE_NORMAL)
+        msgbox("The Psyduck has nothing to give you,
+                but it is thankful nonetheless.")
+        waitmoncry
+        waitmessage
+        closemessage
+        playse(SE_LEDGE)
+        applymovement(PSYDUCK_ID, moves(
+            face_right
+            lock_facing_direction
+            jump_2_left
+            unlock_facing_direction
+            walk_fast_left * 9
+        ))
+        waitmovement(0)
     }
     elif (var(VAR_RESULT) == 2){
         playse(SE_NOT_EFFECTIVE)

@@ -197,40 +197,58 @@ SpaMountain_EventScript_Psyduck::
 # 156 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq SpaMountain_EventScript_Psyduck_2
-# 159 "data/maps/SpaMountain/scripts.pory"
+# 174 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 2
 	goto_if_eq SpaMountain_EventScript_Psyduck_3
 SpaMountain_EventScript_Psyduck_1:
-# 169 "data/maps/SpaMountain/scripts.pory"
+# 184 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
 SpaMountain_EventScript_Psyduck_2:
+# 157 "data/maps/SpaMountain/scripts.pory"
+	faceplayer
+# 158 "data/maps/SpaMountain/scripts.pory"
+	playmoncry SPECIES_PSYDUCK, CRY_MODE_NORMAL
+# 159 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_Psyduck_Text_0
+# 161 "data/maps/SpaMountain/scripts.pory"
+	waitmoncry
+# 162 "data/maps/SpaMountain/scripts.pory"
+	waitmessage
+# 163 "data/maps/SpaMountain/scripts.pory"
+	closemessage
+# 164 "data/maps/SpaMountain/scripts.pory"
+	playse SE_LEDGE
+# 165 "data/maps/SpaMountain/scripts.pory"
+	applymovement PSYDUCK_ID, SpaMountain_EventScript_Psyduck_Movement_0
+# 172 "data/maps/SpaMountain/scripts.pory"
+	waitmovement 0
 	goto SpaMountain_EventScript_Psyduck_1
 
 SpaMountain_EventScript_Psyduck_3:
-# 160 "data/maps/SpaMountain/scripts.pory"
+# 175 "data/maps/SpaMountain/scripts.pory"
 	playse SE_NOT_EFFECTIVE
-# 161 "data/maps/SpaMountain/scripts.pory"
-	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Psyduck_Movement_0
-# 167 "data/maps/SpaMountain/scripts.pory"
+# 176 "data/maps/SpaMountain/scripts.pory"
+	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Psyduck_Movement_1
+# 182 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 	goto SpaMountain_EventScript_Psyduck_1
 
 
 SpaMountain_EventScript_Fletchinder::
-# 174 "data/maps/SpaMountain/scripts.pory"
+# 189 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 175 "data/maps/SpaMountain/scripts.pory"
+# 190 "data/maps/SpaMountain/scripts.pory"
 	startspa 3
-# 176 "data/maps/SpaMountain/scripts.pory"
+# 191 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq SpaMountain_EventScript_Fletchinder_2
-# 179 "data/maps/SpaMountain/scripts.pory"
+# 194 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 2
 	goto_if_eq SpaMountain_EventScript_Fletchinder_3
 SpaMountain_EventScript_Fletchinder_1:
-# 189 "data/maps/SpaMountain/scripts.pory"
+# 204 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
@@ -238,28 +256,28 @@ SpaMountain_EventScript_Fletchinder_2:
 	goto SpaMountain_EventScript_Fletchinder_1
 
 SpaMountain_EventScript_Fletchinder_3:
-# 180 "data/maps/SpaMountain/scripts.pory"
+# 195 "data/maps/SpaMountain/scripts.pory"
 	playse SE_NOT_EFFECTIVE
-# 181 "data/maps/SpaMountain/scripts.pory"
+# 196 "data/maps/SpaMountain/scripts.pory"
 	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Rattata_Movement_2
-# 187 "data/maps/SpaMountain/scripts.pory"
+# 202 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 	goto SpaMountain_EventScript_Fletchinder_1
 
 
 SpaMountain_EventScript_Lombre::
-# 194 "data/maps/SpaMountain/scripts.pory"
+# 209 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 195 "data/maps/SpaMountain/scripts.pory"
+# 210 "data/maps/SpaMountain/scripts.pory"
 	startspa 4
-# 196 "data/maps/SpaMountain/scripts.pory"
+# 211 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq SpaMountain_EventScript_Lombre_2
-# 199 "data/maps/SpaMountain/scripts.pory"
+# 214 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 2
 	goto_if_eq SpaMountain_EventScript_Lombre_3
 SpaMountain_EventScript_Lombre_1:
-# 209 "data/maps/SpaMountain/scripts.pory"
+# 224 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
@@ -267,11 +285,11 @@ SpaMountain_EventScript_Lombre_2:
 	goto SpaMountain_EventScript_Lombre_1
 
 SpaMountain_EventScript_Lombre_3:
-# 200 "data/maps/SpaMountain/scripts.pory"
+# 215 "data/maps/SpaMountain/scripts.pory"
 	playse SE_NOT_EFFECTIVE
-# 201 "data/maps/SpaMountain/scripts.pory"
+# 216 "data/maps/SpaMountain/scripts.pory"
 	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Lombre_Movement_0
-# 207 "data/maps/SpaMountain/scripts.pory"
+# 222 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 	goto SpaMountain_EventScript_Lombre_1
 
@@ -402,27 +420,57 @@ SpaMountain_EventScript_Teddiursa_Movement_3:
 	walk_right
 	step_end
 
-# 161 "data/maps/SpaMountain/scripts.pory"
-SpaMountain_EventScript_Psyduck_Movement_0:
-# 162 "data/maps/SpaMountain/scripts.pory"
-	face_down
-# 163 "data/maps/SpaMountain/scripts.pory"
-	lock_facing_direction
-# 164 "data/maps/SpaMountain/scripts.pory"
-	walk_fast_up
 # 165 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_Psyduck_Movement_0:
+# 166 "data/maps/SpaMountain/scripts.pory"
+	face_right
+# 167 "data/maps/SpaMountain/scripts.pory"
+	lock_facing_direction
+# 168 "data/maps/SpaMountain/scripts.pory"
+	jump_2_left
+# 169 "data/maps/SpaMountain/scripts.pory"
+	unlock_facing_direction
+# 170 "data/maps/SpaMountain/scripts.pory"
+	walk_fast_left
+# 170 "data/maps/SpaMountain/scripts.pory"
+	walk_fast_left
+# 170 "data/maps/SpaMountain/scripts.pory"
+	walk_fast_left
+# 170 "data/maps/SpaMountain/scripts.pory"
+	walk_fast_left
+# 170 "data/maps/SpaMountain/scripts.pory"
+	walk_fast_left
+# 170 "data/maps/SpaMountain/scripts.pory"
+	walk_fast_left
+# 170 "data/maps/SpaMountain/scripts.pory"
+	walk_fast_left
+# 170 "data/maps/SpaMountain/scripts.pory"
+	walk_fast_left
+# 170 "data/maps/SpaMountain/scripts.pory"
+	walk_fast_left
+	step_end
+
+# 176 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_Psyduck_Movement_1:
+# 177 "data/maps/SpaMountain/scripts.pory"
+	face_down
+# 178 "data/maps/SpaMountain/scripts.pory"
+	lock_facing_direction
+# 179 "data/maps/SpaMountain/scripts.pory"
+	walk_fast_up
+# 180 "data/maps/SpaMountain/scripts.pory"
 	unlock_facing_direction
 	step_end
 
-# 201 "data/maps/SpaMountain/scripts.pory"
+# 216 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_EventScript_Lombre_Movement_0:
-# 202 "data/maps/SpaMountain/scripts.pory"
+# 217 "data/maps/SpaMountain/scripts.pory"
 	face_right
-# 203 "data/maps/SpaMountain/scripts.pory"
+# 218 "data/maps/SpaMountain/scripts.pory"
 	lock_facing_direction
-# 204 "data/maps/SpaMountain/scripts.pory"
+# 219 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_left
-# 205 "data/maps/SpaMountain/scripts.pory"
+# 220 "data/maps/SpaMountain/scripts.pory"
 	unlock_facing_direction
 	step_end
 
@@ -445,3 +493,8 @@ SpaMountain_EventScript_Rattata_Text_0:
 SpaMountain_EventScript_Teddiursa_Text_0:
 # 111 "data/maps/SpaMountain/scripts.pory"
 	.string "The Teddiursa gave you some honey!$"
+
+SpaMountain_EventScript_Psyduck_Text_0:
+# 159 "data/maps/SpaMountain/scripts.pory"
+	.string "The Psyduck has nothing to give you,\n"
+	.string "but it is thankful nonetheless.$"
