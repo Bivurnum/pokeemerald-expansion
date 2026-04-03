@@ -1557,6 +1557,7 @@ static void SpaHandHandleInput(u8 taskId)
     {
         gSprites[sSpaData.handSpriteId].invisible = TRUE;
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+        VarSet(VAR_RESULT, 0);
         gTasks[taskId].func = Task_SpaEndFade;
         return;
     }
@@ -1565,6 +1566,7 @@ static void SpaHandHandleInput(u8 taskId)
         StartSpriteAnim(&gSprites[sSpaData.itemsExitSpriteId], 1);
         gSprites[sSpaData.handSpriteId].invisible = TRUE;
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+        VarSet(VAR_RESULT, 0);
         gTasks[taskId].func = Task_SpaEndFade;
         return;
     }
@@ -2171,11 +2173,13 @@ void Task_SpaEndBad(u8 taskId)
             else if (tState > 0 && sSpaData.mon == SPA_PSYDUCK && tCounter > 120)
             {
                 BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+                VarSet(VAR_RESULT, 2);
                 gTasks[taskId].func = Task_SpaEndFade;
             }
             else if (tState > 0 && sSpaData.mon != SPA_PSYDUCK )
             {
                 BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+                VarSet(VAR_RESULT, 2);
                 gTasks[taskId].func = Task_SpaEndFade;
             }
         }
@@ -2213,6 +2217,7 @@ static void Task_SpaEndSuccess(u8 taskId)
             break;
         }
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+        VarSet(VAR_RESULT, 1);
         gTasks[taskId].func = Task_SpaEndFade;
     }
     tCounter++;

@@ -61,6 +61,42 @@ script SpaMountain_OnFrame_0 {
 script SpaMountain_EventScript_Rattata {
     lock
     startspa(0)
+    if (var(VAR_RESULT) == 1) {
+        faceplayer
+        setflag(FLAG_SPA_OBTAINED_CLAW)
+        playfanfare(MUS_OBTAIN_ITEM)
+        msgbox("The Rattata gave you a claw!")
+        waitfanfare
+        waitmessage
+        closemessage
+        playse(SE_LEDGE)
+        applymovement(RATTATA_ID, moves(
+            jump_2_left
+        ))
+        waitmovement(0)
+        playse(SE_LEDGE)
+        applymovement(RATTATA_ID, moves(
+            jump_2_left
+        ))
+        waitmovement(0)
+        applymovement(RATTATA_ID, moves(
+            walk_up * 4
+            walk_left * 2
+            walk_up * 2
+        ))
+        waitmovement(0)
+        removeobject(RATTATA_ID)
+    }
+    elif (var(VAR_RESULT) == 2){
+        playse(SE_NOT_EFFECTIVE)
+        applymovement(PLAYER_ID, moves(
+            face_up
+            lock_facing_direction
+            walk_fast_down
+            unlock_facing_direction
+        ))
+        waitmovement(0)
+    }
     releaseall
     end
 }
@@ -68,6 +104,48 @@ script SpaMountain_EventScript_Rattata {
 script SpaMountain_EventScript_Teddiursa {
     lock
     startspa(1)
+    if (var(VAR_RESULT) == 1) {
+        faceplayer
+        setflag(FLAG_SPA_OBTAINED_HONEY)
+        playfanfare(MUS_OBTAIN_ITEM)
+        msgbox("The Teddiursa gave you some honey!")
+        waitfanfare
+        waitmessage
+        closemessage
+        applymovement(TEDDIURSA_ID, moves(
+            walk_slow_diag_northeast
+            walk_slow_right
+        ))
+        waitmovement(0)
+        playse(SE_LEDGE)
+        applymovement(TEDDIURSA_ID, moves(
+            jump_2_right
+            walk_down
+        ))
+        waitmovement(0)
+        playse(SE_LEDGE)
+        applymovement(TEDDIURSA_ID, moves(
+            jump_2_down
+        ))
+        waitmovement(0)
+        playse(SE_LEDGE)
+        applymovement(TEDDIURSA_ID, moves(
+            jump_2_down
+            walk_right * 5
+        ))
+        waitmovement(0)
+        removeobject(TEDDIURSA_ID)
+    }
+    elif (var(VAR_RESULT) == 2){
+        playse(SE_NOT_EFFECTIVE)
+        applymovement(PLAYER_ID, moves(
+            face_up
+            lock_facing_direction
+            walk_fast_down
+            unlock_facing_direction
+        ))
+        waitmovement(0)
+    }
     releaseall
     end
 }
@@ -75,6 +153,19 @@ script SpaMountain_EventScript_Teddiursa {
 script SpaMountain_EventScript_Psyduck {
     lock
     startspa(2)
+    if (var(VAR_RESULT) == 1) {
+        // Give item
+    }
+    elif (var(VAR_RESULT) == 2){
+        playse(SE_NOT_EFFECTIVE)
+        applymovement(PLAYER_ID, moves(
+            face_down
+            lock_facing_direction
+            walk_fast_up
+            unlock_facing_direction
+        ))
+        waitmovement(0)
+    }
     releaseall
     end
 }
@@ -82,6 +173,19 @@ script SpaMountain_EventScript_Psyduck {
 script SpaMountain_EventScript_Fletchinder {
     lock
     startspa(3)
+    if (var(VAR_RESULT) == 1) {
+        // Give item
+    }
+    elif (var(VAR_RESULT) == 2){
+        playse(SE_NOT_EFFECTIVE)
+        applymovement(PLAYER_ID, moves(
+            face_up
+            lock_facing_direction
+            walk_fast_down
+            unlock_facing_direction
+        ))
+        waitmovement(0)
+    }
     releaseall
     end
 }
@@ -89,6 +193,19 @@ script SpaMountain_EventScript_Fletchinder {
 script SpaMountain_EventScript_Lombre {
     lock
     startspa(4)
+    if (var(VAR_RESULT) == 1) {
+        // Give item
+    }
+    elif (var(VAR_RESULT) == 2){
+        playse(SE_NOT_EFFECTIVE)
+        applymovement(PLAYER_ID, moves(
+            face_right
+            lock_facing_direction
+            walk_fast_left
+            unlock_facing_direction
+        ))
+        waitmovement(0)
+    }
     releaseall
     end
 }

@@ -338,128 +338,132 @@ SpaInterior_OnFrame_1::
 
 SpaInterior_EventScript_KimonoRed::
 # 315 "data/maps/SpaInterior/scripts.pory"
-	switch VAR_SPA_INTRO_STATE
+	lock
 # 316 "data/maps/SpaInterior/scripts.pory"
+	faceplayer
+# 317 "data/maps/SpaInterior/scripts.pory"
+	switch VAR_SPA_INTRO_STATE
+# 318 "data/maps/SpaInterior/scripts.pory"
 	case 5, SpaInterior_EventScript_KimonoRed_3
-# 325 "data/maps/SpaInterior/scripts.pory"
+# 327 "data/maps/SpaInterior/scripts.pory"
 	case 6, SpaInterior_EventScript_KimonoRed_4
-# 332 "data/maps/SpaInterior/scripts.pory"
+# 334 "data/maps/SpaInterior/scripts.pory"
 	case 7, SpaInterior_EventScript_KimonoRed_5
-# 337 "data/maps/SpaInterior/scripts.pory"
-	case 8, SpaInterior_EventScript_KimonoRed_6
-# 338 "data/maps/SpaInterior/scripts.pory"
-	case 12, SpaInterior_EventScript_KimonoRed_6
 # 339 "data/maps/SpaInterior/scripts.pory"
+	case 8, SpaInterior_EventScript_KimonoRed_6
+# 340 "data/maps/SpaInterior/scripts.pory"
+	case 12, SpaInterior_EventScript_KimonoRed_6
+# 341 "data/maps/SpaInterior/scripts.pory"
 	case 14, SpaInterior_EventScript_KimonoRed_6
-# 344 "data/maps/SpaInterior/scripts.pory"
+# 346 "data/maps/SpaInterior/scripts.pory"
 	case 9, SpaInterior_EventScript_KimonoRed_7
-# 347 "data/maps/SpaInterior/scripts.pory"
+# 349 "data/maps/SpaInterior/scripts.pory"
 	case 10, SpaInterior_EventScript_KimonoRed_8
-# 357 "data/maps/SpaInterior/scripts.pory"
+# 359 "data/maps/SpaInterior/scripts.pory"
 	case 11, SpaInterior_EventScript_KimonoRed_9
-# 369 "data/maps/SpaInterior/scripts.pory"
+# 371 "data/maps/SpaInterior/scripts.pory"
 	case 13, SpaInterior_EventScript_KimonoRed_10
-# 372 "data/maps/SpaInterior/scripts.pory"
+# 374 "data/maps/SpaInterior/scripts.pory"
 	case 15, SpaInterior_EventScript_KimonoRed_11
 SpaInterior_EventScript_KimonoRed_1:
-# 377 "data/maps/SpaInterior/scripts.pory"
+# 379 "data/maps/SpaInterior/scripts.pory"
 	closemessage
-# 378 "data/maps/SpaInterior/scripts.pory"
+# 380 "data/maps/SpaInterior/scripts.pory"
 	releaseall
 	end
 
 SpaInterior_EventScript_KimonoRed_3:
-# 317 "data/maps/SpaInterior/scripts.pory"
+# 319 "data/maps/SpaInterior/scripts.pory"
 	msgbox SpaInterior_EventScript_KimonoRed_Text_0
 	goto SpaInterior_EventScript_KimonoRed_1
 
 SpaInterior_EventScript_KimonoRed_4:
-# 326 "data/maps/SpaInterior/scripts.pory"
+# 328 "data/maps/SpaInterior/scripts.pory"
 	msgbox SpaInterior_EventScript_KimonoRed_Text_1
 	goto SpaInterior_EventScript_KimonoRed_1
 
 SpaInterior_EventScript_KimonoRed_5:
-# 333 "data/maps/SpaInterior/scripts.pory"
+# 335 "data/maps/SpaInterior/scripts.pory"
 	msgbox SpaInterior_EventScript_KimonoRed_Text_2
 	goto SpaInterior_EventScript_KimonoRed_1
 
 SpaInterior_EventScript_KimonoRed_6:
-# 340 "data/maps/SpaInterior/scripts.pory"
+# 342 "data/maps/SpaInterior/scripts.pory"
 	msgbox SpaInterior_EventScript_KimonoRed_Text_3
 	goto SpaInterior_EventScript_KimonoRed_1
 
 SpaInterior_EventScript_KimonoRed_7:
-# 345 "data/maps/SpaInterior/scripts.pory"
+# 347 "data/maps/SpaInterior/scripts.pory"
 	msgbox SpaInterior_EventScript_KimonoRed_Text_4
 	goto SpaInterior_EventScript_KimonoRed_1
 
 SpaInterior_EventScript_KimonoRed_8:
-# 348 "data/maps/SpaInterior/scripts.pory"
+# 350 "data/maps/SpaInterior/scripts.pory"
 	getnumbugs
-# 349 "data/maps/SpaInterior/scripts.pory"
+# 351 "data/maps/SpaInterior/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_gt SpaInterior_EventScript_KimonoRed_12
-# 354 "data/maps/SpaInterior/scripts.pory"
+# 356 "data/maps/SpaInterior/scripts.pory"
 	msgbox SpaInterior_EventScript_KimonoRed_Text_4
 	goto SpaInterior_EventScript_KimonoRed_1
 
 SpaInterior_EventScript_KimonoRed_9:
-# 358 "data/maps/SpaInterior/scripts.pory"
+# 360 "data/maps/SpaInterior/scripts.pory"
 	getnumbugs
-# 359 "data/maps/SpaInterior/scripts.pory"
+# 361 "data/maps/SpaInterior/scripts.pory"
 	compare VAR_RESULT, 0
 	goto_if_gt SpaInterior_EventScript_KimonoRed_15
-# 364 "data/maps/SpaInterior/scripts.pory"
+# 366 "data/maps/SpaInterior/scripts.pory"
 	msgbox SpaInterior_EventScript_KimonoRed_Text_3
 	goto SpaInterior_EventScript_KimonoRed_1
 
 SpaInterior_EventScript_KimonoRed_10:
-# 370 "data/maps/SpaInterior/scripts.pory"
+# 372 "data/maps/SpaInterior/scripts.pory"
 	msgbox SpaInterior_EventScript_KimonoRed_Text_6
 	goto SpaInterior_EventScript_KimonoRed_1
 
 SpaInterior_EventScript_KimonoRed_11:
-# 373 "data/maps/SpaInterior/scripts.pory"
+# 375 "data/maps/SpaInterior/scripts.pory"
 	msgbox SpaInterior_EventScript_KimonoRed_Text_7
 	goto SpaInterior_EventScript_KimonoRed_1
 
 SpaInterior_EventScript_KimonoRed_12:
-# 350 "data/maps/SpaInterior/scripts.pory"
+# 352 "data/maps/SpaInterior/scripts.pory"
 	msgbox SpaInterior_EventScript_KimonoRed_Text_5
 	goto SpaInterior_EventScript_KimonoRed_1
 
 SpaInterior_EventScript_KimonoRed_15:
-# 360 "data/maps/SpaInterior/scripts.pory"
+# 362 "data/maps/SpaInterior/scripts.pory"
 	msgbox SpaInterior_EventScript_KimonoRed_Text_5
 	goto SpaInterior_EventScript_KimonoRed_1
 
 
 SpaInterior_EventScript_KimonoBlue::
-# 383 "data/maps/SpaInterior/scripts.pory"
-	lock
-# 384 "data/maps/SpaInterior/scripts.pory"
-	faceplayer
 # 385 "data/maps/SpaInterior/scripts.pory"
-	msgbox SpaInterior_EventScript_KimonoBlue_Text_0
+	lock
+# 386 "data/maps/SpaInterior/scripts.pory"
+	faceplayer
 # 387 "data/maps/SpaInterior/scripts.pory"
-	closemessage
-# 388 "data/maps/SpaInterior/scripts.pory"
-	turnobject BLUE_INT_ID, DIR_WEST
+	msgbox SpaInterior_EventScript_KimonoBlue_Text_0
 # 389 "data/maps/SpaInterior/scripts.pory"
+	closemessage
+# 390 "data/maps/SpaInterior/scripts.pory"
+	turnobject BLUE_INT_ID, DIR_WEST
+# 391 "data/maps/SpaInterior/scripts.pory"
 	releaseall
 	end
 
 
 SpaInterior_EventScript_CynthiaSick::
-# 394 "data/maps/SpaInterior/scripts.pory"
-	lock
-# 395 "data/maps/SpaInterior/scripts.pory"
-	msgbox SpaInterior_EventScript_CynthiaSick_Text_0
 # 396 "data/maps/SpaInterior/scripts.pory"
-	waitmessage
+	lock
 # 397 "data/maps/SpaInterior/scripts.pory"
-	closemessage
+	msgbox SpaInterior_EventScript_CynthiaSick_Text_0
 # 398 "data/maps/SpaInterior/scripts.pory"
+	waitmessage
+# 399 "data/maps/SpaInterior/scripts.pory"
+	closemessage
+# 400 "data/maps/SpaInterior/scripts.pory"
 	releaseall
 	end
 
@@ -1075,7 +1079,7 @@ SpaInterior_OnFrame_1_Text_5:
 	.string "any assistance.$"
 
 SpaInterior_EventScript_KimonoRed_Text_0:
-# 317 "data/maps/SpaInterior/scripts.pory"
+# 319 "data/maps/SpaInterior/scripts.pory"
 	.string "{COLOR RED}See if any of the Pokémon will\n"
 	.string "eat a berry.\p"
 	.string "I'm sure they'd love to be hand fed,\n"
@@ -1084,7 +1088,7 @@ SpaInterior_EventScript_KimonoRed_Text_0:
 	.string "you get any takers.$"
 
 SpaInterior_EventScript_KimonoRed_Text_1:
-# 326 "data/maps/SpaInterior/scripts.pory"
+# 328 "data/maps/SpaInterior/scripts.pory"
 	.string "{COLOR RED}If a Pokémon trusts you enough\n"
 	.string "to eat a berry from your hand,\l"
 	.string "try petting it.\p"
@@ -1092,43 +1096,43 @@ SpaInterior_EventScript_KimonoRed_Text_1:
 	.string "especially on the head.$"
 
 SpaInterior_EventScript_KimonoRed_Text_2:
-# 333 "data/maps/SpaInterior/scripts.pory"
+# 335 "data/maps/SpaInterior/scripts.pory"
 	.string "{COLOR RED}That claw look perfect for\n"
 	.string "satisfying a persistent itch.\p"
 	.string "Maybe you can help a Pokémon with it.$"
 
 SpaInterior_EventScript_KimonoRed_Text_3:
-# 340 "data/maps/SpaInterior/scripts.pory"
+# 342 "data/maps/SpaInterior/scripts.pory"
 	.string "{COLOR RED}Don't forget to pet those Pokémon\n"
 	.string "if they'll let you.\p"
 	.string "Nothing beats a good head pat!$"
 
 SpaInterior_EventScript_KimonoRed_Text_4:
-# 345 "data/maps/SpaInterior/scripts.pory"
+# 347 "data/maps/SpaInterior/scripts.pory"
 	.string "{COLOR RED}Carful with that sticky honey!\n"
 	.string "It might attract bugs.$"
 
 SpaInterior_EventScript_KimonoRed_Text_5:
-# 350 "data/maps/SpaInterior/scripts.pory"
+# 352 "data/maps/SpaInterior/scripts.pory"
 	.string "{COLOR RED}AHH! Bugs belong outside where\n"
 	.string "the birds can eat them!$"
 
 SpaInterior_EventScript_KimonoRed_Text_6:
-# 370 "data/maps/SpaInterior/scripts.pory"
+# 372 "data/maps/SpaInterior/scripts.pory"
 	.string "{COLOR RED}Yow! That orb looks hot!\n"
 	.string "Careful that it doesn't melt anything.$"
 
 SpaInterior_EventScript_KimonoRed_Text_7:
-# 373 "data/maps/SpaInterior/scripts.pory"
+# 375 "data/maps/SpaInterior/scripts.pory"
 	.string "{COLOR RED}You helped all of the Pokémon?\n"
 	.string "I think there might be one more\l"
 	.string "somewhere.$"
 
 SpaInterior_EventScript_KimonoBlue_Text_0:
-# 385 "data/maps/SpaInterior/scripts.pory"
+# 387 "data/maps/SpaInterior/scripts.pory"
 	.string "{COLOR BLUE}I'm making sure she's comfortable.\n"
 	.string "Hopefully she will wake soon.$"
 
 SpaInterior_EventScript_CynthiaSick_Text_0:
-# 395 "data/maps/SpaInterior/scripts.pory"
+# 397 "data/maps/SpaInterior/scripts.pory"
 	.string "She's sleeping peacefully.$"
