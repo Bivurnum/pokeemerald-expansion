@@ -1,4 +1,4 @@
-# Credits
+# Credits for Pokémon Spa
 
 ## Graphics
 
