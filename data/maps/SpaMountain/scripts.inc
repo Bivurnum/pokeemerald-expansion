@@ -473,7 +473,85 @@ SpaMountain_EventScript_AfterBoulder::
 	playmoncry SPECIES_SMEARGLE, CRY_MODE_NORMAL
 # 387 "data/maps/SpaMountain/scripts.pory"
 	waitmoncry
+# 388 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_AfterBoulder_Text_6
+# 390 "data/maps/SpaMountain/scripts.pory"
+	closemessage
 # 391 "data/maps/SpaMountain/scripts.pory"
+	delay 25
+# 392 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_AfterBoulder_Text_7
+# 393 "data/maps/SpaMountain/scripts.pory"
+	closemessage
+# 394 "data/maps/SpaMountain/scripts.pory"
+	turnobject SMEARGLE_ID, DIR_SOUTH
+# 395 "data/maps/SpaMountain/scripts.pory"
+	turnobject CYNTHIA_ID, DIR_SOUTH
+# 396 "data/maps/SpaMountain/scripts.pory"
+	turnobject LOCALID_PLAYER, DIR_SOUTH
+# 397 "data/maps/SpaMountain/scripts.pory"
+	setobjectxyperm RED_MTN_ID, 17, 27
+# 398 "data/maps/SpaMountain/scripts.pory"
+	setobjectxyperm BLUE_MTN_ID, 18, 27
+# 399 "data/maps/SpaMountain/scripts.pory"
+	addobject BLUE_MTN_ID
+# 400 "data/maps/SpaMountain/scripts.pory"
+	addobject RED_MTN_ID
+# 401 "data/maps/SpaMountain/scripts.pory"
+	applymovement BLUE_MTN_ID, SpaMountain_EventScript_AfterBoulder_Movement_8
+# 404 "data/maps/SpaMountain/scripts.pory"
+	applymovement RED_MTN_ID, SpaMountain_EventScript_AfterBoulder_Movement_9
+# 410 "data/maps/SpaMountain/scripts.pory"
+	applymovement LOCALID_PLAYER, SpaMountain_EventScript_AfterBoulder_Movement_10
+# 414 "data/maps/SpaMountain/scripts.pory"
+	waitmovement RED_MTN_ID
+# 415 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_AfterBoulder_Text_8
+# 417 "data/maps/SpaMountain/scripts.pory"
+	closemessage
+# 418 "data/maps/SpaMountain/scripts.pory"
+	delay 16
+# 419 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_AfterBoulder_Text_9
+# 426 "data/maps/SpaMountain/scripts.pory"
+	closemessage
+# 427 "data/maps/SpaMountain/scripts.pory"
+	turnobject CYNTHIA_ID, DIR_EAST
+# 428 "data/maps/SpaMountain/scripts.pory"
+	turnobject LOCALID_PLAYER, DIR_WEST
+# 429 "data/maps/SpaMountain/scripts.pory"
+	delay 16
+# 430 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_AfterBoulder_Text_10
+# 438 "data/maps/SpaMountain/scripts.pory"
+	closemessage
+# 439 "data/maps/SpaMountain/scripts.pory"
+	delay 16
+# 440 "data/maps/SpaMountain/scripts.pory"
+	turnobject CYNTHIA_ID, DIR_SOUTH
+# 441 "data/maps/SpaMountain/scripts.pory"
+	turnobject LOCALID_PLAYER, DIR_SOUTH
+# 442 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_AfterBoulder_Text_11
+# 443 "data/maps/SpaMountain/scripts.pory"
+	closemessage
+# 444 "data/maps/SpaMountain/scripts.pory"
+	delay 16
+# 445 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_AfterBoulder_Text_12
+# 446 "data/maps/SpaMountain/scripts.pory"
+	closemessage
+# 447 "data/maps/SpaMountain/scripts.pory"
+	delay 16
+# 448 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_AfterBoulder_Text_13
+# 449 "data/maps/SpaMountain/scripts.pory"
+	closemessage
+# 450 "data/maps/SpaMountain/scripts.pory"
+	fadescreenspeed FADE_TO_BLACK, 3
+# 451 "data/maps/SpaMountain/scripts.pory"
+	fadeoutbgm 1
+# 457 "data/maps/SpaMountain/scripts.pory"
 	setvar VAR_SPA_INTRO_STATE, 16
 	return
 
@@ -810,6 +888,52 @@ SpaMountain_EventScript_AfterBoulder_Movement_7:
 	jump_in_place_right
 	step_end
 
+# 401 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_AfterBoulder_Movement_8:
+# 402 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+# 402 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+# 402 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+# 402 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+# 402 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+	step_end
+
+# 404 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_AfterBoulder_Movement_9:
+# 405 "data/maps/SpaMountain/scripts.pory"
+	walk_right
+# 406 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+# 406 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+# 406 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+# 406 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+# 407 "data/maps/SpaMountain/scripts.pory"
+	walk_right
+# 408 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+	step_end
+
+# 410 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_AfterBoulder_Movement_10:
+# 411 "data/maps/SpaMountain/scripts.pory"
+	delay_16
+# 411 "data/maps/SpaMountain/scripts.pory"
+	delay_16
+# 411 "data/maps/SpaMountain/scripts.pory"
+	delay_16
+# 411 "data/maps/SpaMountain/scripts.pory"
+	delay_16
+# 412 "data/maps/SpaMountain/scripts.pory"
+	walk_down
+	step_end
+
 SpaMountain_OnFrame_0_Text_0:
 # 45 "data/maps/SpaMountain/scripts.pory"
 	.string "{COLOR RED}Oh, my!\n"
@@ -887,3 +1011,47 @@ SpaMountain_EventScript_AfterBoulder_Text_5:
 	.string "deities by painting them with unique\l"
 	.string "patterns, hoping the temple would\l"
 	.string "fulfill its duties once again.$"
+
+SpaMountain_EventScript_AfterBoulder_Text_6:
+# 388 "data/maps/SpaMountain/scripts.pory"
+	.string "I guess it was a good thing those\n"
+	.string "two temple maidens were so gullible!$"
+
+SpaMountain_EventScript_AfterBoulder_Text_7:
+# 392 "data/maps/SpaMountain/scripts.pory"
+	.string "{COLOR BLUE}Hey!$"
+
+SpaMountain_EventScript_AfterBoulder_Text_8:
+# 415 "data/maps/SpaMountain/scripts.pory"
+	.string "{COLOR BLUE}If those weren't mythical Pokémon, then\n"
+	.string "how did you become cursed to sleep?$"
+
+SpaMountain_EventScript_AfterBoulder_Text_9:
+# 419 "data/maps/SpaMountain/scripts.pory"
+	.string "Hahaha!\n"
+	.string "I wasn't cursed. I was trying to help\l"
+	.string "Smeargle here when that boulder\l"
+	.string "dislodged and sent me tumbling down\l"
+	.string "the mountain face.\p"
+	.string "I was merely knocked unconscious.$"
+
+SpaMountain_EventScript_AfterBoulder_Text_10:
+# 430 "data/maps/SpaMountain/scripts.pory"
+	.string "You did a wonderful job caring for\n"
+	.string "those Pokémon.\p"
+	.string "You'll make a fine addition to\n"
+	.string "the temple here.\p"
+	.string "Perhaps these two should be\n"
+	.string "YOUR apprentices!$"
+
+SpaMountain_EventScript_AfterBoulder_Text_11:
+# 442 "data/maps/SpaMountain/scripts.pory"
+	.string "{COLOR BLUE}Humph!$"
+
+SpaMountain_EventScript_AfterBoulder_Text_12:
+# 445 "data/maps/SpaMountain/scripts.pory"
+	.string "{COLOR RED}Harumph!$"
+
+SpaMountain_EventScript_AfterBoulder_Text_13:
+# 448 "data/maps/SpaMountain/scripts.pory"
+	.string "Hahahahaha!$"

@@ -385,6 +385,72 @@ script SpaMountain_EventScript_AfterBoulder {
     waitmovement(0)
     playmoncry(SPECIES_SMEARGLE, CRY_MODE_NORMAL)
     waitmoncry
+    msgbox("I guess it was a good thing those
+            two temple maidens were so gullible!")
+    closemessage
+    delay(25)
+    msgbox("{COLOR BLUE}Hey!")
+    closemessage
+    turnobject(SMEARGLE_ID, DIR_SOUTH)
+    turnobject(CYNTHIA_ID, DIR_SOUTH)
+    turnobject(PLAYER_ID, DIR_SOUTH)
+    setobjectxyperm(RED_ID, 17, 27)
+    setobjectxyperm(BLUE_ID, 18, 27)
+    addobject(BLUE_ID)
+    addobject(RED_ID)
+    applymovement(BLUE_ID, moves(
+        walk_up * 5
+    ))
+    applymovement(RED_ID, moves(
+        walk_right
+        walk_up * 4
+        walk_right
+        walk_up
+    ))
+    applymovement(PLAYER_ID, moves(
+        delay_16 * 4
+        walk_down
+    ))
+    waitmovement(RED_ID)
+    msgbox("{COLOR BLUE}If those weren't mythical Pokémon, then
+            how did you become cursed to sleep?")
+    closemessage
+    delay(16)
+    msgbox("Hahaha!
+            I wasn't cursed. I was trying to help
+            Smeargle here when that boulder
+            dislodged and sent me tumbling down
+            the mountain face.
+            
+            I was merely knocked unconscious.")
+    closemessage
+    turnobject(CYNTHIA_ID, DIR_EAST)
+    turnobject(PLAYER_ID, DIR_WEST)
+    delay(16)
+    msgbox("You did a wonderful job caring for
+            those Pokémon.
+            
+            You'll make a fine addition to
+            the temple here.
+            
+            Perhaps these two should be
+            YOUR apprentices!")
+    closemessage
+    delay(16)
+    turnobject(CYNTHIA_ID, DIR_SOUTH)
+    turnobject(PLAYER_ID, DIR_SOUTH)
+    msgbox("{COLOR BLUE}Humph!")
+    closemessage
+    delay(16)
+    msgbox("{COLOR RED}Harumph!")
+    closemessage
+    delay(16)
+    msgbox("Hahahahaha!")
+    closemessage
+    fadescreenspeed(FADE_TO_BLACK, 3)
+    fadeoutbgm(1)
+    
+
 
 
 
