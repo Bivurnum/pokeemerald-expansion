@@ -1,103 +1,109 @@
 SpaMountain_MapScripts::
 # 6 "data/maps/SpaMountain/scripts.pory"
+	map_script MAP_SCRIPT_ON_TRANSITION, SpaMountain_MapScripts_MAP_SCRIPT_ON_TRANSITION
+# 11 "data/maps/SpaMountain/scripts.pory"
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, SpaMountain_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE
 	.byte 0
 
-SpaMountain_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
+SpaMountain_MapScripts_MAP_SCRIPT_ON_TRANSITION:
 # 7 "data/maps/SpaMountain/scripts.pory"
+	goto_if_set FLAG_BOULDER_MOVED, SpaMountain_MapScripts_MAP_SCRIPT_ON_TRANSITION_1
+	return
+
+SpaMountain_MapScripts_MAP_SCRIPT_ON_TRANSITION_1:
+# 8 "data/maps/SpaMountain/scripts.pory"
+	setobjectxyperm BOULDER_ID, 16, 20
+	return
+
+SpaMountain_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
+# 12 "data/maps/SpaMountain/scripts.pory"
 	map_script_2 VAR_SPA_INTRO_STATE, 3, SpaMountain_OnFrame_0
 	.2byte 0
 
 
 SpaMountain_OnFrame_0::
-# 12 "data/maps/SpaMountain/scripts.pory"
-	lock
-# 13 "data/maps/SpaMountain/scripts.pory"
-	applymovement LOCALID_PLAYER, SpaMountain_OnFrame_0_Movement_0
-# 16 "data/maps/SpaMountain/scripts.pory"
-	waitmovement 0
 # 17 "data/maps/SpaMountain/scripts.pory"
-	playse SE_PIN
+	lock
 # 18 "data/maps/SpaMountain/scripts.pory"
-	applymovement RED_MTN_ID, SpaMountain_OnFrame_0_Movement_1
-# 21 "data/maps/SpaMountain/scripts.pory"
-	applymovement BLUE_MTN_ID, SpaMountain_OnFrame_0_Movement_1
-# 24 "data/maps/SpaMountain/scripts.pory"
-	waitmovement 0
-# 25 "data/maps/SpaMountain/scripts.pory"
-	delay 60
-# 26 "data/maps/SpaMountain/scripts.pory"
 	applymovement LOCALID_PLAYER, SpaMountain_OnFrame_0_Movement_0
-# 29 "data/maps/SpaMountain/scripts.pory"
-	applymovement RED_MTN_ID, SpaMountain_OnFrame_0_Movement_2
-# 33 "data/maps/SpaMountain/scripts.pory"
-	applymovement BLUE_MTN_ID, SpaMountain_OnFrame_0_Movement_3
-# 39 "data/maps/SpaMountain/scripts.pory"
-	waitmovement BLUE_MTN_ID
-# 40 "data/maps/SpaMountain/scripts.pory"
-	msgbox SpaMountain_OnFrame_0_Text_0
-# 42 "data/maps/SpaMountain/scripts.pory"
-	closemessage
-# 43 "data/maps/SpaMountain/scripts.pory"
-	applymovement BLUE_MTN_ID, SpaMountain_OnFrame_0_Movement_4
-# 46 "data/maps/SpaMountain/scripts.pory"
+# 21 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
+# 22 "data/maps/SpaMountain/scripts.pory"
+	playse SE_PIN
+# 23 "data/maps/SpaMountain/scripts.pory"
+	applymovement RED_MTN_ID, SpaMountain_OnFrame_0_Movement_1
+# 26 "data/maps/SpaMountain/scripts.pory"
+	applymovement BLUE_MTN_ID, SpaMountain_OnFrame_0_Movement_1
+# 29 "data/maps/SpaMountain/scripts.pory"
+	waitmovement 0
+# 30 "data/maps/SpaMountain/scripts.pory"
+	delay 60
+# 31 "data/maps/SpaMountain/scripts.pory"
+	applymovement LOCALID_PLAYER, SpaMountain_OnFrame_0_Movement_0
+# 34 "data/maps/SpaMountain/scripts.pory"
+	applymovement RED_MTN_ID, SpaMountain_OnFrame_0_Movement_2
+# 38 "data/maps/SpaMountain/scripts.pory"
+	applymovement BLUE_MTN_ID, SpaMountain_OnFrame_0_Movement_3
+# 44 "data/maps/SpaMountain/scripts.pory"
+	waitmovement BLUE_MTN_ID
+# 45 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_OnFrame_0_Text_0
 # 47 "data/maps/SpaMountain/scripts.pory"
-	msgbox SpaMountain_OnFrame_0_Text_1
-# 52 "data/maps/SpaMountain/scripts.pory"
 	closemessage
-# 53 "data/maps/SpaMountain/scripts.pory"
-	setflag FLAG_HIDE_CYNTHIA_SICK_MTN
-# 54 "data/maps/SpaMountain/scripts.pory"
-	setflag FLAG_HIDE_KIMONO_RED_MOUNTAIN
-# 55 "data/maps/SpaMountain/scripts.pory"
-	setflag FLAG_HIDE_KIMONO_BLUE_MOUNTAIN
-# 56 "data/maps/SpaMountain/scripts.pory"
-	setvar VAR_SPA_INTRO_STATE, 4
+# 48 "data/maps/SpaMountain/scripts.pory"
+	applymovement BLUE_MTN_ID, SpaMountain_OnFrame_0_Movement_4
+# 51 "data/maps/SpaMountain/scripts.pory"
+	waitmovement 0
+# 52 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_OnFrame_0_Text_1
 # 57 "data/maps/SpaMountain/scripts.pory"
-	warp MAP_SPA_INTERIOR, 8, 15
+	closemessage
 # 58 "data/maps/SpaMountain/scripts.pory"
+	setflag FLAG_HIDE_CYNTHIA_SICK_MTN
+# 59 "data/maps/SpaMountain/scripts.pory"
+	setflag FLAG_HIDE_KIMONO_RED_MOUNTAIN
+# 60 "data/maps/SpaMountain/scripts.pory"
+	setflag FLAG_HIDE_KIMONO_BLUE_MOUNTAIN
+# 61 "data/maps/SpaMountain/scripts.pory"
+	setvar VAR_SPA_INTRO_STATE, 4
+# 62 "data/maps/SpaMountain/scripts.pory"
+	warp MAP_SPA_INTERIOR, 8, 15
+# 63 "data/maps/SpaMountain/scripts.pory"
 	waitstate
 	return
 
 
 SpaMountain_EventScript_Rattata::
-# 62 "data/maps/SpaMountain/scripts.pory"
+# 67 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 63 "data/maps/SpaMountain/scripts.pory"
+# 68 "data/maps/SpaMountain/scripts.pory"
 	startspa 0
-# 64 "data/maps/SpaMountain/scripts.pory"
+# 69 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq SpaMountain_EventScript_Rattata_2
-# 90 "data/maps/SpaMountain/scripts.pory"
+# 95 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 2
 	goto_if_eq SpaMountain_EventScript_Rattata_3
 SpaMountain_EventScript_Rattata_1:
-# 100 "data/maps/SpaMountain/scripts.pory"
+# 105 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
 SpaMountain_EventScript_Rattata_2:
-# 65 "data/maps/SpaMountain/scripts.pory"
-	faceplayer
-# 66 "data/maps/SpaMountain/scripts.pory"
-	setflag FLAG_SPA_OBTAINED_CLAW
-# 67 "data/maps/SpaMountain/scripts.pory"
-	playfanfare MUS_OBTAIN_ITEM
-# 68 "data/maps/SpaMountain/scripts.pory"
-	msgbox SpaMountain_EventScript_Rattata_Text_0
-# 69 "data/maps/SpaMountain/scripts.pory"
-	waitfanfare
 # 70 "data/maps/SpaMountain/scripts.pory"
-	waitmessage
+	faceplayer
 # 71 "data/maps/SpaMountain/scripts.pory"
-	closemessage
+	setflag FLAG_SPA_OBTAINED_CLAW
 # 72 "data/maps/SpaMountain/scripts.pory"
-	playse SE_LEDGE
+	playfanfare MUS_OBTAIN_ITEM
 # 73 "data/maps/SpaMountain/scripts.pory"
-	applymovement RATTATA_ID, SpaMountain_EventScript_Rattata_Movement_0
+	msgbox SpaMountain_EventScript_Rattata_Text_0
+# 74 "data/maps/SpaMountain/scripts.pory"
+	waitfanfare
+# 75 "data/maps/SpaMountain/scripts.pory"
+	waitmessage
 # 76 "data/maps/SpaMountain/scripts.pory"
-	waitmovement 0
+	closemessage
 # 77 "data/maps/SpaMountain/scripts.pory"
 	playse SE_LEDGE
 # 78 "data/maps/SpaMountain/scripts.pory"
@@ -105,440 +111,537 @@ SpaMountain_EventScript_Rattata_2:
 # 81 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 # 82 "data/maps/SpaMountain/scripts.pory"
-	applymovement RATTATA_ID, SpaMountain_EventScript_Rattata_Movement_1
-# 87 "data/maps/SpaMountain/scripts.pory"
+	playse SE_LEDGE
+# 83 "data/maps/SpaMountain/scripts.pory"
+	applymovement RATTATA_ID, SpaMountain_EventScript_Rattata_Movement_0
+# 86 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
-# 88 "data/maps/SpaMountain/scripts.pory"
+# 87 "data/maps/SpaMountain/scripts.pory"
+	applymovement RATTATA_ID, SpaMountain_EventScript_Rattata_Movement_1
+# 92 "data/maps/SpaMountain/scripts.pory"
+	waitmovement 0
+# 93 "data/maps/SpaMountain/scripts.pory"
 	removeobject RATTATA_ID
 	goto SpaMountain_EventScript_Rattata_1
 
 SpaMountain_EventScript_Rattata_3:
-# 91 "data/maps/SpaMountain/scripts.pory"
+# 96 "data/maps/SpaMountain/scripts.pory"
 	playse SE_NOT_EFFECTIVE
-# 92 "data/maps/SpaMountain/scripts.pory"
+# 97 "data/maps/SpaMountain/scripts.pory"
 	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Rattata_Movement_2
-# 98 "data/maps/SpaMountain/scripts.pory"
+# 103 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 	goto SpaMountain_EventScript_Rattata_1
 
 
 SpaMountain_EventScript_Teddiursa::
-# 105 "data/maps/SpaMountain/scripts.pory"
+# 110 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 106 "data/maps/SpaMountain/scripts.pory"
+# 111 "data/maps/SpaMountain/scripts.pory"
 	startspa 1
-# 107 "data/maps/SpaMountain/scripts.pory"
+# 112 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq SpaMountain_EventScript_Teddiursa_2
-# 139 "data/maps/SpaMountain/scripts.pory"
+# 144 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 2
 	goto_if_eq SpaMountain_EventScript_Teddiursa_3
 SpaMountain_EventScript_Teddiursa_1:
-# 149 "data/maps/SpaMountain/scripts.pory"
+# 154 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
 SpaMountain_EventScript_Teddiursa_2:
-# 108 "data/maps/SpaMountain/scripts.pory"
-	faceplayer
-# 109 "data/maps/SpaMountain/scripts.pory"
-	setflag FLAG_SPA_OBTAINED_HONEY
-# 110 "data/maps/SpaMountain/scripts.pory"
-	playfanfare MUS_OBTAIN_ITEM
-# 111 "data/maps/SpaMountain/scripts.pory"
-	msgbox SpaMountain_EventScript_Teddiursa_Text_0
-# 112 "data/maps/SpaMountain/scripts.pory"
-	waitfanfare
 # 113 "data/maps/SpaMountain/scripts.pory"
-	waitmessage
+	faceplayer
 # 114 "data/maps/SpaMountain/scripts.pory"
-	closemessage
+	setflag FLAG_SPA_OBTAINED_HONEY
 # 115 "data/maps/SpaMountain/scripts.pory"
-	applymovement TEDDIURSA_ID, SpaMountain_EventScript_Teddiursa_Movement_0
+	playfanfare MUS_OBTAIN_ITEM
+# 116 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_Teddiursa_Text_0
+# 117 "data/maps/SpaMountain/scripts.pory"
+	waitfanfare
+# 118 "data/maps/SpaMountain/scripts.pory"
+	waitmessage
 # 119 "data/maps/SpaMountain/scripts.pory"
-	waitmovement 0
+	closemessage
 # 120 "data/maps/SpaMountain/scripts.pory"
-	playse SE_LEDGE
-# 121 "data/maps/SpaMountain/scripts.pory"
-	applymovement TEDDIURSA_ID, SpaMountain_EventScript_Teddiursa_Movement_1
-# 125 "data/maps/SpaMountain/scripts.pory"
+	applymovement TEDDIURSA_ID, SpaMountain_EventScript_Teddiursa_Movement_0
+# 124 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
-# 126 "data/maps/SpaMountain/scripts.pory"
+# 125 "data/maps/SpaMountain/scripts.pory"
 	playse SE_LEDGE
-# 127 "data/maps/SpaMountain/scripts.pory"
-	applymovement TEDDIURSA_ID, SpaMountain_EventScript_Teddiursa_Movement_2
+# 126 "data/maps/SpaMountain/scripts.pory"
+	applymovement TEDDIURSA_ID, SpaMountain_EventScript_Teddiursa_Movement_1
 # 130 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 # 131 "data/maps/SpaMountain/scripts.pory"
 	playse SE_LEDGE
 # 132 "data/maps/SpaMountain/scripts.pory"
-	applymovement TEDDIURSA_ID, SpaMountain_EventScript_Teddiursa_Movement_3
-# 136 "data/maps/SpaMountain/scripts.pory"
+	applymovement TEDDIURSA_ID, SpaMountain_EventScript_Teddiursa_Movement_2
+# 135 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
+# 136 "data/maps/SpaMountain/scripts.pory"
+	playse SE_LEDGE
 # 137 "data/maps/SpaMountain/scripts.pory"
+	applymovement TEDDIURSA_ID, SpaMountain_EventScript_Teddiursa_Movement_3
+# 141 "data/maps/SpaMountain/scripts.pory"
+	waitmovement 0
+# 142 "data/maps/SpaMountain/scripts.pory"
 	removeobject TEDDIURSA_ID
 	goto SpaMountain_EventScript_Teddiursa_1
 
 SpaMountain_EventScript_Teddiursa_3:
-# 140 "data/maps/SpaMountain/scripts.pory"
+# 145 "data/maps/SpaMountain/scripts.pory"
 	playse SE_NOT_EFFECTIVE
-# 141 "data/maps/SpaMountain/scripts.pory"
+# 146 "data/maps/SpaMountain/scripts.pory"
 	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Rattata_Movement_2
-# 147 "data/maps/SpaMountain/scripts.pory"
+# 152 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 	goto SpaMountain_EventScript_Teddiursa_1
 
 
 SpaMountain_EventScript_Psyduck::
-# 154 "data/maps/SpaMountain/scripts.pory"
+# 159 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 155 "data/maps/SpaMountain/scripts.pory"
+# 160 "data/maps/SpaMountain/scripts.pory"
 	startspa 2
-# 156 "data/maps/SpaMountain/scripts.pory"
+# 161 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq SpaMountain_EventScript_Psyduck_2
-# 175 "data/maps/SpaMountain/scripts.pory"
+# 180 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 2
 	goto_if_eq SpaMountain_EventScript_Psyduck_3
 SpaMountain_EventScript_Psyduck_1:
-# 185 "data/maps/SpaMountain/scripts.pory"
+# 190 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
 SpaMountain_EventScript_Psyduck_2:
-# 157 "data/maps/SpaMountain/scripts.pory"
-	faceplayer
-# 158 "data/maps/SpaMountain/scripts.pory"
-	playmoncry SPECIES_PSYDUCK, CRY_MODE_NORMAL
-# 159 "data/maps/SpaMountain/scripts.pory"
-	msgbox SpaMountain_EventScript_Psyduck_Text_0
-# 161 "data/maps/SpaMountain/scripts.pory"
-	waitmoncry
 # 162 "data/maps/SpaMountain/scripts.pory"
-	waitmessage
+	faceplayer
 # 163 "data/maps/SpaMountain/scripts.pory"
-	closemessage
+	playmoncry SPECIES_PSYDUCK, CRY_MODE_NORMAL
 # 164 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_Psyduck_Text_0
+# 166 "data/maps/SpaMountain/scripts.pory"
+	waitmoncry
+# 167 "data/maps/SpaMountain/scripts.pory"
+	waitmessage
+# 168 "data/maps/SpaMountain/scripts.pory"
+	closemessage
+# 169 "data/maps/SpaMountain/scripts.pory"
 	playse SE_LEDGE
-# 165 "data/maps/SpaMountain/scripts.pory"
+# 170 "data/maps/SpaMountain/scripts.pory"
 	applymovement PSYDUCK_ID, SpaMountain_EventScript_Psyduck_Movement_0
-# 172 "data/maps/SpaMountain/scripts.pory"
+# 177 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
-# 173 "data/maps/SpaMountain/scripts.pory"
+# 178 "data/maps/SpaMountain/scripts.pory"
 	removeobject PSYDUCK_ID
 	goto SpaMountain_EventScript_Psyduck_1
 
 SpaMountain_EventScript_Psyduck_3:
-# 176 "data/maps/SpaMountain/scripts.pory"
+# 181 "data/maps/SpaMountain/scripts.pory"
 	playse SE_NOT_EFFECTIVE
-# 177 "data/maps/SpaMountain/scripts.pory"
+# 182 "data/maps/SpaMountain/scripts.pory"
 	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Psyduck_Movement_1
-# 183 "data/maps/SpaMountain/scripts.pory"
+# 188 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 	goto SpaMountain_EventScript_Psyduck_1
 
 
 SpaMountain_EventScript_Fletchinder::
-# 190 "data/maps/SpaMountain/scripts.pory"
+# 195 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 191 "data/maps/SpaMountain/scripts.pory"
+# 196 "data/maps/SpaMountain/scripts.pory"
 	startspa 3
-# 192 "data/maps/SpaMountain/scripts.pory"
+# 197 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq SpaMountain_EventScript_Fletchinder_2
-# 208 "data/maps/SpaMountain/scripts.pory"
+# 213 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 2
 	goto_if_eq SpaMountain_EventScript_Fletchinder_3
 SpaMountain_EventScript_Fletchinder_1:
-# 218 "data/maps/SpaMountain/scripts.pory"
+# 223 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
 SpaMountain_EventScript_Fletchinder_2:
-# 193 "data/maps/SpaMountain/scripts.pory"
-	faceplayer
-# 194 "data/maps/SpaMountain/scripts.pory"
-	setflag FLAG_SPA_OBTAINED_ORB
-# 195 "data/maps/SpaMountain/scripts.pory"
-	playfanfare MUS_OBTAIN_ITEM
-# 196 "data/maps/SpaMountain/scripts.pory"
-	msgbox SpaMountain_EventScript_Fletchinder_Text_0
-# 197 "data/maps/SpaMountain/scripts.pory"
-	waitfanfare
 # 198 "data/maps/SpaMountain/scripts.pory"
-	waitmessage
+	faceplayer
 # 199 "data/maps/SpaMountain/scripts.pory"
-	closemessage
+	setflag FLAG_SPA_OBTAINED_ORB
 # 200 "data/maps/SpaMountain/scripts.pory"
-	playse SE_M_FLY
+	playfanfare MUS_OBTAIN_ITEM
 # 201 "data/maps/SpaMountain/scripts.pory"
-	applymovement FLETCHINDER_ID, SpaMountain_EventScript_Fletchinder_Movement_0
+	msgbox SpaMountain_EventScript_Fletchinder_Text_0
+# 202 "data/maps/SpaMountain/scripts.pory"
+	waitfanfare
+# 203 "data/maps/SpaMountain/scripts.pory"
+	waitmessage
+# 204 "data/maps/SpaMountain/scripts.pory"
+	closemessage
 # 205 "data/maps/SpaMountain/scripts.pory"
-	waitmovement 0
+	playse SE_M_FLY
 # 206 "data/maps/SpaMountain/scripts.pory"
+	applymovement FLETCHINDER_ID, SpaMountain_EventScript_Fletchinder_Movement_0
+# 210 "data/maps/SpaMountain/scripts.pory"
+	waitmovement 0
+# 211 "data/maps/SpaMountain/scripts.pory"
 	removeobject FLETCHINDER_ID
 	goto SpaMountain_EventScript_Fletchinder_1
 
 SpaMountain_EventScript_Fletchinder_3:
-# 209 "data/maps/SpaMountain/scripts.pory"
+# 214 "data/maps/SpaMountain/scripts.pory"
 	playse SE_NOT_EFFECTIVE
-# 210 "data/maps/SpaMountain/scripts.pory"
+# 215 "data/maps/SpaMountain/scripts.pory"
 	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Rattata_Movement_2
-# 216 "data/maps/SpaMountain/scripts.pory"
+# 221 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 	goto SpaMountain_EventScript_Fletchinder_1
 
 
 SpaMountain_EventScript_Lombre::
-# 223 "data/maps/SpaMountain/scripts.pory"
+# 228 "data/maps/SpaMountain/scripts.pory"
 	lock
-# 224 "data/maps/SpaMountain/scripts.pory"
+# 229 "data/maps/SpaMountain/scripts.pory"
 	startspa 4
-# 225 "data/maps/SpaMountain/scripts.pory"
+# 230 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 1
 	goto_if_eq SpaMountain_EventScript_Lombre_2
-# 228 "data/maps/SpaMountain/scripts.pory"
+# 261 "data/maps/SpaMountain/scripts.pory"
 	compare VAR_RESULT, 2
 	goto_if_eq SpaMountain_EventScript_Lombre_3
 SpaMountain_EventScript_Lombre_1:
-# 238 "data/maps/SpaMountain/scripts.pory"
+# 271 "data/maps/SpaMountain/scripts.pory"
 	releaseall
 	end
 
 SpaMountain_EventScript_Lombre_2:
+# 231 "data/maps/SpaMountain/scripts.pory"
+	playse SE_LEDGE
+# 232 "data/maps/SpaMountain/scripts.pory"
+	applymovement LOMBRE_ID, SpaMountain_EventScript_Lombre_Movement_0
+# 236 "data/maps/SpaMountain/scripts.pory"
+	waitmovement 0
+# 237 "data/maps/SpaMountain/scripts.pory"
+	playse SE_M_STRENGTH
+# 238 "data/maps/SpaMountain/scripts.pory"
+	applymovement LOMBRE_ID, SpaMountain_EventScript_Lombre_Movement_1
+# 241 "data/maps/SpaMountain/scripts.pory"
+	applymovement BOULDER_ID, SpaMountain_EventScript_Lombre_Movement_2
+# 244 "data/maps/SpaMountain/scripts.pory"
+	waitmovement BOULDER_ID
+# 245 "data/maps/SpaMountain/scripts.pory"
+	waitse
+# 246 "data/maps/SpaMountain/scripts.pory"
+	applymovement LOMBRE_ID, SpaMountain_EventScript_Lombre_Movement_3
+# 250 "data/maps/SpaMountain/scripts.pory"
+	waitmovement 0
+# 251 "data/maps/SpaMountain/scripts.pory"
+	playse SE_LEDGE
+# 252 "data/maps/SpaMountain/scripts.pory"
+	applymovement LOMBRE_ID, SpaMountain_EventScript_Lombre_Movement_4
+# 256 "data/maps/SpaMountain/scripts.pory"
+	waitmovement 0
+# 257 "data/maps/SpaMountain/scripts.pory"
+	setflag FLAG_BOULDER_MOVED
+# 258 "data/maps/SpaMountain/scripts.pory"
+	setobjectxyperm BOULDER_ID, 16, 20
+# 259 "data/maps/SpaMountain/scripts.pory"
+	removeobject LOMBRE_ID
 	goto SpaMountain_EventScript_Lombre_1
 
 SpaMountain_EventScript_Lombre_3:
-# 229 "data/maps/SpaMountain/scripts.pory"
+# 262 "data/maps/SpaMountain/scripts.pory"
 	playse SE_NOT_EFFECTIVE
-# 230 "data/maps/SpaMountain/scripts.pory"
-	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Lombre_Movement_0
-# 236 "data/maps/SpaMountain/scripts.pory"
+# 263 "data/maps/SpaMountain/scripts.pory"
+	applymovement LOCALID_PLAYER, SpaMountain_EventScript_Lombre_Movement_5
+# 269 "data/maps/SpaMountain/scripts.pory"
 	waitmovement 0
 	goto SpaMountain_EventScript_Lombre_1
 
 
-# 13 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_Boulder::
+# 276 "data/maps/SpaMountain/scripts.pory"
+	lock
+# 277 "data/maps/SpaMountain/scripts.pory"
+	msgbox SpaMountain_EventScript_Boulder_Text_0
+# 279 "data/maps/SpaMountain/scripts.pory"
+	closemessage
+# 280 "data/maps/SpaMountain/scripts.pory"
+	releaseall
+	end
+
+
+# 18 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_OnFrame_0_Movement_0:
-# 14 "data/maps/SpaMountain/scripts.pory"
+# 19 "data/maps/SpaMountain/scripts.pory"
 	walk_up
 	step_end
 
-# 18 "data/maps/SpaMountain/scripts.pory"
+# 23 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_OnFrame_0_Movement_1:
-# 19 "data/maps/SpaMountain/scripts.pory"
+# 24 "data/maps/SpaMountain/scripts.pory"
 	emote_exclamation_mark
 	step_end
 
-# 29 "data/maps/SpaMountain/scripts.pory"
+# 34 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_OnFrame_0_Movement_2:
-# 30 "data/maps/SpaMountain/scripts.pory"
+# 35 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_up
-# 30 "data/maps/SpaMountain/scripts.pory"
+# 35 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_up
-# 30 "data/maps/SpaMountain/scripts.pory"
+# 35 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_up
-# 31 "data/maps/SpaMountain/scripts.pory"
+# 36 "data/maps/SpaMountain/scripts.pory"
 	face_left
 	step_end
 
-# 33 "data/maps/SpaMountain/scripts.pory"
+# 38 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_OnFrame_0_Movement_3:
-# 34 "data/maps/SpaMountain/scripts.pory"
+# 39 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_up
-# 34 "data/maps/SpaMountain/scripts.pory"
+# 39 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_up
-# 35 "data/maps/SpaMountain/scripts.pory"
+# 40 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_left
-# 36 "data/maps/SpaMountain/scripts.pory"
+# 41 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_up
-# 37 "data/maps/SpaMountain/scripts.pory"
+# 42 "data/maps/SpaMountain/scripts.pory"
 	face_right
 	step_end
 
-# 43 "data/maps/SpaMountain/scripts.pory"
+# 48 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_OnFrame_0_Movement_4:
-# 44 "data/maps/SpaMountain/scripts.pory"
+# 49 "data/maps/SpaMountain/scripts.pory"
 	walk_in_place_right
-# 44 "data/maps/SpaMountain/scripts.pory"
+# 49 "data/maps/SpaMountain/scripts.pory"
 	walk_in_place_right
-# 44 "data/maps/SpaMountain/scripts.pory"
+# 49 "data/maps/SpaMountain/scripts.pory"
 	walk_in_place_right
-# 44 "data/maps/SpaMountain/scripts.pory"
+# 49 "data/maps/SpaMountain/scripts.pory"
 	walk_in_place_right
 	step_end
 
-# 73 "data/maps/SpaMountain/scripts.pory"
+# 78 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_EventScript_Rattata_Movement_0:
-# 74 "data/maps/SpaMountain/scripts.pory"
+# 79 "data/maps/SpaMountain/scripts.pory"
 	jump_2_left
 	step_end
 
-# 82 "data/maps/SpaMountain/scripts.pory"
+# 87 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_EventScript_Rattata_Movement_1:
-# 83 "data/maps/SpaMountain/scripts.pory"
+# 88 "data/maps/SpaMountain/scripts.pory"
 	walk_up
-# 83 "data/maps/SpaMountain/scripts.pory"
+# 88 "data/maps/SpaMountain/scripts.pory"
 	walk_up
-# 83 "data/maps/SpaMountain/scripts.pory"
+# 88 "data/maps/SpaMountain/scripts.pory"
 	walk_up
-# 83 "data/maps/SpaMountain/scripts.pory"
+# 88 "data/maps/SpaMountain/scripts.pory"
 	walk_up
-# 84 "data/maps/SpaMountain/scripts.pory"
+# 89 "data/maps/SpaMountain/scripts.pory"
 	walk_left
-# 84 "data/maps/SpaMountain/scripts.pory"
+# 89 "data/maps/SpaMountain/scripts.pory"
 	walk_left
-# 85 "data/maps/SpaMountain/scripts.pory"
+# 90 "data/maps/SpaMountain/scripts.pory"
 	walk_up
-# 85 "data/maps/SpaMountain/scripts.pory"
+# 90 "data/maps/SpaMountain/scripts.pory"
 	walk_up
 	step_end
 
-# 92 "data/maps/SpaMountain/scripts.pory"
+# 97 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_EventScript_Rattata_Movement_2:
-# 93 "data/maps/SpaMountain/scripts.pory"
+# 98 "data/maps/SpaMountain/scripts.pory"
 	face_up
-# 94 "data/maps/SpaMountain/scripts.pory"
+# 99 "data/maps/SpaMountain/scripts.pory"
 	lock_facing_direction
-# 95 "data/maps/SpaMountain/scripts.pory"
+# 100 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_down
-# 96 "data/maps/SpaMountain/scripts.pory"
+# 101 "data/maps/SpaMountain/scripts.pory"
 	unlock_facing_direction
 	step_end
 
-# 115 "data/maps/SpaMountain/scripts.pory"
+# 120 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_EventScript_Teddiursa_Movement_0:
-# 116 "data/maps/SpaMountain/scripts.pory"
+# 121 "data/maps/SpaMountain/scripts.pory"
 	walk_slow_diag_northeast
-# 117 "data/maps/SpaMountain/scripts.pory"
+# 122 "data/maps/SpaMountain/scripts.pory"
 	walk_slow_right
 	step_end
 
-# 121 "data/maps/SpaMountain/scripts.pory"
+# 126 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_EventScript_Teddiursa_Movement_1:
-# 122 "data/maps/SpaMountain/scripts.pory"
+# 127 "data/maps/SpaMountain/scripts.pory"
 	jump_2_right
-# 123 "data/maps/SpaMountain/scripts.pory"
+# 128 "data/maps/SpaMountain/scripts.pory"
 	walk_down
 	step_end
 
-# 127 "data/maps/SpaMountain/scripts.pory"
-SpaMountain_EventScript_Teddiursa_Movement_2:
-# 128 "data/maps/SpaMountain/scripts.pory"
-	jump_2_down
-	step_end
-
 # 132 "data/maps/SpaMountain/scripts.pory"
-SpaMountain_EventScript_Teddiursa_Movement_3:
+SpaMountain_EventScript_Teddiursa_Movement_2:
 # 133 "data/maps/SpaMountain/scripts.pory"
 	jump_2_down
-# 134 "data/maps/SpaMountain/scripts.pory"
+	step_end
+
+# 137 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_Teddiursa_Movement_3:
+# 138 "data/maps/SpaMountain/scripts.pory"
+	jump_2_down
+# 139 "data/maps/SpaMountain/scripts.pory"
 	walk_right
-# 134 "data/maps/SpaMountain/scripts.pory"
+# 139 "data/maps/SpaMountain/scripts.pory"
 	walk_right
-# 134 "data/maps/SpaMountain/scripts.pory"
+# 139 "data/maps/SpaMountain/scripts.pory"
 	walk_right
-# 134 "data/maps/SpaMountain/scripts.pory"
+# 139 "data/maps/SpaMountain/scripts.pory"
 	walk_right
-# 134 "data/maps/SpaMountain/scripts.pory"
+# 139 "data/maps/SpaMountain/scripts.pory"
 	walk_right
 	step_end
 
-# 165 "data/maps/SpaMountain/scripts.pory"
+# 170 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_EventScript_Psyduck_Movement_0:
-# 166 "data/maps/SpaMountain/scripts.pory"
+# 171 "data/maps/SpaMountain/scripts.pory"
 	face_right
-# 167 "data/maps/SpaMountain/scripts.pory"
+# 172 "data/maps/SpaMountain/scripts.pory"
 	lock_facing_direction
-# 168 "data/maps/SpaMountain/scripts.pory"
+# 173 "data/maps/SpaMountain/scripts.pory"
 	jump_2_left
-# 169 "data/maps/SpaMountain/scripts.pory"
+# 174 "data/maps/SpaMountain/scripts.pory"
 	unlock_facing_direction
-# 170 "data/maps/SpaMountain/scripts.pory"
+# 175 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_left
-# 170 "data/maps/SpaMountain/scripts.pory"
+# 175 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_left
-# 170 "data/maps/SpaMountain/scripts.pory"
+# 175 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_left
-# 170 "data/maps/SpaMountain/scripts.pory"
+# 175 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_left
-# 170 "data/maps/SpaMountain/scripts.pory"
+# 175 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_left
-# 170 "data/maps/SpaMountain/scripts.pory"
+# 175 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_left
-# 170 "data/maps/SpaMountain/scripts.pory"
+# 175 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_left
-# 170 "data/maps/SpaMountain/scripts.pory"
+# 175 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_left
-# 170 "data/maps/SpaMountain/scripts.pory"
+# 175 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_left
 	step_end
 
-# 177 "data/maps/SpaMountain/scripts.pory"
+# 182 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_EventScript_Psyduck_Movement_1:
-# 178 "data/maps/SpaMountain/scripts.pory"
+# 183 "data/maps/SpaMountain/scripts.pory"
 	face_down
-# 179 "data/maps/SpaMountain/scripts.pory"
+# 184 "data/maps/SpaMountain/scripts.pory"
 	lock_facing_direction
-# 180 "data/maps/SpaMountain/scripts.pory"
+# 185 "data/maps/SpaMountain/scripts.pory"
 	walk_fast_up
-# 181 "data/maps/SpaMountain/scripts.pory"
+# 186 "data/maps/SpaMountain/scripts.pory"
 	unlock_facing_direction
 	step_end
 
-# 201 "data/maps/SpaMountain/scripts.pory"
+# 206 "data/maps/SpaMountain/scripts.pory"
 SpaMountain_EventScript_Fletchinder_Movement_0:
-# 202 "data/maps/SpaMountain/scripts.pory"
+# 207 "data/maps/SpaMountain/scripts.pory"
 	walk_diag_northwest
-# 202 "data/maps/SpaMountain/scripts.pory"
+# 207 "data/maps/SpaMountain/scripts.pory"
 	walk_diag_northwest
-# 202 "data/maps/SpaMountain/scripts.pory"
+# 207 "data/maps/SpaMountain/scripts.pory"
 	walk_diag_northwest
-# 203 "data/maps/SpaMountain/scripts.pory"
+# 208 "data/maps/SpaMountain/scripts.pory"
 	walk_diag_northeast
-# 203 "data/maps/SpaMountain/scripts.pory"
+# 208 "data/maps/SpaMountain/scripts.pory"
 	walk_diag_northeast
-# 203 "data/maps/SpaMountain/scripts.pory"
+# 208 "data/maps/SpaMountain/scripts.pory"
 	walk_diag_northeast
 	step_end
 
-# 230 "data/maps/SpaMountain/scripts.pory"
-SpaMountain_EventScript_Lombre_Movement_0:
-# 231 "data/maps/SpaMountain/scripts.pory"
-	face_right
 # 232 "data/maps/SpaMountain/scripts.pory"
-	lock_facing_direction
+SpaMountain_EventScript_Lombre_Movement_0:
 # 233 "data/maps/SpaMountain/scripts.pory"
-	walk_fast_left
+	jump_2_left
 # 234 "data/maps/SpaMountain/scripts.pory"
+	walk_left
+	step_end
+
+# 238 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_Lombre_Movement_1:
+# 239 "data/maps/SpaMountain/scripts.pory"
+	walk_slow_left
+	step_end
+
+# 241 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_Lombre_Movement_2:
+# 242 "data/maps/SpaMountain/scripts.pory"
+	walk_left
+# 242 "data/maps/SpaMountain/scripts.pory"
+	walk_left
+	step_end
+
+# 246 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_Lombre_Movement_3:
+# 247 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+# 247 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+# 247 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+# 248 "data/maps/SpaMountain/scripts.pory"
+	walk_left
+	step_end
+
+# 252 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_Lombre_Movement_4:
+# 253 "data/maps/SpaMountain/scripts.pory"
+	jump_2_up
+# 254 "data/maps/SpaMountain/scripts.pory"
+	walk_up
+	step_end
+
+# 263 "data/maps/SpaMountain/scripts.pory"
+SpaMountain_EventScript_Lombre_Movement_5:
+# 264 "data/maps/SpaMountain/scripts.pory"
+	face_right
+# 265 "data/maps/SpaMountain/scripts.pory"
+	lock_facing_direction
+# 266 "data/maps/SpaMountain/scripts.pory"
+	walk_fast_left
+# 267 "data/maps/SpaMountain/scripts.pory"
 	unlock_facing_direction
 	step_end
 
 SpaMountain_OnFrame_0_Text_0:
-# 40 "data/maps/SpaMountain/scripts.pory"
+# 45 "data/maps/SpaMountain/scripts.pory"
 	.string "{COLOR RED}Oh, my!\n"
 	.string "Is she alright?$"
 
 SpaMountain_OnFrame_0_Text_1:
-# 47 "data/maps/SpaMountain/scripts.pory"
+# 52 "data/maps/SpaMountain/scripts.pory"
 	.string "{COLOR BLUE}She's still breathing,\n"
 	.string "But she's out cold.\p"
 	.string "Let's get her inside.\n"
 	.string "Quickly!$"
 
 SpaMountain_EventScript_Rattata_Text_0:
-# 68 "data/maps/SpaMountain/scripts.pory"
+# 73 "data/maps/SpaMountain/scripts.pory"
 	.string "The Rattata gave you a claw!$"
 
 SpaMountain_EventScript_Teddiursa_Text_0:
-# 111 "data/maps/SpaMountain/scripts.pory"
+# 116 "data/maps/SpaMountain/scripts.pory"
 	.string "The Teddiursa gave you some honey!$"
 
 SpaMountain_EventScript_Psyduck_Text_0:
-# 159 "data/maps/SpaMountain/scripts.pory"
+# 164 "data/maps/SpaMountain/scripts.pory"
 	.string "The Psyduck has nothing to give you,\n"
 	.string "but it is thankful nonetheless.$"
 
 SpaMountain_EventScript_Fletchinder_Text_0:
-# 196 "data/maps/SpaMountain/scripts.pory"
+# 201 "data/maps/SpaMountain/scripts.pory"
 	.string "The Fletchinder gave you a flame orb!$"
+
+SpaMountain_EventScript_Boulder_Text_0:
+# 277 "data/maps/SpaMountain/scripts.pory"
+	.string "This boulder is too big for\n"
+	.string "you to move.$"

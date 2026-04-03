@@ -3,6 +3,11 @@ const BLUE_ID = BLUE_MTN_ID
 const RED_ID = RED_MTN_ID
 
 mapscripts SpaMountain_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION {
+        if (flag(FLAG_BOULDER_MOVED)) {
+            setobjectxyperm(BOULDER_ID, 16, 20)
+        }
+    }
     MAP_SCRIPT_ON_FRAME_TABLE [
         VAR_SPA_INTRO_STATE, 3: SpaMountain_OnFrame_0
     ]
@@ -223,7 +228,35 @@ script SpaMountain_EventScript_Lombre {
     lock
     startspa(4)
     if (var(VAR_RESULT) == 1) {
-        // Give item
+        playse(SE_LEDGE)
+        applymovement(LOMBRE_ID, moves(
+            jump_2_left
+            walk_left
+        ))
+        waitmovement(0)
+        playse(SE_M_STRENGTH)
+        applymovement(LOMBRE_ID, moves(
+            walk_slow_left
+        ))
+        applymovement(BOULDER_ID, moves(
+            walk_left * 2
+        ))
+        waitmovement(BOULDER_ID)
+        waitse
+        applymovement(LOMBRE_ID, moves(
+            walk_up * 3
+            walk_left
+        ))
+        waitmovement(0)
+        playse(SE_LEDGE)
+        applymovement(LOMBRE_ID, moves(
+            jump_2_up
+            walk_up
+        ))
+        waitmovement(0)
+        setflag(FLAG_BOULDER_MOVED)
+        setobjectxyperm(BOULDER_ID, 16, 20)
+        removeobject(LOMBRE_ID)
     }
     elif (var(VAR_RESULT) == 2){
         playse(SE_NOT_EFFECTIVE)
