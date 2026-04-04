@@ -462,7 +462,7 @@ static void ShiftMoveSlot(struct BoxPokemon *, u8, u8);
 static void BlitBitmapToPartyWindow_LeftColumn(u8, u8, u8, u8, u8, bool8);
 static void BlitBitmapToPartyWindow_RightColumn(u8, u8, u8, u8, u8, bool8);
 static void CursorCb_Summary(u8);
-static void CursorCb_StatEdit(u8);
+static void CursorCb_StatEdit(u8 taskId);
 static void CursorCb_Switch(u8);
 static void CursorCb_Cancel1(u8);
 static void CursorCb_Item(u8);
@@ -4588,7 +4588,6 @@ static void UpdatePartyMonAilmentGfx(u8 status, struct PartyMenuBox *menuBox)
     }
 }
 
-
 static void ChangePokemonStatsPartyScreen_CB(void)
 {
     CB2_ReturnToPartyMenuFromSummaryScreen();
@@ -4598,23 +4597,7 @@ static void ChangePokemonStatsPartyScreen(void)
 {
     StatEditor_Init(ChangePokemonStatsPartyScreen_CB);
 }
-static void CursorCb_StatEdit(u8 taskId)
-{
-    PlaySE(SE_SELECT);
-    gSpecialVar_0x8004 = gPartyMenu.slotId;
-    sPartyMenuInternal->exitCallback = ChangePokemonStatsPartyScreen;
-    Task_ClosePartyMenu(taskId);
-}
 
-static void ChangePokemonStatsPartyScreen_CB(void)
-{
-    CB2_ReturnToPartyMenuFromSummaryScreen();
-}
-
-static void ChangePokemonStatsPartyScreen(void)
-{
-    StatEditor_Init(ChangePokemonStatsPartyScreen_CB);
-}
 static void CursorCb_StatEdit(u8 taskId)
 {
     PlaySE(SE_SELECT);
