@@ -86,7 +86,7 @@ SpaMountain_EventScript_Rattata::
 	goto_if_eq SpaMountain_EventScript_Rattata_3
 SpaMountain_EventScript_Rattata_1:
 # 105 "data/maps/SpaMountain/scripts.pory"
-	releaseall
+	release
 	end
 
 SpaMountain_EventScript_Rattata_2:
@@ -147,7 +147,7 @@ SpaMountain_EventScript_Teddiursa::
 	goto_if_eq SpaMountain_EventScript_Teddiursa_3
 SpaMountain_EventScript_Teddiursa_1:
 # 154 "data/maps/SpaMountain/scripts.pory"
-	releaseall
+	release
 	end
 
 SpaMountain_EventScript_Teddiursa_2:
@@ -214,7 +214,7 @@ SpaMountain_EventScript_Psyduck::
 	goto_if_eq SpaMountain_EventScript_Psyduck_3
 SpaMountain_EventScript_Psyduck_1:
 # 190 "data/maps/SpaMountain/scripts.pory"
-	releaseall
+	release
 	end
 
 SpaMountain_EventScript_Psyduck_2:
@@ -263,7 +263,7 @@ SpaMountain_EventScript_Fletchinder::
 	goto_if_eq SpaMountain_EventScript_Fletchinder_3
 SpaMountain_EventScript_Fletchinder_1:
 # 223 "data/maps/SpaMountain/scripts.pory"
-	releaseall
+	release
 	end
 
 SpaMountain_EventScript_Fletchinder_2:
@@ -314,7 +314,7 @@ SpaMountain_EventScript_Lombre::
 	goto_if_eq SpaMountain_EventScript_Lombre_3
 SpaMountain_EventScript_Lombre_1:
 # 271 "data/maps/SpaMountain/scripts.pory"
-	releaseall
+	release
 	end
 
 SpaMountain_EventScript_Lombre_2:
@@ -370,7 +370,7 @@ SpaMountain_EventScript_Boulder::
 # 279 "data/maps/SpaMountain/scripts.pory"
 	closemessage
 # 280 "data/maps/SpaMountain/scripts.pory"
-	releaseall
+	release
 	end
 
 

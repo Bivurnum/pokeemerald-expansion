@@ -101,7 +101,7 @@ SpaFront_OnFrame_0::
 # 67 "data/maps/SpaFront/scripts.pory"
 	setvar VAR_SPA_INTRO_STATE, 2
 # 68 "data/maps/SpaFront/scripts.pory"
-	releaseall
+	release
 	end
 
 
@@ -119,7 +119,7 @@ SpaFront_EventScript_RoadRight::
 # 80 "data/maps/SpaFront/scripts.pory"
 	waitmovement 0
 # 81 "data/maps/SpaFront/scripts.pory"
-	releaseall
+	release
 	end
 
 
@@ -137,7 +137,7 @@ SpaFront_EventScript_RoadLeft::
 # 93 "data/maps/SpaFront/scripts.pory"
 	waitmovement 0
 # 94 "data/maps/SpaFront/scripts.pory"
-	releaseall
+	release
 	end
 
 
@@ -149,7 +149,7 @@ SpaFront_EventScript_Sign::
 # 101 "data/maps/SpaFront/scripts.pory"
 	closemessage
 # 102 "data/maps/SpaFront/scripts.pory"
-	releaseall
+	release
 	end
 
 
