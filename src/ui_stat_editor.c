@@ -62,6 +62,10 @@ struct StatEditorResources
     u16 ivTotal;
     u16 partyid;
     u16 inputMode;
+    u16 unspentEVs;
+    u16 spentThisSession;
+    u16 existingEVs[6];
+    u8 currentStat;
 };
 
 #define INPUT_SELECT_STAT 0
@@ -96,6 +100,10 @@ static void SelectorCallback(struct Sprite *sprite);
 static struct Pokemon *ReturnPartyMon();
 static u8 CreateSelector();
 static void DestroySelector();
+static u16 GetNumUnspentEVs(void);
+static void SetExistingEVs(void);
+static void HandleEditingStatInput(u32 input);
+static void PrintTitleToWindowEditState();
 
 //==========CONST=DATA==========//
 static const struct BgTemplate sStatEditorBgTemplates[] =
@@ -165,13 +173,15 @@ enum Colors
     FONT_WHITE,
     FONT_RED,
     FONT_BLUE,
+    FONT_GREEN
 };
 static const u8 sMenuWindowFontColors[][3] = 
 {
     [FONT_BLACK]  = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_DARK_GRAY,  TEXT_COLOR_LIGHT_GRAY},
     [FONT_WHITE]  = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_WHITE,  TEXT_COLOR_DARK_GRAY},
-    [FONT_RED]   = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_RED,        TEXT_COLOR_LIGHT_GRAY},
-    [FONT_BLUE]  = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_BLUE,       TEXT_COLOR_LIGHT_GRAY},
+    [FONT_RED]   = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_RED,        TEXT_COLOR_LIGHT_RED},
+    [FONT_BLUE]  = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_WHITE,       TEXT_COLOR_BLUE},
+    [FONT_GREEN] = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_WHITE,       TEXT_COLOR_GREEN},
 };
 
 #define TAG_SELECTOR 30004
@@ -342,6 +352,9 @@ static bool8 StatEditor_DoGfxSetup(void)
         break;
     case 4:
         sStatEditorDataPtr->speciesID = GetMonData(ReturnPartyMon(), MON_DATA_SPECIES);
+        sStatEditorDataPtr->unspentEVs = GetNumUnspentEVs();
+        SetExistingEVs();
+        sStatEditorDataPtr->spentThisSession = 0;
         FreeMonIconPalettes();
         LoadMonIconPalettes();
         LoadCompressedSpriteSheet(&sSpriteSheet_Selector);
@@ -351,7 +364,7 @@ static bool8 StatEditor_DoGfxSetup(void)
         break;
     case 5:
         StatEditor_InitWindows();
-        PrintTitleToWindowMainState();
+        PrintTitleToWindowEditState();
         sStatEditorDataPtr->inputMode = INPUT_SELECT_STAT;
         PrintMonStats();
         CreateSelector();
@@ -525,8 +538,8 @@ static void DestroySelector()
 #define DISTANCE_BETWEEN_STATS_Y 16
 #define SECOND_COLUMN ((8 * 4))
 #define THIRD_COLUMN ((8 * 8))
-#define STARTING_X 60
-#define STARTING_Y 26
+#define STARTING_X 60 + 16
+#define STARTING_Y 26 + 16
 
 struct MonPrintData {
     u16 x;
@@ -593,10 +606,39 @@ static const u8 sText_MenuEV[] = _("EV");
 static const u8 sText_MenuIV[] = _("IV");
 static const u8 sText_MonLevel[]         = _("Lv.{CLEAR 1}{STR_VAR_1}");
 
+static const u8 sText_UnspentPoints[] = _("Unspent Points:");
+
 static const u8 sText_MenuLRButtonTextMain[]   = _("Cycle Party");
 static const u8 sText_MenuAButtonTextMain[]    = _("Edit Stats");
 static const u8 sText_MenuBButtonTextMain[]    = _("Back");
 static const u8 sText_MenuDPadButtonTextMain[] = _("Change Stat");
+
+static u16 GetNumUnspentEVs(void)
+{
+    u16 spentEVs = 0;
+    u16 currentStat;
+    u16 maxEVsPerLevel = (GetMonData(ReturnPartyMon(), MON_DATA_LEVEL) * 10);
+    u8 i;
+
+    for(i = 0; i < 6; i++)
+    {
+        currentStat = GetMonData(ReturnPartyMon(), statsToPrintEVs[i]);
+        spentEVs += currentStat;
+    }
+
+    return (maxEVsPerLevel - spentEVs);
+}
+
+static void SetExistingEVs(void)
+{
+    u16 currentStat;
+    u8 i;
+
+    for(i = 0; i < 6; i++)
+    {
+        sStatEditorDataPtr->existingEVs[i] = GetMonData(ReturnPartyMon(), statsToPrintEVs[i]);
+    }
+}
 
 #define BUTTON_Y 4
 static void PrintTitleToWindowMainState()
@@ -648,18 +690,23 @@ static void PrintMonStats()
     sStatEditorDataPtr->evTotal = 0;
     sStatEditorDataPtr->ivTotal = 0;
 
-    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 18, 7, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuStat);
-    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, STARTING_X - 6, 7, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuActual);
-    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, STARTING_X + SECOND_COLUMN + 4, 7, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuEV);
-    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, STARTING_X + THIRD_COLUMN + 5, 7, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuIV);
+    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 18 + 10, 5, 0, 0, sMenuWindowFontColors[FONT_BLUE], 0xFF, sText_UnspentPoints);
 
-    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 24, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 0), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuHP);
-    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 12, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 1), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuAttack);
-    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 12, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 2), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuDefense);
-    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 10, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 3), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuSpAttack);
-    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 12, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 4), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuSpDefense);
-    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 16, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 5), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuSpeed);
-    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 16, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 6), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuTotal);
+    ConvertIntToDecimalStringN(gStringVar2, (sStatEditorDataPtr->unspentEVs - sStatEditorDataPtr->spentThisSession), STR_CONV_MODE_RIGHT_ALIGN, 3);
+    AddTextPrinterParameterized4(WINDOW_2, 1, 18 + 90, 5, 0, 0, sMenuWindowFontColors[FONT_GREEN], 0xFF, gStringVar2);
+
+    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 18 + 16, 7 + 16, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuStat);
+    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, STARTING_X - 6, 7 + 16, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuActual);
+    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, STARTING_X + SECOND_COLUMN + 4, 7 + 16, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuEV);
+    //AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, STARTING_X + THIRD_COLUMN + 5, 7, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuIV);
+
+    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 24 + 16, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 0), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuHP);
+    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 12 + 16, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 1), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuAttack);
+    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 12 + 16, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 2), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuDefense);
+    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 10 + 16, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 3), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuSpAttack);
+    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 12 + 16, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 4), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuSpDefense);
+    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 16 + 16, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 5), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuSpeed);
+    //AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 16, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 6), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuTotal);
 
     // Print Mon Stats
     for(i = 0; i < 6; i++)
@@ -680,6 +727,7 @@ static void PrintMonStats()
         AddTextPrinterParameterized4(WINDOW_2, 1, StatPrintData[statsToPrintEVs[i]].x, StatPrintData[statsToPrintEVs[i]].y, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, gStringVar2);
     }
 
+    /*
     for(i = 0; i < 6; i++)
     {
         currentStat = GetMonData(ReturnPartyMon(), statsToPrintIVs[i]);
@@ -698,7 +746,7 @@ static void PrintMonStats()
 
     ConvertIntToDecimalStringN(gStringVar2, sStatEditorDataPtr->ivTotal, STR_CONV_MODE_RIGHT_ALIGN, 3);
     AddTextPrinterParameterized4(WINDOW_2, 1, STARTING_X + THIRD_COLUMN, STARTING_Y + (DISTANCE_BETWEEN_STATS_Y * 6), 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, gStringVar2);
-
+    */
 
     // Print ability / nature / name / level / gender
 
@@ -746,12 +794,12 @@ struct SpriteCordsStruct {
 static void SelectorCallback(struct Sprite *sprite)
 {
     struct SpriteCordsStruct spriteCords[6][2] = {
-        {{188, 30 + 20}, {220, 30 + 20}},
-        {{188, 46 + 20}, {220, 46 + 20}},
-        {{188, 62 + 20}, {220, 62 + 20}},
-        {{188, 78 + 20}, {220, 78 + 20}},
-        {{188, 94 + 20}, {220, 94 + 20}},
-        {{188, 110 + 20}, {220, 110 + 20}}, // Thanks Jaizu
+        {{188 + 16, 30 + 20 + 16}, {220 + 16, 30 + 20 + 16}},
+        {{188 + 16, 46 + 20 + 16}, {220 + 16, 46 + 20 + 16}},
+        {{188 + 16, 62 + 20 + 16}, {220 + 16, 62 + 20 + 16}},
+        {{188 + 16, 78 + 20 + 16}, {220 + 16, 78 + 20 + 16}},
+        {{188 + 16, 94 + 20 + 16}, {220 + 16, 94 + 20 + 16}},
+        {{188 + 16, 110 + 20 + 16}, {220 + 16, 110 + 20 + 16}}, // Thanks Jaizu
     };
 
     if(sStatEditorDataPtr->inputMode == INPUT_EDIT_STAT)
@@ -773,7 +821,7 @@ static void SelectorCallback(struct Sprite *sprite)
         sprite->data[0] = 0;
     }
 
-    sStatEditorDataPtr->selectedStat = sStatEditorDataPtr->selector_x + (sStatEditorDataPtr->selector_y * 2);
+    sStatEditorDataPtr->selectedStat = sStatEditorDataPtr->selector_y;
 
     sprite->x = spriteCords[sStatEditorDataPtr->selector_y][sStatEditorDataPtr->selector_x].x;
     sprite->y = spriteCords[sStatEditorDataPtr->selector_y][sStatEditorDataPtr->selector_x].y;
@@ -782,8 +830,8 @@ static void SelectorCallback(struct Sprite *sprite)
 }
 
 static const u16 selectedStatToStatEnum[] = {
-        MON_DATA_HP_EV, MON_DATA_HP_IV, MON_DATA_ATK_EV, MON_DATA_ATK_IV, MON_DATA_DEF_EV, MON_DATA_DEF_IV,
-        MON_DATA_SPATK_EV, MON_DATA_SPATK_IV, MON_DATA_SPDEF_EV, MON_DATA_SPDEF_IV, MON_DATA_SPEED_EV, MON_DATA_SPEED_IV,
+        MON_DATA_HP_EV, MON_DATA_ATK_EV, MON_DATA_DEF_EV,
+        MON_DATA_SPATK_EV, MON_DATA_SPDEF_EV, MON_DATA_SPEED_EV
 };
 
 static void Task_DelayedSpriteLoad(u8 taskId) // wait 4 frames after changing the mon you're editing so there are no palette problems
@@ -806,12 +854,32 @@ static void ReloadNewPokemon(u8 taskId)
     gSprites[sStatEditorDataPtr->monIconSpriteId].invisible = TRUE;
     FreeResourcesAndDestroySprite(&gSprites[sStatEditorDataPtr->monIconSpriteId], sStatEditorDataPtr->monIconSpriteId);
     sStatEditorDataPtr->speciesID = GetMonData(ReturnPartyMon(), MON_DATA_SPECIES);
+    sStatEditorDataPtr->unspentEVs = GetNumUnspentEVs();
     gTasks[taskId].func = Task_DelayedSpriteLoad;
     gTasks[taskId].data[11] = 0;
 }
 
+#define EDIT_INPUT_INCREASE_STATE           0
+#define EDIT_INPUT_MAX_INCREASE_STATE       1
+#define EDIT_INPUT_DECREASE_STATE           2
+#define EDIT_INPUT_MAX_DECREASE_STATE       3
+
 static void Task_StatEditorMain(u8 taskId) // input control when first loaded into menu
 {
+    if (JOY_NEW(DPAD_LEFT))
+    {
+        sStatEditorDataPtr->editingStat = GetMonData(ReturnPartyMon(), selectedStatToStatEnum[sStatEditorDataPtr->selectedStat]);
+        HandleEditingStatInput(EDIT_INPUT_DECREASE_STATE);
+        return;
+    }
+    if (JOY_NEW(DPAD_RIGHT))
+    {
+        sStatEditorDataPtr->editingStat = GetMonData(ReturnPartyMon(), selectedStatToStatEnum[sStatEditorDataPtr->selectedStat]);
+        HandleEditingStatInput(EDIT_INPUT_INCREASE_STATE);
+        return;
+    }
+
+    /*
     if (JOY_NEW(A_BUTTON))
     {
         sStatEditorDataPtr->editingStat = GetMonData(ReturnPartyMon(), selectedStatToStatEnum[sStatEditorDataPtr->selectedStat]);
@@ -828,6 +896,7 @@ static void Task_StatEditorMain(u8 taskId) // input control when first loaded in
             StartSpriteAnim(&gSprites[sStatEditorDataPtr->selectorSpriteId], 2);
         return;
     }
+    
     if (JOY_NEW(L_BUTTON))
     {
         u16 partyid = sStatEditorDataPtr->partyid;
@@ -850,12 +919,15 @@ static void Task_StatEditorMain(u8 taskId) // input control when first loaded in
         PlaySE(SE_SELECT);
         ReloadNewPokemon(taskId);
     }
+    */
     if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_PC_OFF);
         BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
         gTasks[taskId].func = Task_StatEditorTurnOff;
+        return;
     }
+    /*
     if (JOY_NEW(DPAD_LEFT) || JOY_NEW(DPAD_RIGHT))
     {
         if(sStatEditorDataPtr->selector_x == 0)
@@ -863,12 +935,16 @@ static void Task_StatEditorMain(u8 taskId) // input control when first loaded in
         else
             sStatEditorDataPtr->selector_x = 0; 
     }
+    */
     if (JOY_NEW(DPAD_UP))
     {
         if (sStatEditorDataPtr->selector_y == 0)
             sStatEditorDataPtr->selector_y = 5;
         else
             sStatEditorDataPtr->selector_y--;
+
+        sStatEditorDataPtr->editingStat = GetMonData(ReturnPartyMon(), selectedStatToStatEnum[sStatEditorDataPtr->selectedStat]);
+        return;
     }
     if (JOY_NEW(DPAD_DOWN))
     {
@@ -876,6 +952,9 @@ static void Task_StatEditorMain(u8 taskId) // input control when first loaded in
             sStatEditorDataPtr->selector_y = 0;
         else
             sStatEditorDataPtr->selector_y++;
+
+        sStatEditorDataPtr->editingStat = GetMonData(ReturnPartyMon(), selectedStatToStatEnum[sStatEditorDataPtr->selectedStat]);
+        return;
     }
 
 }
@@ -911,11 +990,6 @@ static void ChangeAndUpdateStat()
     PrintMonStats();
 }
 
-#define EDIT_INPUT_INCREASE_STATE           0
-#define EDIT_INPUT_MAX_INCREASE_STATE       1
-#define EDIT_INPUT_DECREASE_STATE           2
-#define EDIT_INPUT_MAX_DECREASE_STATE       3
-
 #define STAT_MINIMUM          0  
 #define IV_MAX_SINGLE_STAT    MAX_PER_STAT_IVS
 #define EV_MAX_SINGLE_STAT    MAX_PER_STAT_EVS
@@ -945,13 +1019,13 @@ TLDR: Stat can't increase if you're either: at the maximum amount a stat can hav
 static void HandleEditingStatInput(u32 input)
 {
     u16 iterator = 0;
-    if((input <= EDIT_INPUT_MAX_INCREASE_STATE) && CHECK_IF_STAT_CANT_INCREASE)
+    if((input <= EDIT_INPUT_MAX_INCREASE_STATE) && (CHECK_IF_STAT_CANT_INCREASE || sStatEditorDataPtr->spentThisSession == sStatEditorDataPtr->unspentEVs))
     {
         StartSpriteAnim(&gSprites[sStatEditorDataPtr->selectorSpriteId], 2);
         return;
     }
 
-    if((input >= EDIT_INPUT_DECREASE_STATE) && (sStatEditorDataPtr->editingStat == STAT_MINIMUM))
+    if((input >= EDIT_INPUT_DECREASE_STATE) && (sStatEditorDataPtr->editingStat == STAT_MINIMUM || sStatEditorDataPtr->editingStat == sStatEditorDataPtr->existingEVs[sStatEditorDataPtr->selectedStat]))
     {
         StartSpriteAnim(&gSprites[sStatEditorDataPtr->selectorSpriteId], 1);
         return;
@@ -965,9 +1039,14 @@ static void HandleEditingStatInput(u32 input)
             for (iterator = 0; iterator < INCREASE_DECREASE_AMOUNT; iterator++)
             {
                 if(!(sStatEditorDataPtr->editingStat == STAT_MINIMUM))
+                {
                     sStatEditorDataPtr->editingStat--;
+                    sStatEditorDataPtr->spentThisSession--;
+                }
                 else
+                {
                     break;
+                }
             }
             break;
        case EDIT_INPUT_MAX_DECREASE_STATE:
@@ -977,9 +1056,14 @@ static void HandleEditingStatInput(u32 input)
             for (iterator = 0; iterator < INCREASE_DECREASE_AMOUNT; iterator++)
             {
                 if(!CHECK_IF_STAT_CANT_INCREASE)
+                {
                     sStatEditorDataPtr->editingStat++;
+                    sStatEditorDataPtr->spentThisSession++;
+                }
                 else
+                {
                     break;
+                }
             }
             break;
         case EDIT_INPUT_MAX_INCREASE_STATE:
@@ -1023,11 +1107,12 @@ static void Task_MenuEditingStat(u8 taskId) // This function should be refactore
         HandleEditingStatInput(EDIT_INPUT_DECREASE_STATE);
     else if (JOY_NEW(DPAD_RIGHT))
         HandleEditingStatInput(EDIT_INPUT_INCREASE_STATE);
+    /*
     else if (JOY_NEW(DPAD_UP) || JOY_NEW(R_BUTTON))
         HandleEditingStatInput(EDIT_INPUT_MAX_INCREASE_STATE);
     else if (JOY_NEW(DPAD_DOWN) || JOY_NEW(L_BUTTON))
         HandleEditingStatInput(EDIT_INPUT_MAX_DECREASE_STATE);
-
+    */
 }
 
 
