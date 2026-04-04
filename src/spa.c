@@ -161,7 +161,7 @@ static const struct BgTemplate sBgTemplates[3] =
     },
     {
         .bg = 2,
-        .charBaseIndex = 0,
+        .charBaseIndex = 1,
         .mapBaseIndex = 7,
         .screenSize = 0,
         .paletteMode = 0,
