@@ -65,7 +65,7 @@ script SpaFront_OnFrame_0 {
     removeobject(TRUCK_ID)
     turnobject(PLAYER_ID, DIR_NORTH)
     setvar(VAR_SPA_INTRO_STATE, 2)
-    releaseall
+    release
     end
 }
 
@@ -78,7 +78,7 @@ script SpaFront_EventScript_RoadRight {
         walk_left
     ))
     waitmovement(0)
-    releaseall
+    release
     end
 }
 
@@ -91,7 +91,7 @@ script SpaFront_EventScript_RoadLeft {
         walk_right
     ))
     waitmovement(0)
-    releaseall
+    release
     end
 }
 
@@ -99,6 +99,6 @@ script SpaFront_EventScript_Sign {
     lock
     msgbox("'Kodai Temple'")
     closemessage
-    releaseall
+    release
     end
 }

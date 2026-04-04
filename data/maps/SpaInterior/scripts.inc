@@ -332,13 +332,13 @@ SpaInterior_OnFrame_1::
 # 309 "data/maps/SpaInterior/scripts.pory"
 	setvar VAR_SPA_INTRO_STATE, 5
 # 310 "data/maps/SpaInterior/scripts.pory"
-	releaseall
+	release
 	end
 
 
 SpaInterior_EventScript_KimonoRed::
 # 315 "data/maps/SpaInterior/scripts.pory"
-	lock
+	lockall
 # 316 "data/maps/SpaInterior/scripts.pory"
 	faceplayer
 # 317 "data/maps/SpaInterior/scripts.pory"
@@ -369,7 +369,7 @@ SpaInterior_EventScript_KimonoRed_1:
 # 379 "data/maps/SpaInterior/scripts.pory"
 	closemessage
 # 380 "data/maps/SpaInterior/scripts.pory"
-	releaseall
+	release
 	end
 
 SpaInterior_EventScript_KimonoRed_3:
@@ -440,7 +440,7 @@ SpaInterior_EventScript_KimonoRed_15:
 
 SpaInterior_EventScript_KimonoBlue::
 # 385 "data/maps/SpaInterior/scripts.pory"
-	lock
+	lockall
 # 386 "data/maps/SpaInterior/scripts.pory"
 	faceplayer
 # 387 "data/maps/SpaInterior/scripts.pory"
@@ -450,7 +450,7 @@ SpaInterior_EventScript_KimonoBlue::
 # 390 "data/maps/SpaInterior/scripts.pory"
 	turnobject BLUE_INT_ID, DIR_WEST
 # 391 "data/maps/SpaInterior/scripts.pory"
-	releaseall
+	release
 	end
 
 
@@ -464,7 +464,7 @@ SpaInterior_EventScript_CynthiaSick::
 # 399 "data/maps/SpaInterior/scripts.pory"
 	closemessage
 # 400 "data/maps/SpaInterior/scripts.pory"
-	releaseall
+	release
 	end
 
 

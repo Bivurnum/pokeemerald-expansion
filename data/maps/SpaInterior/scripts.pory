@@ -307,12 +307,12 @@ script SpaInterior_OnFrame_1 {
             Come talk to me if you need
             any assistance.")
     setvar(VAR_SPA_INTRO_STATE, 5)
-    releaseall
+    release
     end
 }
 
 script SpaInterior_EventScript_KimonoRed {
-    lock
+    lockall
     faceplayer
     switch (var(VAR_SPA_INTRO_STATE)) {
         case 5:
@@ -377,18 +377,18 @@ script SpaInterior_EventScript_KimonoRed {
                     somewhere.")
     }
     closemessage
-    releaseall
+    release
     end
 }
 
 script SpaInterior_EventScript_KimonoBlue {
-    lock
+    lockall
     faceplayer
     msgbox("{COLOR BLUE}I'm making sure she's comfortable.
             Hopefully she will wake soon.")
     closemessage
     turnobject(BLUE_ID, DIR_WEST)
-    releaseall
+    release
     end
 }
 
@@ -397,6 +397,6 @@ script SpaInterior_EventScript_CynthiaSick {
     msgbox("She's sleeping peacefully.")
     waitmessage
     closemessage
-    releaseall
+    release
     end
 }

@@ -102,7 +102,7 @@ script SpaMountain_EventScript_Rattata {
         ))
         waitmovement(0)
     }
-    releaseall
+    release
     end
 }
 
@@ -151,7 +151,7 @@ script SpaMountain_EventScript_Teddiursa {
         ))
         waitmovement(0)
     }
-    releaseall
+    release
     end
 }
 
@@ -187,7 +187,7 @@ script SpaMountain_EventScript_Psyduck {
         ))
         waitmovement(0)
     }
-    releaseall
+    release
     end
 }
 
@@ -220,7 +220,7 @@ script SpaMountain_EventScript_Fletchinder {
         ))
         waitmovement(0)
     }
-    releaseall
+    release
     end
 }
 
@@ -268,7 +268,7 @@ script SpaMountain_EventScript_Lombre {
         ))
         waitmovement(0)
     }
-    releaseall
+    release
     end
 }
 
@@ -277,7 +277,7 @@ script SpaMountain_EventScript_Boulder {
     msgbox("This boulder is too big for
             you to move.")
     closemessage
-    releaseall
+    release
     end
 }
 
