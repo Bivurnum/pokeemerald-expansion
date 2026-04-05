@@ -179,7 +179,7 @@ static const u8 sMenuWindowFontColors[][3] =
 {
     [FONT_BLACK]  = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_DARK_GRAY,  TEXT_COLOR_LIGHT_GRAY},
     [FONT_WHITE]  = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_WHITE,  TEXT_COLOR_DARK_GRAY},
-    [FONT_RED]   = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_RED,        TEXT_COLOR_LIGHT_RED},
+    [FONT_RED]   = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_WHITE,        TEXT_COLOR_RED},
     [FONT_BLUE]  = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_WHITE,       TEXT_COLOR_BLUE},
     [FONT_GREEN] = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_WHITE,       TEXT_COLOR_GREEN},
 };
@@ -523,7 +523,7 @@ static u8 CreateSelector()
         sStatEditorDataPtr->selectorSpriteId = CreateSprite(&sSpriteTemplate_Selector, 188, 30, 0);
 
     gSprites[sStatEditorDataPtr->selectorSpriteId].invisible = FALSE;
-    StartSpriteAnim(&gSprites[sStatEditorDataPtr->selectorSpriteId], 0);
+    StartSpriteAnim(&gSprites[sStatEditorDataPtr->selectorSpriteId], 1);
     DebugPrintf("Sprite ID: %d", sStatEditorDataPtr->selectorSpriteId);
     return sStatEditorDataPtr->selectorSpriteId;
 }
@@ -607,6 +607,7 @@ static const u8 sText_MenuIV[] = _("IV");
 static const u8 sText_MonLevel[]         = _("Lv.{CLEAR 1}{STR_VAR_1}");
 
 static const u8 sText_UnspentPoints[] = _("Unspent Points:");
+static const u8 sText_MaxPoints[] = _("Max Points");
 
 static const u8 sText_MenuLRButtonTextMain[]   = _("Cycle Party");
 static const u8 sText_MenuAButtonTextMain[]    = _("Edit Stats");
@@ -617,8 +618,11 @@ static u16 GetNumUnspentEVs(void)
 {
     u16 spentEVs = 0;
     u16 currentStat;
-    u16 maxEVsPerLevel = (GetMonData(ReturnPartyMon(), MON_DATA_LEVEL) * 10);
+    u16 maxEVsForLevel = (GetMonData(ReturnPartyMon(), MON_DATA_LEVEL) * 10);
     u8 i;
+
+    if (maxEVsForLevel > 510)
+        maxEVsForLevel = 510;
 
     for(i = 0; i < 6; i++)
     {
@@ -626,7 +630,7 @@ static u16 GetNumUnspentEVs(void)
         spentEVs += currentStat;
     }
 
-    return (maxEVsPerLevel - spentEVs);
+    return (maxEVsForLevel - spentEVs);
 }
 
 static void SetExistingEVs(void)
@@ -682,6 +686,7 @@ static void PrintMonStats()
     u16 level = GetMonData(ReturnPartyMon(), MON_DATA_LEVEL);
     u16 personality = GetMonData(ReturnPartyMon(), MON_DATA_PERSONALITY);
     u16 gender = GetGenderFromSpeciesAndPersonality(sStatEditorDataPtr->speciesID, personality);
+    u8 color;
 
     FillWindowPixelBuffer(WINDOW_2, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
     FillWindowPixelBuffer(WINDOW_3, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
@@ -689,11 +694,6 @@ static void PrintMonStats()
     sStatEditorDataPtr->normalTotal = 0;
     sStatEditorDataPtr->evTotal = 0;
     sStatEditorDataPtr->ivTotal = 0;
-
-    AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 18 + 10, 5, 0, 0, sMenuWindowFontColors[FONT_BLUE], 0xFF, sText_UnspentPoints);
-
-    ConvertIntToDecimalStringN(gStringVar2, (sStatEditorDataPtr->unspentEVs - sStatEditorDataPtr->spentThisSession), STR_CONV_MODE_RIGHT_ALIGN, 3);
-    AddTextPrinterParameterized4(WINDOW_2, 1, 18 + 90, 5, 0, 0, sMenuWindowFontColors[FONT_GREEN], 0xFF, gStringVar2);
 
     AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 18 + 16, 7 + 16, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuStat);
     AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, STARTING_X - 6, 7 + 16, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, sText_MenuActual);
@@ -713,18 +713,34 @@ static void PrintMonStats()
     {
         currentStat = GetMonData(ReturnPartyMon(), statsToPrintActual[i]);
         sStatEditorDataPtr->normalTotal += currentStat;
-        DebugPrintf("Stat: %d", currentStat);
+        
         ConvertIntToDecimalStringN(gStringVar2, currentStat, STR_CONV_MODE_RIGHT_ALIGN, 3);
         AddTextPrinterParameterized4(WINDOW_2, 1, StatPrintData[statsToPrintActual[i]].x, StatPrintData[statsToPrintActual[i]].y, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, gStringVar2);
     }
 
     for(i = 0; i < 6; i++)
     {
+        color = FONT_WHITE;
         currentStat = GetMonData(ReturnPartyMon(), statsToPrintEVs[i]);
         sStatEditorDataPtr->evTotal += currentStat;
-        DebugPrintf("Stat: %d", currentStat);
+        
+        if (currentStat > sStatEditorDataPtr->existingEVs[i])
+            color = FONT_GREEN;
+
         ConvertIntToDecimalStringN(gStringVar2, currentStat, STR_CONV_MODE_RIGHT_ALIGN, 3);
-        AddTextPrinterParameterized4(WINDOW_2, 1, StatPrintData[statsToPrintEVs[i]].x, StatPrintData[statsToPrintEVs[i]].y, 0, 0, sMenuWindowFontColors[FONT_WHITE], 0xFF, gStringVar2);
+        AddTextPrinterParameterized4(WINDOW_2, 1, StatPrintData[statsToPrintEVs[i]].x, StatPrintData[statsToPrintEVs[i]].y, 0, 0, sMenuWindowFontColors[color], 0xFF, gStringVar2);
+    }
+
+    if (sStatEditorDataPtr->evTotal < 510)
+    {
+        AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 18 + 10, 5, 0, 0, sMenuWindowFontColors[FONT_BLUE], 0xFF, sText_UnspentPoints);
+
+        ConvertIntToDecimalStringN(gStringVar2, (sStatEditorDataPtr->unspentEVs - sStatEditorDataPtr->spentThisSession), STR_CONV_MODE_RIGHT_ALIGN, 3);
+        AddTextPrinterParameterized4(WINDOW_2, 1, 18 + 90, 5, 0, 0, sMenuWindowFontColors[FONT_GREEN], 0xFF, gStringVar2);
+    }
+    else
+    {
+        AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 18 + 10, 5, 0, 0, sMenuWindowFontColors[FONT_RED], 0xFF, sText_MaxPoints);
     }
 
     /*
@@ -860,9 +876,9 @@ static void ReloadNewPokemon(u8 taskId)
 }
 
 #define EDIT_INPUT_INCREASE_STATE           0
-#define EDIT_INPUT_MAX_INCREASE_STATE       1
+#define EDIT_INPUT_BIG_INCREASE_STATE       1
 #define EDIT_INPUT_DECREASE_STATE           2
-#define EDIT_INPUT_MAX_DECREASE_STATE       3
+#define EDIT_INPUT_BIG_DECREASE_STATE       3
 
 static void Task_StatEditorMain(u8 taskId) // input control when first loaded into menu
 {
@@ -876,6 +892,18 @@ static void Task_StatEditorMain(u8 taskId) // input control when first loaded in
     {
         sStatEditorDataPtr->editingStat = GetMonData(ReturnPartyMon(), selectedStatToStatEnum[sStatEditorDataPtr->selectedStat]);
         HandleEditingStatInput(EDIT_INPUT_INCREASE_STATE);
+        return;
+    }
+    if (JOY_NEW(L_BUTTON))
+    {
+        sStatEditorDataPtr->editingStat = GetMonData(ReturnPartyMon(), selectedStatToStatEnum[sStatEditorDataPtr->selectedStat]);
+        HandleEditingStatInput(EDIT_INPUT_BIG_DECREASE_STATE);
+        return;
+    }
+    if (JOY_NEW(R_BUTTON))
+    {
+        sStatEditorDataPtr->editingStat = GetMonData(ReturnPartyMon(), selectedStatToStatEnum[sStatEditorDataPtr->selectedStat]);
+        HandleEditingStatInput(EDIT_INPUT_BIG_INCREASE_STATE);
         return;
     }
 
@@ -943,7 +971,7 @@ static void Task_StatEditorMain(u8 taskId) // input control when first loaded in
         else
             sStatEditorDataPtr->selector_y--;
 
-        sStatEditorDataPtr->editingStat = GetMonData(ReturnPartyMon(), selectedStatToStatEnum[sStatEditorDataPtr->selectedStat]);
+        //sStatEditorDataPtr->editingStat = GetMonData(ReturnPartyMon(), selectedStatToStatEnum[sStatEditorDataPtr->selectedStat]);
         return;
     }
     if (JOY_NEW(DPAD_DOWN))
@@ -953,7 +981,7 @@ static void Task_StatEditorMain(u8 taskId) // input control when first loaded in
         else
             sStatEditorDataPtr->selector_y++;
 
-        sStatEditorDataPtr->editingStat = GetMonData(ReturnPartyMon(), selectedStatToStatEnum[sStatEditorDataPtr->selectedStat]);
+        //sStatEditorDataPtr->editingStat = GetMonData(ReturnPartyMon(), selectedStatToStatEnum[sStatEditorDataPtr->selectedStat]);
         return;
     }
 
@@ -1019,7 +1047,7 @@ TLDR: Stat can't increase if you're either: at the maximum amount a stat can hav
 static void HandleEditingStatInput(u32 input)
 {
     u16 iterator = 0;
-    if((input <= EDIT_INPUT_MAX_INCREASE_STATE) && (CHECK_IF_STAT_CANT_INCREASE || sStatEditorDataPtr->spentThisSession == sStatEditorDataPtr->unspentEVs))
+    if((input <= EDIT_INPUT_BIG_INCREASE_STATE) && (CHECK_IF_STAT_CANT_INCREASE || sStatEditorDataPtr->spentThisSession == sStatEditorDataPtr->unspentEVs))
     {
         StartSpriteAnim(&gSprites[sStatEditorDataPtr->selectorSpriteId], 2);
         return;
@@ -1032,13 +1060,14 @@ static void HandleEditingStatInput(u32 input)
     }
 
     #define INCREASE_DECREASE_AMOUNT 1
+    #define INCREASE_DECREASE_AMOUNT_BIG 10
 
     switch(input)
     {
         case EDIT_INPUT_DECREASE_STATE:
             for (iterator = 0; iterator < INCREASE_DECREASE_AMOUNT; iterator++)
             {
-                if(!(sStatEditorDataPtr->editingStat == STAT_MINIMUM))
+                if(!(sStatEditorDataPtr->editingStat == STAT_MINIMUM || sStatEditorDataPtr->editingStat == sStatEditorDataPtr->existingEVs[sStatEditorDataPtr->selectedStat]))
                 {
                     sStatEditorDataPtr->editingStat--;
                     sStatEditorDataPtr->spentThisSession--;
@@ -1049,13 +1078,23 @@ static void HandleEditingStatInput(u32 input)
                 }
             }
             break;
-       case EDIT_INPUT_MAX_DECREASE_STATE:
-            sStatEditorDataPtr->editingStat = STAT_MINIMUM;
-            break;
+        case EDIT_INPUT_BIG_DECREASE_STATE:
+            for (iterator = 0; iterator < INCREASE_DECREASE_AMOUNT_BIG; iterator++)
+            {
+                if(!(sStatEditorDataPtr->editingStat == STAT_MINIMUM || sStatEditorDataPtr->editingStat == sStatEditorDataPtr->existingEVs[sStatEditorDataPtr->selectedStat]))
+                {
+                    sStatEditorDataPtr->editingStat--;
+                    sStatEditorDataPtr->spentThisSession--;
+                }
+                else
+                {
+                    break;
+                }
+            }
         case EDIT_INPUT_INCREASE_STATE:
             for (iterator = 0; iterator < INCREASE_DECREASE_AMOUNT; iterator++)
             {
-                if(!CHECK_IF_STAT_CANT_INCREASE)
+                if(!(CHECK_IF_STAT_CANT_INCREASE || sStatEditorDataPtr->spentThisSession == sStatEditorDataPtr->unspentEVs))
                 {
                     sStatEditorDataPtr->editingStat++;
                     sStatEditorDataPtr->spentThisSession++;
@@ -1066,27 +1105,27 @@ static void HandleEditingStatInput(u32 input)
                 }
             }
             break;
-        case EDIT_INPUT_MAX_INCREASE_STATE:
-            if((sStatEditorDataPtr->selector_x == EDITING_EVS))
+        case EDIT_INPUT_BIG_INCREASE_STATE:
+            for (iterator = 0; iterator < INCREASE_DECREASE_AMOUNT_BIG; iterator++)
             {
-                if (EV_MAX_TOTAL - sStatEditorDataPtr->evTotal < EV_MAX_SINGLE_STAT)
-                    sStatEditorDataPtr->editingStat += EV_MAX_TOTAL - sStatEditorDataPtr->evTotal;
+                if(!(CHECK_IF_STAT_CANT_INCREASE || sStatEditorDataPtr->spentThisSession == sStatEditorDataPtr->unspentEVs))
+                {
+                    sStatEditorDataPtr->editingStat++;
+                    sStatEditorDataPtr->spentThisSession++;
+                }
                 else
-                    sStatEditorDataPtr->editingStat = EV_MAX_SINGLE_STAT;
-                if(sStatEditorDataPtr->editingStat > EV_MAX_SINGLE_STAT)
-                    sStatEditorDataPtr->editingStat = EV_MAX_SINGLE_STAT;
+                {
+                    break;
+                }
             }
-            else
-            {
-                sStatEditorDataPtr->editingStat = IV_MAX_SINGLE_STAT;
-            }
+            break;
     }
 
     ChangeAndUpdateStat();
 
-    if(CHECK_IF_STAT_CANT_INCREASE)
+    if(CHECK_IF_STAT_CANT_INCREASE || sStatEditorDataPtr->spentThisSession == sStatEditorDataPtr->unspentEVs)
         StartSpriteAnim(&gSprites[sStatEditorDataPtr->selectorSpriteId], 2);
-    else if(sStatEditorDataPtr->editingStat == STAT_MINIMUM)
+    else if(sStatEditorDataPtr->editingStat == STAT_MINIMUM || sStatEditorDataPtr->editingStat == sStatEditorDataPtr->existingEVs[sStatEditorDataPtr->selectedStat])
         StartSpriteAnim(&gSprites[sStatEditorDataPtr->selectorSpriteId], 1); 
     else
         StartSpriteAnim(&gSprites[sStatEditorDataPtr->selectorSpriteId], 3);       
