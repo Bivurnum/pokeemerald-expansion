@@ -1,0 +1,8 @@
+#ifndef GUARD_AMIE_REFRESH_H
+#define GUARD_AMIE_REFRESH_H
+
+#define AR_ENABLE_AMIE  FLAG_UNUSED_0x863
+
+void CB2_InitAmie(void);
+
+#endif // GUARD_AMIE_REFRESH_H
