@@ -719,6 +719,19 @@ static void ResetEVsToStartValues(void)
     }
 }
 
+static bool32 AreStatsUnchanged(void)
+{
+    u8 i;
+
+    for(i = 0; i < 6; i++)
+    {
+        if (sStatEditorDataPtr->existingEVs[i] != GetMonData(ReturnPartyMon(), statsToPrintEVs[i]))
+            return FALSE;
+    }
+
+    return TRUE;
+}
+
 #define BUTTON_Y 4
 static void PrintTitleToWindowMainState()
 {
@@ -1026,6 +1039,9 @@ static void Task_StatEditorMain(u8 taskId) // input control when first loaded in
     if (JOY_NEW(B_BUTTON))
     {
         gTasks[taskId].func = Task_StatEditorConfirmChanges;
+        if (AreStatsUnchanged())
+            tState = 3;
+
         return;
     }
     /*
