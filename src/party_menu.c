@@ -4602,6 +4602,7 @@ static void CursorCb_StatEdit(u8 taskId)
 {
     PlaySE(SE_SELECT);
     gSpecialVar_0x8004 = gPartyMenu.slotId;
+    gLastViewedMonIndex = gPartyMenu.slotId;
     sPartyMenuInternal->exitCallback = ChangePokemonStatsPartyScreen;
     Task_ClosePartyMenu(taskId);
 }

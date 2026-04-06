@@ -102,6 +102,7 @@ static u8 CreateSelector();
 static void DestroySelector();
 static u16 GetNumUnspentEVs(void);
 static void SetExistingEVs(void);
+static void ResetEVsToStartValues(void);
 static void HandleEditingStatInput(u32 input);
 static void PrintTitleToWindowEditState();
 
@@ -160,7 +161,28 @@ static const struct WindowTemplate sMenuWindowTemplates[] =
         .paletteNum = 15,   // palette index to use for text
         .baseBlock = 1 + 70 + 306,     // tile start in VRAM
     },
+    [WINDOW_4] =
+    {
+        .bg = 2,
+        .tilemapLeft = 3,
+        .tilemapTop = 1,
+        .width = 24,
+        .height = 2,
+        .paletteNum = 14,
+        .baseBlock = 512
+    },
     DUMMY_WIN_TEMPLATE
+};
+
+static const struct WindowTemplate sWindowTemplate_ConfirmYesNo =
+{
+    .bg = 2,
+    .tilemapLeft = 3,
+    .tilemapTop = 5,
+    .width = 5,
+    .height = 4,
+    .paletteNum = 14,
+    .baseBlock = 572
 };
 
 static const u32 sStatEditorBgTiles[] = INCBIN_U32("graphics/ui_menu/background_tileset.4bpp.lz");
@@ -197,7 +219,7 @@ static const struct OamData sOamData_Selector =
 {
     .size = SPRITE_SIZE(32x32),
     .shape = SPRITE_SHAPE(32x32),
-    .priority = 0,
+    .priority = 1,
 };
 
 static const struct CompressedSpriteSheet sSpriteSheet_Selector =
@@ -364,6 +386,8 @@ static bool8 StatEditor_DoGfxSetup(void)
         break;
     case 5:
         StatEditor_InitWindows();
+        LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(14), PLTT_SIZE_4BPP);
+        LoadUserWindowBorderGfx(0, 0x250, BG_PLTT_ID(13));
         PrintTitleToWindowEditState();
         sStatEditorDataPtr->inputMode = INPUT_SELECT_STAT;
         PrintMonStats();
@@ -498,6 +522,48 @@ static void Task_StatEditorTurnOff(u8 taskId)
     }
 }
 
+static const u8 gText_WantSaveChanges[] = _("Do you want to save these changes?");
+
+#define tState  gTasks[taskId].data[0]
+
+static void Task_StatEditorConfirmChanges(u8 taskId)
+{
+    switch (tState)
+    {
+    case 0:
+        DrawStdFrameWithCustomTileAndPalette(WINDOW_4, FALSE, 0x250, 13);
+        AddTextPrinterParameterized(WINDOW_4, FONT_NORMAL, gText_WantSaveChanges, 0, 1, 0, NULL);
+        PutWindowTilemap(4);
+        ScheduleBgCopyTilemapToVram(0);
+        CreateYesNoMenu(&sWindowTemplate_ConfirmYesNo, 0x250, 13, 0);
+        tState++;
+        break;
+    case 1:
+        switch (Menu_ProcessInputNoWrapClearOnChoose())
+        {
+        case 0: // YES
+            PlaySE(SE_SELECT);
+            tState = 3;
+            break;
+        case 1: // NO
+        case MENU_B_PRESSED:
+            PlaySE(SE_SELECT);
+            tState = 2;
+            break;
+        }
+        break;
+    case 2:
+        ResetEVsToStartValues();
+        tState = 3;
+        break;
+    case 3:
+        PlaySE(SE_PC_OFF);
+        BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
+        gTasks[taskId].func = Task_StatEditorTurnOff;
+        break;
+    }
+}
+
 //
 //       Stat Editor Code
 //  End of UI setup code, beginning of stat editor specific code
@@ -514,7 +580,7 @@ static void SampleUi_DrawMonIcon(u16 dexNum)
     u16 speciesId = dexNum;
     sStatEditorDataPtr->monIconSpriteId = CreateMonPicSprite_Affine(speciesId, 0, 0x8000, TRUE, MON_ICON_X, MON_ICON_Y, 0, TAG_NONE);
 
-    gSprites[sStatEditorDataPtr->monIconSpriteId].oam.priority = 0;
+    gSprites[sStatEditorDataPtr->monIconSpriteId].oam.priority = 1;
 }
 
 static u8 CreateSelector()
@@ -635,12 +701,21 @@ static u16 GetNumUnspentEVs(void)
 
 static void SetExistingEVs(void)
 {
-    u16 currentStat;
     u8 i;
 
     for(i = 0; i < 6; i++)
     {
         sStatEditorDataPtr->existingEVs[i] = GetMonData(ReturnPartyMon(), statsToPrintEVs[i]);
+    }
+}
+
+static void ResetEVsToStartValues(void)
+{
+    u8 i;
+
+    for(i = 0; i < 6; i++)
+    {
+        SetMonData(ReturnPartyMon(), statsToPrintEVs[i], &sStatEditorDataPtr->existingEVs[i]);
     }
 }
 
@@ -740,7 +815,7 @@ static void PrintMonStats()
     }
     else
     {
-        AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 18 + 10, 5, 0, 0, sMenuWindowFontColors[FONT_RED], 0xFF, sText_MaxPoints);
+        AddTextPrinterParameterized4(WINDOW_2, FONT_NARROW, 18 + 35, 5, 0, 0, sMenuWindowFontColors[FONT_RED], 0xFF, sText_MaxPoints);
     }
 
     /*
@@ -950,9 +1025,7 @@ static void Task_StatEditorMain(u8 taskId) // input control when first loaded in
     */
     if (JOY_NEW(B_BUTTON))
     {
-        PlaySE(SE_PC_OFF);
-        BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
-        gTasks[taskId].func = Task_StatEditorTurnOff;
+        gTasks[taskId].func = Task_StatEditorConfirmChanges;
         return;
     }
     /*
