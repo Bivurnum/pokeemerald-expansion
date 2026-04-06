@@ -68,9 +68,6 @@ struct StatEditorResources
     u8 currentStat;
 };
 
-#define INPUT_SELECT_STAT 0
-#define INPUT_EDIT_STAT 1
-
 enum WindowIds
 {
     WINDOW_1,
@@ -387,7 +384,6 @@ static bool8 StatEditor_DoGfxSetup(void)
         LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(14), PLTT_SIZE_4BPP);
         LoadUserWindowBorderGfx(0, 0x250, BG_PLTT_ID(13));
         PrintTitleToWindowMainState();
-        sStatEditorDataPtr->inputMode = INPUT_SELECT_STAT;
         PrintMonStats();
         CreateSelector();
         gMain.state++;
@@ -865,24 +861,8 @@ static void SelectorCallback(struct Sprite *sprite)
         {{188 + 16, 110 + 20 + 16}, {220 + 16, 110 + 20 + 16}}, // Thanks Jaizu
     };
 
-    if(sStatEditorDataPtr->inputMode == INPUT_EDIT_STAT)
-    {
-        if(sprite->data[0] == 32)
-        {
-            sprite->invisible = TRUE;
-        }
-        if(sprite->data[0] >= 48)
-        {
-            sprite->invisible = FALSE;
-            sprite->data[0] = 0;
-        }
-        sprite->data[0]++;
-    }
-    else
-    {
-        sprite->invisible = FALSE;
-        sprite->data[0] = 0;
-    }
+    sprite->invisible = FALSE;
+    sprite->data[0] = 0;
 
     sStatEditorDataPtr->selectedStat = sStatEditorDataPtr->selector_y;
 
