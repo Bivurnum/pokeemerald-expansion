@@ -660,7 +660,7 @@ static const u8 sText_MenuSpeed[] = _("Speed");
 static const u8 sText_MenuTotal[] = _("Total");
 static const u8 sText_MenuStat[] = _("Stat");
 static const u8 sText_MenuActual[] = _("Actual");
-static const u8 sText_MenuEV[] = _("EV");
+static const u8 sText_MenuEV[] = _("Pts");
 static const u8 sText_MenuIV[] = _("IV");
 static const u8 sText_MonLevel[]         = _("Lv.{CLEAR 1}{STR_VAR_1}");
 
