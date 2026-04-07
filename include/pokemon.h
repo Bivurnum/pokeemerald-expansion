@@ -1,6 +1,7 @@
 #ifndef GUARD_POKEMON_H
 #define GUARD_POKEMON_H
 
+#include "amie_refresh.h"
 #include "contest_effect.h"
 #include "sprite.h"
 #include "constants/battle.h"
@@ -517,6 +518,7 @@ struct SpeciesInfo /*0xC4*/
 #endif //P_GENDER_DIFFERENCES
 #endif //OW_PKMN_OBJECTS_SHARE_PALETTES
 #endif //OW_POKEMON_OBJECT_EVENTS
+enum AmiePetZones amiePetZone;
 };
 
 struct EggData
