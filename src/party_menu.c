@@ -1,5 +1,6 @@
 #include "global.h"
 #include "malloc.h"
+#include "amie_refresh.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_controllers.h"
@@ -696,6 +697,8 @@ static bool8 ShowPartyMenu(void)
         {
             sPartyMenuInternal->data[0] = 0;
             gMain.state++;
+            if (gPartyMenu.menuType == PARTY_MENU_TYPE_FIELD && AR_ENABLE_AMIE_REFRESH && FlagGet(AR_ENABLE_AMIE_FLAG))
+                LoadAmiePartyMenuSprite();
         }
         break;
     case 16:
@@ -1414,6 +1417,15 @@ u8 GetPartyMenuType(void)
     return gPartyMenu.menuType;
 }
 
+static void Task_WaitForAmieFade(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        SetMainCallback2(CB2_InitAmie);
+        DestroyTask(taskId);
+    }
+}
+
 void Task_HandleChooseMonInput(u8 taskId)
 {
     if (!gPaletteFade.active && MenuHelpers_ShouldWaitForLinkRecv() != TRUE)
@@ -1433,6 +1445,15 @@ void Task_HandleChooseMonInput(u8 taskId)
             {
                 PlaySE(SE_SELECT);
                 MoveCursorToConfirm();
+            }
+            break;
+        case L_BUTTON:
+            if (AR_ENABLE_AMIE_REFRESH && FlagGet(AR_ENABLE_AMIE_FLAG))
+            {
+                PlaySE(SE_SELECT);
+                FadeScreen(FADE_TO_BLACK, 0);
+                gTasks[taskId].func = Task_WaitForAmieFade;
+                return;
             }
             break;
         }
@@ -1709,6 +1730,9 @@ static u16 PartyMenuButtonHandler(s8 *slotPtr)
 
     if (JOY_NEW(START_BUTTON))
         return START_BUTTON;
+
+    if (JOY_NEW(L_BUTTON))
+        return L_BUTTON;
 
     if (movementDir && gPlayerPartyCount != 0)
     {

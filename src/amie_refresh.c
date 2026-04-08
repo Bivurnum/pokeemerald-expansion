@@ -34,6 +34,9 @@ static const u32 gPuff_Icon_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/puff_
 static const u16 gEmotes_Pal[] = INCBIN_U16("graphics/amie_refresh/heart.gbapal");
 static const u32 gHeart_Gfx[] = INCBIN_U32("graphics/amie_refresh/heart.4bpp");
 
+static const u16 gParty_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/party_icon.gbapal");
+static const u32 sSpriteTiles_Party_Icon[] = INCBIN_U32("graphics/amie_refresh/party_icon.4bpp.smol");
+
 static void CreateAmieSprites(void);
 static void Task_AmieFadeIn(u8 taskId);
 static void Task_AmieMain(u8 taskId);
@@ -193,6 +196,20 @@ static const struct OamData sOam_32x32 =
     .priority = 1,
 };
 
+static const struct OamData sOam_64x32 =
+{
+    .shape = SPRITE_SHAPE(64x32),
+    .size = SPRITE_SIZE(64x32),
+    .priority = 0,
+};
+
+static const struct CompressedSpriteSheet sSpriteSheet_Party_Icon =
+{
+    .data = sSpriteTiles_Party_Icon,
+    .size = 1024,
+    .tag = TAG_PARTY_AMIE,
+};
+
 static const struct SpriteTemplate sSpriteTemplate_Hand =
 {
     .tileTag = TAG_NONE,
@@ -226,6 +243,17 @@ static const struct SpriteTemplate sSpriteTemplate_Heart =
     .callback = SpriteCB_Heart
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Party_Icon =
+{
+    .tileTag = TAG_PARTY_AMIE,
+    .paletteTag = TAG_PARTY_AMIE,
+    .oam = &sOam_64x32,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
 static const struct SpritePalette sSpritePalettes_Amie[] =
 {
     {
@@ -242,6 +270,13 @@ static const struct SpritePalette sSpritePalettes_Amie[] =
     },
     {NULL},
 };
+
+void LoadAmiePartyMenuSprite(void)
+{
+    LoadSpritePaletteWithTag(gParty_Icon_Pal, TAG_PARTY_AMIE);
+    LoadCompressedSpriteSheet(&sSpriteSheet_Party_Icon);
+    CreateSprite(&sSpriteTemplate_Party_Icon, 47, 114, 0);
+}
 
 static void CB2_Amie(void)
 {
@@ -314,7 +349,7 @@ void CB2_InitAmie(void)
         gMain.state++;
         break;
     case 7:
-            sAmieData.species = SPECIES_KYOGRE;
+            sAmieData.species = SPECIES_RATTATA;
         
         // Create Pokémon sprite
         sAmieData.monSpriteId = CreateMonPicSprite_Affine(sAmieData.species, FALSE, 0, MON_PIC_AFFINE_FRONT, 90, 65, 14, TAG_NONE);
@@ -552,7 +587,7 @@ static void AmieHandHandleInput(u8 taskId)
                 {
                     if (tPetScore >= AMIE_PET_SCORE_TARGET)
                     {
-                        CreateHeartSprites(5);
+                        CreateHeartSprites(3);
                     
                         StartHappyAnim();
                         PlayCry_ByMode(sAmieData.species, 0, CRY_MODE_GROWL_2);

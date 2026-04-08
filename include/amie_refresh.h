@@ -16,6 +16,8 @@
 #define TAG_PUFF_ICON   0x2001
 #define TAG_EMOTE       0x2002
 
+#define TAG_PARTY_AMIE    0x2032
+
 #define HAND_START_X    28
 #define HAND_START_Y    45
 
@@ -65,6 +67,7 @@ struct AmiePetZone
 
 extern const struct AmiePetZone AmieRefreshPetZones[][5];
 
+void LoadAmiePartyMenuSprite(void);
 void CB2_InitAmie(void);
 
 #define amie_frame(ptr, frame, width, height) {.data = (u8 *)ptr + (width * height * frame * 64)/2, .size = (width * height * 64)/2}
