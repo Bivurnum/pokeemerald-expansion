@@ -8,6 +8,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "pokedex.h"
+#include "pokemon_icon.h"
 #include "random.h"
 #include "scanline_effect.h"
 #include "sound.h"
@@ -25,6 +26,10 @@ static const u32 gAmieBG_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/amie_bg.
 static const u32 gAmieBG_Tilemap[] = INCBIN_U32("graphics/amie_refresh/amie/amie_bg.bin.smolTM");
 static const u16 gAmieBG_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/amie_bg.gbapal");
 
+static const u32 gAmieSplashBG_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/amie_splash.4bpp.smol");
+static const u32 gAmieSplashBG_Tilemap[] = INCBIN_U32("graphics/amie_refresh/amie/amie_splash.bin.smolTM");
+static const u16 gAmieSplashBG_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/amie_splash.gbapal");
+
 static const u16 gHand_Pal[] = INCBIN_U16("graphics/amie_refresh/hand.gbapal");
 static const u32 gHand_Gfx[] = INCBIN_U32("graphics/amie_refresh/hand.4bpp");
 
@@ -37,6 +42,8 @@ static const u32 gHeart_Gfx[] = INCBIN_U32("graphics/amie_refresh/heart.4bpp");
 static const u16 gParty_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/party_icon.gbapal");
 static const u32 sSpriteTiles_Party_Icon[] = INCBIN_U32("graphics/amie_refresh/party_icon.4bpp.smol");
 
+static void Task_AmieSplashFadeIn(u8 taskId);
+static void Task_AmieSplashMain(u8 taskId);
 static void CreateAmieSprites(void);
 static void Task_AmieFadeIn(u8 taskId);
 static void Task_AmieMain(u8 taskId);
@@ -293,6 +300,88 @@ static void VBlankCB_Amie(void)
     ProcessSpriteCopyRequests();
 }
 
+void CB2_InitAmieSplash(void)
+{
+    switch (gMain.state)
+    {
+    default:
+    case 0:
+        SetVBlankCallback(NULL);
+        gMain.state++;
+        break;
+    case 1:
+        DmaClearLarge16(3, (void *)(VRAM), VRAM_SIZE, 0x1000);
+        DmaClear32(3, OAM, OAM_SIZE);
+        DmaClear16(3, PLTT, PLTT_SIZE);
+        SetGpuReg(REG_OFFSET_DISPCNT, 0);
+        ResetBgsAndClearDma3BusyFlags(0);
+        InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
+        ChangeBgX(0, 0, BG_COORD_SET);
+        ChangeBgY(0, 0, BG_COORD_SET);
+        ChangeBgX(1, 0, BG_COORD_SET);
+        ChangeBgY(1, 0, BG_COORD_SET);
+        ChangeBgX(2, 0, BG_COORD_SET);
+        ChangeBgY(2, 0, BG_COORD_SET);
+        ChangeBgX(3, 0, BG_COORD_SET);
+        ChangeBgY(3, 0, BG_COORD_SET);
+        InitWindows(sWindowTemplates);
+        DeactivateAllTextPrinters();
+        SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
+        gMain.state++;
+        break;
+    case 2:
+        ResetPaletteFade();
+        ScanlineEffect_Stop();
+        ResetTasks();
+        ResetSpriteData();
+        gMain.state++;
+        break;
+    case 3:
+        DecompressDataWithHeaderVram(gAmieSplashBG_Gfx, (void *)(BG_CHAR_ADDR(1)));
+        DecompressDataWithHeaderVram(gAmieSplashBG_Tilemap, (u16*) BG_SCREEN_ADDR(6));
+        gMain.state++;
+        break;
+    case 4:
+        LoadPalette(gAmieSplashBG_Pal, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
+        gMain.state++;
+        break;
+    case 5:
+        ShowBg(0);
+        ShowBg(3);
+        gMain.state++;
+        break;
+    case 6:
+        LoadMonIconPalettes();
+        // Create Splash Sprites Here
+        gMain.state++;
+        break;
+    case 7:
+            sAmieData.species = SPECIES_KYOGRE;
+        
+        // Create Pokémon Icon sprite
+        CreateMonIcon(sAmieData.species, 0, AMIE_MON_ICON_X, AMIE_MON_ICON_Y, 0, 0);
+        gMain.state++;
+        break;
+    case 8:
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+        CreateTask(Task_AmieSplashFadeIn, 0);
+        SetVBlankCallback(VBlankCB_Amie);
+        SetMainCallback2(CB2_Amie);
+        break;
+    }
+}
+
+static void Task_AmieSplashFadeIn(u8 taskId)
+{
+    if (!gPaletteFade.active)
+        gTasks[taskId].func = Task_AmieSplashMain;
+}
+
+static void Task_AmieSplashMain(u8 taskId)
+{
+
+}
+
 void CB2_InitAmie(void)
 {
     switch (gMain.state)
@@ -363,8 +452,8 @@ void CB2_InitAmie(void)
         gMain.state++;
         break;
     case 8:
-        CreateTask(Task_AmieFadeIn, 0);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+        CreateTask(Task_AmieFadeIn, 0);
         SetVBlankCallback(VBlankCB_Amie);
         SetMainCallback2(CB2_Amie);
         break;
