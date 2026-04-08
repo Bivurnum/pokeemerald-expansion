@@ -23,9 +23,6 @@
 
 #define NUM_AMIE_PET_AREAS  5
 
-#define AMIE_MON_ICON_X 120
-#define AMIE_MON_ICON_Y 90
-
 struct AmieData
 {
     u16 species:11;
@@ -71,7 +68,6 @@ struct AmiePetZone
 extern const struct AmiePetZone AmieRefreshPetZones[][5];
 
 void LoadAmiePartyMenuSprite(void);
-void CB2_InitAmieSplash(void);
 void CB2_InitAmie(void);
 
 #define amie_frame(ptr, frame, width, height) {.data = (u8 *)ptr + (width * height * frame * 64)/2, .size = (width * height * 64)/2}

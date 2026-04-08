@@ -1421,7 +1421,7 @@ static void Task_WaitForAmieFade(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        SetMainCallback2(CB2_InitAmieSplash);
+        SetMainCallback2(CB2_InitAmie);
         DestroyTask(taskId);
     }
 }
