@@ -1,6 +1,7 @@
 #include "global.h"
 #include "amie_refresh.h"
 #include "bg.h"
+#include "data.h"
 #include "decompress.h"
 #include "gpu_regs.h"
 #include "main.h"
@@ -28,12 +29,14 @@ static const u16 gAmieBG_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/amie_bg.
 
 static const u16 gHand_Pal[] = INCBIN_U16("graphics/amie_refresh/hand.gbapal");
 static const u32 gHand_Gfx[] = INCBIN_U32("graphics/amie_refresh/hand.4bpp");
+static const u32 gSpeechBubble_Gfx[] = INCBIN_U32("graphics/amie_refresh/speech_bubble.4bpp");
 
 static const u16 gPuff_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/puff_icon.gbapal");
 static const u32 gPuff_Icon_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/puff_icon.4bpp");
 
 static const u16 gEmotes_Pal[] = INCBIN_U16("graphics/amie_refresh/heart.gbapal");
 static const u32 gHeart_Gfx[] = INCBIN_U32("graphics/amie_refresh/heart.4bpp");
+static const u32 gAngry_Gfx[] = INCBIN_U32("graphics/amie_refresh/angry.4bpp");
 
 static const u16 gParty_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/party_icon.gbapal");
 static const u32 sSpriteTiles_Party_Icon[] = INCBIN_U32("graphics/amie_refresh/party_icon.4bpp.smol");
@@ -46,6 +49,8 @@ static void ResetAmieHand(void);
 static void AmieHandHandleInput(u8 taskId);
 static void SpriteCB_Mon(struct Sprite *sprite);
 static void SpriteCB_Heart(struct Sprite *sprite);
+static void SpriteCB_Angry(struct Sprite *sprite);
+static void SpriteCB_SpeechBubble(struct Sprite *sprite);
 
 // Task Data
 #define tState      gTasks[taskId].data[0]
@@ -124,6 +129,11 @@ static const union AnimCmd * const sAnims_Hand[] =
     sAnim_HandOpen,
 };
 
+static const union AnimCmd * const sAnims_SpeechBubble[] =
+{
+    sAnim_Normal,
+};
+
 static const union AnimCmd * const sAnims_Puff_Icon[] =
 {
     sAnim_Normal,
@@ -146,13 +156,13 @@ static const union AnimCmd * const sAnims_Mon[] =
 
 static const union AffineAnimCmd sAffineAnim_MonDoubleSize[] =
 {
-    AFFINEANIMCMD_FRAME(490, 490, 0, 0),
+    AFFINEANIMCMD_FRAME(512, 512, 0, 0),
     AFFINEANIMCMD_END
 };
 
 static const union AffineAnimCmd sAffineAnim_MonJump[] =
 {
-    AFFINEANIMCMD_FRAME(490, 490, 0, 0),
+    AFFINEANIMCMD_FRAME(512, 512, 0, 0),
     AFFINEANIMCMD_FRAME(0, 0, -1, 1),
     AFFINEANIMCMD_FRAME(0, 0, 0, 4),
     AFFINEANIMCMD_FRAME(0, 0, 1, 1),
@@ -176,9 +186,37 @@ static const struct SpriteFrameImage sPicTable_Hand[] =
     amie_frame(gHand_Gfx, 1, 4, 4),
 };
 
+static const struct SpriteFrameImage sPicTable_SpeechBubble[] =
+{
+    amie_frame(gSpeechBubble_Gfx, 0, 4, 4),
+};
+
 static const union AnimCmd * const sAnims_Heart[] =
 {
     sAnim_Normal,
+};
+
+static const union AnimCmd * const sAnims_Angry[] =
+{
+    sAnim_Normal,
+};
+
+static const union AffineAnimCmd sAffineAnim_AngryPulse[] =
+{
+    AFFINEANIMCMD_FRAME(0, 0, 0, 1),
+    AFFINEANIMCMD_FRAME(-4, -4, 0, 16),
+    AFFINEANIMCMD_FRAME(4, 4, 0, 16),
+    AFFINEANIMCMD_FRAME(-4, -4, 0, 16),
+    AFFINEANIMCMD_FRAME(4, 4, 0, 16),
+    AFFINEANIMCMD_FRAME(-4, -4, 0, 16),
+    AFFINEANIMCMD_FRAME(4, 4, 0, 16),
+    AFFINEANIMCMD_FRAME(0, 0, 0, 23),
+    AFFINEANIMCMD_END
+};
+
+static const union AffineAnimCmd *const sAffineAnims_Angry[] =
+{
+    sAffineAnim_AngryPulse,
 };
 
 static const struct SpriteFrameImage sPicTable_Puff_Icon[] =
@@ -191,11 +229,24 @@ static const struct SpriteFrameImage sPicTable_Heart[] =
     amie_frame(gHeart_Gfx, 0, 4, 4),
 };
 
+static const struct SpriteFrameImage sPicTable_Angry[] =
+{
+    amie_frame(gAngry_Gfx, 0, 4, 4),
+};
+
 static const struct OamData sOam_32x32 =
 {
     .shape = SPRITE_SHAPE(32x32),
     .size = SPRITE_SIZE(32x32),
     .priority = 1,
+};
+
+static const struct OamData sOam_32x32Affine =
+{
+    .affineMode = ST_OAM_AFFINE_DOUBLE,
+    .shape = SPRITE_SHAPE(32x32),
+    .size = SPRITE_SIZE(32x32),
+    .priority = 0,
 };
 
 static const struct OamData sOam_64x32 =
@@ -223,6 +274,17 @@ static const struct SpriteTemplate sSpriteTemplate_Hand =
     .callback = SpriteCallbackDummy
 };
 
+static const struct SpriteTemplate sSpriteTemplate_SpeechBubble =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_HAND,
+    .oam = &sOam_32x32,
+    .anims = sAnims_SpeechBubble,
+    .images = sPicTable_SpeechBubble,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_SpeechBubble
+};
+
 static const struct SpriteTemplate sSpriteTemplate_Puff_Icon =
 {
     .tileTag = TAG_NONE,
@@ -243,6 +305,17 @@ static const struct SpriteTemplate sSpriteTemplate_Heart =
     .images = sPicTable_Heart,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_Heart
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Angry =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_EMOTE,
+    .oam = &sOam_32x32Affine,
+    .anims = sAnims_Angry,
+    .images = sPicTable_Angry,
+    .affineAnims = sAffineAnims_Angry,
+    .callback = SpriteCB_Angry
 };
 
 static const struct SpriteTemplate sSpriteTemplate_Party_Icon =
@@ -351,7 +424,7 @@ void CB2_InitAmie(void)
         gMain.state++;
         break;
     case 7:
-            sAmieData.species = SPECIES_RATTATA;
+            sAmieData.species = SPECIES_LINOONE;
         
         // Create Pokémon sprite
         sAmieData.monSpriteId = CreateMonPicSprite_Affine(sAmieData.species, FALSE, 0, MON_PIC_AFFINE_FRONT, 90, 65, 14, TAG_NONE);
@@ -510,6 +583,23 @@ static void CreateHeartSprites(u32 num)
 
 }
 
+static void CreateAngrySprite(void)
+{
+    u32 size;
+    u32 spriteId;
+
+    #if P_GENDER_DIFFERENCES
+        if (gSpeciesInfo[sAmieData.species].frontPicFemale != NULL && sAmieData.isFemale)
+            size = gSpeciesInfo[sAmieData.species].frontPicSizeFemale;
+        else
+    #endif
+            size = gSpeciesInfo[sAmieData.species].frontPicSize;
+    
+    spriteId = CreateSprite(&sSpriteTemplate_Angry, 154, 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
+    StartSpriteAffineAnim(&gSprites[spriteId], 0);
+    CreateSprite(&sSpriteTemplate_SpeechBubble, 154, 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
+}
+
 static void StartNormalAnim(void)
 {
     gSprites[sAmieData.monSpriteId].sCurrAnim = 0;
@@ -600,6 +690,7 @@ static void AmieHandHandleInput(u8 taskId)
                         StartHappyAnim();
                         PlayCry_ByMode(sAmieData.species, 0, CRY_MODE_GROWL_2);
                         gSprites[sAmieData.handSpriteId].invisible = TRUE;
+                        tPetScore = 0;
                         tCounter = 0;
                         return;
                     }
@@ -619,11 +710,11 @@ static void AmieHandHandleInput(u8 taskId)
                 {
                     if (tPetScore <= AMIE_BAD_PET_SCORE_TARGET)
                     {
-                        //CreateAngrySprite();
-                    
+                        CreateAngrySprite();
                         StartAngryAnim();
                         PlayCry_ByMode(sAmieData.species, 0, CRY_MODE_FAINT);
                         gSprites[sAmieData.handSpriteId].invisible = TRUE;
+                        tPetScore = 0;
                         tCounter = 0;
                         return;
                     }
@@ -710,10 +801,10 @@ static void SpriteCB_Mon(struct Sprite *sprite)
             sprite->sCounter++;
         break;
     case AMIE_STATE_ANGRY:
-        if (sprite->sCounter <= 3 || (sprite->sCounter > 11 && sprite->sCounter <= 15))
-            sprite->x2--;
-        else if (sprite->sCounter > 3 && sprite->sCounter <= 11)
-            sprite->x2++;
+        if (sprite->sCounter <= 2 || (sprite->sCounter > 8 && sprite->sCounter <= 14) || (sprite->sCounter > 20 && sprite->sCounter <= 23))
+            sprite->x2 -= 4;
+        else if ((sprite->sCounter > 2 && sprite->sCounter <= 8) || (sprite->sCounter > 14 && sprite->sCounter <= 20))
+            sprite->x2 += 4;
 
         if (sprite->sCounter >= 120)
         {
@@ -737,6 +828,20 @@ static void SpriteCB_Heart(struct Sprite *sprite)
         DestroySprite(sprite);
 
     sprite->sHeartCounter++;
+}
+
+static void SpriteCB_Angry(struct Sprite *sprite)
+{
+    if (sprite->affineAnimEnded)
+        DestroySprite(sprite);
+}
+
+static void SpriteCB_SpeechBubble(struct Sprite *sprite)
+{
+    if (sprite->sCounter == 120)
+        DestroySprite(sprite);
+
+    sprite->sCounter++;
 }
 
 #undef tState
