@@ -17,10 +17,13 @@
 
 #define HAND_START_X    28
 #define HAND_START_Y    45
+#define HAND_OFFSET     16
 
 #define PET_SE_DELAY    30
 
 #define NUM_AMIE_PET_AREAS  5
+
+#define AMIE_SLOT_NONE      6
 
 struct AmieData
 {
@@ -75,6 +78,7 @@ extern const struct AmiePetZone AmieRefreshPetZones[][5];
 
 void LoadAmiePartyMenuSprite(void);
 void CB2_InitAmie(void);
+void ResetPokemonAmie(void);
 
 #define amie_frame(ptr, frame, width, height) {.data = (u8 *)ptr + (width * height * frame * 64)/2, .size = (width * height * 64)/2}
 

@@ -58,6 +58,7 @@ static void SpriteCB_SpeechBubble(struct Sprite *sprite);
 #define tPetScore   gTasks[taskId].data[2]
 #define tPetZone    gTasks[taskId].data[3]
 #define tSECounter  gTasks[taskId].data[4]
+#define tSpecies    gTasks[taskId].data[5]
 
 // Sprite Data
 #define sCounter        data[1]
@@ -424,10 +425,11 @@ void CB2_InitAmie(void)
         gMain.state++;
         break;
     case 7:
-            sAmieData.species = SPECIES_LINOONE;
+        u32 isShiny = 0, personality = 0;
+        sAmieData.species = SPECIES_GIRATINA;
         
         // Create Pokémon sprite
-        sAmieData.monSpriteId = CreateMonPicSprite_Affine(sAmieData.species, FALSE, 0, MON_PIC_AFFINE_FRONT, 90, 65, 14, TAG_NONE);
+        sAmieData.monSpriteId = CreateMonPicSprite_Affine(sAmieData.species, isShiny, personality, MON_PIC_AFFINE_FRONT, 90, 65, 14, TAG_NONE);
         gSprites[sAmieData.monSpriteId].affineAnims = sAffineAnims_Mon;
         gSprites[sAmieData.monSpriteId].anims = sAnims_Mon;
         gSprites[sAmieData.monSpriteId].oam.affineMode = ST_OAM_AFFINE_DOUBLE;
@@ -543,15 +545,25 @@ static u8 GetCurrentPettingArea(void)
 
     for (i = 0; i < NUM_AMIE_PET_AREAS; i++)
     {
-        if (AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].type == PET_TYPE_NONE)
-            break;
+        if (i == 0 && AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].type == PET_TYPE_NONE)
+        {
+            u32 size;
 
-        if (hand->x > AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].leftX && hand->x < AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].rightX)
+            #if P_GENDER_DIFFERENCES
+            if (gSpeciesInfo[sAmieData.species].frontPicFemale != NULL && sAmieData.isFemale)
+                size = gSpeciesInfo[sAmieData.species].frontPicSizeFemale;
+            else
+            #endif
+            size = gSpeciesInfo[sAmieData.species].frontPicSize;
+
+            if (hand->x > (gSprites[sAmieData.monSpriteId].x - 32 + HAND_OFFSET + (64 - GET_MON_COORDS_WIDTH(size))) && hand->x < (gSprites[sAmieData.monSpriteId].x + 96 - (64 - GET_MON_COORDS_WIDTH(size))))
+                if (hand->y > (gSprites[sAmieData.monSpriteId].y - 32 + HAND_OFFSET + (64 - GET_MON_COORDS_HEIGHT(size))) && hand->y < (gSprites[sAmieData.monSpriteId].y + 96 - (64 - GET_MON_COORDS_HEIGHT(size))))
+                    return PET_TYPE_GOOD;
+        }
+        else if (hand->x > AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].leftX && hand->x < AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].rightX)
         {
             if (hand->y > AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].topY && hand->y < AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].bottomY)
-            {
                 return AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].type;
-            }
         }
     }
 
@@ -595,9 +607,9 @@ static void CreateAngrySprite(void)
     #endif
             size = gSpeciesInfo[sAmieData.species].frontPicSize;
     
-    spriteId = CreateSprite(&sSpriteTemplate_Angry, 154, 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
+    spriteId = CreateSprite(&sSpriteTemplate_Angry, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
     StartSpriteAffineAnim(&gSprites[spriteId], 0);
-    CreateSprite(&sSpriteTemplate_SpeechBubble, 154, 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
+    CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
 }
 
 static void StartNormalAnim(void)
@@ -644,10 +656,10 @@ static void AmieHandHandleInput(u8 taskId)
 {
     if (JOY_NEW(EXIT_BUTTON))
     {
-        gSprites[sAmieData.handSpriteId].invisible = TRUE;
-        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
-        gTasks[taskId].func = Task_AmieEndFade;
-        return;
+        //gSprites[sAmieData.handSpriteId].invisible = TRUE;
+        //BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+        //gTasks[taskId].func = Task_AmieEndFade;
+        //return;
     }
     else if (JOY_NEW(INTERACT_BUTTON) && IsHandOnExitIcon())
     {
@@ -844,4 +856,11 @@ static void SpriteCB_SpeechBubble(struct Sprite *sprite)
     sprite->sCounter++;
 }
 
-#undef tState
+void ResetPokemonAmie(void)
+{
+#if AR_ENABLE_AMIE_REFRESH
+#if AR_TRACK_LAST_AMIE_MON
+    gSaveBlock3Ptr->PokemonAmie.activeSlot = AMIE_SLOT_NONE;
+#endif
+#endif
+}

@@ -6,11 +6,7 @@ const struct AmiePetZone AmieRefreshPetZones[PET_ZONE_COUNT][NUM_AMIE_PET_AREAS]
     [PET_ZONE_BASIC] =
     {
         {
-            .type = PET_TYPE_BAD,
-            .leftX = 90,
-            .rightX = 150,
-            .topY = 60,
-            .bottomY = 130
+            .type = PET_TYPE_NONE,
         },
     }
 };

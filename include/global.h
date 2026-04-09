@@ -274,7 +274,9 @@ struct SaveBlock3
     u8 apricornTrees[NUM_APRICORN_TREE_BYTES];
 #endif
 #if AR_ENABLE_AMIE_REFRESH
+#if AR_TRACK_LAST_AMIE_MON
     struct PokemonAmie PokemonAmie;
+#endif
 #endif
 }; /* max size 1624 bytes */
 
