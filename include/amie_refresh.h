@@ -1,9 +1,6 @@
 #ifndef GUARD_AMIE_REFRESH_H
 #define GUARD_AMIE_REFRESH_H
 
-#define AR_ENABLE_AMIE_REFRESH  TRUE
-#define AR_ENABLE_AMIE_FLAG  FLAG_UNUSED_0x863
-
 #define AMIE_PET_SCORE_TARGET       600
 #define AMIE_BAD_PET_SCORE_TARGET   -600
 
@@ -20,6 +17,8 @@
 
 #define HAND_START_X    28
 #define HAND_START_Y    45
+
+#define PET_SE_DELAY    30
 
 #define NUM_AMIE_PET_AREAS  5
 
@@ -54,6 +53,13 @@ enum AmiePetZones
 {
     PET_ZONE_BASIC,
     PET_ZONE_COUNT
+};
+
+enum AmieMonAnimStates
+{
+    AMIE_STATE_NORMAL,
+    AMIE_STATE_HAPPY,
+    AMIE_STATE_ANGRY
 };
 
 struct AmiePetZone

@@ -27,6 +27,7 @@
 #include "config/item.h"
 #include "config/overworld.h"
 #include "config/pokemon.h"
+#include "config/pokemon_amie.h"
 #include "config/summary_screen.h"
 
 // Invalid Versions show as "----------" in Gen 4 and Gen 5's summary screen.

@@ -17,6 +17,7 @@
 #include "trainer_pokemon_sprites.h"
 #include "trig.h"
 #include "window.h"
+#include "constants/songs.h"
 #include "constants/rgb.h"
 
 EWRAM_DATA struct AmieData sAmieData = {0};
@@ -51,6 +52,7 @@ static void SpriteCB_Heart(struct Sprite *sprite);
 #define tCounter    gTasks[taskId].data[1]
 #define tPetScore   gTasks[taskId].data[2]
 #define tPetZone    gTasks[taskId].data[3]
+#define tSECounter  gTasks[taskId].data[4]
 
 // Sprite Data
 #define sCounter        data[1]
@@ -525,6 +527,12 @@ static void StartHappyAnim(void)
     sAmieData.controlsPaused = TRUE;
 }
 
+static void StartAngryAnim(void)
+{
+    gSprites[sAmieData.monSpriteId].sCurrAnim = 2;
+    gSprites[sAmieData.monSpriteId].sCounter = 0;
+}
+
 static void StopPetting(u8 taskId)
 {
     if (tPetZone != PET_TYPE_NONE)
@@ -597,11 +605,55 @@ static void AmieHandHandleInput(u8 taskId)
                     }
                     else if (JOY_HELD(DPAD_ANY))
                     {
+                        if (tSECounter == 0)
+                        {
+                            PlaySE(SE_CONTEST_CURTAIN_RISE);
+                            tSECounter = PET_SE_DELAY;
+                        }
                         tPetScore += 4;
                         tCounter = 0;
+                        tSECounter--;
                     }
                 }
+                else if (tPetZone == PET_TYPE_BAD)
+                {
+                    if (tPetScore <= AMIE_BAD_PET_SCORE_TARGET)
+                    {
+                        //CreateAngrySprite();
+                    
+                        StartAngryAnim();
+                        PlayCry_ByMode(sAmieData.species, 0, CRY_MODE_FAINT);
+                        gSprites[sAmieData.handSpriteId].invisible = TRUE;
+                        tCounter = 0;
+                        return;
+                    }
+                    else if (JOY_HELD(DPAD_ANY))
+                    {
+                        if (tSECounter == 0)
+                        {
+                            PlaySE(SE_CONTEST_CURTAIN_FALL);
+                            tSECounter = PET_SE_DELAY;
+                        }
+                        tPetScore -= 4;
+                        tCounter = 0;
+                        tSECounter--;
+                    }
+                }
+
                 if (tPetScore < AMIE_PET_SCORE_TARGET)
+                {
+                    if(!JOY_HELD(DPAD_ANY))
+                    {
+                        if (tCounter == 60)
+                        {
+                            StopPetting(taskId);
+                            StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 0);
+                        }
+                        tCounter++;
+                    }
+                }
+
+                if (tPetScore > AMIE_BAD_PET_SCORE_TARGET)
                 {
                     if(!JOY_HELD(DPAD_ANY))
                     {
@@ -635,7 +687,7 @@ static void SpriteCB_Mon(struct Sprite *sprite)
 {
     switch (sprite->sCurrAnim)
     {
-    case 0:
+    case AMIE_STATE_NORMAL:
         if (sprite->sCounter == 0)
         {
             sprite->x2 = 0;
@@ -643,7 +695,7 @@ static void SpriteCB_Mon(struct Sprite *sprite)
             sprite->sCounter++;
         }
         break;
-    case 1:
+    case AMIE_STATE_HAPPY:
         if (sprite->sCounter == 0 || sprite->sCounter == 27)
             sprite->x2--;
         else if (sprite->sCounter == 5 || sprite->sCounter == 22)
@@ -656,6 +708,20 @@ static void SpriteCB_Mon(struct Sprite *sprite)
 
         if (sprite->sCounter <= 27)
             sprite->sCounter++;
+        break;
+    case AMIE_STATE_ANGRY:
+        if (sprite->sCounter <= 3 || (sprite->sCounter > 11 && sprite->sCounter <= 15))
+            sprite->x2--;
+        else if (sprite->sCounter > 3 && sprite->sCounter <= 11)
+            sprite->x2++;
+
+        if (sprite->sCounter >= 120)
+        {
+            StartNormalAnim();
+            ResetAmieHand();
+        }
+
+        sprite->sCounter++;
         break;
     }
 }

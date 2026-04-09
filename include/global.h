@@ -247,6 +247,11 @@ struct NPCFollower
     u8 battlePartner; // If you have more than 255 total battle partners defined, change this to a u16
 };
 
+struct PokemonAmie
+{
+    u8 activeSlot;
+};
+
 #include "constants/items.h"
 #define ITEM_FLAGS_COUNT ((ITEMS_COUNT / 8) + ((ITEMS_COUNT % 8) ? 1 : 0))
 
@@ -267,6 +272,9 @@ struct SaveBlock3
     u8 dexNavChain;
 #if APRICORN_TREE_COUNT > 0
     u8 apricornTrees[NUM_APRICORN_TREE_BYTES];
+#endif
+#if AR_ENABLE_AMIE_REFRESH
+    struct PokemonAmie PokemonAmie;
 #endif
 }; /* max size 1624 bytes */
 
