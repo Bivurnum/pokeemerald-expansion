@@ -3,11 +3,13 @@
 #include "bg.h"
 #include "data.h"
 #include "decompress.h"
+#include "event_data.h"
 #include "gpu_regs.h"
 #include "main.h"
 #include "menu.h"
 #include "overworld.h"
 #include "palette.h"
+#include "party_menu.h"
 #include "pokedex.h"
 #include "random.h"
 #include "scanline_effect.h"
@@ -372,13 +374,16 @@ static void SetStoredAmieMon(u32 partySlot)
 
 static void SetAmieMonData(u32 *species, u32 *isShiny, u32 *personality)
 {
-    u32 partySlot = GetStoredAmieMon();
+    u32 partySlot;
+    
+    if (sAmieData.isSwitching)
+        partySlot = gSpecialVar_0x8004;
+    else
+        partySlot = GetStoredAmieMon();
 
     if (partySlot == AMIE_SLOT_NONE)
-    {
         partySlot = 0;
-        SetStoredAmieMon(partySlot);
-    }
+        
     *species = GetMonData(&gPlayerParty[partySlot], MON_DATA_SPECIES_OR_EGG);
 
     if (*species == SPECIES_EGG || GetMonData(&gPlayerParty[partySlot], MON_DATA_HP) == 0)
@@ -394,6 +399,9 @@ static void SetAmieMonData(u32 *species, u32 *isShiny, u32 *personality)
 
     *isShiny = GetMonData(&gPlayerParty[partySlot], MON_DATA_IS_SHINY);
     *personality = GetMonData(&gPlayerParty[partySlot], MON_DATA_PERSONALITY);
+
+    sAmieData.isSwitching = FALSE;
+    SetStoredAmieMon(partySlot);
 }
 
 static void CB2_Amie(void)
@@ -535,6 +543,14 @@ static void Task_AmieMain(u8 taskId)
     }
 }
 
+static void Task_AmieWaitFadeSwitch(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        InitChooseAmieMon();
+    }
+}
+
 static void Task_AmieEndFade(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -593,7 +609,7 @@ static u8 GetCurrentPettingArea(void)
             u32 size;
 
             #if P_GENDER_DIFFERENCES
-            if (gSpeciesInfo[species].frontPicFemale != NULL && sAmieData.isFemale)
+            if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
                 size = gSpeciesInfo[species].frontPicSizeFemale;
             else
             #endif
@@ -645,7 +661,7 @@ static void CreateAngrySprite(void)
     u32 species = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES);
 
     #if P_GENDER_DIFFERENCES
-        if (gSpeciesInfo[species].frontPicFemale != NULL && sAmieData.isFemale)
+        if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
             size = gSpeciesInfo[species].frontPicSizeFemale;
         else
     #endif
@@ -700,10 +716,10 @@ static void AmieHandHandleInput(u8 taskId)
 {
     if (JOY_NEW(EXIT_BUTTON))
     {
-        //gSprites[sAmieData.handSpriteId].invisible = TRUE;
-        //BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
-        //gTasks[taskId].func = Task_AmieEndFade;
-        //return;
+        gSprites[sAmieData.handSpriteId].invisible = TRUE;
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+        gTasks[taskId].func = Task_AmieEndFade;
+        return;
     }
     else if (JOY_NEW(INTERACT_BUTTON) && IsHandOnExitIcon())
     {
@@ -711,6 +727,12 @@ static void AmieHandHandleInput(u8 taskId)
         //gSprites[sSpaData.handSpriteId].invisible = TRUE;
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
         gTasks[taskId].func = Task_AmieEndFade;
+        return;
+    }
+    else if (JOY_NEW(SELECT_BUTTON))
+    {
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
+        gTasks[taskId].func = Task_AmieWaitFadeSwitch;
         return;
     }
 

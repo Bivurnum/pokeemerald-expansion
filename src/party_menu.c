@@ -515,7 +515,6 @@ static const u8 sText_doneText[] = _("{STR_VAR_1}'s ability became\n{STR_VAR_2}!
 static const u8 sText_BasePointsResetToZero[] = _("{STR_VAR_1}'s base points\nwere all reset to zero!{PAUSE_UNTIL_PRESS}");
 static const u8 sText_CannotSendMonToBoxHM[] = _("Cannot send that mon to the box,\nbecause it knows a HM move.{PAUSE_UNTIL_PRESS}");
 static const u8 sText_CannotSendMonToBoxPartner[] = _("Cannot send a mon that doesn't\nbelong to you to the box.{PAUSE_UNTIL_PRESS}");
-static const u8 sText_CannotSelectEgg[] = _("Cannot select an egg.{PAUSE_UNTIL_PRESS}");
 
 // static const data
 #include "data/party_menu.h"
@@ -1580,17 +1579,19 @@ static void HandleChooseMonSelection(u8 taskId, s8 *slotPtr)
         }
         case PARTY_ACTION_CHOOSE_AMIE:
         {
-            if (IsSelectedMonNotEgg((u8 *)slotPtr))
+            if (IsSelectedMonNotEgg((u8 *)slotPtr) && GetMonData(&gPlayerParty[*slotPtr], MON_DATA_HP) > 0)
             {
                 PlaySE(SE_SELECT);
+                sAmieData.isSwitching = TRUE;
+                gSpecialVar_0x8004 = *slotPtr;
+                sPartyMenuInternal->exitCallback = CB2_InitAmie;
+                Task_ClosePartyMenu(taskId);
             }
             else
             {
                 PlaySE(SE_FAILURE);
-                DisplayPartyMenuMessage(sText_CannotSelectEgg, FALSE);
-                ScheduleBgCopyTilemapToVram(2);
-                gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
             }
+            break;
         }
         default:
         case PARTY_ACTION_ABILITY_PREVENTS:
@@ -8380,4 +8381,10 @@ static void Task_FirstBattleEnterParty_WaitFadeNormal(u8 taskId)
             DisplayPartyMenuStdMessage(PARTY_MSG_CHOOSE_MON);
         gTasks[taskId].func = Task_HandleChooseMonInput;
     }
+}
+
+void InitChooseAmieMon(void)
+{
+    //gPartyMenu.exitCallback = CB2_InitAmie;
+    InitPartyMenu(PARTY_MENU_TYPE_CHOOSE_MON, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_AMIE, FALSE, PARTY_MSG_CHOOSE_MON, Task_HandleChooseMonInput, gPartyMenu.exitCallback);
 }

@@ -27,11 +27,10 @@
 
 struct AmieData
 {
-    u16 partySlot:3;
-    u16 isShiny:1;
-    u16 isFemale:1;
-    u16 controlsPaused:1;
-    u16 padding1:10;
+    u8 partySlot:3;
+    u8 controlsPaused:1;
+    u8 isSwitching:1;
+    u8 padding1:3;
     u8 taskId;
     u8 monSpriteId;
     u8 handSpriteId;
