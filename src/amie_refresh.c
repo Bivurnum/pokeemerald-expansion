@@ -555,7 +555,7 @@ static void Task_AmieEndFade(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        SetMainCallback2(CB2_ReturnToField);
+        SetMainCallback2(CB2_PartyMenuFromStartMenu);
         DestroyTask(taskId);
     }
 }

@@ -302,6 +302,7 @@ const u8 gText_ThrowAwayItem[] = _("Throw away this\n{STR_VAR_1}?");
 const u8 gText_ItemThrownAway[] = _("The {STR_VAR_1}\nwas thrown away.{PAUSE_UNTIL_PRESS}");
 const u8 gText_TeachWhichPokemon2[] = _("Teach which POKéMON?"); // Unused
 const u8 gText_ChoosePokemon[] = _("Choose a POKéMON.");
+const u8 gText_ChooseAmieMon[] = _("Choose for Pokémon-Amie.");
 const u8 gText_MoveToWhere[] = _("Move to where?");
 const u8 gText_TeachWhichPokemon[] = _("Teach which POKéMON?");
 const u8 gText_UseOnWhichPokemon[] = _("Use on which POKéMON?");
