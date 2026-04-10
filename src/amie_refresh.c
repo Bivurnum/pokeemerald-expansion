@@ -608,25 +608,37 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
 {
     if (JOY_HELD(DPAD_DOWN))
     {
-        sprite->y++;
+        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum == 0)
+            sprite->y++;
+
+        sprite->y += AMIE_MOVE_SPEED;
         if (sprite->y > 155)
             sprite->y = 155;
     }
     if (JOY_HELD(DPAD_UP))
     {
-        sprite->y--;
+        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum == 0)
+            sprite->y--;
+
+        sprite->y -= AMIE_MOVE_SPEED;
         if (sprite->y < 9)
             sprite->y = 9;
     }
     if (JOY_HELD(DPAD_RIGHT))
     {
-        sprite->x++;
+        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum == 0)
+            sprite->x++;
+
+        sprite->x += AMIE_MOVE_SPEED;
         if (sprite->x > 240)
             sprite->x = 240;
     }
     if (JOY_HELD(DPAD_LEFT))
     {
-        sprite->x--;
+        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum == 0)
+            sprite->x--;
+
+        sprite->x -= AMIE_MOVE_SPEED;
         if (sprite->x < 0)
             sprite->x = 0;
     }
@@ -844,7 +856,6 @@ static void AmieHandHandleInput(u8 taskId)
                         if (tCounter == 60)
                         {
                             StopPetting(taskId);
-                            StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 0);
                         }
                         tCounter++;
                     }
@@ -857,7 +868,6 @@ static void AmieHandHandleInput(u8 taskId)
                         if (tCounter == 60)
                         {
                             StopPetting(taskId);
-                            StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 0);
                         }
                         tCounter++;
                     }

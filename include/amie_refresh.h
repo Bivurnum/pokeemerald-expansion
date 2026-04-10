@@ -7,6 +7,8 @@
 #define INTERACT_BUTTON A_BUTTON
 #define EXIT_BUTTON     B_BUTTON
 
+#define AMIE_MOVE_SPEED 1
+
 #define TAG_MON         0x1000
 
 #define TAG_HAND        0x2000
