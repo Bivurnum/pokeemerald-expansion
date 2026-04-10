@@ -354,6 +354,37 @@ void LoadAmiePartyMenuSprite(void)
     CreateSprite(&sSpriteTemplate_Party_Icon, 47, 114, 0);
 }
 
+static u32 GetStoredAmieMon(void)
+{
+#if AR_TRACK_LAST_AMIE_MON
+    return gSaveBlock3Ptr->PokemonAmie.activeSlot;
+#else
+    return AMIE_SLOT_NONE;
+#endif
+}
+
+static void SetStoredAmieMon(u32 partySlot)
+{
+#if AR_TRACK_LAST_AMIE_MON
+    gSaveBlock3Ptr->PokemonAmie.activeSlot = partySlot;
+#endif
+}
+
+static void SetAmieMonData(u32 *isShiny, u32 *personality)
+{
+    u32 partySlot = GetStoredAmieMon();
+
+    if (partySlot == AMIE_SLOT_NONE)
+    {
+        partySlot = 0;
+        SetStoredAmieMon(partySlot);
+    }
+
+    sAmieData.species = GetMonData(&gPlayerParty[partySlot], MON_DATA_SPECIES);
+    *isShiny = GetMonData(&gPlayerParty[partySlot], MON_DATA_IS_SHINY);
+    *personality = GetMonData(&gPlayerParty[partySlot], MON_DATA_PERSONALITY);
+}
+
 static void CB2_Amie(void)
 {
     RunTasks();
@@ -426,7 +457,8 @@ void CB2_InitAmie(void)
         break;
     case 7:
         u32 isShiny = 0, personality = 0;
-        sAmieData.species = SPECIES_GIRATINA;
+
+        SetAmieMonData(&isShiny, &personality);
         
         // Create Pokémon sprite
         sAmieData.monSpriteId = CreateMonPicSprite_Affine(sAmieData.species, isShiny, personality, MON_PIC_AFFINE_FRONT, 90, 65, 14, TAG_NONE);
