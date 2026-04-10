@@ -27,11 +27,11 @@
 
 struct AmieData
 {
-    u16 species:11;
+    u16 partySlot:3;
     u16 isShiny:1;
     u16 isFemale:1;
     u16 controlsPaused:1;
-    u16 padding1:2;
+    u16 padding1:10;
     u8 taskId;
     u8 monSpriteId;
     u8 handSpriteId;
@@ -73,6 +73,8 @@ struct AmiePetZone
     s16 topY;
     s16 bottomY;
 };
+
+extern EWRAM_DATA struct AmieData sAmieData;
 
 extern const struct AmiePetZone AmieRefreshPetZones[][5];
 

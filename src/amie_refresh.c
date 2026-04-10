@@ -370,7 +370,7 @@ static void SetStoredAmieMon(u32 partySlot)
 #endif
 }
 
-static void SetAmieMonData(u32 *isShiny, u32 *personality)
+static void SetAmieMonData(u32 *species, u32 *isShiny, u32 *personality)
 {
     u32 partySlot = GetStoredAmieMon();
 
@@ -379,8 +379,19 @@ static void SetAmieMonData(u32 *isShiny, u32 *personality)
         partySlot = 0;
         SetStoredAmieMon(partySlot);
     }
+    *species = GetMonData(&gPlayerParty[partySlot], MON_DATA_SPECIES_OR_EGG);
 
-    sAmieData.species = GetMonData(&gPlayerParty[partySlot], MON_DATA_SPECIES);
+    if (*species == SPECIES_EGG || GetMonData(&gPlayerParty[partySlot], MON_DATA_HP) == 0)
+    {
+        for (partySlot = 0; partySlot < PARTY_SIZE; partySlot++)
+        {
+            *species = GetMonData(&gPlayerParty[partySlot], MON_DATA_SPECIES_OR_EGG);
+            if (*species != SPECIES_EGG && GetMonData(&gPlayerParty[partySlot], MON_DATA_HP) != 0)
+                break;
+        }
+    }
+    sAmieData.partySlot = partySlot;
+
     *isShiny = GetMonData(&gPlayerParty[partySlot], MON_DATA_IS_SHINY);
     *personality = GetMonData(&gPlayerParty[partySlot], MON_DATA_PERSONALITY);
 }
@@ -456,12 +467,12 @@ void CB2_InitAmie(void)
         gMain.state++;
         break;
     case 7:
-        u32 isShiny = 0, personality = 0;
+        u32 species = 0, isShiny = 0, personality = 0;
 
-        SetAmieMonData(&isShiny, &personality);
+        SetAmieMonData(&species, &isShiny, &personality);
         
         // Create Pokémon sprite
-        sAmieData.monSpriteId = CreateMonPicSprite_Affine(sAmieData.species, isShiny, personality, MON_PIC_AFFINE_FRONT, 90, 65, 14, TAG_NONE);
+        sAmieData.monSpriteId = CreateMonPicSprite_Affine(species, isShiny, personality, MON_PIC_AFFINE_FRONT, 90, 65, 14, TAG_NONE);
         gSprites[sAmieData.monSpriteId].affineAnims = sAffineAnims_Mon;
         gSprites[sAmieData.monSpriteId].anims = sAnims_Mon;
         gSprites[sAmieData.monSpriteId].oam.affineMode = ST_OAM_AFFINE_DOUBLE;
@@ -572,7 +583,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
 static u8 GetCurrentPettingArea(void)
 {
     u32 i;
-    u32 species = sAmieData.species;
+    u32 species = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES);
     struct Sprite *hand = &gSprites[sAmieData.handSpriteId];
 
     for (i = 0; i < NUM_AMIE_PET_AREAS; i++)
@@ -582,11 +593,11 @@ static u8 GetCurrentPettingArea(void)
             u32 size;
 
             #if P_GENDER_DIFFERENCES
-            if (gSpeciesInfo[sAmieData.species].frontPicFemale != NULL && sAmieData.isFemale)
-                size = gSpeciesInfo[sAmieData.species].frontPicSizeFemale;
+            if (gSpeciesInfo[species].frontPicFemale != NULL && sAmieData.isFemale)
+                size = gSpeciesInfo[species].frontPicSizeFemale;
             else
             #endif
-            size = gSpeciesInfo[sAmieData.species].frontPicSize;
+            size = gSpeciesInfo[species].frontPicSize;
 
             if (hand->x > (gSprites[sAmieData.monSpriteId].x - 32 + HAND_OFFSET + (64 - GET_MON_COORDS_WIDTH(size))) && hand->x < (gSprites[sAmieData.monSpriteId].x + 96 - (64 - GET_MON_COORDS_WIDTH(size))))
                 if (hand->y > (gSprites[sAmieData.monSpriteId].y - 32 + HAND_OFFSET + (64 - GET_MON_COORDS_HEIGHT(size))) && hand->y < (gSprites[sAmieData.monSpriteId].y + 96 - (64 - GET_MON_COORDS_HEIGHT(size))))
@@ -631,13 +642,14 @@ static void CreateAngrySprite(void)
 {
     u32 size;
     u32 spriteId;
+    u32 species = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES);
 
     #if P_GENDER_DIFFERENCES
-        if (gSpeciesInfo[sAmieData.species].frontPicFemale != NULL && sAmieData.isFemale)
-            size = gSpeciesInfo[sAmieData.species].frontPicSizeFemale;
+        if (gSpeciesInfo[species].frontPicFemale != NULL && sAmieData.isFemale)
+            size = gSpeciesInfo[species].frontPicSizeFemale;
         else
     #endif
-            size = gSpeciesInfo[sAmieData.species].frontPicSize;
+            size = gSpeciesInfo[species].frontPicSize;
     
     spriteId = CreateSprite(&sSpriteTemplate_Angry, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
     StartSpriteAffineAnim(&gSprites[spriteId], 0);
@@ -732,7 +744,7 @@ static void AmieHandHandleInput(u8 taskId)
                         CreateHeartSprites(3);
                     
                         StartHappyAnim();
-                        PlayCry_ByMode(sAmieData.species, 0, CRY_MODE_GROWL_2);
+                        PlayCry_ByMode(GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES), 0, CRY_MODE_GROWL_2);
                         gSprites[sAmieData.handSpriteId].invisible = TRUE;
                         tPetScore = 0;
                         tCounter = 0;
@@ -756,7 +768,7 @@ static void AmieHandHandleInput(u8 taskId)
                     {
                         CreateAngrySprite();
                         StartAngryAnim();
-                        PlayCry_ByMode(sAmieData.species, 0, CRY_MODE_FAINT);
+                        PlayCry_ByMode(GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES), 0, CRY_MODE_FAINT);
                         gSprites[sAmieData.handSpriteId].invisible = TRUE;
                         tPetScore = 0;
                         tCounter = 0;

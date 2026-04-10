@@ -515,6 +515,7 @@ static const u8 sText_doneText[] = _("{STR_VAR_1}'s ability became\n{STR_VAR_2}!
 static const u8 sText_BasePointsResetToZero[] = _("{STR_VAR_1}'s base points\nwere all reset to zero!{PAUSE_UNTIL_PRESS}");
 static const u8 sText_CannotSendMonToBoxHM[] = _("Cannot send that mon to the box,\nbecause it knows a HM move.{PAUSE_UNTIL_PRESS}");
 static const u8 sText_CannotSendMonToBoxPartner[] = _("Cannot send a mon that doesn't\nbelong to you to the box.{PAUSE_UNTIL_PRESS}");
+static const u8 sText_CannotSelectEgg[] = _("Cannot select an egg.{PAUSE_UNTIL_PRESS}");
 
 // static const data
 #include "data/party_menu.h"
@@ -1512,7 +1513,6 @@ static void HandleChooseMonSelection(u8 taskId, s8 *slotPtr)
             }
             break;
         case PARTY_ACTION_GIVE_ITEM:
-        case PARTY_ACTION_GIVE_PC_ITEM:
             if (IsSelectedMonNotEgg((u8 *)slotPtr))
             {
                 PlaySE(SE_SELECT);
@@ -1577,6 +1577,20 @@ static void HandleChooseMonSelection(u8 taskId, s8 *slotPtr)
                 Task_ClosePartyMenu(taskId);
             }
             break;
+        }
+        case PARTY_ACTION_CHOOSE_AMIE:
+        {
+            if (IsSelectedMonNotEgg((u8 *)slotPtr))
+            {
+                PlaySE(SE_SELECT);
+            }
+            else
+            {
+                PlaySE(SE_FAILURE);
+                DisplayPartyMenuMessage(sText_CannotSelectEgg, FALSE);
+                ScheduleBgCopyTilemapToVram(2);
+                gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
+            }
         }
         default:
         case PARTY_ACTION_ABILITY_PREVENTS:
