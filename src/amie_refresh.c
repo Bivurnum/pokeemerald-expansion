@@ -36,6 +36,9 @@ static const u32 gSpeechBubble_Gfx[] = INCBIN_U32("graphics/amie_refresh/speech_
 static const u16 gPuff_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/puff_icon.gbapal");
 static const u32 gPuff_Icon_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/puff_icon.4bpp");
 
+static const u16 gSwitch_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/switch.gbapal");
+static const u32 gSwitch_Icon_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/switch.4bpp");
+
 static const u16 gEmotes_Pal[] = INCBIN_U16("graphics/amie_refresh/heart.gbapal");
 static const u32 gHeart_Gfx[] = INCBIN_U32("graphics/amie_refresh/heart.4bpp");
 static const u32 gAngry_Gfx[] = INCBIN_U32("graphics/amie_refresh/angry.4bpp");
@@ -142,6 +145,11 @@ static const union AnimCmd * const sAnims_Puff_Icon[] =
     sAnim_Normal,
 };
 
+static const union AnimCmd * const sAnims_Switch_Icon[] =
+{
+    sAnim_Normal,
+};
+
 static const union AnimCmd sAnim_Mon_Happy[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 6),
@@ -227,6 +235,11 @@ static const struct SpriteFrameImage sPicTable_Puff_Icon[] =
     amie_frame(gPuff_Icon_Gfx, 0, 4, 4),
 };
 
+static const struct SpriteFrameImage sPicTable_Switch_Icon[] =
+{
+    amie_frame(gSwitch_Icon_Gfx, 0, 4, 4),
+};
+
 static const struct SpriteFrameImage sPicTable_Heart[] =
 {
     amie_frame(gHeart_Gfx, 0, 4, 4),
@@ -299,6 +312,17 @@ static const struct SpriteTemplate sSpriteTemplate_Puff_Icon =
     .callback = SpriteCallbackDummy
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Switch_Icon =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_SWITCH_ICON,
+    .oam = &sOam_32x32,
+    .anims = sAnims_Switch_Icon,
+    .images = sPicTable_Switch_Icon,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
 static const struct SpriteTemplate sSpriteTemplate_Heart =
 {
     .tileTag = TAG_NONE,
@@ -341,6 +365,10 @@ static const struct SpritePalette sSpritePalettes_Amie[] =
     {
         .data = gPuff_Icon_Pal,
         .tag = TAG_PUFF_ICON
+    },
+    {
+        .data = gSwitch_Icon_Pal,
+        .tag = TAG_SWITCH_ICON
     },
     {
         .data = gEmotes_Pal,
@@ -502,8 +530,8 @@ void CB2_InitAmie(void)
 static void CreateAmieSprites(void)
 {
     sAmieData.handSpriteId = CreateSprite(&sSpriteTemplate_Hand, HAND_START_X, HAND_START_Y, 1);
-    
     sAmieData.puffIconSpriteId = CreateSprite(&sSpriteTemplate_Puff_Icon, 16, 16, 2);
+    sAmieData.puffIconSpriteId = CreateSprite(&sSpriteTemplate_Switch_Icon, 16, 144, 2);
 }
 
 static void Task_AmieFadeIn(u8 taskId)
@@ -562,7 +590,15 @@ static void Task_AmieEndFade(u8 taskId)
 
 static bool32 IsHandOnExitIcon(void)
 {
-    if (gSprites[sAmieData.handSpriteId].x < 38 && gSprites[sAmieData.handSpriteId].y < 38)
+    if (gSprites[sAmieData.handSpriteId].x < 45 && gSprites[sAmieData.handSpriteId].y < 38)
+        return TRUE;
+
+    return FALSE;
+}
+
+static bool32 IsHandOnSwitchIcon(void)
+{
+    if (gSprites[sAmieData.handSpriteId].x < 45 && gSprites[sAmieData.handSpriteId].y > 140)
         return TRUE;
 
     return FALSE;
@@ -714,22 +750,14 @@ static void ResetAmieHand(void)
 
 static void AmieHandHandleInput(u8 taskId)
 {
-    if (JOY_NEW(EXIT_BUTTON))
+    if (JOY_NEW(EXIT_BUTTON) || (JOY_NEW(INTERACT_BUTTON) && IsHandOnExitIcon()))
     {
         gSprites[sAmieData.handSpriteId].invisible = TRUE;
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
         gTasks[taskId].func = Task_AmieEndFade;
         return;
     }
-    else if (JOY_NEW(INTERACT_BUTTON) && IsHandOnExitIcon())
-    {
-        //StartSpriteAnim(&gSprites[sSpaData.itemsExitSpriteId], 1);
-        //gSprites[sSpaData.handSpriteId].invisible = TRUE;
-        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
-        gTasks[taskId].func = Task_AmieEndFade;
-        return;
-    }
-    else if (JOY_NEW(SELECT_BUTTON))
+    else if (JOY_NEW(SELECT_BUTTON) || (JOY_NEW(INTERACT_BUTTON) && IsHandOnSwitchIcon()))
     {
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
         gTasks[taskId].func = Task_AmieWaitFadeSwitch;

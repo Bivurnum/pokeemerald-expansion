@@ -11,7 +11,8 @@
 
 #define TAG_HAND        0x2000
 #define TAG_PUFF_ICON   0x2001
-#define TAG_EMOTE       0x2002
+#define TAG_SWITCH_ICON 0x2002
+#define TAG_EMOTE       0x2003
 
 #define TAG_PARTY_AMIE    0x2032
 
