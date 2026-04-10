@@ -1648,6 +1648,13 @@ static void HandleChooseMonCancel(u8 taskId, s8 *slotPtr)
         gSelectedMonPartyId = PARTY_SIZE + 1;
         Task_ClosePartyMenu(taskId);
         break;
+    case PARTY_ACTION_CHOOSE_AMIE:
+        PlaySE(SE_SELECT);
+        sAmieData.isSwitching = TRUE;
+        gSpecialVar_0x8004 = sAmieData.partySlot;
+        sPartyMenuInternal->exitCallback = CB2_InitAmie;
+        Task_ClosePartyMenu(taskId);
+        break;
     default:
         PlaySE(SE_SELECT);
         if (DisplayCancelChooseMonYesNo(taskId) != TRUE)
