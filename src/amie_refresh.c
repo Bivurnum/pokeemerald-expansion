@@ -70,7 +70,7 @@ static void SpriteCB_SpeechBubble(struct Sprite *sprite);
 #define tCounter    gTasks[taskId].data[1]
 #define tPetScore   gTasks[taskId].data[2]
 #define tPetZone    gTasks[taskId].data[3]
-#define tTappedOnce gTasks[taskId].data[3]
+#define tTapCounter gTasks[taskId].data[3]
 #define tSECounter  gTasks[taskId].data[4]
 #define tSpecies    gTasks[taskId].data[5]
 
@@ -78,8 +78,7 @@ static void SpriteCB_SpeechBubble(struct Sprite *sprite);
 #define sCounter        data[1]
 #define sCurrAnim       data[2]
 #define sLastAnim       data[3]
-#define sHeartCounter   data[2]
-#define sHeartOffset    data[3]
+#define sHeartOffset    data[2]
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -614,6 +613,9 @@ static void Task_AmieMain(u8 taskId)
 
 static void Task_TurnMonAroundWaitSurprisedEmote(u8 taskId)
 {
+    if (tCounter > 0 && gSprites[sAmieData.handSpriteId].animEnded)
+        gSprites[sAmieData.handSpriteId].invisible = TRUE;
+
     if (tCounter == 60)
     {
         BeginNormalPaletteFade(PALETTES_ALL, 1, 0, 16, RGB_WHITE);
@@ -984,31 +986,28 @@ static void AmieHandHandleInput(u8 taskId)
         if (JOY_NEW(INTERACT_BUTTON))
         {
             StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 2);
-            if (tTappedOnce)
-            {
-                tCounter = 0;
-                tState = AMIE_TASK_HAND;
-                gSprites[sAmieData.handSpriteId].invisible = TRUE;
-                PlaySE(SE_PIN);
-                CreateSurprisedEmote();
-                gTasks[taskId].func = Task_TurnMonAroundWaitSurprisedEmote;
-            }
-            else
-            {
-                PlaySE(SE_M_ABSORB);
-                tTappedOnce = TRUE;
-                tCounter = 1;
-            }
+            PlaySE(SE_M_ABSORB);
+            tTapCounter++;
+            tCounter = 1;
         }
 
-        if (tCounter > 0)
+        if (tCounter > 0 && gSprites[sAmieData.handSpriteId].animEnded)
         {
             tCounter++;
             if (tCounter > 32)
             {
-                tTappedOnce = FALSE;
+                tTapCounter = 0;
                 tCounter = 0;
             }
+        }
+
+        if (tTapCounter == 2)
+        {
+            tCounter = 0;
+            tState = AMIE_TASK_HAND;
+            PlaySE(SE_PIN);
+            CreateSurprisedEmote();
+            gTasks[taskId].func = Task_TurnMonAroundWaitSurprisedEmote;
         }
         break;
     }
@@ -1068,13 +1067,11 @@ static void SpriteCB_Heart(struct Sprite *sprite)
 {
     sprite->sCounter++;
     sprite->x2 = Sin2(0 - sprite->sCounter * 3) / 512;
-    if (sprite->sCounter % 4 == 0)
-        sprite->y--;
+    if (sprite->sCounter % 2 == 0)
+        sprite->y -= 1;
 
-    if (sprite->sHeartCounter == 250)
+    if (sprite->y < -16)
         DestroySprite(sprite);
-
-    sprite->sHeartCounter++;
 }
 
 static void SpriteCB_Angry(struct Sprite *sprite)
