@@ -82,7 +82,6 @@ extern const struct AmiePetZone AmieRefreshPetZones[][5];
 
 void LoadAmiePartyMenuSprite(void);
 void CB2_InitAmie(void);
-void ResetPokemonAmie(void);
 
 #define amie_frame(ptr, frame, width, height) {.data = (u8 *)ptr + (width * height * frame * 64)/2, .size = (width * height * 64)/2}
 

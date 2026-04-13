@@ -1422,6 +1422,7 @@ static void Task_WaitForAmieFade(u8 taskId)
     if (!gPaletteFade.active)
     {
         SetMainCallback2(CB2_InitAmie);
+        FreePartyPointers();
         DestroyTask(taskId);
     }
 }
@@ -1450,10 +1451,20 @@ void Task_HandleChooseMonInput(u8 taskId)
         case L_BUTTON:
             if (gPartyMenu.menuType == PARTY_MENU_TYPE_FIELD && AR_ENABLE_AMIE_REFRESH && FlagGet(AR_ENABLE_AMIE_FLAG))
             {
-                PlaySE(SE_SELECT);
-                FadeScreen(FADE_TO_BLACK, 0);
-                gTasks[taskId].func = Task_WaitForAmieFade;
-                return;
+                u32 species = GetMonData(&gPlayerParty[*slotPtr], MON_DATA_SPECIES_OR_EGG);
+
+                if (species == SPECIES_EGG || GetMonData(&gPlayerParty[*slotPtr], MON_DATA_HP) == 0)
+                {
+                    PlaySE(SE_FAILURE);
+                }
+                else
+                {
+                    PlaySE(SE_SELECT);
+                    FadeScreen(FADE_TO_BLACK, 0);
+                    gSpecialVar_0x8004 = *slotPtr;
+                    gTasks[taskId].func = Task_WaitForAmieFade;
+                    return;
+                }
             }
             break;
         }
@@ -1585,7 +1596,7 @@ static void HandleChooseMonSelection(u8 taskId, s8 *slotPtr)
                 sAmieData.isSwitching = TRUE;
                 gSpecialVar_0x8004 = *slotPtr;
                 sPartyMenuInternal->exitCallback = CB2_InitAmie;
-                Task_ClosePartyMenu(taskId);
+                ExitPartyMenu();
             }
             else
             {
@@ -8388,10 +8399,4 @@ static void Task_FirstBattleEnterParty_WaitFadeNormal(u8 taskId)
             DisplayPartyMenuStdMessage(PARTY_MSG_CHOOSE_MON);
         gTasks[taskId].func = Task_HandleChooseMonInput;
     }
-}
-
-void InitChooseAmieMon(void)
-{
-    //gPartyMenu.exitCallback = CB2_InitAmie;
-    InitPartyMenu(PARTY_MENU_TYPE_CHOOSE_MON, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_AMIE, FALSE, PARTY_MSG_CHOOSE_AMIE_MON, Task_HandleChooseMonInput, gPartyMenu.exitCallback);
 }

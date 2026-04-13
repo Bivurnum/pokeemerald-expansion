@@ -384,52 +384,13 @@ void LoadAmiePartyMenuSprite(void)
     CreateSprite(&sSpriteTemplate_Party_Icon, 47, 114, 0);
 }
 
-static u32 GetStoredAmieMon(void)
-{
-#if AR_TRACK_LAST_AMIE_MON
-    return gSaveBlock3Ptr->PokemonAmie.activeSlot;
-#else
-    return AMIE_SLOT_NONE;
-#endif
-}
-
-static void SetStoredAmieMon(u32 partySlot)
-{
-#if AR_TRACK_LAST_AMIE_MON
-    gSaveBlock3Ptr->PokemonAmie.activeSlot = partySlot;
-#endif
-}
-
 static void SetAmieMonData(u32 *species, u32 *isShiny, u32 *personality)
 {
-    u32 partySlot;
-    
-    if (sAmieData.isSwitching)
-        partySlot = gSpecialVar_0x8004;
-    else
-        partySlot = GetStoredAmieMon();
+    u32 partySlot = gSpecialVar_0x8004;
 
-    if (partySlot == AMIE_SLOT_NONE)
-        partySlot = 0;
-        
     *species = GetMonData(&gPlayerParty[partySlot], MON_DATA_SPECIES_OR_EGG);
-
-    if (*species == SPECIES_EGG || GetMonData(&gPlayerParty[partySlot], MON_DATA_HP) == 0)
-    {
-        for (partySlot = 0; partySlot < PARTY_SIZE; partySlot++)
-        {
-            *species = GetMonData(&gPlayerParty[partySlot], MON_DATA_SPECIES_OR_EGG);
-            if (*species != SPECIES_EGG && GetMonData(&gPlayerParty[partySlot], MON_DATA_HP) != 0)
-                break;
-        }
-    }
-    sAmieData.partySlot = partySlot;
-
     *isShiny = GetMonData(&gPlayerParty[partySlot], MON_DATA_IS_SHINY);
     *personality = GetMonData(&gPlayerParty[partySlot], MON_DATA_PERSONALITY);
-
-    sAmieData.isSwitching = FALSE;
-    SetStoredAmieMon(partySlot);
 }
 
 static void CB2_Amie(void)
@@ -571,14 +532,6 @@ static void Task_AmieMain(u8 taskId)
     }
 }
 
-static void Task_AmieWaitFadeSwitch(u8 taskId)
-{
-    if (!gPaletteFade.active)
-    {
-        InitChooseAmieMon();
-    }
-}
-
 static void Task_AmieEndFade(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -591,14 +544,6 @@ static void Task_AmieEndFade(u8 taskId)
 static bool32 IsHandOnExitIcon(void)
 {
     if (gSprites[sAmieData.handSpriteId].x < 45 && gSprites[sAmieData.handSpriteId].y < 38)
-        return TRUE;
-
-    return FALSE;
-}
-
-static bool32 IsHandOnSwitchIcon(void)
-{
-    if (gSprites[sAmieData.handSpriteId].x < 45 && gSprites[sAmieData.handSpriteId].y > 140)
         return TRUE;
 
     return FALSE;
@@ -767,12 +712,6 @@ static void AmieHandHandleInput(u8 taskId)
         gSprites[sAmieData.handSpriteId].invisible = TRUE;
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
         gTasks[taskId].func = Task_AmieEndFade;
-        return;
-    }
-    else if (JOY_NEW(SELECT_BUTTON) || (JOY_NEW(INTERACT_BUTTON) && IsHandOnSwitchIcon()))
-    {
-        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
-        gTasks[taskId].func = Task_AmieWaitFadeSwitch;
         return;
     }
 
@@ -958,13 +897,4 @@ static void SpriteCB_SpeechBubble(struct Sprite *sprite)
         DestroySprite(sprite);
 
     sprite->sCounter++;
-}
-
-void ResetPokemonAmie(void)
-{
-#if AR_ENABLE_AMIE_REFRESH
-#if AR_TRACK_LAST_AMIE_MON
-    gSaveBlock3Ptr->PokemonAmie.activeSlot = AMIE_SLOT_NONE;
-#endif
-#endif
 }

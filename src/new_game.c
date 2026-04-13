@@ -232,7 +232,6 @@ void NewGameInitData(void)
     SetCurrentDifficultyLevel(DIFFICULTY_NORMAL);
     ResetItemFlags();
     ResetDexNav();
-    ResetPokemonAmie();
     ClearFollowerNPCData();
 }
 
