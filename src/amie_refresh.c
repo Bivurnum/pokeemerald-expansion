@@ -786,8 +786,10 @@ static void CreateAngrySprite(void)
             size = gSpeciesInfo[species].frontPicSize;
     
     spriteId = CreateSprite(&sSpriteTemplate_Angry, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
+    gSprites[sAmieData.emoteSpriteId].oam.priority = 0;
     StartSpriteAffineAnim(&gSprites[spriteId], 0);
     sAmieData.emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
+    gSprites[sAmieData.emoteBubbleSpriteId].oam.priority = 0;
 }
 
 static void CreateSurprisedEmote(void)
@@ -804,7 +806,9 @@ static void CreateSurprisedEmote(void)
     
     LoadCompressedSpriteSheet(&sSpriteSheet_Surprised);
     sAmieData.emoteSpriteId = CreateSprite(&sSpriteTemplate_Surprised, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
+    gSprites[sAmieData.emoteSpriteId].oam.priority = 0;
     sAmieData.emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
+    gSprites[sAmieData.emoteBubbleSpriteId].oam.priority = 0;
 }
 
 static void CreateMusicEmote(void)
@@ -821,7 +825,9 @@ static void CreateMusicEmote(void)
     
     LoadCompressedSpriteSheet(&sSpriteSheet_Music);
     sAmieData.emoteSpriteId = CreateSprite(&sSpriteTemplate_Music, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
+    gSprites[sAmieData.emoteSpriteId].oam.priority = 0;
     sAmieData.emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
+    gSprites[sAmieData.emoteBubbleSpriteId].oam.priority = 0;
 }
 
 static void StartNormalAnim(void)
