@@ -557,8 +557,8 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
             sprite->y++;
 
         sprite->y += AMIE_MOVE_SPEED;
-        if (sprite->y > 155)
-            sprite->y = 155;
+        if (sprite->y > 160)
+            sprite->y = 160;
     }
     if (JOY_HELD(DPAD_UP))
     {
@@ -575,8 +575,8 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
             sprite->x++;
 
         sprite->x += AMIE_MOVE_SPEED;
-        if (sprite->x > 240)
-            sprite->x = 240;
+        if (sprite->x > 245)
+            sprite->x = 245;
     }
     if (JOY_HELD(DPAD_LEFT))
     {
@@ -584,8 +584,8 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
             sprite->x--;
 
         sprite->x -= AMIE_MOVE_SPEED;
-        if (sprite->x < 0)
-            sprite->x = 0;
+        if (sprite->x < 10)
+            sprite->x = 10;
     }
 }
 
