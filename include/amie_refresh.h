@@ -81,7 +81,7 @@ struct AmiePetZone
     s16 bottomY;
 };
 
-extern EWRAM_DATA struct AmieData sAmieData;
+extern EWRAM_DATA struct AmieData *gAmieData;
 
 extern const struct AmiePetZone AmieRefreshPetZones[][5];
 

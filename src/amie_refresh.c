@@ -6,6 +6,7 @@
 #include "event_data.h"
 #include "gpu_regs.h"
 #include "main.h"
+#include "malloc.h"
 #include "menu.h"
 #include "overworld.h"
 #include "palette.h"
@@ -23,7 +24,7 @@
 #include "constants/songs.h"
 #include "constants/rgb.h"
 
-EWRAM_DATA struct AmieData sAmieData = {0};
+EWRAM_DATA struct AmieData *gAmieData = NULL;
 
 static const u32 gAmieBG_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/amie_bg.4bpp.smol");
 static const u32 gAmieBG_Tilemap[] = INCBIN_U32("graphics/amie_refresh/amie/amie_bg.bin.smolTM");
@@ -170,7 +171,6 @@ static const union AnimCmd sAnim_Mon_Happy[] =
 {
     ANIMCMD_FRAME(.imageValue = 0, .duration = 6),
     ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
-    ANIMCMD_FRAME(.imageValue = 0, .duration = 60),
     ANIMCMD_FRAME(.imageValue = 0, .duration = 60),
     ANIMCMD_END
 };
@@ -439,11 +439,11 @@ void LoadAmiePartyMenuSprite(void)
 
 static void SetAmieMonData(u32 *species, u32 *isShiny, u32 *personality)
 {
-    sAmieData.partySlot = gSpecialVar_0x8004;
+    gAmieData->partySlot = gSpecialVar_0x8004;
 
-    *species = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES_OR_EGG);
-    *isShiny = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_IS_SHINY);
-    *personality = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_PERSONALITY);
+    *species = GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES_OR_EGG);
+    *isShiny = GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_IS_SHINY);
+    *personality = GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_PERSONALITY);
 }
 
 static void CB2_Amie(void)
@@ -507,6 +507,12 @@ void CB2_InitAmie(void)
         gMain.state++;
         break;
     case 5:
+        gAmieData = AllocZeroed(sizeof(struct AmieData));
+        if (gAmieData == NULL)
+        {
+            SetMainCallback2(CB2_PartyMenuFromStartMenu);
+            return;
+        }
         ShowBg(0);
         ShowBg(3);
         gMain.state++;
@@ -522,26 +528,26 @@ void CB2_InitAmie(void)
         SetAmieMonData(&species, &isShiny, &personality);
         
         // Create Pokémon sprite
-        sAmieData.monSpriteId = CreateMonPicSprite_Affine(species, isShiny, personality, MON_PIC_AFFINE_FRONT, 90, 65, 14, TAG_NONE);
-        gSprites[sAmieData.monSpriteId].affineAnims = sAffineAnims_Mon;
-        gSprites[sAmieData.monSpriteId].anims = sAnims_Mon;
-        gSprites[sAmieData.monSpriteId].oam.affineMode = ST_OAM_AFFINE_DOUBLE;
-        gSprites[sAmieData.monSpriteId].oam.priority = 1;
-        gSprites[sAmieData.monSpriteId].subpriority = 3;
-        gSprites[sAmieData.monSpriteId].callback = SpriteCB_Mon;
-        StartSpriteAffineAnim(&gSprites[sAmieData.monSpriteId], 0);
+        gAmieData->monSpriteId = CreateMonPicSprite_Affine(species, isShiny, personality, MON_PIC_AFFINE_FRONT, 90, 65, 14, TAG_NONE);
+        gSprites[gAmieData->monSpriteId].affineAnims = sAffineAnims_Mon;
+        gSprites[gAmieData->monSpriteId].anims = sAnims_Mon;
+        gSprites[gAmieData->monSpriteId].oam.affineMode = ST_OAM_AFFINE_DOUBLE;
+        gSprites[gAmieData->monSpriteId].oam.priority = 1;
+        gSprites[gAmieData->monSpriteId].subpriority = 3;
+        gSprites[gAmieData->monSpriteId].callback = SpriteCB_Mon;
+        StartSpriteAffineAnim(&gSprites[gAmieData->monSpriteId], 0);
 
         if (Random() % 100 < AR_FACE_AWAY_CHANCE)
         {
-            gSprites[sAmieData.monSpriteId].invisible = TRUE;
-            sAmieData.monBackSpriteId = CreateMonPicSprite_Affine(species, isShiny, personality, MON_PIC_AFFINE_BACK, 90, 85, 14, TAG_NONE);
-            gSprites[sAmieData.monBackSpriteId].affineAnims = sAffineAnims_Mon;
-            gSprites[sAmieData.monBackSpriteId].anims = sAnims_Mon;
-            gSprites[sAmieData.monBackSpriteId].oam.affineMode = ST_OAM_AFFINE_DOUBLE;
-            gSprites[sAmieData.monBackSpriteId].oam.priority = 1;
-            gSprites[sAmieData.monBackSpriteId].subpriority = 3;
-            gSprites[sAmieData.monBackSpriteId].callback = SpriteCB_MonBack;
-            StartSpriteAffineAnim(&gSprites[sAmieData.monBackSpriteId], 0);
+            gSprites[gAmieData->monSpriteId].invisible = TRUE;
+            gAmieData->monBackSpriteId = CreateMonPicSprite_Affine(species, isShiny, personality, MON_PIC_AFFINE_BACK, 90, 85, 14, TAG_NONE);
+            gSprites[gAmieData->monBackSpriteId].affineAnims = sAffineAnims_Mon;
+            gSprites[gAmieData->monBackSpriteId].anims = sAnims_Mon;
+            gSprites[gAmieData->monBackSpriteId].oam.affineMode = ST_OAM_AFFINE_DOUBLE;
+            gSprites[gAmieData->monBackSpriteId].oam.priority = 1;
+            gSprites[gAmieData->monBackSpriteId].subpriority = 3;
+            gSprites[gAmieData->monBackSpriteId].callback = SpriteCB_MonBack;
+            StartSpriteAffineAnim(&gSprites[gAmieData->monBackSpriteId], 0);
         }
         gMain.state++;
         break;
@@ -550,7 +556,7 @@ void CB2_InitAmie(void)
 
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         taskId = CreateTask(Task_AmieFadeIn, 0);
-        if (sAmieData.monBackSpriteId)
+        if (gAmieData->monBackSpriteId)
             tState = AMIE_TASK_BACK;
             
         SetVBlankCallback(VBlankCB_Amie);
@@ -561,9 +567,9 @@ void CB2_InitAmie(void)
 
 static void CreateAmieSprites(void)
 {
-    sAmieData.handSpriteId = CreateSprite(&sSpriteTemplate_Hand, HAND_START_X, HAND_START_Y, 1);
-    sAmieData.puffIconSpriteId = CreateSprite(&sSpriteTemplate_Puff_Icon, 16, 16, 2);
-    sAmieData.puffIconSpriteId = CreateSprite(&sSpriteTemplate_Switch_Icon, 16, 144, 2);
+    gAmieData->handSpriteId = CreateSprite(&sSpriteTemplate_Hand, HAND_START_X, HAND_START_Y, 1);
+    gAmieData->puffIconSpriteId = CreateSprite(&sSpriteTemplate_Puff_Icon, 16, 16, 2);
+    gAmieData->puffIconSpriteId = CreateSprite(&sSpriteTemplate_Switch_Icon, 16, 144, 2);
 }
 
 static void Task_AmieFadeIn(u8 taskId)
@@ -577,28 +583,28 @@ static void Task_AmieMain(u8 taskId)
     switch (tState)
     {
     case AMIE_TASK_HAND:
-        if (sAmieData.controlsPaused)
+        if (gAmieData->controlsPaused)
         {
-            if (gSprites[sAmieData.monSpriteId].animEnded)
+            if (gSprites[gAmieData->monSpriteId].animEnded)
             {
-                if (sAmieData.emoteSpriteId)
+                if (gAmieData->emoteSpriteId)
                 {
-                    DestroySprite(&gSprites[sAmieData.emoteSpriteId]);
-                    sAmieData.emoteSpriteId = 0;
+                    DestroySprite(&gSprites[gAmieData->emoteSpriteId]);
+                    gAmieData->emoteSpriteId = 0;
                 }
-                if (sAmieData.emoteBubbleSpriteId)
+                if (gAmieData->emoteBubbleSpriteId)
                 {
-                    DestroySprite(&gSprites[sAmieData.emoteBubbleSpriteId]);
-                    sAmieData.emoteBubbleSpriteId = 0;
+                    DestroySprite(&gSprites[gAmieData->emoteBubbleSpriteId]);
+                    gAmieData->emoteBubbleSpriteId = 0;
                 }
-                sAmieData.controlsPaused = FALSE;
-                gSprites[sAmieData.handSpriteId].invisible = FALSE;
+                gAmieData->controlsPaused = FALSE;
+                gSprites[gAmieData->handSpriteId].invisible = FALSE;
                 StartNormalAnim();
                 ResetAmieHand();
             }
             return;
         }
-        else if (gSprites[sAmieData.handSpriteId].invisible)
+        else if (gSprites[gAmieData->handSpriteId].invisible)
         {
             return;
         }
@@ -613,8 +619,8 @@ static void Task_AmieMain(u8 taskId)
 
 static void Task_TurnMonAroundWaitSurprisedEmote(u8 taskId)
 {
-    if (tCounter > 0 && gSprites[sAmieData.handSpriteId].animEnded)
-        gSprites[sAmieData.handSpriteId].invisible = TRUE;
+    if (tCounter > 0 && gSprites[gAmieData->handSpriteId].animEnded)
+        gSprites[gAmieData->handSpriteId].invisible = TRUE;
 
     if (tCounter == 60)
     {
@@ -628,13 +634,13 @@ static void Task_TurnMonAroundWaitFadeOut(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        gSprites[sAmieData.monSpriteId].invisible = FALSE;
-        DestroySpriteAndFreeResources(&gSprites[sAmieData.monBackSpriteId]);
-        sAmieData.monBackSpriteId = 0;
-        DestroySpriteAndFreeResources(&gSprites[sAmieData.emoteBubbleSpriteId]);
-        sAmieData.emoteBubbleSpriteId = 0;
-        DestroySpriteAndFreeResources(&gSprites[sAmieData.emoteSpriteId]);
-        sAmieData.emoteSpriteId = 0;
+        gSprites[gAmieData->monSpriteId].invisible = FALSE;
+        DestroySpriteAndFreeResources(&gSprites[gAmieData->monBackSpriteId]);
+        gAmieData->monBackSpriteId = 0;
+        DestroySpriteAndFreeResources(&gSprites[gAmieData->emoteBubbleSpriteId]);
+        gAmieData->emoteBubbleSpriteId = 0;
+        DestroySpriteAndFreeResources(&gSprites[gAmieData->emoteSpriteId]);
+        gAmieData->emoteSpriteId = 0;
         BeginNormalPaletteFade(PALETTES_ALL, 1, 16, 0, RGB_WHITE);
         gTasks[taskId].func = Task_TurnMonAroundWaitFadeIn;
     }
@@ -646,7 +652,7 @@ static void Task_TurnMonAroundWaitFadeIn(u8 taskId)
     {
         CreateMusicEmote();
         StartHappyAnim();
-        PlayCry_ByMode(GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES), 0, CRY_MODE_GROWL_2);
+        PlayCry_ByMode(GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES), 0, CRY_MODE_GROWL_2);
         gTasks[taskId].func = Task_AmieMain;
     }
 }
@@ -655,12 +661,13 @@ static void Task_AmieEndFade(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        if (sAmieData.monBackSpriteId)
+        if (gAmieData->monBackSpriteId)
         {
-            FreeAndDestroyMonPicSprite(sAmieData.monBackSpriteId);
-            sAmieData.monBackSpriteId = 0;
+            FreeAndDestroyMonPicSprite(gAmieData->monBackSpriteId);
+            gAmieData->monBackSpriteId = 0;
         }
-        FreeAndDestroyMonPicSprite(sAmieData.monSpriteId);
+        FreeAndDestroyMonPicSprite(gAmieData->monSpriteId);
+        Free(gAmieData);
         SetMainCallback2(CB2_PartyMenuFromStartMenu);
         DestroyTask(taskId);
     }
@@ -668,7 +675,7 @@ static void Task_AmieEndFade(u8 taskId)
 
 static bool32 IsHandOnExitIcon(void)
 {
-    if (gSprites[sAmieData.handSpriteId].x < 45 && gSprites[sAmieData.handSpriteId].y < 38)
+    if (gSprites[gAmieData->handSpriteId].x < 45 && gSprites[gAmieData->handSpriteId].y < 38)
         return TRUE;
 
     return FALSE;
@@ -678,7 +685,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
 {
     if (JOY_HELD(DPAD_DOWN))
     {
-        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum != 1)
+        if (sprite == &gSprites[gAmieData->handSpriteId] && sprite->animNum != 1)
             sprite->y++;
 
         sprite->y += AMIE_MOVE_SPEED;
@@ -687,7 +694,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
     }
     if (JOY_HELD(DPAD_UP))
     {
-        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum != 1)
+        if (sprite == &gSprites[gAmieData->handSpriteId] && sprite->animNum != 1)
             sprite->y--;
 
         sprite->y -= AMIE_MOVE_SPEED;
@@ -696,7 +703,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
     }
     if (JOY_HELD(DPAD_RIGHT))
     {
-        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum != 1)
+        if (sprite == &gSprites[gAmieData->handSpriteId] && sprite->animNum != 1)
             sprite->x++;
 
         sprite->x += AMIE_MOVE_SPEED;
@@ -705,7 +712,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
     }
     if (JOY_HELD(DPAD_LEFT))
     {
-        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum != 1)
+        if (sprite == &gSprites[gAmieData->handSpriteId] && sprite->animNum != 1)
             sprite->x--;
 
         sprite->x -= AMIE_MOVE_SPEED;
@@ -717,8 +724,8 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
 static u8 GetCurrentPettingArea(void)
 {
     u32 i;
-    u32 species = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES);
-    struct Sprite *hand = &gSprites[sAmieData.handSpriteId];
+    u32 species = GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES);
+    struct Sprite *hand = &gSprites[gAmieData->handSpriteId];
 
     for (i = 0; i < NUM_AMIE_PET_AREAS; i++)
     {
@@ -727,14 +734,14 @@ static u8 GetCurrentPettingArea(void)
             u32 size;
 
             #if P_GENDER_DIFFERENCES
-            if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
+            if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
                 size = gSpeciesInfo[species].frontPicSizeFemale;
             else
             #endif
             size = gSpeciesInfo[species].frontPicSize;
 
-            if (hand->x > (gSprites[sAmieData.monSpriteId].x - 32 + HAND_OFFSET + (64 - GET_MON_COORDS_WIDTH(size))) && hand->x < (gSprites[sAmieData.monSpriteId].x + 96 - (64 - GET_MON_COORDS_WIDTH(size))))
-                if (hand->y > (gSprites[sAmieData.monSpriteId].y - 32 + HAND_OFFSET + (64 - GET_MON_COORDS_HEIGHT(size))) && hand->y < (gSprites[sAmieData.monSpriteId].y + 96 - (64 - GET_MON_COORDS_HEIGHT(size))))
+            if (hand->x > (gSprites[gAmieData->monSpriteId].x - 32 + HAND_OFFSET + (64 - GET_MON_COORDS_WIDTH(size))) && hand->x < (gSprites[gAmieData->monSpriteId].x + 96 - (64 - GET_MON_COORDS_WIDTH(size))))
+                if (hand->y > (gSprites[gAmieData->monSpriteId].y - 32 + HAND_OFFSET + (64 - GET_MON_COORDS_HEIGHT(size))) && hand->y < (gSprites[gAmieData->monSpriteId].y + 96 - (64 - GET_MON_COORDS_HEIGHT(size))))
                     return PET_TYPE_GOOD;
         }
         else if (hand->x > AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].leftX && hand->x < AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].rightX)
@@ -776,81 +783,81 @@ static void CreateAngrySprite(void)
 {
     u32 size;
     u32 spriteId;
-    u32 species = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES);
+    u32 species = GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES);
 
     #if P_GENDER_DIFFERENCES
-        if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
+        if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
             size = gSpeciesInfo[species].frontPicSizeFemale;
         else
     #endif
             size = gSpeciesInfo[species].frontPicSize;
     
     spriteId = CreateSprite(&sSpriteTemplate_Angry, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
-    gSprites[sAmieData.emoteSpriteId].oam.priority = 0;
+    gSprites[gAmieData->emoteSpriteId].oam.priority = 0;
     StartSpriteAffineAnim(&gSprites[spriteId], 0);
-    sAmieData.emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
-    gSprites[sAmieData.emoteBubbleSpriteId].oam.priority = 0;
+    gAmieData->emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
+    gSprites[gAmieData->emoteBubbleSpriteId].oam.priority = 0;
 }
 
 static void CreateSurprisedEmote(void)
 {
     u32 size;
-    u32 species = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES);
+    u32 species = GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES);
 
     #if P_GENDER_DIFFERENCES
-        if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
+        if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
             size = gSpeciesInfo[species].frontPicSizeFemale;
         else
     #endif
             size = gSpeciesInfo[species].frontPicSize;
     
     LoadCompressedSpriteSheet(&sSpriteSheet_Surprised);
-    sAmieData.emoteSpriteId = CreateSprite(&sSpriteTemplate_Surprised, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
-    gSprites[sAmieData.emoteSpriteId].oam.priority = 0;
-    sAmieData.emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
-    gSprites[sAmieData.emoteBubbleSpriteId].oam.priority = 0;
+    gAmieData->emoteSpriteId = CreateSprite(&sSpriteTemplate_Surprised, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
+    gSprites[gAmieData->emoteSpriteId].oam.priority = 0;
+    gAmieData->emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
+    gSprites[gAmieData->emoteBubbleSpriteId].oam.priority = 0;
 }
 
 static void CreateMusicEmote(void)
 {
     u32 size;
-    u32 species = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES);
+    u32 species = GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES);
 
     #if P_GENDER_DIFFERENCES
-        if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
+        if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
             size = gSpeciesInfo[species].frontPicSizeFemale;
         else
     #endif
             size = gSpeciesInfo[species].frontPicSize;
     
     LoadCompressedSpriteSheet(&sSpriteSheet_Music);
-    sAmieData.emoteSpriteId = CreateSprite(&sSpriteTemplate_Music, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
-    gSprites[sAmieData.emoteSpriteId].oam.priority = 0;
-    sAmieData.emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
-    gSprites[sAmieData.emoteBubbleSpriteId].oam.priority = 0;
+    gAmieData->emoteSpriteId = CreateSprite(&sSpriteTemplate_Music, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
+    gSprites[gAmieData->emoteSpriteId].oam.priority = 0;
+    gAmieData->emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
+    gSprites[gAmieData->emoteBubbleSpriteId].oam.priority = 0;
 }
 
 static void StartNormalAnim(void)
 {
-    gSprites[sAmieData.monSpriteId].sCurrAnim = 0;
-    gSprites[sAmieData.monSpriteId].sCounter = 0;
-    StartSpriteAnim(&gSprites[sAmieData.monSpriteId], 0);
-    StartSpriteAffineAnim(&gSprites[sAmieData.monSpriteId], 0);
+    gSprites[gAmieData->monSpriteId].sCurrAnim = 0;
+    gSprites[gAmieData->monSpriteId].sCounter = 0;
+    StartSpriteAnim(&gSprites[gAmieData->monSpriteId], 0);
+    StartSpriteAffineAnim(&gSprites[gAmieData->monSpriteId], 0);
 }
 
 static void StartHappyAnim(void)
 {
-    gSprites[sAmieData.monSpriteId].sCurrAnim = 1;
-    gSprites[sAmieData.monSpriteId].sCounter = 0;
-    StartSpriteAnim(&gSprites[sAmieData.monSpriteId], 1);
-    StartSpriteAffineAnim(&gSprites[sAmieData.monSpriteId], 1);
-    sAmieData.controlsPaused = TRUE;
+    gSprites[gAmieData->monSpriteId].sCurrAnim = 1;
+    gSprites[gAmieData->monSpriteId].sCounter = 0;
+    StartSpriteAnim(&gSprites[gAmieData->monSpriteId], 1);
+    StartSpriteAffineAnim(&gSprites[gAmieData->monSpriteId], 1);
+    gAmieData->controlsPaused = TRUE;
 }
 
 static void StartAngryAnim(void)
 {
-    gSprites[sAmieData.monSpriteId].sCurrAnim = 2;
-    gSprites[sAmieData.monSpriteId].sCounter = 0;
+    gSprites[gAmieData->monSpriteId].sCurrAnim = 2;
+    gSprites[gAmieData->monSpriteId].sCounter = 0;
 }
 
 static void StopPetting(u8 taskId)
@@ -864,17 +871,17 @@ static void StopPetting(u8 taskId)
 
 static void ResetAmieHand(void)
 {
-    gSprites[sAmieData.handSpriteId].x = HAND_START_X;
-    gSprites[sAmieData.handSpriteId].y = HAND_START_Y;
-    gSprites[sAmieData.handSpriteId].invisible = FALSE;
-    StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 0);
+    gSprites[gAmieData->handSpriteId].x = HAND_START_X;
+    gSprites[gAmieData->handSpriteId].y = HAND_START_Y;
+    gSprites[gAmieData->handSpriteId].invisible = FALSE;
+    StartSpriteAnim(&gSprites[gAmieData->handSpriteId], 0);
 }
 
 static void AmieHandHandleInput(u8 taskId)
 {
     if (JOY_NEW(EXIT_BUTTON) || (JOY_NEW(INTERACT_BUTTON) && IsHandOnExitIcon()))
     {
-        gSprites[sAmieData.handSpriteId].invisible = TRUE;
+        gSprites[gAmieData->handSpriteId].invisible = TRUE;
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
         gTasks[taskId].func = Task_AmieEndFade;
         return;
@@ -902,7 +909,7 @@ static void AmieHandHandleInput(u8 taskId)
                     {
                         tPetZone = petZone;
                     }
-                    StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 1);
+                    StartSpriteAnim(&gSprites[gAmieData->handSpriteId], 1);
                 }
                 else
                 {
@@ -913,8 +920,8 @@ static void AmieHandHandleInput(u8 taskId)
                             CreateHeartSprites(3);
                         
                             StartHappyAnim();
-                            PlayCry_ByMode(GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES), 0, CRY_MODE_GROWL_2);
-                            gSprites[sAmieData.handSpriteId].invisible = TRUE;
+                            PlayCry_ByMode(GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES), 0, CRY_MODE_GROWL_2);
+                            gSprites[gAmieData->handSpriteId].invisible = TRUE;
                             tPetScore = 0;
                             tCounter = 0;
                             return;
@@ -937,8 +944,8 @@ static void AmieHandHandleInput(u8 taskId)
                         {
                             CreateAngrySprite();
                             StartAngryAnim();
-                            PlayCry_ByMode(GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES), 0, CRY_MODE_FAINT);
-                            gSprites[sAmieData.handSpriteId].invisible = TRUE;
+                            PlayCry_ByMode(GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES), 0, CRY_MODE_FAINT);
+                            gSprites[gAmieData->handSpriteId].invisible = TRUE;
                             tPetScore = 0;
                             tCounter = 0;
                             return;
@@ -984,26 +991,26 @@ static void AmieHandHandleInput(u8 taskId)
             else
             {
                 StopPetting(taskId);
-                StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 0);
+                StartSpriteAnim(&gSprites[gAmieData->handSpriteId], 0);
             }
         }
         else
         {
             tPetZone = PET_TYPE_NONE;
             StopPetting(taskId);
-            StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 0);
+            StartSpriteAnim(&gSprites[gAmieData->handSpriteId], 0);
         }
         break;
     case AMIE_TASK_BACK:
         if (JOY_NEW(INTERACT_BUTTON))
         {
-            StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 2);
+            StartSpriteAnim(&gSprites[gAmieData->handSpriteId], 2);
             PlaySE(SE_M_ABSORB);
             tTapCounter++;
             tCounter = 1;
         }
 
-        if (tCounter > 0 && gSprites[sAmieData.handSpriteId].animEnded)
+        if (tCounter > 0 && gSprites[gAmieData->handSpriteId].animEnded)
         {
             tCounter++;
             if (tCounter > 32)
@@ -1024,7 +1031,7 @@ static void AmieHandHandleInput(u8 taskId)
         break;
     }
 
-    MoveSpriteFromInput(&gSprites[sAmieData.handSpriteId]);
+    MoveSpriteFromInput(&gSprites[gAmieData->handSpriteId]);
 }
 
 static void SpriteCB_Mon(struct Sprite *sprite)
@@ -1059,7 +1066,7 @@ static void SpriteCB_Mon(struct Sprite *sprite)
         else if ((sprite->sCounter > 2 && sprite->sCounter <= 8) || (sprite->sCounter > 14 && sprite->sCounter <= 20))
             sprite->x2 += 4;
 
-        if (sprite->sCounter >= 120)
+        if (sprite->sCounter >= 60)
         {
             StartNormalAnim();
             ResetAmieHand();

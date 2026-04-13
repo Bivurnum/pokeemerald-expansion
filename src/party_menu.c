@@ -1593,7 +1593,7 @@ static void HandleChooseMonSelection(u8 taskId, s8 *slotPtr)
             if (IsSelectedMonNotEgg((u8 *)slotPtr) && GetMonData(&gPlayerParty[*slotPtr], MON_DATA_HP) > 0)
             {
                 PlaySE(SE_SELECT);
-                sAmieData.isSwitching = TRUE;
+                gAmieData->isSwitching = TRUE;
                 gSpecialVar_0x8004 = *slotPtr;
                 sPartyMenuInternal->exitCallback = CB2_InitAmie;
                 ExitPartyMenu();
@@ -1661,8 +1661,8 @@ static void HandleChooseMonCancel(u8 taskId, s8 *slotPtr)
         break;
     case PARTY_ACTION_CHOOSE_AMIE:
         PlaySE(SE_SELECT);
-        sAmieData.isSwitching = TRUE;
-        gSpecialVar_0x8004 = sAmieData.partySlot;
+        gAmieData->isSwitching = TRUE;
+        gSpecialVar_0x8004 = gAmieData->partySlot;
         sPartyMenuInternal->exitCallback = CB2_InitAmie;
         Task_ClosePartyMenu(taskId);
         break;
