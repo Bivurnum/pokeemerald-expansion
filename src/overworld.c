@@ -3812,7 +3812,7 @@ static void ShowItemIconSprite(enum Item item, bool8 firstTime, bool8 flash)
     s16 x = 0, y = 0;
     u8 iconSpriteId = MAX_SPRITES;
     u8 spriteId2 = MAX_SPRITES;
-    FreeSpritePalette(ITEM_TAG);
+    FreeSpriteTilesByTag(ITEM_TAG);
 
     if (flash)
     {
