@@ -655,6 +655,12 @@ static void Task_AmieEndFade(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
+        if (sAmieData.monBackSpriteId)
+        {
+            FreeAndDestroyMonPicSprite(sAmieData.monBackSpriteId);
+            sAmieData.monBackSpriteId = 0;
+        }
+        FreeAndDestroyMonPicSprite(sAmieData.monSpriteId);
         SetMainCallback2(CB2_PartyMenuFromStartMenu);
         DestroyTask(taskId);
     }
