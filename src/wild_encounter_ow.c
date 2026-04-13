@@ -327,8 +327,10 @@ void StartWildBattleWithOWE(void)
         gender = gSpeciesInfo[speciesId].genderRatio;
     }
 
-    if (level < MIN_LEVEL || level > MAX_LEVEL)
+    assertf(level >= MIN_LEVEL && level <= MAX_LEVEL, "overworld wild encounter does not have valid level.\nlocalId: %d", localId)
+    {
         level = MIN_LEVEL;
+    }
 
     ZeroEnemyPartyMons();
     personality = GetMonPersonality(speciesId, gender, NATURE_RANDOM, RANDOM_UNOWN_LETTER);
