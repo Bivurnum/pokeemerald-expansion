@@ -332,9 +332,9 @@ void StartWildBattleWithOWE(void)
 
     ZeroEnemyPartyMons();
     personality = GetMonPersonality(speciesId, gender, NATURE_RANDOM, RANDOM_UNOWN_LETTER);
-    CreateMonWithIVs(&gEnemyParty[0], speciesId, level, personality, OTID_STRUCT_PLAYER_ID, USE_RANDOM_IVS);
-    GiveMonInitialMoveset(&gEnemyParty[0]);
-    SetMonData(&gEnemyParty[0], MON_DATA_IS_SHINY, &shiny);
+    CreateMonWithIVs(&gParties[B_TRAINER_1][0], speciesId, level, personality, OTID_STRUCT_PLAYER_ID, USE_RANDOM_IVS);
+    GiveMonInitialMoveset(&gParties[B_TRAINER_1][0]);
+    SetMonData(&gParties[B_TRAINER_1][0], MON_DATA_IS_SHINY, &shiny);
     
     if (StartWildBattleWithOWE_CheckBattleFrontier(headerId))
         return;
@@ -376,9 +376,9 @@ static bool32 CreateEnemyPartyOWE(enum Species *speciesId, u32 *level, u32 *inde
             if (TryGenerateWildMon(gBattlePyramidWildMonHeaders[headerId].encounterTypes[timeOfDay].landMonsInfo, WILD_AREA_LAND, 0) != TRUE)
                 return FALSE;
 
-            u32 id = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES);
+            u32 id = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_SPECIES);
             GenerateBattlePyramidWildMon(SPECIES_NONE);
-            SetMonData(&gEnemyParty[0], MON_DATA_LEVEL, &id);
+            SetMonData(&gParties[B_TRAINER_1][0], MON_DATA_LEVEL, &id);
             return TRUE;
         }
 
@@ -409,7 +409,7 @@ static bool32 CreateEnemyPartyOWE(enum Species *speciesId, u32 *level, u32 *inde
         4. Attempt to generate a Standard Wild Encounter
     
     The structure of this statement ensures that only one of these encounter types can succeed per call,
-    with the resultant wild mon being created in gEnemyParty[0].
+    with the resultant wild mon being created in gParties[B_TRAINER_1][0].
     If none of these checks succeed, speciesId is set to SPECIES_NONE and FALSE is returned.
     */
 
@@ -503,9 +503,9 @@ static bool32 StartWildBattleWithOWE_CheckBattleFrontier(u32 headerId)
         }
         if (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR)
         {
-            u32 id = GetMonData(&gEnemyParty[0], MON_DATA_LEVEL);
-            enum Species species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES);
-            SetMonData(&gEnemyParty[0], MON_DATA_SPECIES, &id);
+            u32 id = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_LEVEL);
+            enum Species species = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_SPECIES);
+            SetMonData(&gParties[B_TRAINER_1][0], MON_DATA_SPECIES, &id);
             if (!BATTLE_PYRAMID_RANDOM_ENCOUNTERS)
                 species = SPECIES_NONE;
             GenerateBattlePyramidWildMon(species);
@@ -525,7 +525,7 @@ static bool32 StartWildBattleWithOWE_CheckMassOutbreak(u32 indexRoamerOutbreak, 
      && gSaveBlock1Ptr->location.mapGroup == gSaveBlock1Ptr->outbreakLocationMapGroup)
     {
         for (u32 i = 0; i < MAX_MON_MOVES; i++)
-            SetMonMoveSlot(&gEnemyParty[0], gSaveBlock1Ptr->outbreakPokemonMoves[i], i);
+            SetMonMoveSlot(&gParties[B_TRAINER_1][0], gSaveBlock1Ptr->outbreakPokemonMoves[i], i);
         
         BattleSetup_StartWildBattle();
         return TRUE;
@@ -543,7 +543,7 @@ static bool32 StartWildBattleWithOWE_CheckDoubleBattle(struct ObjectEvent *owe, 
 
     if (TryDoDoubleWildBattle())
     {
-        struct Pokemon mon1 = gEnemyParty[0];
+        struct Pokemon mon1 = gParties[B_TRAINER_1][0];
 
         if (MetatileBehavior_IsWaterWildEncounter(metatileBehavior))
         {
@@ -560,7 +560,7 @@ static bool32 StartWildBattleWithOWE_CheckDoubleBattle(struct ObjectEvent *owe, 
 
         if (TryGenerateWildMon(wildMonInfo, wildArea, WILD_CHECK_REPEL | WILD_CHECK_KEEN_EYE))
         {
-            gEnemyParty[1] = mon1;
+            gParties[B_TRAINER_1][1] = mon1;
             BattleSetup_StartDoubleWildBattle();
             return TRUE;
         }
@@ -844,9 +844,9 @@ static void SetSpeciesInfoForOWE(enum Species *speciesId, bool32 *isShiny, bool3
         return;
     }
  
-    *speciesId = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES);
-    SetOWEEncounterLevel(level, GetMonData(&gEnemyParty[0], MON_DATA_LEVEL));
-    personality = GetMonData(&gEnemyParty[0], MON_DATA_PERSONALITY);
+    *speciesId = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_SPECIES);
+    SetOWEEncounterLevel(level, GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_LEVEL));
+    personality = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_PERSONALITY);
 
     if (*speciesId == SPECIES_UNOWN)
         *speciesId = GetUnownSpeciesId(personality);
