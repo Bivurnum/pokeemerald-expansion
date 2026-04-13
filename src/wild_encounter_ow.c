@@ -58,9 +58,7 @@
 #define OWE_SPAWN_TIME_MINIMUM          30  // The minimum value the spawn wait time can be reset to. Prevents spawn attempts every frame.
 #define OWE_SPAWN_TIME_PER_ACTIVE       30  // The number of frames that will be added to the countdown per currently active spawn.
 
-#define OWE_MON_SIGHT_WIDTH             3
-#define OWE_MON_SIGHT_LENGTH            4
-#define OWE_CHASE_RANGE                 5
+#define OWE_DEFAULT_CHASE_RANGE         5
 #define OWE_RESTORED_MOVEMENT_FUNC_ID   10
 
 #define OWE_NO_ENCOUNTER_SET            0xFF
@@ -1507,7 +1505,7 @@ bool32 IsPlayerInsideOWEActiveDistance(struct ObjectEvent *owe)
         return FALSE;
     
     struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
-    u32 distance = OWE_CHASE_RANGE;
+    u32 distance = OWE_DEFAULT_CHASE_RANGE;
     enum Species speciesId = OW_SPECIES(owe);
 
     if (speciesId != SPECIES_NONE)
