@@ -17,6 +17,8 @@
 #define TAG_EMOTE       0x2003
 
 #define TAG_PARTY_AMIE    0x2032
+#define TAG_SURPRISED     0x2033
+#define TAG_MUSIC         0x2034
 
 #define HAND_START_X    28
 #define HAND_START_Y    45
@@ -36,14 +38,17 @@ struct AmieData
     u8 padding1:3;
     u8 taskId;
     u8 monSpriteId;
+    u8 monBackSpriteId;
     u8 handSpriteId;
     u8 puffIconSpriteId;
-    u8 musicSpriteId;
+    u8 emoteBubbleSpriteId;
+    u8 emoteSpriteId;
 };
 
 enum AmieTaskStates
 {
-    STATE_HAND
+    AMIE_TASK_HAND,
+    AMIE_TASK_BACK
 };
 
 enum AmiePetZoneTypes

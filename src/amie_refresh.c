@@ -42,6 +42,8 @@ static const u32 gSwitch_Icon_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/swi
 static const u16 gEmotes_Pal[] = INCBIN_U16("graphics/amie_refresh/heart.gbapal");
 static const u32 gHeart_Gfx[] = INCBIN_U32("graphics/amie_refresh/heart.4bpp");
 static const u32 gAngry_Gfx[] = INCBIN_U32("graphics/amie_refresh/angry.4bpp");
+static const u32 sSpriteTiles_Surprised[] = INCBIN_U32("graphics/amie_refresh/surprised.4bpp.smol");
+static const u32 sSpriteTiles_Music[] = INCBIN_U32("graphics/amie_refresh/music.4bpp.smol");
 
 static const u16 gParty_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/party_icon.gbapal");
 static const u32 sSpriteTiles_Party_Icon[] = INCBIN_U32("graphics/amie_refresh/party_icon.4bpp.smol");
@@ -49,10 +51,16 @@ static const u32 sSpriteTiles_Party_Icon[] = INCBIN_U32("graphics/amie_refresh/p
 static void CreateAmieSprites(void);
 static void Task_AmieFadeIn(u8 taskId);
 static void Task_AmieMain(u8 taskId);
+static void Task_TurnMonAroundWaitSurprisedEmote(u8 taskId);
+static void Task_TurnMonAroundWaitFadeOut(u8 taskId);
+static void Task_TurnMonAroundWaitFadeIn(u8 taskId);
+static void CreateMusicEmote(void);
 static void StartNormalAnim(void);
+static void StartHappyAnim(void);
 static void ResetAmieHand(void);
 static void AmieHandHandleInput(u8 taskId);
 static void SpriteCB_Mon(struct Sprite *sprite);
+static void SpriteCB_MonBack(struct Sprite *sprite);
 static void SpriteCB_Heart(struct Sprite *sprite);
 static void SpriteCB_Angry(struct Sprite *sprite);
 static void SpriteCB_SpeechBubble(struct Sprite *sprite);
@@ -62,6 +70,7 @@ static void SpriteCB_SpeechBubble(struct Sprite *sprite);
 #define tCounter    gTasks[taskId].data[1]
 #define tPetScore   gTasks[taskId].data[2]
 #define tPetZone    gTasks[taskId].data[3]
+#define tTappedOnce gTasks[taskId].data[3]
 #define tSECounter  gTasks[taskId].data[4]
 #define tSpecies    gTasks[taskId].data[5]
 
@@ -129,10 +138,18 @@ static const union AnimCmd sAnim_HandOpen[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_HandTap[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 12),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_Hand[] =
 {
     sAnim_Normal,
     sAnim_HandOpen,
+    sAnim_HandTap,
 };
 
 static const union AnimCmd * const sAnims_SpeechBubble[] =
@@ -195,6 +212,7 @@ static const struct SpriteFrameImage sPicTable_Hand[] =
 {
     amie_frame(gHand_Gfx, 0, 4, 4),
     amie_frame(gHand_Gfx, 1, 4, 4),
+    amie_frame(gHand_Gfx, 2, 4, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_SpeechBubble[] =
@@ -272,6 +290,20 @@ static const struct OamData sOam_64x32 =
     .priority = 0,
 };
 
+static const struct CompressedSpriteSheet sSpriteSheet_Surprised =
+{
+    .data = sSpriteTiles_Surprised,
+    .size = 512,
+    .tag = TAG_SURPRISED,
+};
+
+static const struct CompressedSpriteSheet sSpriteSheet_Music =
+{
+    .data = sSpriteTiles_Music,
+    .size = 512,
+    .tag = TAG_MUSIC,
+};
+
 static const struct CompressedSpriteSheet sSpriteSheet_Party_Icon =
 {
     .data = sSpriteTiles_Party_Icon,
@@ -345,6 +377,28 @@ static const struct SpriteTemplate sSpriteTemplate_Angry =
     .callback = SpriteCB_Angry
 };
 
+static const struct SpriteTemplate sSpriteTemplate_Surprised =
+{
+    .tileTag = TAG_SURPRISED,
+    .paletteTag = TAG_HAND,
+    .oam = &sOam_32x32,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Music =
+{
+    .tileTag = TAG_MUSIC,
+    .paletteTag = TAG_HAND,
+    .oam = &sOam_32x32,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
 static const struct SpriteTemplate sSpriteTemplate_Party_Icon =
 {
     .tileTag = TAG_PARTY_AMIE,
@@ -386,11 +440,11 @@ void LoadAmiePartyMenuSprite(void)
 
 static void SetAmieMonData(u32 *species, u32 *isShiny, u32 *personality)
 {
-    u32 partySlot = gSpecialVar_0x8004;
+    sAmieData.partySlot = gSpecialVar_0x8004;
 
-    *species = GetMonData(&gPlayerParty[partySlot], MON_DATA_SPECIES_OR_EGG);
-    *isShiny = GetMonData(&gPlayerParty[partySlot], MON_DATA_IS_SHINY);
-    *personality = GetMonData(&gPlayerParty[partySlot], MON_DATA_PERSONALITY);
+    *species = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES_OR_EGG);
+    *isShiny = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_IS_SHINY);
+    *personality = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_PERSONALITY);
 }
 
 static void CB2_Amie(void)
@@ -477,11 +531,29 @@ void CB2_InitAmie(void)
         gSprites[sAmieData.monSpriteId].subpriority = 3;
         gSprites[sAmieData.monSpriteId].callback = SpriteCB_Mon;
         StartSpriteAffineAnim(&gSprites[sAmieData.monSpriteId], 0);
+
+        if (Random() % 100 < AR_FACE_AWAY_CHANCE)
+        {
+            gSprites[sAmieData.monSpriteId].invisible = TRUE;
+            sAmieData.monBackSpriteId = CreateMonPicSprite_Affine(species, isShiny, personality, MON_PIC_AFFINE_BACK, 90, 85, 14, TAG_NONE);
+            gSprites[sAmieData.monBackSpriteId].affineAnims = sAffineAnims_Mon;
+            gSprites[sAmieData.monBackSpriteId].anims = sAnims_Mon;
+            gSprites[sAmieData.monBackSpriteId].oam.affineMode = ST_OAM_AFFINE_DOUBLE;
+            gSprites[sAmieData.monBackSpriteId].oam.priority = 1;
+            gSprites[sAmieData.monBackSpriteId].subpriority = 3;
+            gSprites[sAmieData.monBackSpriteId].callback = SpriteCB_MonBack;
+            StartSpriteAffineAnim(&gSprites[sAmieData.monBackSpriteId], 0);
+        }
         gMain.state++;
         break;
     case 8:
-        CreateTask(Task_AmieFadeIn, 0);
+        u32 taskId;
+
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+        taskId = CreateTask(Task_AmieFadeIn, 0);
+        if (sAmieData.monBackSpriteId)
+            tState = AMIE_TASK_BACK;
+            
         SetVBlankCallback(VBlankCB_Amie);
         SetMainCallback2(CB2_Amie);
         break;
@@ -505,15 +577,20 @@ static void Task_AmieMain(u8 taskId)
 {
     switch (tState)
     {
-    case STATE_HAND:
+    case AMIE_TASK_HAND:
         if (sAmieData.controlsPaused)
         {
             if (gSprites[sAmieData.monSpriteId].animEnded)
             {
-                if (sAmieData.musicSpriteId)
+                if (sAmieData.emoteSpriteId)
                 {
-                    DestroySprite(&gSprites[sAmieData.musicSpriteId]);
-                    sAmieData.musicSpriteId = 0;
+                    DestroySprite(&gSprites[sAmieData.emoteSpriteId]);
+                    sAmieData.emoteSpriteId = 0;
+                }
+                if (sAmieData.emoteBubbleSpriteId)
+                {
+                    DestroySprite(&gSprites[sAmieData.emoteBubbleSpriteId]);
+                    sAmieData.emoteBubbleSpriteId = 0;
                 }
                 sAmieData.controlsPaused = FALSE;
                 gSprites[sAmieData.handSpriteId].invisible = FALSE;
@@ -529,6 +606,46 @@ static void Task_AmieMain(u8 taskId)
 
         AmieHandHandleInput(taskId);
         break;
+    case AMIE_TASK_BACK:
+        AmieHandHandleInput(taskId);
+        break;
+    }
+}
+
+static void Task_TurnMonAroundWaitSurprisedEmote(u8 taskId)
+{
+    if (tCounter == 60)
+    {
+        BeginNormalPaletteFade(PALETTES_ALL, 1, 0, 16, RGB_WHITE);
+        gTasks[taskId].func = Task_TurnMonAroundWaitFadeOut;
+    }
+    tCounter++;
+}
+
+static void Task_TurnMonAroundWaitFadeOut(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        gSprites[sAmieData.monSpriteId].invisible = FALSE;
+        DestroySpriteAndFreeResources(&gSprites[sAmieData.monBackSpriteId]);
+        sAmieData.monBackSpriteId = 0;
+        DestroySpriteAndFreeResources(&gSprites[sAmieData.emoteBubbleSpriteId]);
+        sAmieData.emoteBubbleSpriteId = 0;
+        DestroySpriteAndFreeResources(&gSprites[sAmieData.emoteSpriteId]);
+        sAmieData.emoteSpriteId = 0;
+        BeginNormalPaletteFade(PALETTES_ALL, 1, 16, 0, RGB_WHITE);
+        gTasks[taskId].func = Task_TurnMonAroundWaitFadeIn;
+    }
+}
+
+static void Task_TurnMonAroundWaitFadeIn(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        CreateMusicEmote();
+        StartHappyAnim();
+        PlayCry_ByMode(GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES), 0, CRY_MODE_GROWL_2);
+        gTasks[taskId].func = Task_AmieMain;
     }
 }
 
@@ -553,7 +670,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
 {
     if (JOY_HELD(DPAD_DOWN))
     {
-        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum == 0)
+        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum != 1)
             sprite->y++;
 
         sprite->y += AMIE_MOVE_SPEED;
@@ -562,7 +679,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
     }
     if (JOY_HELD(DPAD_UP))
     {
-        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum == 0)
+        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum != 1)
             sprite->y--;
 
         sprite->y -= AMIE_MOVE_SPEED;
@@ -571,7 +688,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
     }
     if (JOY_HELD(DPAD_RIGHT))
     {
-        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum == 0)
+        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum != 1)
             sprite->x++;
 
         sprite->x += AMIE_MOVE_SPEED;
@@ -580,7 +697,7 @@ static void MoveSpriteFromInput(struct Sprite *sprite)
     }
     if (JOY_HELD(DPAD_LEFT))
     {
-        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum == 0)
+        if (sprite == &gSprites[sAmieData.handSpriteId] && sprite->animNum != 1)
             sprite->x--;
 
         sprite->x -= AMIE_MOVE_SPEED;
@@ -662,7 +779,41 @@ static void CreateAngrySprite(void)
     
     spriteId = CreateSprite(&sSpriteTemplate_Angry, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
     StartSpriteAffineAnim(&gSprites[spriteId], 0);
-    CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
+    sAmieData.emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
+}
+
+static void CreateSurprisedEmote(void)
+{
+    u32 size;
+    u32 species = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES);
+
+    #if P_GENDER_DIFFERENCES
+        if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
+            size = gSpeciesInfo[species].frontPicSizeFemale;
+        else
+    #endif
+            size = gSpeciesInfo[species].frontPicSize;
+    
+    LoadCompressedSpriteSheet(&sSpriteSheet_Surprised);
+    sAmieData.emoteSpriteId = CreateSprite(&sSpriteTemplate_Surprised, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
+    sAmieData.emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
+}
+
+static void CreateMusicEmote(void)
+{
+    u32 size;
+    u32 species = GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES);
+
+    #if P_GENDER_DIFFERENCES
+        if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
+            size = gSpeciesInfo[species].frontPicSizeFemale;
+        else
+    #endif
+            size = gSpeciesInfo[species].frontPicSize;
+    
+    LoadCompressedSpriteSheet(&sSpriteSheet_Music);
+    sAmieData.emoteSpriteId = CreateSprite(&sSpriteTemplate_Music, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
+    sAmieData.emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
 }
 
 static void StartNormalAnim(void)
@@ -715,115 +866,151 @@ static void AmieHandHandleInput(u8 taskId)
         return;
     }
 
-    if (tPetScore > 0 && tPetScore < AMIE_PET_SCORE_TARGET)
-        tPetScore--;
-
-    if (tPetScore < 0 && tPetScore > AMIE_BAD_PET_SCORE_TARGET)
-        tPetScore--;
-
-    if (JOY_HELD(INTERACT_BUTTON))
+    switch (tState)
     {
-        u32 petZone = GetCurrentPettingArea();
+    case AMIE_TASK_HAND:
+        if (tPetScore > 0 && tPetScore < AMIE_PET_SCORE_TARGET)
+            tPetScore--;
 
-        if (petZone)
+        if (tPetScore < 0 && tPetScore > AMIE_BAD_PET_SCORE_TARGET)
+            tPetScore--;
+
+        if (JOY_HELD(INTERACT_BUTTON))
         {
-            if (tPetZone != petZone)
+            u32 petZone = GetCurrentPettingArea();
+
+            if (petZone)
             {
-                tCounter = 0;
-                if (JOY_HELD(DPAD_ANY))
+                if (tPetZone != petZone)
                 {
-                    tPetZone = petZone;
+                    tCounter = 0;
+                    if (JOY_HELD(DPAD_ANY))
+                    {
+                        tPetZone = petZone;
+                    }
+                    StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 1);
                 }
-                StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 1);
+                else
+                {
+                    if (tPetZone == PET_TYPE_GOOD)
+                    {
+                        if (tPetScore >= AMIE_PET_SCORE_TARGET)
+                        {
+                            CreateHeartSprites(3);
+                        
+                            StartHappyAnim();
+                            PlayCry_ByMode(GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES), 0, CRY_MODE_GROWL_2);
+                            gSprites[sAmieData.handSpriteId].invisible = TRUE;
+                            tPetScore = 0;
+                            tCounter = 0;
+                            return;
+                        }
+                        else if (JOY_HELD(DPAD_ANY))
+                        {
+                            if (tSECounter == 0)
+                            {
+                                PlaySE(SE_CONTEST_CURTAIN_RISE);
+                                tSECounter = PET_SE_DELAY;
+                            }
+                            tPetScore += 4;
+                            tCounter = 0;
+                            tSECounter--;
+                        }
+                    }
+                    else if (tPetZone == PET_TYPE_BAD)
+                    {
+                        if (tPetScore <= AMIE_BAD_PET_SCORE_TARGET)
+                        {
+                            CreateAngrySprite();
+                            StartAngryAnim();
+                            PlayCry_ByMode(GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES), 0, CRY_MODE_FAINT);
+                            gSprites[sAmieData.handSpriteId].invisible = TRUE;
+                            tPetScore = 0;
+                            tCounter = 0;
+                            return;
+                        }
+                        else if (JOY_HELD(DPAD_ANY))
+                        {
+                            if (tSECounter == 0)
+                            {
+                                PlaySE(SE_CONTEST_CURTAIN_FALL);
+                                tSECounter = PET_SE_DELAY;
+                            }
+                            tPetScore -= 4;
+                            tCounter = 0;
+                            tSECounter--;
+                        }
+                    }
+
+                    if (tPetScore < AMIE_PET_SCORE_TARGET)
+                    {
+                        if(!JOY_HELD(DPAD_ANY))
+                        {
+                            if (tCounter == 60)
+                            {
+                                StopPetting(taskId);
+                            }
+                            tCounter++;
+                        }
+                    }
+
+                    if (tPetScore > AMIE_BAD_PET_SCORE_TARGET)
+                    {
+                        if(!JOY_HELD(DPAD_ANY))
+                        {
+                            if (tCounter == 60)
+                            {
+                                StopPetting(taskId);
+                            }
+                            tCounter++;
+                        }
+                    }
+                }
             }
             else
             {
-                if (tPetZone == PET_TYPE_GOOD)
-                {
-                    if (tPetScore >= AMIE_PET_SCORE_TARGET)
-                    {
-                        CreateHeartSprites(3);
-                    
-                        StartHappyAnim();
-                        PlayCry_ByMode(GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES), 0, CRY_MODE_GROWL_2);
-                        gSprites[sAmieData.handSpriteId].invisible = TRUE;
-                        tPetScore = 0;
-                        tCounter = 0;
-                        return;
-                    }
-                    else if (JOY_HELD(DPAD_ANY))
-                    {
-                        if (tSECounter == 0)
-                        {
-                            PlaySE(SE_CONTEST_CURTAIN_RISE);
-                            tSECounter = PET_SE_DELAY;
-                        }
-                        tPetScore += 4;
-                        tCounter = 0;
-                        tSECounter--;
-                    }
-                }
-                else if (tPetZone == PET_TYPE_BAD)
-                {
-                    if (tPetScore <= AMIE_BAD_PET_SCORE_TARGET)
-                    {
-                        CreateAngrySprite();
-                        StartAngryAnim();
-                        PlayCry_ByMode(GetMonData(&gPlayerParty[sAmieData.partySlot], MON_DATA_SPECIES), 0, CRY_MODE_FAINT);
-                        gSprites[sAmieData.handSpriteId].invisible = TRUE;
-                        tPetScore = 0;
-                        tCounter = 0;
-                        return;
-                    }
-                    else if (JOY_HELD(DPAD_ANY))
-                    {
-                        if (tSECounter == 0)
-                        {
-                            PlaySE(SE_CONTEST_CURTAIN_FALL);
-                            tSECounter = PET_SE_DELAY;
-                        }
-                        tPetScore -= 4;
-                        tCounter = 0;
-                        tSECounter--;
-                    }
-                }
-
-                if (tPetScore < AMIE_PET_SCORE_TARGET)
-                {
-                    if(!JOY_HELD(DPAD_ANY))
-                    {
-                        if (tCounter == 60)
-                        {
-                            StopPetting(taskId);
-                        }
-                        tCounter++;
-                    }
-                }
-
-                if (tPetScore > AMIE_BAD_PET_SCORE_TARGET)
-                {
-                    if(!JOY_HELD(DPAD_ANY))
-                    {
-                        if (tCounter == 60)
-                        {
-                            StopPetting(taskId);
-                        }
-                        tCounter++;
-                    }
-                }
+                StopPetting(taskId);
+                StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 0);
             }
         }
         else
         {
+            tPetZone = PET_TYPE_NONE;
             StopPetting(taskId);
             StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 0);
         }
-    }
-    else
-    {
-        tPetZone = PET_TYPE_NONE;
-        StopPetting(taskId);
-        StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 0);
+        break;
+    case AMIE_TASK_BACK:
+        if (JOY_NEW(INTERACT_BUTTON))
+        {
+            StartSpriteAnim(&gSprites[sAmieData.handSpriteId], 2);
+            if (tTappedOnce)
+            {
+                tCounter = 0;
+                tState = AMIE_TASK_HAND;
+                gSprites[sAmieData.handSpriteId].invisible = TRUE;
+                PlaySE(SE_PIN);
+                CreateSurprisedEmote();
+                gTasks[taskId].func = Task_TurnMonAroundWaitSurprisedEmote;
+            }
+            else
+            {
+                PlaySE(SE_M_ABSORB);
+                tTappedOnce = TRUE;
+                tCounter = 1;
+            }
+        }
+
+        if (tCounter > 0)
+        {
+            tCounter++;
+            if (tCounter > 32)
+            {
+                tTappedOnce = FALSE;
+                tCounter = 0;
+            }
+        }
+        break;
     }
 
     MoveSpriteFromInput(&gSprites[sAmieData.handSpriteId]);
@@ -872,6 +1059,11 @@ static void SpriteCB_Mon(struct Sprite *sprite)
     }
 }
 
+static void SpriteCB_MonBack(struct Sprite *sprite)
+{
+
+}
+
 static void SpriteCB_Heart(struct Sprite *sprite)
 {
     sprite->sCounter++;
@@ -887,14 +1079,8 @@ static void SpriteCB_Heart(struct Sprite *sprite)
 
 static void SpriteCB_Angry(struct Sprite *sprite)
 {
-    if (sprite->affineAnimEnded)
-        DestroySprite(sprite);
 }
 
 static void SpriteCB_SpeechBubble(struct Sprite *sprite)
 {
-    if (sprite->sCounter == 120)
-        DestroySprite(sprite);
-
-    sprite->sCounter++;
 }
