@@ -55,7 +55,7 @@ enum __attribute__((packed)) OverworldWildEncounterBehaviors
     OWE_SPECIES_BEHAVIOR_COUNT
 };
 
-void OverworldWildEncounters_CB(void);
+void UpdateOverworldWildEncounter(void);
 bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType);
 void StartWildBattleWithOWE(void);
 void SetInstantOWESpawnTimer(void);

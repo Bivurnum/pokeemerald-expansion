@@ -174,7 +174,7 @@ struct AgeSort
 };
 
 
-void OverworldWildEncounters_CB(void)
+void UpdateOverworldWildEncounter(void)
 {
     bool32 shouldSpawnWaterMons = ShouldSpawnWaterOWE();
     
