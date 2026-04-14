@@ -334,7 +334,7 @@ static void ClearSearchParameterBoxText(void);
 static inline bool32 ShouldDisplayPokemonSprite(s16 entryNum)
 {
     return sPokedexView->pokedexList[entryNum].seen
-        || (sPokedexView->pokedexList[entryNum].glimpsed && WE_DEX_SILHOUETTE);
+        || (sPokedexView->pokedexList[entryNum].glimpsed && WE_OWE_SILHOUETTE_DEX);
 }
 
 // const rom data

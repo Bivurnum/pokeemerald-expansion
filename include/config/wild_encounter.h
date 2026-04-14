@@ -25,7 +25,7 @@
 #define WE_OWE_DESPAWN_ON_ENTER_TOWN        TRUE    // If TRUE, despawns all OWEs upon entering a city (MAP_TYPE_CITY) or town (MAP_TYPE_TOWN).
 #define WE_OWE_REPEL_DEXNAV_COLLISION       FALSE   // If TRUE, OWEs can still be triggered by a collision if a Repel or the DexNav is active.
 
-#define WE_DEX_SILHOUETTE                   FALSE   // If TRUE, silhouettes will be shown in the Pokédex and DexNav, when the species has been spawned as an Overworld Wild Encounter.
+#define WE_OWE_SILHOUETTE_DEX               TRUE    // If TRUE, silhouettes will be shown in the Pokédex and DexNav, when the species has been spawned as an Overworld Wild Encounter.
 
 // Should move others from config/overworld.h here?
 

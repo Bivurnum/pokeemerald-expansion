@@ -7512,7 +7512,7 @@ bool32 ShouldShowMonSilhouette(enum NationalDexOrder nationalNum)
         return FALSE;
 
     if (GetSetPokedexFlag(nationalNum, FLAG_GET_GLIMPSED))
-        return WE_DEX_SILHOUETTE;
+        return WE_OWE_SILHOUETTE_DEX;
 
     return FALSE;
 }
