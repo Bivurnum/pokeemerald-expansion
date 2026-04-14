@@ -611,7 +611,7 @@ void TryTriggerOverworldWilEncounter(struct ObjectEvent *obstacle, struct Object
     }
 
     gSpecialVar_LastTalked = wildMon->localId;
-    gSpecialVar_0x8004 = OW_SPECIES(wildMon);
+    gSpecialVar_0x8005 = OW_SPECIES(wildMon);
     gSelectedObjectEvent = GetObjectEventIdByLocalId(wildMon->localId);
 
     // Stop the bobbing animation.
@@ -632,7 +632,7 @@ bool32 ShouldRunDefaultOWEScript(u32 objectEventId)
      && GetObjectEventScriptPointerByObjectEventId(objectEventId) != NULL)
         return FALSE;
 
-    gSpecialVar_0x8004 = OW_SPECIES(owe);
+    gSpecialVar_0x8005 = OW_SPECIES(owe);
     return TRUE;
 }
 
