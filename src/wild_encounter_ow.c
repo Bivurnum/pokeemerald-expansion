@@ -716,14 +716,9 @@ static u32 GetNextOWESpawnSlot(void)
         if (WE_OWE_SPAWN_REPLACEMENT)
         {
             // Cycle through so we remove the oldest mon first
-            spawnSlot = GetOldestActiveOWESlot(FALSE);
-            if (spawnSlot == OWE_INVALID_SPAWN_SLOT)
-                return OWE_INVALID_SPAWN_SLOT;
+            return GetOldestActiveOWESlot(FALSE); 
         }
-        else
-        {
-            return OWE_INVALID_SPAWN_SLOT;
-        }
+        return OWE_INVALID_SPAWN_SLOT;
     }
     else
     {
