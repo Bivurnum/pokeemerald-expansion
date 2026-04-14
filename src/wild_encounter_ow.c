@@ -778,30 +778,6 @@ static bool32 TrySelectTileForOWE(s32* outX, s32* outY)
        y -= closeDistance;
     else
       y += closeDistance;
-
-    // We won't spawn mons in the immediate facing direction
-    // (stops mons spawning in as I'm running in a straight line)
-    switch (GetPlayerFacingDirection())
-    {
-    case DIR_NORTH:
-        if(x == 0 && y < 0)
-            x = -1;
-        break;
-    case DIR_SOUTH:
-        if(x == 0  && y > 0)
-            x = 1;
-        break;
-    case DIR_EAST:
-        if(y == 0 && x > 0)
-            y = -1;
-        break;
-    case DIR_WEST:
-        if(y == 0 && x < 0)
-            y = 1;
-        break;
-    default:
-        break;
-    }
     
     PlayerGetDestCoords(&playerX, &playerY);
     x += playerX;
