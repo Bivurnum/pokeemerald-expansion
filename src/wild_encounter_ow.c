@@ -989,16 +989,11 @@ static void SortOWEAges(void)
 
         array[j + 1] = current;
     }
-
-    array[0].age = numActive;
-    slotMon = &gObjectEvents[GetObjectEventIdByLocalId(GetLocalIdByOWESpawnSlot(array[0].slot))];
-    slotMon->sAge = numActive;
-
-    for (i = 1; i < numActive; i++)
+    
+    for (i = 0; i < numActive; i++)
     {
         slotMon = &gObjectEvents[GetObjectEventIdByLocalId(GetLocalIdByOWESpawnSlot(array[i].slot))];
-        array[i].age = array[i - 1].age - 1;
-        slotMon->sAge = array[i].age;
+        slotMon->sAge = numActive - i;
     }
 }
 
