@@ -816,7 +816,7 @@ static bool32 TrySelectTileForOWE(s32* outX, s32* outY)
     if (ShouldSpawnWaterOWE() && MetatileBehavior_IsWaterWildEncounter(tileBehavior))
         isEncounterTile = TRUE;
 
-    if (!ShouldSpawnWaterOWE() && (MetatileBehavior_IsLandWildEncounter(tileBehavior) || MetatileBehavior_IsIndoorEncounter(tileBehavior)))
+    if (!ShouldSpawnWaterOWE() && MetatileBehavior_IsLandWildEncounter(tileBehavior))
         isEncounterTile = TRUE;
 
     if (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS
@@ -1396,13 +1396,8 @@ static bool32 CheckRestrictedOWEMovementMetatile(s32 xCurrent, s32 yCurrent, s32
      && MetatileBehavior_IsWaterWildEncounter(metatileBehaviourNew))
         return FALSE;
 
-    if (MetatileBehavior_IsIndoorEncounter(metatileBehaviourCurrent)
-     && MetatileBehavior_IsIndoorEncounter(metatileBehaviourNew))
-        return FALSE;
-
     if (!MetatileBehavior_IsLandWildEncounter(metatileBehaviourCurrent)
-     && !MetatileBehavior_IsWaterWildEncounter(metatileBehaviourCurrent)
-     && !MetatileBehavior_IsIndoorEncounter(metatileBehaviourCurrent))
+     && !MetatileBehavior_IsWaterWildEncounter(metatileBehaviourCurrent))
         return FALSE;
 
     return TRUE;
