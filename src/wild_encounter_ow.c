@@ -279,7 +279,7 @@ bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType)
         return FALSE;
 
     if (owe->trainerType != TRAINER_TYPE_OW_WILD_ENCOUNTER)
-       return FALSE;
+        return FALSE;
 
     switch (oweType)
     {
