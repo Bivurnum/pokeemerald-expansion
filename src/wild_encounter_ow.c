@@ -720,13 +720,10 @@ static u32 GetNextOWESpawnSlot(void)
         }
         return OWE_INVALID_SPAWN_SLOT;
     }
-    else
+    for (spawnSlot = 0; spawnSlot < OWE_SPAWNS_MAX; spawnSlot++)
     {
-        for (spawnSlot = 0; spawnSlot < OWE_SPAWNS_MAX; spawnSlot++)
-        {
-            if (GetSpeciesByOWESpawnSlot(spawnSlot) == SPECIES_NONE)
-                break;
-        }
+        if (GetSpeciesByOWESpawnSlot(spawnSlot) == SPECIES_NONE)
+            break;
     }
 
     return spawnSlot;
