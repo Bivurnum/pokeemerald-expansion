@@ -137,7 +137,7 @@ static bool32 StartWildBattleWithOWE_CheckRoamer(u32 indexRoamerOutbreak);
 static bool32 StartWildBattleWithOWE_CheckBattleFrontier(u32 headerId);
 static bool32 StartWildBattleWithOWE_CheckMassOutbreak(u32 indexRoamerOutbreak, enum Species speciesId);
 static bool32 StartWildBattleWithOWE_CheckDoubleBattle(struct ObjectEvent *owe, u32 headerId);
-static bool32 CheckCuurentWildMonHeaderForOWE(bool32 shouldSpawnWaterMons);
+static bool32 CheckCurentWildMonHeaderForOWE(bool32 shouldSpawnWaterMons);
 static u32 GetOldestActiveOWESlot(bool32 forceRemove);
 static u32 GetNextOWESpawnSlot(void);
 static u32 GetSpeciesByOWESpawnSlot(u32 spawnSlot);
@@ -178,7 +178,7 @@ void OverworldWildEncounters_CB(void)
 {
     bool32 shouldSpawnWaterMons = ShouldSpawnWaterOWE();
     
-    if (ArePlayerFieldControlsLocked() || FlagGet(DN_FLAG_SEARCHING) || !CheckCuurentWildMonHeaderForOWE(shouldSpawnWaterMons))
+    if (ArePlayerFieldControlsLocked() || FlagGet(DN_FLAG_SEARCHING) || !CheckCurentWildMonHeaderForOWE(shouldSpawnWaterMons))
         return;
 
     if (!WE_OW_ENCOUNTERS
@@ -636,7 +636,7 @@ bool32 ShouldRunDefaultOWEScript(u32 objectEventId)
     return TRUE;
 }
 
-static bool32 CheckCuurentWildMonHeaderForOWE(bool32 shouldSpawnWaterMons)
+static bool32 CheckCurentWildMonHeaderForOWE(bool32 shouldSpawnWaterMons)
 {
     u32 headerId = GetCurrentMapWildMonHeaderId();
     enum TimeOfDay timeOfDay;
