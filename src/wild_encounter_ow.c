@@ -176,6 +176,8 @@ struct AgeSort
 
 void UpdateOverworldWildEncounter(void)
 {
+    //Check if possible to spawn.
+
     bool32 shouldSpawnWaterMons = ShouldSpawnWaterOWE();
     
     if (ArePlayerFieldControlsLocked() || FlagGet(DN_FLAG_SEARCHING) || !CheckCurrentWildMonHeaderForOWE(shouldSpawnWaterMons))
@@ -212,6 +214,8 @@ void UpdateOverworldWildEncounter(void)
     if (player->currentCoords.x != player->previousCoords.x || player->currentCoords.y != player->previousCoords.y)
         return;
 
+    // Check for a valid tile.
+
     u32 spawnSlot = GetNextOWESpawnSlot();
     s32 x, y;
     if (spawnSlot == OWE_INVALID_SPAWN_SLOT
@@ -221,6 +225,8 @@ void UpdateOverworldWildEncounter(void)
         SetMinimumOWESpawnTimer();
         return;
     }
+
+    // Check for a valid Pokemon.
 
     enum Species speciesId = SPECIES_NONE;
     bool32 isShiny = FALSE;
@@ -239,6 +245,8 @@ void UpdateOverworldWildEncounter(void)
         SetMinimumOWESpawnTimer();
         return;
     }
+
+    // Spawn the Pokemon.
     
     struct ObjectEventTemplate objectEventTemplate = {
         .localId = localId,
