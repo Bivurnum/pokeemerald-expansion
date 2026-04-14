@@ -193,7 +193,7 @@ void UpdateOverworldWildEncounter(void)
     {
         if (sOWESpawnCountdown != OWE_NO_ENCOUNTER_SET)
         {
-            DespwnAllOverworldWildEncounters(OWE_GENERATED, 0);
+            DespawnAllOverworldWildEncounters(OWE_GENERATED, 0);
             sOWESpawnCountdown = OWE_NO_ENCOUNTER_SET;
         }
         return;
@@ -209,7 +209,7 @@ void UpdateOverworldWildEncounter(void)
         return;
     }
     
-    DespwnAllOverworldWildEncounters(OWE_GENERATED, WILD_CHECK_REPEL);
+    DespawnAllOverworldWildEncounters(OWE_GENERATED, WILD_CHECK_REPEL);
     struct ObjectEvent* player = &gObjectEvents[gPlayerAvatar.objectEventId];
     if (player->currentCoords.x != player->previousCoords.x || player->currentCoords.y != player->previousCoords.y)
         return;
@@ -1085,7 +1085,7 @@ u32 DespawnOWEDueToTrainerSight(u32 collision, s32 x, s32 y)
     return collision & (1 << (COLLISION_OBJECT_EVENT - 1));
 }
 
-void DespwnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
+void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
 {
     s32 dx = 0, dy = 0;
 
@@ -1184,7 +1184,7 @@ void TryDespawnOWEsCrossingMapConnection(void)
     if (WE_OWE_DESPAWN_SOUND)
         PlaySE(SE_FLEE);
         
-    DespwnAllOverworldWildEncounters(OWE_ANY, 0);
+    DespawnAllOverworldWildEncounters(OWE_ANY, 0);
 }
 
 static u32 RemoveOldestGeneratedOWE(void)

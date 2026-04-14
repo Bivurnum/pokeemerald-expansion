@@ -67,7 +67,7 @@ void OnOverworldWildEncounterDespawn(struct ObjectEvent *owe);
 bool32 IsOWEDespawnExempt(struct ObjectEvent *owe);
 bool32 DespawnOWEDueToNPCCollision(struct ObjectEvent *curObject, struct ObjectEvent *owe);
 u32 DespawnOWEDueToTrainerSight(u32 collision, s32 x, s32 y);
-void DespwnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags);
+void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags);
 bool32 TryAndDespawnOldestGeneratedOWE_Object(u32 localId, u8 *objectEventId);
 void TryAndDespawnOldestGeneratedOWE_Palette(void);
 void DespawnOWEOnBattleStart(void);
