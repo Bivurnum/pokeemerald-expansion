@@ -30,6 +30,10 @@ static const u32 gAmieBG_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/amie_bg.
 static const u32 gAmieBG_Tilemap[] = INCBIN_U32("graphics/amie_refresh/amie/amie_bg.bin.smolTM");
 static const u16 gAmieBG_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/amie_bg.gbapal");
 
+static const u32 gPuffBarBG_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/puff_bar.4bpp.smol");
+static const u32 gPuffBarBG_Tilemap[] = INCBIN_U32("graphics/amie_refresh/amie/puff_bar.bin.smolTM");
+static const u16 gPuffBarBG_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/puff_bar.gbapal");
+
 static const u16 gHand_Pal[] = INCBIN_U16("graphics/amie_refresh/hand.gbapal");
 static const u32 gHand_Gfx[] = INCBIN_U32("graphics/amie_refresh/hand.4bpp");
 static const u32 gSpeechBubble_Gfx[] = INCBIN_U32("graphics/amie_refresh/speech_bubble.4bpp");
@@ -108,7 +112,7 @@ static const struct BgTemplate sBgTemplates[3] =
     },
     {
         .bg = 2,
-        .charBaseIndex = 1,
+        .charBaseIndex = 0,
         .mapBaseIndex = 7,
         .screenSize = 0,
         .paletteMode = 0,
@@ -500,10 +504,14 @@ void CB2_InitAmie(void)
     case 3:
         DecompressDataWithHeaderVram(gAmieBG_Gfx, (void *)(BG_CHAR_ADDR(1)));
         DecompressDataWithHeaderVram(gAmieBG_Tilemap, (u16*) BG_SCREEN_ADDR(6));
+
+        DecompressDataWithHeaderVram(gPuffBarBG_Gfx, (void *)(BG_CHAR_ADDR(0)));
+        DecompressDataWithHeaderVram(gPuffBarBG_Tilemap, (u16*) BG_SCREEN_ADDR(7));
         gMain.state++;
         break;
     case 4:
         LoadPalette(gAmieBG_Pal, BG_PLTT_ID(0), 5 * PLTT_SIZE_4BPP);
+        LoadPalette(gPuffBarBG_Pal, BG_PLTT_ID(5), PLTT_SIZE_4BPP);
         gMain.state++;
         break;
     case 5:
@@ -569,7 +577,6 @@ static void CreateAmieSprites(void)
 {
     gAmieData->handSpriteId = CreateSprite(&sSpriteTemplate_Hand, HAND_START_X, HAND_START_Y, 1);
     gAmieData->puffIconSpriteId = CreateSprite(&sSpriteTemplate_Puff_Icon, 16, 16, 2);
-    gAmieData->puffIconSpriteId = CreateSprite(&sSpriteTemplate_Switch_Icon, 16, 144, 2);
 }
 
 static void Task_AmieFadeIn(u8 taskId)
@@ -582,7 +589,7 @@ static void Task_AmieMain(u8 taskId)
 {
     switch (tState)
     {
-    case AMIE_TASK_HAND:
+    case AMIE_TASK_NORMAL:
         if (gAmieData->controlsPaused)
         {
             if (gSprites[gAmieData->monSpriteId].animEnded)
@@ -613,6 +620,17 @@ static void Task_AmieMain(u8 taskId)
         break;
     case AMIE_TASK_BACK:
         AmieHandHandleInput(taskId);
+        break;
+    case AMIE_TASK_PUFF:
+        if (JOY_NEW(B_BUTTON | L_BUTTON))
+        {
+            PlaySE(SE_WIN_OPEN);
+            HideBg(2);
+            StartNormalAnim();
+            ResetAmieHand();
+            tState = AMIE_TASK_NORMAL;
+            return;
+        }
         break;
     }
 }
@@ -673,7 +691,7 @@ static void Task_AmieEndFade(u8 taskId)
     }
 }
 
-static bool32 IsHandOnExitIcon(void)
+static bool32 IsHandOnPuffIcon(void)
 {
     if (gSprites[gAmieData->handSpriteId].x < 45 && gSprites[gAmieData->handSpriteId].y < 38)
         return TRUE;
@@ -879,7 +897,7 @@ static void ResetAmieHand(void)
 
 static void AmieHandHandleInput(u8 taskId)
 {
-    if (JOY_NEW(EXIT_BUTTON) || (JOY_NEW(INTERACT_BUTTON) && IsHandOnExitIcon()))
+    if (JOY_NEW(EXIT_BUTTON)/* || (JOY_NEW(INTERACT_BUTTON) && IsHandOnExitIcon())*/)
     {
         gSprites[gAmieData->handSpriteId].invisible = TRUE;
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
@@ -889,7 +907,16 @@ static void AmieHandHandleInput(u8 taskId)
 
     switch (tState)
     {
-    case AMIE_TASK_HAND:
+    case AMIE_TASK_NORMAL:
+        if (JOY_NEW(PUFF_BUTTON) || (JOY_NEW(INTERACT_BUTTON) && IsHandOnPuffIcon()))
+        {
+            PlaySE(SE_WIN_OPEN);
+            ShowBg(2);
+            gSprites[gAmieData->handSpriteId].invisible = TRUE;
+            tState = AMIE_TASK_PUFF;
+            return;
+        }
+
         if (tPetScore > 0 && tPetScore < AMIE_PET_SCORE_TARGET)
             tPetScore--;
 
@@ -1023,7 +1050,7 @@ static void AmieHandHandleInput(u8 taskId)
         if (tTapCounter == 2)
         {
             tCounter = 0;
-            tState = AMIE_TASK_HAND;
+            tState = AMIE_TASK_NORMAL;
             PlaySE(SE_PIN);
             CreateSurprisedEmote();
             gTasks[taskId].func = Task_TurnMonAroundWaitSurprisedEmote;

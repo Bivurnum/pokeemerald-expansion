@@ -6,6 +6,7 @@
 
 #define INTERACT_BUTTON A_BUTTON
 #define EXIT_BUTTON     B_BUTTON
+#define PUFF_BUTTON     L_BUTTON
 
 #define AMIE_MOVE_SPEED 1
 
@@ -47,8 +48,9 @@ struct AmieData
 
 enum AmieTaskStates
 {
-    AMIE_TASK_HAND,
-    AMIE_TASK_BACK
+    AMIE_TASK_NORMAL,
+    AMIE_TASK_BACK,
+    AMIE_TASK_PUFF
 };
 
 enum AmiePetZoneTypes
