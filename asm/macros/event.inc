@@ -2524,21 +2524,30 @@
 	.endm
 
 	@ Sets the Pokedex Glimpsed Flag for the Pokemon with speciesId
-	.macro setglimpsedmon species:req
+	.macro setglimpsedmon species:req, force=FALSE
+	.if \force == TRUE
+		setunobservedmon \species
+	.endif
 	callnative Scrcmd_getsetpokedexflag, requests_effects=1
 	.2byte \species
 	.2byte FLAG_SET_GLIMPSED
 	.endm
 
 	@ Sets the Pokedex Seen Flag for the Pokemon with speciesId
-	.macro setseenmon species:req
+	.macro setseenmon species:req, force=FALSE
+	.if \force == TRUE
+		setunobservedmon \species
+	.endif
 	callnative Scrcmd_getsetpokedexflag, requests_effects=1
 	.2byte \species
 	.2byte FLAG_SET_SEEN
 	.endm
 
 	@ Sets the Pokedex Caught Flag for the Pokemon with speciesId
-	.macro setcaughtmon species:req
+	.macro setcaughtmon species:req, force=FALSE
+	.if \force == TRUE
+		setunobservedmon \species
+	.endif
 	callnative Scrcmd_getsetpokedexflag, requests_effects=1
 	.2byte \species
 	.2byte FLAG_SET_CAUGHT
