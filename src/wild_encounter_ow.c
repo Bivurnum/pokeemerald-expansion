@@ -767,12 +767,17 @@ static bool32 TrySelectTileForOWE(s32* outX, s32* outY)
     // Make sure is not directly next to player
     // Can we make get random tile its own function for use elsewhere in the codebase?
     // Have defines used and then replace MAP_METATILE_VIEW_X/Y with them
-    do
-    {
-        x = (s16)(Random() % OWE_SPAWN_WIDTH_TOTAL) - OWE_SPAWN_WIDTH_RADIUS;
-        y = (s16)(Random() % OWE_SPAWN_HEIGHT_TOTAL) - OWE_SPAWN_HEIGHT_RADIUS;
-    }
-    while (abs(x) <= closeDistance && abs(y) <= closeDistance);
+    x = (s16)(Random() % (OWE_SPAWN_WIDTH_TOTAL - 2 * closeDistance) ) - (OWE_SPAWN_WIDTH_RADIUS - closeDistance);
+    if (x < 0)
+       x -= closeDistance;
+    else
+      x += closeDistance;
+
+    y = (s16)(Random() % (OWE_SPAWN_HEIGHT_TOTAL - 2 * closeDistance) ) - (OWE_SPAWN_HEIGHT_RADIUS - closeDistance);
+    if (y < 0)
+       y -= closeDistance;
+    else
+      y += closeDistance;
 
     // We won't spawn mons in the immediate facing direction
     // (stops mons spawning in as I'm running in a straight line)
