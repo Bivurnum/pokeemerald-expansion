@@ -1639,9 +1639,6 @@ void OWEApproachForBattle(void)
         return;
     }
     
-    if (!IsOverworldWildEncounter(owe, OWE_ANY))
-        return;
-    
     u32 taskId = CreateTask(Task_OWEApproachForBattle, 2);
     if (FindTaskIdByFunc(Task_OWEApproachForBattle) == TASK_NONE)
     {
