@@ -692,9 +692,9 @@ static u32 GetOldestActiveOWESlot(bool32 forceRemove)
     if (spawnSlot >= OWE_SPAWNS_MAX)
         return OWE_INVALID_SPAWN_SLOT;
 
-    for (spawnSlot = 0; spawnSlot < OWE_SPAWNS_MAX; spawnSlot++)
+    for (u32 i = spawnSlot; i < OWE_SPAWNS_MAX; i++)
     {
-        slotMon = &gObjectEvents[GetObjectEventIdByLocalId(GetLocalIdByOWESpawnSlot(spawnSlot))];
+        slotMon = &gObjectEvents[GetObjectEventIdByLocalId(GetLocalIdByOWESpawnSlot(i))];
         if (OW_SPECIES(slotMon) != SPECIES_NONE && (!HasOWENoDespawnFlag(slotMon) || forceRemove == TRUE))
         {
             if (slotMon->sAge > oldest->sAge)
