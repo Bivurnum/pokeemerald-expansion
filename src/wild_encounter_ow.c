@@ -1756,12 +1756,13 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
     if (levelTemplate)
         level = levelTemplate;
 
-    bool32 validSpecies = CheckValidOWESpecies(speciesId);
-    bool32 validLevel = GetOWEEncounterLevel(level) >= MIN_LEVEL && GetOWEEncounterLevel(level) <= MAX_LEVEL;
-    u32 objectEventId = GetObjectEventIdByLocalId(template->localId);
-    assertf((validSpecies && validLevel) || gObjectEvents[objectEventId].active, "invalid manual overworld encounter template\nspecies: %d\nlevel: %d\ntemplate x: %d\ntemplate y: %d\ncheck if valid wild mon header exists", speciesId, level, x, y)
+    assertf((CheckValidOWESpecies(speciesId)
+        && GetOWEEncounterLevel(level) >= MIN_LEVEL
+        && GetOWEEncounterLevel(level) <= MAX_LEVEL)
+        || gObjectEvents[GetObjectEventIdByLocalId(template->localId)].active,
+        "invalid manual overworld encounter template\nspecies: %d\nlevel: %d\ntemplate x: %d\ntemplate y: %d\ncheck if valid wild mon header exists", speciesId, level, x, y)
     {
-        if (!validSpecies)
+        if (!CheckValidOWESpecies(speciesId))
         {
             templateOWE.graphicsId = OBJ_EVENT_GFX_BOY_1;
             templateOWE.trainerType = TRAINER_TYPE_NONE;
@@ -1769,7 +1770,7 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
             templateOWE.movementType = MOVEMENT_TYPE_NONE;
             return templateOWE;
         }
-        else if (!validLevel)
+        else if (!(GetOWEEncounterLevel(level) >= MIN_LEVEL && GetOWEEncounterLevel(level) <= MAX_LEVEL))
         {
             level = MIN_LEVEL;
         }
