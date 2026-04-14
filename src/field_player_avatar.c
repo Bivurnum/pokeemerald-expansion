@@ -932,6 +932,7 @@ static void PlayerNotOnBikeMoving(enum Direction direction, u16 heldKeys)
         else
             PlayerWalkNormal(direction);
     }
+    DespawnAllOverworldWildEncounters(OWE_GENERATED, WILD_CHECK_REPEL);
 }
 
 static enum Collision CheckForPlayerAvatarCollision(enum Direction direction)

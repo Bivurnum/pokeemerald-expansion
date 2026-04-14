@@ -209,7 +209,6 @@ void UpdateOverworldWildEncounter(void)
         return;
     }
     
-    DespawnAllOverworldWildEncounters(OWE_GENERATED, WILD_CHECK_REPEL);
     struct ObjectEvent* player = &gObjectEvents[gPlayerAvatar.objectEventId];
     // Don't spawn if player is mid step.
     if (player->currentCoords.x != player->previousCoords.x || player->currentCoords.y != player->previousCoords.y)
