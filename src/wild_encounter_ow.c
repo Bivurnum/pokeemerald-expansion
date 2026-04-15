@@ -752,10 +752,8 @@ static bool32 TrySelectTileForOWE(s32* outX, s32* outY)
     else
         closeDistance = OWE_SPAWN_DISTANCE_LAND;
 
-    // Select a random tile in [-7, -4] [7, 4] range
-    // Make sure is not directly next to player
-    // Can we make get random tile its own function for use elsewhere in the codebase?
-    // Have defines used and then replace MAP_METATILE_VIEW_X/Y with them
+    // Select a random tile in [-OWE_SPAWN_WIDTH_RADIUS, -OWE_SPAWN_HEIGHT_RADIUS] [OWE_SPAWN_WIDTH_RADIUS, OWE_SPAWN_HEIGHT_RADIUS]
+    // range while excluding tiles that are less than closeDistance away from the player.
     x = (s16)(Random() % (OWE_SPAWN_WIDTH_TOTAL - 2 * closeDistance) ) - (OWE_SPAWN_WIDTH_RADIUS - closeDistance);
     if (x < 0)
        x -= closeDistance;
