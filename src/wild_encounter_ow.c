@@ -561,13 +561,10 @@ static bool32 StartWildBattleWithOWE_CheckBattleFrontier(u32 headerId)
 static bool32 StartWildBattleWithOWE_CheckMassOutbreak(u32 indexRoamerOutbreak, enum Species speciesId)
 {
     if (indexRoamerOutbreak == OWE_MASS_OUTBREAK_INDEX
-     && gSaveBlock1Ptr->outbreakPokemonSpecies == speciesId
-     && gSaveBlock1Ptr->location.mapNum == gSaveBlock1Ptr->outbreakLocationMapNum
-     && gSaveBlock1Ptr->location.mapGroup == gSaveBlock1Ptr->outbreakLocationMapGroup)
+     && gSaveBlock1Ptr->outbreakPokemonSpecies == speciesId)
     {
-        for (u32 i = 0; i < MAX_MON_MOVES; i++)
-            SetMonMoveSlot(&gParties[B_TRAINER_1][0], gSaveBlock1Ptr->outbreakPokemonMoves[i], i);
-        
+        ZeroEnemyPartyMons();
+        SetUpMassOutbreakEncounter(0);
         BattleSetup_StartWildBattle();
         return TRUE;
     }
