@@ -1350,12 +1350,9 @@ bool32 CheckRestrictedOWEMovement(struct ObjectEvent *owe, enum Direction direct
     if (GetCollisionInDirection(owe, direction))
         return TRUE;
 
-    if (owe->movementType != MOVEMENT_TYPE_WANDER_AROUND_OWE)
-        return TRUE;
-
     if (WE_OWE_UNRESTRICT_SIGHT
-     && CanAwareOWESeePlayer(owe)
-     && owe->movementType != MOVEMENT_TYPE_WANDER_AROUND_OWE)
+     && owe->movementType != MOVEMENT_TYPE_WANDER_AROUND_OWE
+     && CanAwareOWESeePlayer(owe))
         return FALSE;
 
     s32 xCurrent = owe->currentCoords.x;
