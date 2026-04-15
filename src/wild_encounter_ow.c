@@ -504,8 +504,10 @@ static u32 GetOWERoamerStatusFromIndex(u32 indexRoamer)
 
 static u32 GetOWERoamerOutbreakStatus(struct ObjectEvent *owe)
 {
-    if (!IsOverworldWildEncounter(owe, OWE_ANY))
+    assertf(IsOverworldWildEncounter(owe, OWE_ANY))
+    {
         return OWE_INVALID_ROAMER_OUTBREAK;
+    }
 
     u32 status = GetOWERoamerIndex(owe);
     if (status == OWE_NON_ROAMER_OUTBREAK || status == OWE_MASS_OUTBREAK_INDEX)
