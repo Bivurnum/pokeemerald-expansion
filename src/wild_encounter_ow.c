@@ -129,6 +129,27 @@ static inline bool32 ShouldSpawnWaterOWE(void)
     return TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_UNDERWATER);
 }
 
+static inline bool32 IsObjectOWE(struct ObjectEvent *owe)
+{
+    if (!IS_OW_MON_OBJ(owe))
+        return FALSE;
+
+    if (owe->trainerType != TRAINER_TYPE_OW_WILD_ENCOUNTER)
+        return FALSE;
+
+    return TRUE;
+}
+
+static inline bool32 IsLocalIdGeneratedOWE(u32 localId)
+{
+    return (localId <= LOCALID_OW_ENCOUNTER_END && localId > (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX));
+}
+
+static inline bool32 IsLocalIdManualOWE(u32 localId)
+{
+    return (localId > LOCALID_OW_ENCOUNTER_END || localId <= (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX));
+}
+
 static bool32 CreateEnemyPartyOWE(struct OWEInfo *info, s32 x, s32 y);
 static bool32 OWE_DoesOWERoamerExist(void);
 static u32 GetOWERoamerStatusFromIndex(u32 indexRoamer);
@@ -281,10 +302,7 @@ void UpdateOverworldWildEncounter(void)
 
 bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType)
 {
-    if (!IS_OW_MON_OBJ(owe))
-        return FALSE;
-
-    if (owe->trainerType != TRAINER_TYPE_OW_WILD_ENCOUNTER)
+    if (!IsObjectOWE(owe))
         return FALSE;
 
     switch (oweType)
@@ -294,11 +312,25 @@ bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType)
         return TRUE;
     
     case OWE_GENERATED:
-        return (owe->localId <= LOCALID_OW_ENCOUNTER_END && owe->localId > (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX));
+        return IsLocalIdGeneratedOWE(owe->localId);
 
     case OWE_MANUAL:
-        return (owe->localId > LOCALID_OW_ENCOUNTER_END || owe->localId <= (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX));
+        return IsLocalIdManualOWE(owe->localId);
     }
+}
+
+static enum TypeOWE GetOverworldWildEncounterType(struct ObjectEvent *owe)
+{
+    if (!IsObjectOWE(owe))
+        return OWE_NONE;
+
+    if (IsLocalIdGeneratedOWE(owe->localId))
+        return OWE_GENERATED;
+
+    if (IsLocalIdManualOWE(owe->localId))
+        return OWE_MANUAL;
+
+    return OWE_ANY;
 }
 
 void StartWildBattleWithOWE(void)
@@ -993,10 +1025,11 @@ static void SortOWEAges(void)
 
 void OnOverworldWildEncounterSpawn(struct ObjectEvent *owe)
 {
-    if (!IsOverworldWildEncounter(owe, OWE_ANY))
+    enum TypeOWE type = GetOverworldWildEncounterType(owe);
+    if (type == OWE_NONE)
         return;
     
-    if (IsOverworldWildEncounter(owe, OWE_GENERATED))
+    if (type == OWE_GENERATED)
         SortOWEAges();
 
     DoOWESpawnDespawnAnim(owe, TRUE);
@@ -1004,7 +1037,8 @@ void OnOverworldWildEncounterSpawn(struct ObjectEvent *owe)
 
 void OnOverworldWildEncounterDespawn(struct ObjectEvent *owe)
 {
-    if (!IsOverworldWildEncounter(owe, OWE_ANY))
+    enum TypeOWE type = GetOverworldWildEncounterType(owe);
+    if (type == OWE_NONE)
         return;
 
     owe->sOverworldEncounterLevel = 0;

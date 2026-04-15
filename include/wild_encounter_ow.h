@@ -21,7 +21,8 @@ enum TypeOWE
 {
     OWE_ANY,
     OWE_GENERATED,
-    OWE_MANUAL
+    OWE_MANUAL,
+    OWE_NONE
 };
 
 // OWE_SPEED_FASTER seems to visually bug out sometimes.
