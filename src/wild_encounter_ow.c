@@ -1353,7 +1353,9 @@ bool32 CheckRestrictedOWEMovement(struct ObjectEvent *owe, enum Direction direct
     if (owe->movementType != MOVEMENT_TYPE_WANDER_AROUND_OWE)
         return TRUE;
 
-    if (CanAwareOWESeePlayer(owe) && WE_OWE_UNRESTRICT_SIGHT)
+    if (WE_OWE_UNRESTRICT_SIGHT
+     && CanAwareOWESeePlayer(owe)
+     && owe->movementType != MOVEMENT_TYPE_WANDER_AROUND_OWE)
         return FALSE;
 
     s32 xCurrent = owe->currentCoords.x;
@@ -1388,6 +1390,7 @@ static bool32 CheckRestrictedOWEMovementMetatile(s32 xCurrent, s32 yCurrent, s32
 {
     if (!WE_OWE_RESTRICT_METATILE)
         return FALSE;
+
     u32 metatileBehaviourCurrent = MapGridGetMetatileBehaviorAt(xCurrent, yCurrent);
     u32 metatileBehaviourNew = MapGridGetMetatileBehaviorAt(xNew, yNew);
 
