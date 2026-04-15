@@ -8,6 +8,8 @@
 #include "oras_dowse.h"
 #include "overworld.h"
 #include "sound.h"
+#include "wild_encounter.h"
+#include "wild_encounter_ow.h"
 #include "constants/songs.h"
 
 // this file's functions
@@ -326,6 +328,7 @@ static void StandardBikeTransition_MoveDirection(u8 direction)
         else
             PlayerRideWaterCurrent(direction);
     }
+    DespawnAllOverworldWildEncounters(OWE_GENERATED, WILD_CHECK_REPEL);
 }
 
 static void StandardBikeTransition_Downhill(u8 v)
@@ -470,6 +473,7 @@ static void MachBikeTransition_TrySpeedUp(enum Direction direction)
                 gPlayerAvatar.bikeFrameCounter++;
         }
     }
+    DespawnAllOverworldWildEncounters(OWE_GENERATED, WILD_CHECK_REPEL);
 }
 
 static void MachBikeTransition_TrySlowDown(enum Direction direction)
@@ -860,6 +864,7 @@ static void AcroBikeTransition_Moving(enum Direction direction)
         else
             PlayerRideWaterCurrent(direction);
     }
+    DespawnAllOverworldWildEncounters(OWE_GENERATED, WILD_CHECK_REPEL);
 }
 
 static void AcroBikeTransition_NormalToWheelie(enum Direction direction)
