@@ -1498,8 +1498,10 @@ static bool32 IsOWELineOfSightClear(struct ObjectEvent *player, enum Direction d
 
 bool32 IsPlayerInsideOWEActiveDistance(struct ObjectEvent *owe)
 {
-    if (!IsOverworldWildEncounter(owe, OWE_ANY))
+    assertf(IsOverworldWildEncounter(owe, OWE_ANY))
+    {
         return FALSE;
+    }
     
     struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
     u32 distance = OWE_DEFAULT_CHASE_RANGE;
