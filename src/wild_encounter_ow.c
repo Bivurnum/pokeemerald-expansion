@@ -1472,8 +1472,10 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
         break;
     }
 
+    /* These lines are creating illegal opcodes, removing until fixes
     if (retVal && IsOWELineOfSightClear(player, GetOppositeDirection(direction), viewDistance))
         return TRUE;
+    */
     
     return FALSE;
 }
