@@ -73,7 +73,7 @@ void StartWildBattleWithOWE(void);
 void SetInstantOWESpawnTimer(void);
 void SetMinimumOWESpawnTimer(void);
 void TryTriggerOverworldWilEncounter(struct ObjectEvent *obstacle, struct ObjectEvent *collider);
-bool32 ShouldRunDefaultOWEScript(u32 objectEventId);
+const u8 *GetOverworlWildEncounterScript(u32 objectEventId);
 void OnOverworldWildEncounterSpawn(struct ObjectEvent *owe);
 void OnOverworldWildEncounterDespawn(struct ObjectEvent *owe);
 bool32 IsOWEDespawnExempt(struct ObjectEvent *owe);

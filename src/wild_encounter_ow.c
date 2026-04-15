@@ -275,7 +275,6 @@ void UpdateOverworldWildEncounter(void)
         .elevation = MapGridGetElevationAt(x, y),
         .movementType = OWE_GetMovementTypeFromSpecies(OWEInfo.speciesId),
         .trainerType = TRAINER_TYPE_OW_WILD_ENCOUNTER,
-        .script = InteractWithOverworldWildEncounter,
     };
     u32 objectEventId = GetObjectEventIdByLocalId(OWEInfo.localId);
     struct ObjectEvent *owe = &gObjectEvents[objectEventId];
@@ -659,19 +658,18 @@ void TryTriggerOverworldWilEncounter(struct ObjectEvent *obstacle, struct Object
     ScriptContext_SetupScript(InteractWithOverworldWildEncounter);
 }
 
-bool32 ShouldRunDefaultOWEScript(u32 objectEventId)
+const u8 *GetOverworlWildEncounterScript(u32 objectEventId)
 {
-    struct ObjectEvent *owe = &gObjectEvents[objectEventId];
-    if (!IsOverworldWildEncounter(owe, OWE_ANY))
-        return FALSE;
-
-    if (IsOverworldWildEncounter(owe, OWE_MANUAL)
-     && GetObjectEventScriptPointerByObjectEventId(objectEventId) != InteractWithOverworldWildEncounter
-     && GetObjectEventScriptPointerByObjectEventId(objectEventId) != NULL)
-        return FALSE;
-
-    gSpecialVar_0x8005 = OW_SPECIES(owe);
-    return TRUE;
+    const u8 *script = GetObjectEventScriptPointerByObjectEventId(objectEventId);
+    if (script)
+    {
+        return script;
+    }
+    else
+    {
+        gSpecialVar_0x8005 = OW_SPECIES(&gObjectEvents[objectEventId]);
+        return InteractWithOverworldWildEncounter;
+    }
 }
 
 static bool32 CheckCurrentWildMonHeaderForOWE(bool32 shouldSpawnWaterMons)
