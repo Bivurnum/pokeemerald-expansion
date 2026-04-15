@@ -756,15 +756,15 @@ static bool32 TrySelectTileForOWE(s32* outX, s32* outY)
     // range while excluding tiles that are less than closeDistance away from the player.
     x = (s16)(Random() % (OWE_SPAWN_WIDTH_TOTAL - 2 * closeDistance) ) - (OWE_SPAWN_WIDTH_RADIUS - closeDistance);
     if (x < 0)
-       x -= closeDistance;
+        x -= closeDistance;
     else
-      x += closeDistance;
+        x += closeDistance;
 
     y = (s16)(Random() % (OWE_SPAWN_HEIGHT_TOTAL - 2 * closeDistance) ) - (OWE_SPAWN_HEIGHT_RADIUS - closeDistance);
     if (y < 0)
-       y -= closeDistance;
+        y -= closeDistance;
     else
-      y += closeDistance;
+        y += closeDistance;
     
     PlayerGetDestCoords(&playerX, &playerY);
     x += playerX;
