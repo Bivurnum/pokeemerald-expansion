@@ -231,6 +231,7 @@ void UpdateOverworldWildEncounter(void)
     struct OWEInfo OWEInfo = {0};
 
     OWEInfo.localId = GetLocalIdByOWESpawnSlot(spawnSlot);
+    SetSpeciesInfoForOWE(&OWEInfo, x, y);
     GetGraphicsIdForOWE(&OWEInfo, x, y);
 
     if (OWEInfo.speciesId == SPECIES_NONE
@@ -843,7 +844,6 @@ static void SetSpeciesInfoForOWE(struct OWEInfo *info, u32 x, u32 y)
 
 static void GetGraphicsIdForOWE(struct OWEInfo *info, u32 x, u32 y)
 {
-    SetSpeciesInfoForOWE(info, x, y);
     assertf(CheckValidOWESpecies(info->speciesId), "invalid generated overworld encounter\nspecies: %d\ncheck if valid wild mon header exists", info->speciesId);
     info->graphicsId = info->speciesId + OBJ_EVENT_MON;
 
