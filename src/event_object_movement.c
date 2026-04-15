@@ -10209,17 +10209,12 @@ void ObjectEventsTurnToEachOther(struct ObjectEvent *objectOne, struct ObjectEve
         switch (objectDirOne) 
         {
         case DIR_NORTH:
-            objectDirOne = DIR_SOUTH;
-            break;
         case DIR_SOUTH:
-            objectDirOne = DIR_NORTH;
-            break;
         case DIR_WEST:
-            objectDirOne = DIR_EAST;
-            break;
         case DIR_EAST:
-            objectDirOne = DIR_WEST;
+            objectDirOne = GetOppositeDirection(objectDirOne);
             break;
+        
         default:
             break;
         }
