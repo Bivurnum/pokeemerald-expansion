@@ -129,7 +129,7 @@ static inline bool32 ShouldSpawnWaterOWE(void)
     return TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_UNDERWATER);
 }
 
-static bool32 CreateEnemyPartyOWE(enum Species *speciesId, u32 *level, u32 *indexRoamerOutbreak, s32 x, s32 y);
+static bool32 CreateEnemyPartyOWE(struct OWEInfo *info, s32 x, s32 y);
 static bool32 OWE_DoesOWERoamerExist(void);
 static u32 GetOWERoamerStatusFromIndex(u32 indexRoamer);
 static u32 GetOWERoamerOutbreakStatus(struct ObjectEvent *owe);
@@ -142,8 +142,8 @@ static u32 GetOldestActiveOWESlot(bool32 forceRemove);
 static u32 GetNextOWESpawnSlot(void);
 static u32 GetSpeciesByOWESpawnSlot(u32 spawnSlot);
 static bool32 TrySelectTileForOWE(s32* outX, s32* outY);
-static void SetSpeciesInfoForOWE(enum Species *speciesId, bool32 *isShiny, bool32 *isFemale, u32 *level, u32 *indexRoamerOutbreak, s32 x, s32 y);
-static u32 GetGraphicsIdForOWE(enum Species *speciesId, bool32 *isShiny, bool32 *isFemale, u32 *level, u32 *indexRoamerOutbreak, s32 x, s32 y);
+static void SetSpeciesInfoForOWE(struct OWEInfo *info, u32 x, u32 y);
+static void GetGraphicsIdForOWE(struct OWEInfo *info, u32 x, u32 y);
 static bool32 CheckCanRemoveOWE(u32 localId);
 static bool32 CheckCanLoadOWE(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
 static bool32 CheckCanLoadOWE_Palette(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
@@ -228,19 +228,16 @@ void UpdateOverworldWildEncounter(void)
 
     // Check for a valid Pokemon.
 
-    enum Species speciesId = SPECIES_NONE;
-    bool32 isShiny = FALSE;
-    bool32 isFemale = FALSE;
-    u32 indexRoamerOutbreak = OWE_NON_ROAMER_OUTBREAK;
-    u32 localId = GetLocalIdByOWESpawnSlot(spawnSlot);
-    u32 level = MIN_LEVEL;
-    u32 graphicsId = GetGraphicsIdForOWE(&speciesId, &isShiny, &isFemale, &level, &indexRoamerOutbreak, x, y);
+    struct OWEInfo OWEInfo = {0};
 
-    if (speciesId == SPECIES_NONE
-     || (WE_OWE_SPECIAL_ONLY && indexRoamerOutbreak == OWE_NON_ROAMER_OUTBREAK)
-     || !IsWildLevelAllowedByRepel(GetOWEEncounterLevel(level))
-     || !IsAbilityAllowingEncounter(GetOWEEncounterLevel(level))
-     || !CheckCanLoadOWE(speciesId, isFemale, isShiny, x, y))
+    OWEInfo.localId = GetLocalIdByOWESpawnSlot(spawnSlot);
+    GetGraphicsIdForOWE(&OWEInfo, x, y);
+
+    if (OWEInfo.speciesId == SPECIES_NONE
+     || (WE_OWE_SPECIAL_ONLY && OWEInfo.indexRoamerOutbreak == OWE_NON_ROAMER_OUTBREAK)
+     || !IsWildLevelAllowedByRepel(GetOWEEncounterLevel(OWEInfo.level))
+     || !IsAbilityAllowingEncounter(GetOWEEncounterLevel(OWEInfo.level))
+     || !CheckCanLoadOWE(OWEInfo.speciesId, OWEInfo.isFemale, OWEInfo.isShiny, x, y))
     {
         SetMinimumOWESpawnTimer();
         return;
@@ -249,16 +246,16 @@ void UpdateOverworldWildEncounter(void)
     // Spawn the Pokemon.
     
     struct ObjectEventTemplate objectEventTemplate = {
-        .localId = localId,
-        .graphicsId = graphicsId,
+        .localId = OWEInfo.localId,
+        .graphicsId = OWEInfo.graphicsId,
         .x = x - MAP_OFFSET,
         .y = y - MAP_OFFSET,
         .elevation = MapGridGetElevationAt(x, y),
-        .movementType = OWE_GetMovementTypeFromSpecies(speciesId),
+        .movementType = OWE_GetMovementTypeFromSpecies(OWEInfo.speciesId),
         .trainerType = TRAINER_TYPE_OW_WILD_ENCOUNTER,
         .script = InteractWithOverworldWildEncounter,
     };
-    u32 objectEventId = GetObjectEventIdByLocalId(localId);
+    u32 objectEventId = GetObjectEventIdByLocalId(OWEInfo.localId);
     struct ObjectEvent *owe = &gObjectEvents[objectEventId];
     if (ShouldDespawnGeneratedForNewOWE(owe))
         RemoveObjectEvent(owe);
@@ -272,8 +269,8 @@ void UpdateOverworldWildEncounter(void)
 
     owe = &gObjectEvents[objectEventId];
     owe->disableCoveringGroundEffects = TRUE;
-    owe->sOverworldEncounterLevel = level;
-    owe->sRoamerOutbreakStatus = indexRoamerOutbreak;
+    owe->sOverworldEncounterLevel = OWEInfo.level;
+    owe->sRoamerOutbreakStatus = OWEInfo.indexRoamerOutbreak;
 
     enum Direction directions[4];
     memcpy(directions, gStandardDirections, sizeof directions);
@@ -356,7 +353,7 @@ void StartWildBattleWithOWE(void)
     BattleSetup_StartWildBattle();
 }
 
-static bool32 CreateEnemyPartyOWE(enum Species *speciesId, u32 *level, u32 *indexRoamerOutbreak, s32 x, s32 y)
+static bool32 CreateEnemyPartyOWE(struct OWEInfo *info, s32 x, s32 y)
 {
     const struct WildPokemonInfo *wildMonInfo;
     enum WildPokemonArea wildArea;
@@ -421,25 +418,25 @@ static bool32 CreateEnemyPartyOWE(enum Species *speciesId, u32 *level, u32 *inde
     If none of these checks succeed, speciesId is set to SPECIES_NONE and FALSE is returned.
     */
 
-    if (*indexRoamerOutbreak != OWE_INVALID_ROAMER_OUTBREAK)
+    if (info->indexRoamerOutbreak != OWE_INVALID_ROAMER_OUTBREAK)
     {
         if (TryStartRoamerEncounter() && !OWE_DoesOWERoamerExist())
         {
-            *indexRoamerOutbreak = GetOWERoamerStatusFromIndex(gEncounteredRoamerIndex);
+            info->indexRoamerOutbreak = GetOWERoamerStatusFromIndex(gEncounteredRoamerIndex);
             return TRUE;
         }
         else if (WE_OWE_FEEBAS_SPOTS && MetatileBehavior_IsWaterWildEncounter(metatileBehavior) && CheckFeebasAtCoords(x, y))
         {
             CreateWildMon(gWildFeebas.species, ChooseWildMonLevel(&gWildFeebas, 0, WILD_AREA_FISHING));
             if (WE_OWE_PREVENT_FEEBAS_DESPAWN)
-                SetOWENoDespawnFlag(level);
+                SetOWENoDespawnFlag(&info->level);
 
             return TRUE;
         }
         else if (DoMassOutbreakEncounterTest() && MetatileBehavior_IsLandWildEncounter(metatileBehavior))
         {
             SetUpMassOutbreakEncounter(0);
-            *indexRoamerOutbreak = OWE_MASS_OUTBREAK_INDEX;
+            info->indexRoamerOutbreak = OWE_MASS_OUTBREAK_INDEX;
             return TRUE;
         }
         else
@@ -814,49 +811,47 @@ static bool32 TrySelectTileForOWE(s32* outX, s32* outY)
     return FALSE;
 }
 
-static void SetSpeciesInfoForOWE(enum Species *speciesId, bool32 *isShiny, bool32 *isFemale, u32 *level, u32 *indexRoamerOutbreak, s32 x, s32 y)
+static void SetSpeciesInfoForOWE(struct OWEInfo *info, u32 x, u32 y)
 {
     u32 personality;
 
-    if (!CreateEnemyPartyOWE(speciesId, level, indexRoamerOutbreak, x, y))
+    if (!CreateEnemyPartyOWE(info, x, y))
     {
         ZeroEnemyPartyMons();
-        *speciesId = SPECIES_NONE;
+        info->speciesId = SPECIES_NONE;
         return;
     }
  
-    *speciesId = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_SPECIES);
-    SetOWEEncounterLevel(level, GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_LEVEL));
+    info->speciesId = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_SPECIES);
+    SetOWEEncounterLevel(&info->level, GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_LEVEL));
     personality = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_PERSONALITY);
 
-    if (*speciesId == SPECIES_UNOWN)
-        *speciesId = GetUnownSpeciesId(personality);
+    if (info->speciesId == SPECIES_UNOWN)
+        info->speciesId = GetUnownSpeciesId(personality);
 
-    *isShiny = ComputePlayerShinyOdds(personality, READ_OTID_FROM_SAVE);
-    if (GetGenderFromSpeciesAndPersonality(*speciesId, personality) == MON_FEMALE)
-        *isFemale = TRUE;
+    info->isShiny = ComputePlayerShinyOdds(personality, READ_OTID_FROM_SAVE);
+    if (GetGenderFromSpeciesAndPersonality(info->speciesId, personality) == MON_FEMALE)
+        info->isFemale = TRUE;
     else
-        *isFemale = FALSE;
+        info->isFemale = FALSE;
 
-    if (WE_OWE_PREVENT_SHINY_DESPAWN && *isShiny)
-        SetOWENoDespawnFlag(level);
+    if (WE_OWE_PREVENT_SHINY_DESPAWN && info->isShiny)
+        SetOWENoDespawnFlag(&info->level);
 
     ZeroEnemyPartyMons();
 }
 
-static u32 GetGraphicsIdForOWE(enum Species *speciesId, bool32 *isShiny, bool32 *isFemale, u32 *level, u32 *indexRoamerOutbreak, s32 x, s32 y)
+static void GetGraphicsIdForOWE(struct OWEInfo *info, u32 x, u32 y)
 {
-    SetSpeciesInfoForOWE(speciesId, isShiny, isFemale, level, indexRoamerOutbreak, x, y);
-    assertf(CheckValidOWESpecies(*speciesId), "invalid generated overworld encounter\nspecies: %d\ncheck if valid wild mon header exists", speciesId);
-    u32 graphicsId = *speciesId + OBJ_EVENT_MON;
+    SetSpeciesInfoForOWE(info, x, y);
+    assertf(CheckValidOWESpecies(info->speciesId), "invalid generated overworld encounter\nspecies: %d\ncheck if valid wild mon header exists", info->speciesId);
+    info->graphicsId = info->speciesId + OBJ_EVENT_MON;
 
-    if (*isFemale)
-        graphicsId += OBJ_EVENT_MON_FEMALE;
+    if (info->isFemale)
+        info->graphicsId += OBJ_EVENT_MON_FEMALE;
 
-    if (*isShiny)
-        graphicsId += OBJ_EVENT_MON_SHINY;
-
-    return graphicsId;
+    if (info->isShiny)
+        info->graphicsId += OBJ_EVENT_MON_SHINY;
 }
 
 static bool32 CheckCanRemoveOWE(u32 localId)
@@ -1715,27 +1710,26 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
         return *template;
 
     struct ObjectEventTemplate templateOWE = *template;
+    struct OWEInfo info = {0};
     
-    u32 graphicsId;
-    enum Species speciesId, speciesTemplate = SanitizeSpeciesId(templateOWE.graphicsId & OBJ_EVENT_MON_SPECIES_MASK);
-    bool32 isShiny = FALSE, isShinyTemplate = (templateOWE.graphicsId & OBJ_EVENT_MON_SHINY) ? TRUE : FALSE;
-    bool32 isFemale = FALSE;
-    u32 level = MIN_LEVEL, levelTemplate = templateOWE.sOverworldEncounterLevel;
-    u32 indexRoamerOutbreak = OWE_INVALID_ROAMER_OUTBREAK;
+    enum Species speciesTemplate = SanitizeSpeciesId(templateOWE.graphicsId & OBJ_EVENT_MON_SPECIES_MASK);
+    bool32 isShinyTemplate = (templateOWE.graphicsId & OBJ_EVENT_MON_SHINY) ? TRUE : FALSE;
+    u32 levelTemplate = templateOWE.sOverworldEncounterLevel;
+    info.indexRoamerOutbreak = OWE_INVALID_ROAMER_OUTBREAK;
     u32 x = template->x;
     u32 y = template->y;
 
-    SetSpeciesInfoForOWE(&speciesId, &isShiny, &isFemale, &level, &indexRoamerOutbreak, x, y);
+    SetSpeciesInfoForOWE(&info, x, y);
     if (speciesTemplate)
-        speciesId = speciesTemplate;
+        info.speciesId = speciesTemplate;
 
     if (levelTemplate)
-        level = levelTemplate;
+        info.level = levelTemplate;
 
-    bool32 validSpecies = CheckValidOWESpecies(speciesId);
-    bool32 validLevel = GetOWEEncounterLevel(level) >= MIN_LEVEL && GetOWEEncounterLevel(level) <= MAX_LEVEL;
+    bool32 validSpecies = CheckValidOWESpecies(info.speciesId);
+    bool32 validLevel = GetOWEEncounterLevel(info.level) >= MIN_LEVEL && GetOWEEncounterLevel(info.level) <= MAX_LEVEL;
     u32 objectEventId = GetObjectEventIdByLocalId(template->localId);
-    assertf((validSpecies && validLevel) || gObjectEvents[objectEventId].active, "invalid manual overworld encounter template\nspecies: %d\nlevel: %d\ntemplate x: %d\ntemplate y: %d\ncheck if valid wild mon header exists", speciesId, level, x, y)
+    assertf((validSpecies && validLevel) || gObjectEvents[objectEventId].active, "invalid manual overworld encounter template\nspecies: %d\nlevel: %d\ntemplate x: %d\ntemplate y: %d\ncheck if valid wild mon header exists", info.speciesId, info.level, x, y)
     {
         if (!validSpecies)
         {
@@ -1747,31 +1741,31 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
         }
         else if (!validLevel)
         {
-            level = MIN_LEVEL;
+            info.level = MIN_LEVEL;
         }
     }
 
     if (isShinyTemplate)
-        isShiny = isShinyTemplate;
+        info.isShiny = isShinyTemplate;
 
     if (templateOWE.graphicsId & OBJ_EVENT_MON && templateOWE.graphicsId & OBJ_EVENT_MON_FEMALE)
-        isFemale = TRUE;
+        info.isFemale = TRUE;
     else if (templateOWE.graphicsId & OBJ_EVENT_MON)
-        isFemale = FALSE;
+        info.isFemale = FALSE;
     else
-        isFemale = GetGenderFromSpeciesAndPersonality(speciesId, Random32()) == MON_FEMALE;
+        info.isFemale = GetGenderFromSpeciesAndPersonality(info.speciesId, Random32()) == MON_FEMALE;
 
     if (templateOWE.movementType == MOVEMENT_TYPE_NONE)
-        templateOWE.movementType = OWE_GetMovementTypeFromSpecies(speciesId);
+        templateOWE.movementType = OWE_GetMovementTypeFromSpecies(info.speciesId);
 
-    graphicsId = speciesId + OBJ_EVENT_MON;
-    if (isFemale)
-        graphicsId += OBJ_EVENT_MON_FEMALE;
-    if (isShiny)
-        graphicsId += OBJ_EVENT_MON_SHINY;
+    info.graphicsId = info.speciesId + OBJ_EVENT_MON;
+    if (info.isFemale)
+        info.graphicsId += OBJ_EVENT_MON_FEMALE;
+    if (info.isShiny)
+        info.graphicsId += OBJ_EVENT_MON_SHINY;
 
-    templateOWE.graphicsId = graphicsId;
-    templateOWE.sOverworldEncounterLevel = level;
+    templateOWE.graphicsId = info.graphicsId;
+    templateOWE.sOverworldEncounterLevel = info.level;
     
     return templateOWE;
 }

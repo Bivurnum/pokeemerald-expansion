@@ -44,6 +44,17 @@ struct BehaviorOWE
     enum SpeedOWE activeSpeed;
 };
 
+struct OWEInfo
+{
+    enum Species speciesId;
+    bool32 isShiny;
+    bool32 isFemale;
+    u32 indexRoamerOutbreak;
+    u32 localId;
+    u32 level;
+    u32 graphicsId;
+};
+
 enum __attribute__((packed)) OverworldWildEncounterBehaviors
 {
     OWE_IGNORE_PLAYER,
