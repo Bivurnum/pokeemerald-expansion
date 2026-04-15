@@ -1287,14 +1287,15 @@ static const u8 sSpinMovementActions[] = {
 };
 
 static const u8 sOppositeDirections[] = {
-    DIR_NORTH,
-    DIR_SOUTH,
-    DIR_EAST,
-    DIR_WEST,
-    DIR_NORTHEAST,
-    DIR_NORTHWEST,
-    DIR_SOUTHEAST,
-    DIR_SOUTHWEST,
+    [DIR_NONE]      = DIR_NONE,
+    [DIR_SOUTH]     = DIR_NORTH,
+    [DIR_NORTH]     = DIR_SOUTH,
+    [DIR_WEST]      = DIR_EAST,
+    [DIR_EAST]      = DIR_WEST,
+    [DIR_SOUTHWEST] = DIR_NORTHEAST,
+    [DIR_SOUTHEAST] = DIR_NORTHWEST,
+    [DIR_NORTHWEST] = DIR_SOUTHEAST,
+    [DIR_NORTHEAST] = DIR_SOUTHWEST,
 };
 
 static const u8 sRotate90Direction[][2] =
