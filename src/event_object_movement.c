@@ -1296,7 +1296,7 @@ static const u8 sOppositeDirections[] = {
     DIR_SOUTHEAST,
     DIR_SOUTHWEST,
 };
-// Should this and above be enum Direction?
+
 static const u8 sRotate90Direction[][2] =
 {
     [DIR_NONE]      = { DIR_NONE,       DIR_NONE },
