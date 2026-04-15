@@ -325,14 +325,6 @@ void StartWildBattleWithOWE(void)
     u32 level = GetOWEEncounterLevel(owe->sOverworldEncounterLevel);
     u32 personality;
 
-    switch (gSpeciesInfo[speciesId].genderRatio)
-    {
-    case MON_MALE:
-    case MON_FEMALE:
-    case MON_GENDERLESS:
-        gender = gSpeciesInfo[speciesId].genderRatio;
-    }
-
     if (level < MIN_LEVEL || level > MAX_LEVEL)
         level = MIN_LEVEL;
 
