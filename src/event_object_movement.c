@@ -11970,7 +11970,7 @@ bool8 MovementType_OverworldWildEncounter_WanderAround_Step4(struct ObjectEvent 
 
     SetObjectEventDirection(objectEvent, chosenDirection);
     sprite->sTypeFuncId = 5;
-    if (CheckRestrictedOWEMovement(objectEvent, chosenDirection))
+    if (CheckRestrictedOWEMovement(objectEvent, chosenDirection) && objectEvent->movementType != MOVEMENT_TYPE_WANDER_AROUND_OWE)
         sprite->sTypeFuncId = 1;
 
     return TRUE;
