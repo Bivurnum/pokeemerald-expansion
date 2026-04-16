@@ -77,7 +77,6 @@ struct InfoOWE
     u32 category;
     u32 localId;
     u32 level;
-    u32 graphicsId;
 };
 
 
