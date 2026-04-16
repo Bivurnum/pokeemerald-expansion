@@ -181,7 +181,7 @@ static bool32 OWE_ShouldPlayOWEFleeSound(struct ObjectEvent *owe);
 static bool32 CheckRestrictedOWEMovementAtCoords(struct ObjectEvent *owe, s32 xNew, s32 yNew, enum Direction newDirection, enum Direction collisionDirection);
 static bool32 CheckRestrictedOWEMovementMetatile(s32 xCurrent, s32 yCurrent, s32 xNew, s32 yNew);
 static bool32 CheckRestrictedOWEMovementMap(struct ObjectEvent *owe, s32 xNew, s32 yNew);
-static bool32 IsOWELineOfSightClear(struct ObjectEvent *player, enum Direction direction, u32 distance);
+static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction direction, u32 distance);
 static enum Direction CheckOWEPathToPlayerFromCollision(struct ObjectEvent *owe, enum Direction newDirection);
 static void Task_OWEApproachForBattle(u8 taskId);
 static bool32 CheckValidOWESpecies(enum Species speciesId);
@@ -1434,7 +1434,9 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
     u32 viewWidth = OWE_GetViewWidthFromSpecies(speciesId);
     s32 halfWidth = (viewWidth - 1) / 2;
     enum Direction direction = owe->facingDirection;
-    bool32 retVal = FALSE;
+
+    if (!IsOWELineOfSightClear(owe, direction, viewDistance))
+        return FALSE;
 
     switch (direction)
     {
@@ -1443,7 +1445,7 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
          && owe->currentCoords.y - player->currentCoords.y <= viewDistance
          && player->currentCoords.x >= owe->currentCoords.x - halfWidth
          && player->currentCoords.x <= owe->currentCoords.x + halfWidth)
-            retVal = TRUE;
+            return TRUE;
         break;
 
     case DIR_SOUTH:
@@ -1451,7 +1453,7 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
          && player->currentCoords.y - owe->currentCoords.y <= viewDistance
          && player->currentCoords.x >= owe->currentCoords.x - halfWidth
          && player->currentCoords.x <= owe->currentCoords.x + halfWidth)
-            retVal = TRUE;
+            return TRUE;
         break;
 
     case DIR_EAST:
@@ -1459,7 +1461,7 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
          && player->currentCoords.x - owe->currentCoords.x <= viewDistance
          && player->currentCoords.y >= owe->currentCoords.y - halfWidth
          && player->currentCoords.y <= owe->currentCoords.y + halfWidth)
-            retVal = TRUE;
+            return TRUE;
         break;
 
     case DIR_WEST:
@@ -1467,35 +1469,37 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
          && owe->currentCoords.x - player->currentCoords.x <= viewDistance
          && player->currentCoords.y >= owe->currentCoords.y - halfWidth
          && player->currentCoords.y <= owe->currentCoords.y + halfWidth)
-            retVal = TRUE;
+            return TRUE;
         break;
 
     default:
-        retVal = FALSE;
-        break;
+        return FALSE;
     }
 
-    /* These lines are creating illegal opcodes, removing until fixes
-    if (retVal && IsOWELineOfSightClear(player, GetOppositeDirection(direction), viewDistance))
-        return TRUE;
-    */
-    
     return FALSE;
 }
 
-static bool32 IsOWELineOfSightClear(struct ObjectEvent *player, enum Direction direction, u32 distance)
+static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction direction, u32 distance)
 {
-    s16 x = player->currentCoords.x;
-    s16 y = player->currentCoords.y;
+    if (distance == 0)
+        return FALSE;
+    
+    s16 x = owe->currentCoords.x;
+    s16 y = owe->currentCoords.y;
     u32 i;
+    enum Collision collision;
 
+    // Checks only up to one tile away from the player.
+    distance--;
     for (i = 0; i < distance; i++)
     {
         MoveCoords(direction, &x, &y);
+        collision = GetCollisionFlagsAtCoords(owe, x, y, direction);
         if (MapGridGetCollisionAt(x, y)
          || GetMapBorderIdAt(x, y) == CONNECTION_INVALID
-         || IsMetatileDirectionallyImpassable(player, x, y, GetOppositeDirection(direction))
-         || IsElevationMismatchAt(player->currentElevation, x, y))
+         || IsMetatileDirectionallyImpassable(owe, x, y, direction)
+         || IsElevationMismatchAt(owe->currentElevation, x, y)
+         || (collision != 0 && (collision & ~(1 << (COLLISION_OUTSIDE_RANGE - 1)))))
             return FALSE;
     }
 
