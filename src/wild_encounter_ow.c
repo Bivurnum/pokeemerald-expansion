@@ -293,9 +293,7 @@ void UpdateOverworldWildEncounter(void)
     owe->sOverworldEncounterLevel = OWEInfo.level;
     owe->sRoamerOutbreakStatus = OWEInfo.indexRoamerOutbreak;
 
-    enum Direction directions[4];
-    memcpy(directions, gStandardDirections, sizeof directions);
-    ObjectEventTurn(owe, directions[Random() & 3]);
+    ObjectEventTurn(owe, gStandardDirections[Random() & 3]);
     SetNewOWESpawnCountdown();
 }
 
