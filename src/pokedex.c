@@ -2371,18 +2371,9 @@ static void CreateMonListEntry(u8 position, u16 b, u16 ignored)
             else
             {
                 ClearMonListEntry(17, i * 2, ignored);
-                if (sPokedexView->pokedexList[entryNum].seen || sPokedexView->pokedexList[entryNum].glimpsed)
-                {
-                    CreateMonDexNum(entryNum, 0x12, i * 2, ignored);
-                    CreateCaughtBall(sPokedexView->pokedexList[entryNum].owned, 0x11, i * 2, ignored);
-                    CreateMonName(entryNum, 0x16, i * 2);
-                }
-                else
-                {
-                    CreateMonDexNum(entryNum, 0x12, i * 2, ignored);
-                    CreateCaughtBall(FALSE, 0x11, i * 2, ignored);
-                    CreateMonName(ENTRY_NUM_INVALID, 0x16, i * 2);
-                }
+                CreateMonDexNum(entryNum, 0x12, i * 2, ignored);
+                CreateCaughtBall(sPokedexView->pokedexList[entryNum].owned, 0x11, i * 2, ignored);
+                CreateMonName(entryNum, 0x16, i * 2);
             }
             entryNum++;
         }
@@ -2396,18 +2387,9 @@ static void CreateMonListEntry(u8 position, u16 b, u16 ignored)
         else
         {
             ClearMonListEntry(17, sPokedexView->listVOffset * 2, ignored);
-            if (sPokedexView->pokedexList[entryNum].seen || sPokedexView->pokedexList[entryNum].glimpsed)
-            {
-                CreateMonDexNum(entryNum, 18, sPokedexView->listVOffset * 2, ignored);
-                CreateCaughtBall(sPokedexView->pokedexList[entryNum].owned, 0x11, sPokedexView->listVOffset * 2, ignored);
-                CreateMonName(entryNum, 0x16, sPokedexView->listVOffset * 2);
-            }
-            else
-            {
-                CreateMonDexNum(entryNum, 18, sPokedexView->listVOffset * 2, ignored);
-                CreateCaughtBall(FALSE, 17, sPokedexView->listVOffset * 2, ignored);
-                CreateMonName(ENTRY_NUM_INVALID, 0x16, sPokedexView->listVOffset * 2);
-            }
+            CreateMonDexNum(entryNum, 0x12, sPokedexView->listVOffset * 2, ignored);
+            CreateCaughtBall(sPokedexView->pokedexList[entryNum].owned, 0x11, sPokedexView->listVOffset * 2, ignored);
+            CreateMonName(entryNum, 0x16, sPokedexView->listVOffset * 2);
         }
         break;
     case 2: // Down
@@ -2422,18 +2404,9 @@ static void CreateMonListEntry(u8 position, u16 b, u16 ignored)
         else
         {
             ClearMonListEntry(17, vOffset * 2, ignored);
-            if (sPokedexView->pokedexList[entryNum].seen || sPokedexView->pokedexList[entryNum].glimpsed)
-            {
-                CreateMonDexNum(entryNum, 18, vOffset * 2, ignored);
-                CreateCaughtBall(sPokedexView->pokedexList[entryNum].owned, 0x11, vOffset * 2, ignored);
-                CreateMonName(entryNum, 0x16, vOffset * 2);
-            }
-            else
-            {
-                CreateMonDexNum(entryNum, 18, vOffset * 2, ignored);
-                CreateCaughtBall(FALSE, 0x11, vOffset * 2, ignored);
-                CreateMonName(ENTRY_NUM_INVALID, 0x16, vOffset * 2);
-            }
+            CreateMonDexNum(entryNum, 0x12, vOffset * 2, ignored);
+            CreateCaughtBall(sPokedexView->pokedexList[entryNum].owned, 0x11, vOffset * 2, ignored);
+            CreateMonName(entryNum, 0x16, vOffset * 2);
         }
         break;
     }
@@ -2471,16 +2444,15 @@ static void CreateCaughtBall(bool16 owned, u8 x, u8 y, u16 unused)
 
 static u8 CreateMonName(s16 entryNum, u8 left, u8 top)
 {
-    const u8 *str = sText_TenDashes;
+    const u8 *str;
     enum Species species = NationalPokedexNumToSpecies(sPokedexView->pokedexList[entryNum].dexNum);
 
-    if (entryNum != ENTRY_NUM_INVALID)
-    {
-        if (sPokedexView->pokedexList[entryNum].seen)
-            str = GetSpeciesName(species);
-        else if (ShouldDisplayPokemonSprite(entryNum))
-            str = COMPOUND_STRING("??????????");
-    }
+    if (sPokedexView->pokedexList[entryNum].seen)
+        str = GetSpeciesName(species);
+    else if (ShouldDisplayPokemonSprite(entryNum))
+        str = COMPOUND_STRING("??????????");
+    else
+        str = sText_TenDashes;
 
     PrintMonName(0, FONT_NARROW, str, left, top);
     return StringLength(str);
