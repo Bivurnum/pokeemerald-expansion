@@ -2479,6 +2479,20 @@
 	.2byte \dest
 	.endm
 
+	@ Returns the state of the Pokedex Unobserved Flag to VAR_RESULT for the Pokemon with speciesId
+	.macro getunobservedmon species:req
+	callnative Scrcmd_getsetpokedexflag, requests_effects=1
+	.2byte \species
+	.2byte FLAG_GET_UNOBSERVED
+	.endm
+
+	@ Returns the state of the Pokedex Glimpsed Flag to VAR_RESULT for the Pokemon with speciesId
+	.macro getglimpsedmon species:req
+	callnative Scrcmd_getsetpokedexflag, requests_effects=1
+	.2byte \species
+	.2byte FLAG_GET_GLIMPSED
+	.endm
+
 	@ Returns the state of the Pokedex Seen Flag to VAR_RESULT for the Pokemon with speciesId
 	.macro getseenmon species:req
 	callnative Scrcmd_getsetpokedexflag, requests_effects=1
@@ -2493,15 +2507,38 @@
 	.2byte FLAG_GET_CAUGHT
 	.endm
 
+	@ Resets the Pokedex Status for the Pokemon with speciesId
+	.macro setunobservedmon species:req
+	callnative Scrcmd_getsetpokedexflag, requests_effects=1
+	.2byte \species
+	.2byte FLAG_SET_UNOBSERVED
+	.endm
+
+	@ Sets the Pokedex Glimpsed Flag for the Pokemon with speciesId
+	.macro setglimpsedmon species:req, force=FALSE
+	.if \force == TRUE
+		setunobservedmon \species
+	.endif
+	callnative Scrcmd_getsetpokedexflag, requests_effects=1
+	.2byte \species
+	.2byte FLAG_SET_GLIMPSED
+	.endm
+
 	@ Sets the Pokedex Seen Flag for the Pokemon with speciesId
-	.macro setseenmon species:req
+	.macro setseenmon species:req, force=FALSE
+	.if \force == TRUE
+		setunobservedmon \species
+	.endif
 	callnative Scrcmd_getsetpokedexflag, requests_effects=1
 	.2byte \species
 	.2byte FLAG_SET_SEEN
 	.endm
 
 	@ Sets the Pokedex Caught Flag for the Pokemon with speciesId
-	.macro setcaughtmon species:req
+	.macro setcaughtmon species:req, force=FALSE
+	.if \force == TRUE
+		setunobservedmon \species
+	.endif
 	callnative Scrcmd_getsetpokedexflag, requests_effects=1
 	.2byte \species
 	.2byte FLAG_SET_CAUGHT

@@ -898,8 +898,8 @@ void BattleAnimateBackSprite(struct Sprite *sprite, enum Species species);
 u8 GetOpposingLinkMultiBattlerId(bool8 rightSide, u8 multiplayerId);
 enum TrainerPicID FacilityClassToPicIndex(u16 facilityClass);
 enum TrainerPicID PlayerGenderToFrontTrainerPicId(enum Gender playerGender);
-void HandleSetPokedexFlag(enum NationalDexOrder nationalNum, u8 caseId, u32 personality);
-void HandleSetPokedexFlagFromMon(struct Pokemon *mon, u32 caseId);
+void HandleSetPokedexFlag(enum NationalDexOrder nationalNum, enum DexFlagStates caseId, u32 personality);
+void HandleSetPokedexFlagFromMon(struct Pokemon *mon, enum DexFlagStates caseId);
 bool8 HasTwoFramesAnimation(enum Species species);
 struct MonSpritesGfxManager *CreateMonSpritesGfxManager(u8 managerId, u8 mode);
 void DestroyMonSpritesGfxManager(u8 managerId);
@@ -948,5 +948,6 @@ u32 OWE_GetViewWidthFromSpecies(enum Species speciesId);
 u32 OWE_GetViewActiveDistanceFromSpecies(enum Species speciesId);
 enum SpeedOWE OWE_GetIdleSpeedFromSpecies(enum Species speciesId);
 enum SpeedOWE OWE_GetActiveSpeedFromSpecies(enum Species);
+bool32 ShouldShowMonSilhouette(enum NationalDexOrder nationalNum);
 
 #endif // GUARD_POKEMON_H

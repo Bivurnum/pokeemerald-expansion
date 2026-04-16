@@ -413,9 +413,23 @@ static s16 GetSearchWindowY(void)
 static void DrawDexNavSearchMonIcon(enum Species species, u8 *dst, bool8 owned)
 {
     u8 spriteId;
+    s16 x = SPECIES_ICON_X - 6;
+    s16 y = GetSearchWindowY() + 8;
+    u32 subpriority = 0;
+    u32 personality = 0xFFFFFFFF;
+    void (*callback)(struct Sprite *) = SpriteCB_MonIcon;
 
-    LoadMonIconPalette(species);
-    spriteId = CreateMonIcon(species, SpriteCB_MonIcon, SPECIES_ICON_X - 6, GetSearchWindowY() + 8, 0, 0xFFFFFFFF);
+    if (!ShouldShowMonSilhouette(SpeciesToNationalPokedexNum(species)))
+    {
+        LoadMonIconPalette(species);
+        spriteId = CreateMonIcon(species, callback, x, y, subpriority, personality);
+    }
+    else
+    {
+        LoadMonIconSilhouettePalette(RGB(7, 7, 7));
+        spriteId = CreateMonIconSilhouette(species, callback, x, y, subpriority, personality);
+    }
+    
     gSprites[spriteId].oam.priority = 0;
     *dst = spriteId;
 
@@ -550,6 +564,7 @@ static void RemoveDexNavWindowAndGfx(void)
     FreeSpriteTilesByTag(LIT_STAR_TILE_TAG);
     FreeSpritePaletteByTag(HELD_ITEM_TAG);
     SafeFreeMonIconPalette(sDexNavSearchDataPtr->species);
+    FreeMonIconSilhouettePalette();
 
     // remove window
     ClearStdWindowAndFrameToTransparent(sDexNavSearchDataPtr->windowId, FALSE);
@@ -1947,12 +1962,18 @@ static void DexNavLoadEncounterData(void)
 
 static void TryDrawIconInSlot(enum Species species, s16 x, s16 y)
 {
+    enum NationalDexOrder nationalNum = SpeciesToNationalPokedexNum(species);
+    u32 subpriority = 0;
+    u32 personality = 0xFFFFFFFF;
+    void (*callback)(struct Sprite *) = SpriteCB_MonIcon;
     if (species == SPECIES_NONE || species > NUM_SPECIES)
         CreateNoDataIcon(x, y);   //'X' in slot
-    else if (!GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_SEEN))
-        CreateMonIcon(SPECIES_NONE, SpriteCB_MonIcon, x, y, 0, 0xFFFFFFFF); //question mark
+    else if (ShouldShowMonSilhouette(nationalNum))
+        CreateMonIconSilhouette(species, callback, x, y, subpriority, personality);
+    else if (!GetSetPokedexFlag(nationalNum, FLAG_GET_SEEN))
+        CreateMonIcon(SPECIES_NONE, callback, x, y, subpriority, personality); //question mark
     else
-        CreateMonIcon(species, SpriteCB_MonIcon, x, y, 0, 0xFFFFFFFF);
+        CreateMonIcon(species, callback, x, y, subpriority, personality);
 }
 
 static void DrawSpeciesIcons(void)
@@ -2249,6 +2270,7 @@ static bool8 DexNav_DoGfxSetup(void)
         break;
     case 10:
         LoadMonIconPalettes();
+        LoadMonIconSilhouettePalette(RGB_BLACK);
         DrawSpeciesIcons();
         CreateSelectionCursor();
         DexNavLoadCapturedAllSymbols();

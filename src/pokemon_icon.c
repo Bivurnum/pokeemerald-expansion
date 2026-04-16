@@ -286,6 +286,7 @@ void FreeMonIconPalettes(void)
     u8 i;
     for (i = 0; i < ARRAY_COUNT(gMonIconPaletteTable); i++)
         FreeSpritePaletteByTag(gMonIconPaletteTable[i].tag);
+    FreeMonIconSilhouettePalette();
 }
 
 // unused
@@ -443,4 +444,29 @@ void SetPartyHPBarSprite(struct Sprite *sprite, u8 animNum)
     sprite->animNum = animNum;
     sprite->animDelayCounter = 0;
     sprite->animCmdIndex = 0;
+}
+
+void LoadMonIconSilhouettePalette(u16 color)
+{
+    const u16 palette[PLTT_SIZE_4BPP] = { [0 ... PLTT_SIZE_4BPP - 1] = color };
+    struct SpritePalette spritePalette = {
+        .data = palette,
+        .tag = POKE_ICON_SILHOUETTE_PAL_TAG,
+    };
+    LoadSpritePalette(&spritePalette);
+}
+
+void FreeMonIconSilhouettePalette(void)
+{
+    FreeSpritePaletteByTag(POKE_ICON_SILHOUETTE_PAL_TAG);
+}
+
+u8 CreateMonIconSilhouette(enum Species species, void (*callback)(struct Sprite *), s16 x, s16 y, u8 subpriority, u32 personality)
+{
+    u32 spriteId = CreateMonIcon(species, callback, x, y, subpriority, personality);
+    u32 palIndex = IndexOfSpritePaletteTag(POKE_ICON_SILHOUETTE_PAL_TAG);
+    if (palIndex != 0xFF)
+        gSprites[spriteId].oam.paletteNum = palIndex;
+
+    return spriteId;
 }

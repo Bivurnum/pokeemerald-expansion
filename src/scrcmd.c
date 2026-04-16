@@ -3123,18 +3123,14 @@ bool8 ScrCmd_checkobjectat(struct ScriptContext *ctx)
 bool8 Scrcmd_getsetpokedexflag(struct ScriptContext *ctx)
 {
     enum NationalDexOrder speciesId = SpeciesToNationalPokedexNum(VarGet(ScriptReadHalfword(ctx)));
-    u32 desiredFlag = VarGet(ScriptReadHalfword(ctx));
+    enum DexFlagStates desiredFlag = VarGet(ScriptReadHalfword(ctx));
 
-    if (desiredFlag == FLAG_SET_CAUGHT || desiredFlag == FLAG_SET_SEEN)
+    if (desiredFlag >= NUM_FLAG_STATES)
         Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
     else
         Script_RequestEffects(SCREFF_V1);
 
     gSpecialVar_Result = GetSetPokedexFlag(speciesId, desiredFlag);
-
-    if (desiredFlag == FLAG_SET_CAUGHT)
-        GetSetPokedexFlag(speciesId, FLAG_SET_SEEN);
-
     return FALSE;
 }
 

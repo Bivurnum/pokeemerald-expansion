@@ -90,8 +90,7 @@ enum FlagsVarsDebugMenu
 {
     DEBUG_FLAGVAR_MENU_ITEM_FLAGS,
     DEBUG_FLAGVAR_MENU_ITEM_VARS,
-    DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_ALL,
-    DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_RESET,
+    DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_NATDEX,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV,
@@ -305,7 +304,9 @@ static void DebugAction_FlagsVars_FlagsSelect(u8 taskId);
 static void DebugAction_FlagsVars_Vars(u8 taskId);
 static void DebugAction_FlagsVars_Select(u8 taskId);
 static void DebugAction_FlagsVars_SetValue(u8 taskId);
-static void DebugAction_FlagsVars_PokedexFlags_All(u8 taskId);
+static void DebugAction_FlagsVars_PokedexFlags_AllCaught(u8 taskId);
+static void DebugAction_FlagsVars_PokedexFlags_AllSeen(u8 taskId);
+static void DebugAction_FlagsVars_PokedexFlags_AllGlimpsed(u8 taskId);
 static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId);
 static void DebugAction_FlagsVars_SwitchDex(u8 taskId);
 static void DebugAction_FlagsVars_SwitchNatDex(u8 taskId);
@@ -689,12 +690,20 @@ static const struct DebugMenuOption sDebugMenu_Actions_ROMInfo2[] =
     { NULL }
 };
 
+static const struct DebugMenuOption sDebugMenu_Actions_Flags_Pokedex[] =
+{
+    { COMPOUND_STRING("Set All Caught Flags"),      DebugAction_FlagsVars_PokedexFlags_AllCaught },
+    { COMPOUND_STRING("Set All Seen Flags"),        DebugAction_FlagsVars_PokedexFlags_AllSeen },
+    { COMPOUND_STRING("Set All Glimpsed Flags"),    DebugAction_FlagsVars_PokedexFlags_AllGlimpsed },
+    { COMPOUND_STRING("Reset Pokédex Flags"),       DebugAction_FlagsVars_PokedexFlags_Reset },
+    { NULL }
+};
+
 static const struct DebugMenuOption sDebugMenu_Actions_Flags[] =
 {
     [DEBUG_FLAGVAR_MENU_ITEM_FLAGS]                = { COMPOUND_STRING("Set Flag XYZ…"),                     DebugAction_FlagsVars_Flags },
     [DEBUG_FLAGVAR_MENU_ITEM_VARS]                 = { COMPOUND_STRING("Set Var XYZ…"),                      DebugAction_FlagsVars_Vars },
-    [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_ALL]         = { COMPOUND_STRING("Pokédex Flags All"),                 DebugAction_FlagsVars_PokedexFlags_All },
-    [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_RESET]       = { COMPOUND_STRING("Pokédex Flags Reset"),               DebugAction_FlagsVars_PokedexFlags_Reset },
+    [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS]             = { COMPOUND_STRING("Pokédex Flags…"),                    DebugAction_OpenSubMenu, sDebugMenu_Actions_Flags_Pokedex},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX]       = { COMPOUND_STRING("Toggle {STR_VAR_1}Pokédex"),         DebugAction_ToggleFlag, DebugAction_FlagsVars_SwitchDex },
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_NATDEX]        = { COMPOUND_STRING("Toggle {STR_VAR_1}National Dex"),    DebugAction_ToggleFlag, DebugAction_FlagsVars_SwitchNatDex },
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV]       = { COMPOUND_STRING("Toggle {STR_VAR_1}PokéNav"),         DebugAction_ToggleFlag, DebugAction_FlagsVars_SwitchPokeNav },
@@ -2445,26 +2454,10 @@ static void DebugAction_FlagsVars_SetValue(u8 taskId)
 
 #undef tVarValue
 
-static void DebugAction_FlagsVars_PokedexFlags_All(u8 taskId)
-{
-    u16 i;
-    for (i = 0; i < NATIONAL_DEX_COUNT; i++)
-    {
-        GetSetPokedexFlag(i + 1, FLAG_SET_CAUGHT);
-        GetSetPokedexFlag(i + 1, FLAG_SET_SEEN);
-    }
-    Debug_DestroyMenu_Full(taskId);
-    ScriptContext_Enable();
-}
-
-static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId)
+static void DebugAction_FlagsVars_PokedexFlags_OwnedPokemon(void)
 {
     int boxId, boxPosition, partyId;
     enum Species species;
-
-    // Reset Pokedex to emtpy
-    memset(&gSaveBlock1Ptr->dexCaught, 0, sizeof(gSaveBlock1Ptr->dexCaught));
-    memset(&gSaveBlock1Ptr->dexSeen, 0, sizeof(gSaveBlock1Ptr->dexSeen));
 
     // Add party Pokemon to Pokedex
     for (partyId = 0; partyId < PARTY_SIZE; partyId++)
@@ -2473,7 +2466,6 @@ static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId)
         {
             species = GetMonData(&gParties[B_TRAINER_0][partyId], MON_DATA_SPECIES);
             GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_SET_CAUGHT);
-            GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_SET_SEEN);
         }
     }
 
@@ -2486,10 +2478,58 @@ static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId)
             {
                 species = GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SPECIES);
                 GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_SET_CAUGHT);
-                GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_SET_SEEN);
             }
         }
     }
+}
+
+static void DebugAction_FlagsVars_PokedexFlags_AllCaught(u8 taskId)
+{
+    enum NationalDexOrder i;
+
+    memset(&gSaveBlock1Ptr->dexCaught, 0, sizeof(gSaveBlock1Ptr->dexCaught));
+    memset(&gSaveBlock1Ptr->dexSeen, 0, sizeof(gSaveBlock1Ptr->dexSeen));
+    for (i = NATIONAL_DEX_NONE; i < NATIONAL_DEX_COUNT; i++)
+        GetSetPokedexFlag(i + 1, FLAG_SET_CAUGHT);
+
+    Debug_DestroyMenu_Full(taskId);
+    ScriptContext_Enable();
+}
+
+static void DebugAction_FlagsVars_PokedexFlags_AllSeen(u8 taskId)
+{
+    enum NationalDexOrder i;
+
+    memset(&gSaveBlock1Ptr->dexCaught, 0, sizeof(gSaveBlock1Ptr->dexCaught));
+    memset(&gSaveBlock1Ptr->dexSeen, 0, sizeof(gSaveBlock1Ptr->dexSeen));
+    for (i = NATIONAL_DEX_NONE; i < NATIONAL_DEX_COUNT; i++)
+        GetSetPokedexFlag(i + 1, FLAG_SET_SEEN);
+    
+    DebugAction_FlagsVars_PokedexFlags_OwnedPokemon();
+    Debug_DestroyMenu_Full(taskId);
+    ScriptContext_Enable();
+}
+
+static void DebugAction_FlagsVars_PokedexFlags_AllGlimpsed(u8 taskId)
+{
+    enum NationalDexOrder i;
+
+    memset(&gSaveBlock1Ptr->dexCaught, 0, sizeof(gSaveBlock1Ptr->dexCaught));
+    memset(&gSaveBlock1Ptr->dexSeen, 0, sizeof(gSaveBlock1Ptr->dexSeen));
+    for (i = NATIONAL_DEX_NONE; i < NATIONAL_DEX_COUNT; i++)
+        GetSetPokedexFlag(i + 1, FLAG_SET_GLIMPSED);
+
+    DebugAction_FlagsVars_PokedexFlags_OwnedPokemon();
+    Debug_DestroyMenu_Full(taskId);
+    ScriptContext_Enable();
+}
+
+static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId)
+{
+    memset(&gSaveBlock1Ptr->dexCaught, 0, sizeof(gSaveBlock1Ptr->dexCaught));
+    memset(&gSaveBlock1Ptr->dexSeen, 0, sizeof(gSaveBlock1Ptr->dexSeen));
+
+    DebugAction_FlagsVars_PokedexFlags_OwnedPokemon();
     Debug_DestroyMenu_Full(taskId);
     ScriptContext_Enable();
 }

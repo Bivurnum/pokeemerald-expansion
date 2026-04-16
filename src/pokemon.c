@@ -5786,9 +5786,9 @@ enum TrainerPicID PlayerGenderToFrontTrainerPicId(enum Gender playerGender)
         return FacilityClassToPicIndex(IS_FRLG ? FACILITY_CLASS_RED : FACILITY_CLASS_BRENDAN);
 }
 
-void HandleSetPokedexFlag(enum NationalDexOrder nationalNum, u8 caseId, u32 personality)
+void HandleSetPokedexFlag(enum NationalDexOrder nationalNum, enum DexFlagStates caseId, u32 personality)
 {
-    u8 getFlagCaseId = (caseId == FLAG_SET_SEEN) ? FLAG_GET_SEEN : FLAG_GET_CAUGHT;
+    enum DexFlagStates getFlagCaseId = (caseId == FLAG_SET_SEEN) ? FLAG_GET_SEEN : FLAG_GET_CAUGHT;
     if (!GetSetPokedexFlag(nationalNum, getFlagCaseId)) // don't set if it's already set
     {
         GetSetPokedexFlag(nationalNum, caseId);
@@ -5799,7 +5799,7 @@ void HandleSetPokedexFlag(enum NationalDexOrder nationalNum, u8 caseId, u32 pers
     }
 }
 
-void HandleSetPokedexFlagFromMon(struct Pokemon *mon, u32 caseId)
+void HandleSetPokedexFlagFromMon(struct Pokemon *mon, enum DexFlagStates caseId)
 {
     u32 personality = GetMonData(mon, MON_DATA_PERSONALITY);
     enum NationalDexOrder nationalNum = SpeciesToNationalPokedexNum(GetMonData(mon, MON_DATA_SPECIES));
@@ -6894,4 +6894,15 @@ enum SpeedOWE OWE_GetActiveSpeedFromSpecies(enum Species speciesId)
     speciesId = SanitizeSpeciesId(speciesId);
     enum OverworldWildEncounterBehaviors behavior = gSpeciesInfo[speciesId].overworldEncounterBehavior;
     return sOWESpeciesBehavior[behavior].activeSpeed;
+}
+
+bool32 ShouldShowMonSilhouette(enum NationalDexOrder nationalNum)
+{
+    if (GetSetPokedexFlag(nationalNum, FLAG_GET_SEEN))
+        return FALSE;
+
+    if (GetSetPokedexFlag(nationalNum, FLAG_GET_GLIMPSED))
+        return WE_OWE_SILHOUETTE_DEX;
+
+    return FALSE;
 }
