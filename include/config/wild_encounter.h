@@ -13,7 +13,7 @@
 #define WE_OWE_BATTLE_PYRAMID               TRUE    // If TRUE, OWEs can spawn in the Battle Pyramid, if FALSE random encounters will be enabled instead. Requires WE_OW_ENCOUNTERS to be TRUE.
 #define WE_OWE_RESTRICT_METATILE            TRUE    // If TRUE, OWEs will stay within tiles with the same encounter metatile behavior as the one it is currently on, if any.
 #define WE_OWE_RESTRICT_MAP                 TRUE    // If TRUE, OWEs will stay within their current map bounds.
-#define WE_OWE_UNRESTRICT_SIGHT             FALSE   // If TRUE, OWEs will ignore all movement restrictions when they can see the player.
+#define WE_OWE_UNRESTRICT_SIGHT             FALSE   // If TRUE, OWEs with movement behaviors that respond to the player, will ignore all movement restrictions when they can see the player.
 #define WE_OWE_SPAWN_REPLACEMENT            FALSE   // If TRUE, the oldest OWE objects will despawn after a short time and be replaced with a new spawn if possible.
 #define WE_OWE_FLEE_DESPAWN                 TRUE    // If TRUE, a fleeing OWE will despawn if it is unable to take a step for a short time.
 #define WE_OWE_SHINY_SPARKLE                FALSE   // If TRUE, shiny OWEs will spawn with a sparkle animation and play the shiny sound effect.

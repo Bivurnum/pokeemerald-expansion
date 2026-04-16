@@ -21,7 +21,8 @@ enum TypeOWE
 {
     OWE_ANY,
     OWE_GENERATED,
-    OWE_MANUAL
+    OWE_MANUAL,
+    OWE_NONE
 };
 
 // OWE_SPEED_FASTER seems to visually bug out sometimes.
@@ -44,17 +45,6 @@ struct BehaviorOWE
     enum SpeedOWE activeSpeed;
 };
 
-struct OWEInfo
-{
-    enum Species speciesId;
-    bool32 isShiny;
-    bool32 isFemale;
-    u32 indexRoamerOutbreak;
-    u32 localId;
-    u32 level;
-    u32 graphicsId;
-};
-
 enum __attribute__((packed)) OverworldWildEncounterBehaviors
 {
     OWE_IGNORE_PLAYER,
@@ -72,11 +62,11 @@ void StartWildBattleWithOWE(void);
 void SetInstantOWESpawnTimer(void);
 void SetMinimumOWESpawnTimer(void);
 void TryTriggerOverworldWilEncounter(struct ObjectEvent *obstacle, struct ObjectEvent *collider);
-bool32 ShouldRunDefaultOWEScript(u32 objectEventId);
+const u8 *GetOverworlWildEncounterScript(u32 objectEventId);
 void OnOverworldWildEncounterSpawn(struct ObjectEvent *owe);
 void OnOverworldWildEncounterDespawn(struct ObjectEvent *owe);
 bool32 IsOWEDespawnExempt(struct ObjectEvent *owe);
-bool32 DespawnOWEDueToNPCCollision(struct ObjectEvent *curObject, struct ObjectEvent *owe);
+bool32 DespawnOWEDueToNPCCollision(struct ObjectEvent *obstacle, struct ObjectEvent *activeObject);
 u32 DespawnOWEDueToTrainerSight(u32 collision, s32 x, s32 y);
 void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags);
 bool32 TryAndDespawnOldestGeneratedOWE_Object(u32 localId, u8 *objectEventId);

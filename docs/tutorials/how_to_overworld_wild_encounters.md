@@ -50,8 +50,6 @@ Any collision between the player and the OWE will start an encounter. An encount
 
 If the `WE_OWE_APPROACH_FOR_BATTLE` config is `TRUE`, the OWE will take steps to be right next to the player before the battle begins. Otherwise, the objects will be frozen and the battle will start immediately.
 
-A player on land is able to interact with an OWE in the water, only by pressing the A button.
-
 ## Repel and Lure Behaviours
 Repels will prevent the spawning of generated OWEs that are a lower level than the player's lead Pokemon. Lower level generated OWEs that have already been spawned will be immediately despawned when a repel is used. Existing generated OWEs can also be despawned if the player switches a higher level Pokemon to the front of the party if a repel is already active.
 

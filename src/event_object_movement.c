@@ -1287,16 +1287,17 @@ static const u8 sSpinMovementActions[] = {
 };
 
 static const u8 sOppositeDirections[] = {
-    DIR_NORTH,
-    DIR_SOUTH,
-    DIR_EAST,
-    DIR_WEST,
-    DIR_NORTHEAST,
-    DIR_NORTHWEST,
-    DIR_SOUTHEAST,
-    DIR_SOUTHWEST,
+    [DIR_NONE]      = DIR_NONE,
+    [DIR_SOUTH]     = DIR_NORTH,
+    [DIR_NORTH]     = DIR_SOUTH,
+    [DIR_WEST]      = DIR_EAST,
+    [DIR_EAST]      = DIR_WEST,
+    [DIR_SOUTHWEST] = DIR_NORTHEAST,
+    [DIR_SOUTHEAST] = DIR_NORTHWEST,
+    [DIR_NORTHWEST] = DIR_SOUTHEAST,
+    [DIR_NORTHEAST] = DIR_SOUTHWEST,
 };
-// Should this and above be enum Direction?
+
 static const u8 sRotate90Direction[][2] =
 {
     [DIR_NONE]      = { DIR_NONE,       DIR_NONE },
@@ -1923,7 +1924,6 @@ u8 TrySpawnObjectEventTemplate(const struct ObjectEventTemplate *objectEventTemp
     struct SpriteFrameImage spriteFrameImage;
     const struct ObjectEventGraphicsInfo *graphicsInfo;
     const struct SubspriteTable *subspriteTables = NULL;
-    // May be a good idea to move the if check contained by this function to outside it for clarity.
     const struct ObjectEventTemplate objectEventTemplateLocal = TryGetObjectEventTemplateForOWE(objectEventTemplate);
     u16 graphicsId = objectEventTemplateLocal.graphicsId;
 
@@ -3959,11 +3959,7 @@ bool8 MovementType_Wander_Step3(struct ObjectEvent *objectEvent, struct Sprite *
 
 bool8 MovementType_WanderAround_Step4(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    enum Direction directions[4];
-    u8 chosenDirection;
-
-    memcpy(directions, gStandardDirections, sizeof directions);
-    chosenDirection = directions[Random() & 3];
+    enum Direction chosenDirection = gStandardDirections[Random() & 3];
     SetObjectEventDirection(objectEvent, chosenDirection);
     sprite->sTypeFuncId = 5;
     if (GetCollisionInDirection(objectEvent, chosenDirection))
@@ -4237,12 +4233,9 @@ bool8 MovementType_LookAround_Step3(struct ObjectEvent *objectEvent, struct Spri
 
 bool8 MovementType_LookAround_Step4(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    enum Direction direction;
-    enum Direction directions[4];
-    memcpy(directions, gStandardDirections, sizeof directions);
-    direction = TryGetTrainerEncounterDirection(objectEvent, RUNFOLLOW_ANY);
+    enum Direction direction = TryGetTrainerEncounterDirection(objectEvent, RUNFOLLOW_ANY);
     if (direction == DIR_NONE)
-        direction = directions[Random() & 3];
+        direction = gStandardDirections[Random() & 3];
 
     SetObjectEventDirection(objectEvent, direction);
     sprite->sTypeFuncId = 1;
@@ -6999,13 +6992,10 @@ dirn_to_anim(GetAcroEndWheelieMoveDirectionMovementAction, gAcroEndWheelieMoveDi
 
 enum Direction GetOppositeDirection(enum Direction direction)
 {
-    enum Direction directions[sizeof sOppositeDirections];
+    if (direction <= DIR_NONE || direction >= NELEMS(sOppositeDirections))
+        return DIR_NONE;
 
-    memcpy(directions, sOppositeDirections, sizeof sOppositeDirections);
-    if (direction <= DIR_NONE || direction > (sizeof sOppositeDirections))
-        return direction;
-
-    return directions[direction - 1];
+    return sOppositeDirections[direction];
 }
 
 enum Direction GetNinetyDegreeDirection(enum Direction direction, bool32 clockwise)
@@ -10194,17 +10184,12 @@ void ObjectEventsTurnToEachOther(struct ObjectEvent *objectOne, struct ObjectEve
         switch (objectDirOne) 
         {
         case DIR_NORTH:
-            objectDirOne = DIR_SOUTH;
-            break;
         case DIR_SOUTH:
-            objectDirOne = DIR_NORTH;
-            break;
         case DIR_WEST:
-            objectDirOne = DIR_EAST;
-            break;
         case DIR_EAST:
-            objectDirOne = DIR_WEST;
+            objectDirOne = GetOppositeDirection(objectDirOne);
             break;
+        
         default:
             break;
         }
