@@ -2967,8 +2967,13 @@ void RemoveObjectEventsOutsideView(void)
 
             // Followers should not go OOB, or their sprites may be freed early during a cross-map scripting event,
             // such as Wally's Ralts catch sequence
-            if (objectEvent->active && !objectEvent->isPlayer && objectEvent->localId != OBJ_EVENT_ID_FOLLOWER
-             && objectEvent->localId != OBJ_EVENT_ID_NPC_FOLLOWER)
+            if (!objectEvent->active)
+                continue;
+            if (objectEvent->isPlayer)
+                continue;
+            if (objectEvent->localId == OBJ_EVENT_ID_NPC_FOLLOWER || objectEvent->localId == OBJ_EVENT_ID_FOLLOWER)
+                continue;
+            if (!IsOWEDespawnExempt(objectEvent))
                 RemoveObjectEventIfOutsideView(objectEvent);
         }
     }
@@ -2986,9 +2991,6 @@ static void RemoveObjectEventIfOutsideView(struct ObjectEvent *objectEvent)
         return;
     if (objectEvent->initialCoords.x >= left && objectEvent->initialCoords.x <= right
      && objectEvent->initialCoords.y >= top && objectEvent->initialCoords.y <= bottom)
-        return;
-    
-    if (IsOWEDespawnExempt(objectEvent))
         return;
 
     RemoveObjectEvent(objectEvent);
@@ -10157,33 +10159,16 @@ enum Direction DetermineObjectEventDirectionFromObject(struct ObjectEvent *objec
     s32 absX = abs(dx);
     s32 absY = abs(dy);
 
-    if (absX > absY && dx < 0)
+    if (absX >= absY && dx < 0)
         return DIR_WEST;
-    else if (absX > absY && dx > 0)
+    else if (absX >= absY && dx > 0)
         return DIR_EAST;
-    else if (absY > absX && dy < 0)
+    else if (absY >= absX && dy < 0)
         return DIR_NORTH;
-    else if (absY > absX && dy > 0)
+    else if (absY >= absX && dy > 0)
         return DIR_SOUTH;
 
-    enum Direction directionOne, directionTwo;
-    
-    if (dx < 0)
-        directionTwo = DIR_WEST;
-    else
-        directionTwo = DIR_EAST;
-
-    if (dy < 0)
-        directionOne = DIR_NORTH;
-    else
-        directionOne = DIR_SOUTH;
-
-    if (objectTwo->facingDirection == directionOne)
-        return directionOne;
-    else if (objectTwo->facingDirection == directionTwo)
-        return directionTwo;
-
-    return (Random() % 2) ? directionOne : directionTwo;
+    return DIR_NONE;
 }
 
 void ObjectEventsTurnToEachOther(struct ObjectEvent *objectOne, struct ObjectEvent *objectTwo)
