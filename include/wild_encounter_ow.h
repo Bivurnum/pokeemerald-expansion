@@ -50,7 +50,7 @@ struct OWEInfo
     enum Species speciesId;
     bool32 isShiny;
     bool32 isFemale;
-    u32 indexRoamerOutbreak;
+    u32 category;
     u32 localId;
     u32 level;
     u32 graphicsId;

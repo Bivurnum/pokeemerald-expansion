@@ -35,10 +35,7 @@
 
 #define sOverworldEncounterLevel        trainerRange_berryTreeId
 #define sAge                            playerCopyableMovement
-#define sRoamerOutbreakStatus           warpArrowSpriteId
-#define OWE_NON_ROAMER_OUTBREAK         0
-#define OWE_MASS_OUTBREAK_INDEX         ROAMER_COUNT + 1
-#define OWE_INVALID_ROAMER_OUTBREAK     OWE_MASS_OUTBREAK_INDEX + 1
+#define sOverworldEncounterCategory     warpArrowSpriteId
 #define OWE_MAX_ROAMERS                 UINT8_MAX - 2
 
 #define OWE_FLAG_BIT                    (1 << 7)
@@ -64,6 +61,14 @@
 #define OWE_NO_ENCOUNTER_SET            0xFF
 #define OWE_INVALID_SPAWN_SLOT          0xFF
 
+enum CategoryOWE
+{
+    // If Roamers are used, they will exist as values, implicitely, within this enum.
+    OWE_CATEGORY_MASS_OUTBREAK = ROAMER_COUNT,
+    OWE_CATEGORY_WILD,
+    OWE_CATEGORY_UNDEFINED
+};
+
 
 #if WE_OW_ENCOUNTERS == TRUE && ROAMER_COUNT > OWE_MAX_ROAMERS
 #error "ROAMER_COUNT needs to be less than OWE_MAX_ROAMERS due to it being stored in the u8 field warpArrowSpriteId"
@@ -86,22 +91,22 @@ static inline u32 GetSpawnSlotByOWELocalId(u32 localId)
 
 static inline u32 GetOWERoamerIndex(const struct ObjectEvent *owe)
 {
-    return owe->sRoamerOutbreakStatus & ~OWE_SAVED_MOVEMENT_STATE_FLAG;
+    return owe->sOverworldEncounterCategory & ~OWE_SAVED_MOVEMENT_STATE_FLAG;
 }
 
 static inline bool32 HasSavedOWEMovementState(const struct ObjectEvent *owe)
 {
-    return owe->sRoamerOutbreakStatus & OWE_SAVED_MOVEMENT_STATE_FLAG;
+    return owe->sOverworldEncounterCategory & OWE_SAVED_MOVEMENT_STATE_FLAG;
 }
 
 void SetSavedOWEMovementState(struct ObjectEvent *owe)
 {
-    owe->sRoamerOutbreakStatus |= OWE_SAVED_MOVEMENT_STATE_FLAG;
+    owe->sOverworldEncounterCategory |= OWE_SAVED_MOVEMENT_STATE_FLAG;
 }
 
 void ClearSavedOWEMovementState(struct ObjectEvent *owe)
 {
-    owe->sRoamerOutbreakStatus &= ~OWE_SAVED_MOVEMENT_STATE_FLAG;
+    owe->sOverworldEncounterCategory &= ~OWE_SAVED_MOVEMENT_STATE_FLAG;
 }
 
 static inline u32 GetOWEEncounterLevel(u32 level)
@@ -152,11 +157,9 @@ static inline bool32 IsLocalIdManualOWE(u32 localId)
 
 static bool32 CreateEnemyPartyOWE(struct OWEInfo *info, s32 x, s32 y);
 static bool32 OWE_DoesOWERoamerExist(void);
-static u32 GetOWERoamerStatusFromIndex(u32 indexRoamer);
-static u32 GetOWERoamerOutbreakStatus(struct ObjectEvent *owe);
-static bool32 StartWildBattleWithOWE_CheckRoamer(u32 indexRoamerOutbreak);
+static bool32 StartWildBattleWithOWE_CheckRoamer(u32 category);
 static bool32 StartWildBattleWithOWE_CheckBattleFrontier(u32 headerId);
-static bool32 StartWildBattleWithOWE_CheckMassOutbreak(u32 indexRoamerOutbreak, enum Species speciesId);
+static bool32 StartWildBattleWithOWE_CheckMassOutbreak(u32 category, enum Species speciesId);
 static bool32 StartWildBattleWithOWE_CheckDoubleBattle(struct ObjectEvent *owe, u32 headerId);
 static bool32 CheckCurrentWildMonHeaderForOWE(bool32 shouldSpawnWaterMons);
 static u32 GetOldestActiveOWESlot(bool32 forceRemove);
@@ -251,11 +254,12 @@ void UpdateOverworldWildEncounter(void)
     struct OWEInfo OWEInfo = {0};
 
     OWEInfo.localId = GetLocalIdByOWESpawnSlot(spawnSlot);
+    OWEInfo.category = OWE_CATEGORY_WILD;
     SetSpeciesInfoForOWE(&OWEInfo, x, y);
     GetGraphicsIdForOWE(&OWEInfo, x, y);
 
     if (OWEInfo.speciesId == SPECIES_NONE
-     || (WE_OWE_SPECIAL_ONLY && OWEInfo.indexRoamerOutbreak == OWE_NON_ROAMER_OUTBREAK)
+     || (WE_OWE_SPECIAL_ONLY && OWEInfo.category >= OWE_CATEGORY_WILD)
      || !IsWildLevelAllowedByRepel(GetOWEEncounterLevel(OWEInfo.level))
      || !IsAbilityAllowingEncounter(GetOWEEncounterLevel(OWEInfo.level))
      || !CheckCanLoadOWE(OWEInfo.speciesId, OWEInfo.isFemale, OWEInfo.isShiny, x, y))
@@ -290,7 +294,7 @@ void UpdateOverworldWildEncounter(void)
     owe = &gObjectEvents[objectEventId];
     owe->disableCoveringGroundEffects = TRUE;
     owe->sOverworldEncounterLevel = OWEInfo.level;
-    owe->sRoamerOutbreakStatus = OWEInfo.indexRoamerOutbreak;
+    owe->sOverworldEncounterCategory = OWEInfo.category;
 
     ObjectEventTurn(owe, gStandardDirections[Random() & 3]);
     SetNewOWESpawnCountdown();
@@ -335,7 +339,7 @@ void StartWildBattleWithOWE(void)
     u32 objEventId = GetObjectEventIdByLocalId(localId);
     u32 headerId = GetCurrentMapWildMonHeaderId();
     struct ObjectEvent *owe = &gObjectEvents[objEventId];
-    u32 indexRoamerOutbreak = GetOWERoamerIndex(owe);
+    u32 category = GetOWERoamerIndex(owe);
 
     assertf(objEventId < OBJECT_EVENTS_COUNT && IsOverworldWildEncounter(owe, OWE_ANY), "cannot start overworld wild enocunter as the selected object is invalid.\nlocalId: %d", localId)
     {
@@ -344,7 +348,7 @@ void StartWildBattleWithOWE(void)
         return;
     }
 
-    if (indexRoamerOutbreak && StartWildBattleWithOWE_CheckRoamer(GetOWERoamerOutbreakStatus(owe)))
+    if (category < ROAMER_COUNT && StartWildBattleWithOWE_CheckRoamer(category))
         return;
 
     enum Species speciesId = OW_SPECIES(owe);
@@ -367,7 +371,7 @@ void StartWildBattleWithOWE(void)
     if (StartWildBattleWithOWE_CheckBattleFrontier(headerId))
         return;
     
-    if (StartWildBattleWithOWE_CheckMassOutbreak(indexRoamerOutbreak, speciesId))
+    if (StartWildBattleWithOWE_CheckMassOutbreak(category, speciesId))
         return;
 
     if (StartWildBattleWithOWE_CheckDoubleBattle(owe, headerId))
@@ -441,11 +445,11 @@ static bool32 CreateEnemyPartyOWE(struct OWEInfo *info, s32 x, s32 y)
     If none of these checks succeed, speciesId is set to SPECIES_NONE and FALSE is returned.
     */
 
-    if (info->indexRoamerOutbreak != OWE_INVALID_ROAMER_OUTBREAK)
+    if (info->category != OWE_CATEGORY_UNDEFINED)
     {
         if (TryStartRoamerEncounter() && !OWE_DoesOWERoamerExist())
         {
-            info->indexRoamerOutbreak = GetOWERoamerStatusFromIndex(gEncounteredRoamerIndex);
+            info->category = gEncounteredRoamerIndex;
             return TRUE;
         }
         else if (WE_OWE_FEEBAS_SPOTS && MetatileBehavior_IsWaterWildEncounter(metatileBehavior) && CheckFeebasAtCoords(x, y))
@@ -459,7 +463,7 @@ static bool32 CreateEnemyPartyOWE(struct OWEInfo *info, s32 x, s32 y)
         else if (DoMassOutbreakEncounterTest() && MetatileBehavior_IsLandWildEncounter(metatileBehavior))
         {
             SetUpMassOutbreakEncounter(0);
-            info->indexRoamerOutbreak = OWE_MASS_OUTBREAK_INDEX;
+            info->category = OWE_CATEGORY_MASS_OUTBREAK;
             return TRUE;
         }
         else
@@ -476,44 +480,20 @@ static bool32 OWE_DoesOWERoamerExist(void)
     for (u32 i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         struct ObjectEvent *owe = &gObjectEvents[i];
-        if (IsOverworldWildEncounter(owe, OWE_ANY) && GetOWERoamerOutbreakStatus(owe) == gEncounteredRoamerIndex)
+        if (IsOverworldWildEncounter(owe, OWE_ANY) && GetOWERoamerIndex(owe) == gEncounteredRoamerIndex)
             return TRUE;
     }
 
     return FALSE;
 }
 
-static u32 GetOWERoamerStatusFromIndex(u32 indexRoamer)
+static bool32 StartWildBattleWithOWE_CheckRoamer(u32 category)
 {
-    if (indexRoamer < ROAMER_COUNT)
-        return indexRoamer + 1;
-    
-    return indexRoamer;
-}
-
-static u32 GetOWERoamerOutbreakStatus(struct ObjectEvent *owe)
-{
-    assertf(IsOverworldWildEncounter(owe, OWE_ANY))
+    if (category < ROAMER_COUNT
+     && IsRoamerAt(category, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
     {
-        return OWE_INVALID_ROAMER_OUTBREAK;
-    }
-
-    u32 status = GetOWERoamerIndex(owe);
-    if (status == OWE_NON_ROAMER_OUTBREAK || status == OWE_MASS_OUTBREAK_INDEX)
-    {
-        return OWE_INVALID_ROAMER_OUTBREAK;
-    }
-    
-    return status - 1;
-}
-
-static bool32 StartWildBattleWithOWE_CheckRoamer(u32 indexRoamerOutbreak)
-{
-    if (indexRoamerOutbreak < ROAMER_COUNT
-     && IsRoamerAt(indexRoamerOutbreak, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
-    {
-        CreateRoamerMonInstance(indexRoamerOutbreak);
-        gEncounteredRoamerIndex = indexRoamerOutbreak;
+        CreateRoamerMonInstance(category);
+        gEncounteredRoamerIndex = category;
         BattleSetup_StartRoamerBattle();
         return TRUE;
     }
@@ -547,9 +527,9 @@ static bool32 StartWildBattleWithOWE_CheckBattleFrontier(u32 headerId)
     return FALSE;
 }
 
-static bool32 StartWildBattleWithOWE_CheckMassOutbreak(u32 indexRoamerOutbreak, enum Species speciesId)
+static bool32 StartWildBattleWithOWE_CheckMassOutbreak(u32 category, enum Species speciesId)
 {
-    if (indexRoamerOutbreak == OWE_MASS_OUTBREAK_INDEX
+    if (category == OWE_CATEGORY_MASS_OUTBREAK
      && gSaveBlock1Ptr->outbreakPokemonSpecies == speciesId)
     {
         ZeroEnemyPartyMons();
@@ -626,10 +606,9 @@ void TryTriggerOverworldWilEncounter(struct ObjectEvent *obstacle, struct Object
         return;
 
     struct ObjectEvent *wildMon = playerIsCollider ? obstacle : collider;
-    u32 indexRoamerOutbreak = GetOWERoamerIndex(wildMon);
-    if (indexRoamerOutbreak
-     && indexRoamerOutbreak < OWE_MASS_OUTBREAK_INDEX
-     && !IsRoamerAt(GetOWERoamerOutbreakStatus(wildMon), gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
+    u32 category = GetOWERoamerIndex(wildMon);
+    if (category < ROAMER_COUNT
+     && !IsRoamerAt(category, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
     {
         RemoveObjectEvent(wildMon);
         return;
@@ -1015,7 +994,7 @@ void OnOverworldWildEncounterDespawn(struct ObjectEvent *owe)
 
     owe->sOverworldEncounterLevel = 0;
     owe->sAge = 0;
-    owe->sRoamerOutbreakStatus = 0;
+    owe->sOverworldEncounterCategory = 0;
     
     DoOWESpawnDespawnAnim(owe, FALSE);
 }
@@ -1728,7 +1707,7 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
     enum Species speciesTemplate = SanitizeSpeciesId(templateOWE.graphicsId & OBJ_EVENT_MON_SPECIES_MASK);
     bool32 isShinyTemplate = (templateOWE.graphicsId & OBJ_EVENT_MON_SHINY) ? TRUE : FALSE;
     u32 levelTemplate = templateOWE.sOverworldEncounterLevel;
-    info.indexRoamerOutbreak = OWE_INVALID_ROAMER_OUTBREAK;
+    info.category = OWE_CATEGORY_UNDEFINED;
     u32 x = template->x;
     u32 y = template->y;
 
@@ -1821,4 +1800,4 @@ static bool32 CheckValidOWESpecies(enum Species speciesId)
 
 #undef sOverworldEncounterLevel
 #undef sAge
-#undef sRoamerOutbreakStatus
+#undef sOverworldEncounterCategory
