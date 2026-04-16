@@ -165,7 +165,6 @@ static u32 GetSpeciesByOWESpawnSlot(u32 spawnSlot);
 static bool32 TrySelectTileForOWE(s32* outX, s32* outY);
 static void SetSpeciesInfoForOWE(struct OWEInfo *info, u32 x, u32 y);
 static void GetGraphicsIdForOWE(struct OWEInfo *info, u32 x, u32 y);
-static bool32 CheckCanRemoveOWE(u32 localId);
 static bool32 CheckCanLoadOWE(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
 static bool32 CheckCanLoadOWE_Palette(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
 static bool32 CheckCanLoadOWE_Tiles(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
@@ -873,20 +872,6 @@ static void GetGraphicsIdForOWE(struct OWEInfo *info, u32 x, u32 y)
         info->graphicsId += OBJ_EVENT_MON_SHINY;
 }
 
-static bool32 CheckCanRemoveOWE(u32 localId)
-{
-    if (!WE_OW_ENCOUNTERS)
-        return FALSE;
-
-    if (!GetNumberOfActiveOWEs(OWE_GENERATED))
-        return FALSE;
-
-    if (!(localId <= (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX + 1) || localId > LOCALID_OW_ENCOUNTER_END))
-        return FALSE;
-
-    return TRUE;
-}
-
 static bool32 CheckCanLoadOWE(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y)
 {
     assertf(CheckCanLoadOWE_Palette(speciesId, isFemale, isShiny, x, y), "could not load palette for overworld encounter\nspecies: %d\nfemale: %d\nshiny: %d\ncoords: %d %d", speciesId, isFemale, isShiny, x, y)
@@ -1108,17 +1093,17 @@ void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
 
 bool32 TryAndDespawnOldestGeneratedOWE_Object(u32 localId, u8 *objectEventId)
 {
-    // does CheckCanRemoveOWE need to be used in TryAndDespawnOldestGeneratedOWE_Palette
-    if (CheckCanRemoveOWE(localId))
-    {
-        *objectEventId = RemoveOldestGeneratedOWE();
-        if (*objectEventId == OBJECT_EVENTS_COUNT)
-            return TRUE;
-        else
-            return FALSE;
-    }
+    if (!WE_OW_ENCOUNTERS)
+        return FALSE;
+
+    if (!(localId <= (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX + 1) || localId > LOCALID_OW_ENCOUNTER_END))
+        return FALSE;
     
-    return TRUE;
+    *objectEventId = RemoveOldestGeneratedOWE();
+    if (*objectEventId == OBJECT_EVENTS_COUNT)
+        return TRUE;
+    
+    return FALSE;
 }
 
 void TryAndDespawnOldestGeneratedOWE_Palette(void)
