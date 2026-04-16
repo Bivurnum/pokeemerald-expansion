@@ -69,6 +69,17 @@ enum CategoryOWE
     OWE_CATEGORY_UNDEFINED
 };
 
+struct InfoOWE
+{
+    enum Species speciesId;
+    bool32 isShiny;
+    bool32 isFemale;
+    u32 category;
+    u32 localId;
+    u32 level;
+    u32 graphicsId;
+};
+
 
 #if WE_OW_ENCOUNTERS == TRUE && ROAMER_COUNT > OWE_MAX_ROAMERS
 #error "ROAMER_COUNT needs to be less than OWE_MAX_ROAMERS due to it being stored in the u8 field warpArrowSpriteId"
@@ -155,7 +166,7 @@ static inline bool32 IsLocalIdManualOWE(u32 localId)
     return (localId > LOCALID_OW_ENCOUNTER_END || localId <= (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX));
 }
 
-static bool32 CreateEnemyPartyOWE(struct OWEInfo *info, s32 x, s32 y);
+static bool32 CreateEnemyPartyOWE(struct InfoOWE *info, s32 x, s32 y);
 static bool32 OWE_DoesOWERoamerExist(void);
 static bool32 StartWildBattleWithOWE_CheckRoamer(u32 category);
 static bool32 StartWildBattleWithOWE_CheckBattleFrontier(u32 headerId);
@@ -166,8 +177,8 @@ static u32 GetOldestActiveOWESlot(bool32 forceRemove);
 static u32 GetNextOWESpawnSlot(void);
 static u32 GetSpeciesByOWESpawnSlot(u32 spawnSlot);
 static bool32 TrySelectTileForOWE(s32* outX, s32* outY);
-static void SetSpeciesInfoForOWE(struct OWEInfo *info, u32 x, u32 y);
-static void GetGraphicsIdForOWE(struct OWEInfo *info, u32 x, u32 y);
+static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y);
+static void GetGraphicsIdForOWE(struct InfoOWE *info, u32 x, u32 y);
 static bool32 CheckCanLoadOWE(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
 static bool32 CheckCanLoadOWE_Palette(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
 static bool32 CheckCanLoadOWE_Tiles(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
@@ -251,18 +262,18 @@ void UpdateOverworldWildEncounter(void)
 
     // Check for a valid Pokemon.
 
-    struct OWEInfo OWEInfo = {0};
+    struct InfoOWE infoOWE = {0};
 
-    OWEInfo.localId = GetLocalIdByOWESpawnSlot(spawnSlot);
-    OWEInfo.category = OWE_CATEGORY_WILD;
-    SetSpeciesInfoForOWE(&OWEInfo, x, y);
-    GetGraphicsIdForOWE(&OWEInfo, x, y);
+    infoOWE.localId = GetLocalIdByOWESpawnSlot(spawnSlot);
+    infoOWE.category = OWE_CATEGORY_WILD;
+    SetSpeciesInfoForOWE(&infoOWE, x, y);
+    GetGraphicsIdForOWE(&infoOWE, x, y);
 
-    if (OWEInfo.speciesId == SPECIES_NONE
-     || (WE_OWE_SPECIAL_ONLY && OWEInfo.category >= OWE_CATEGORY_WILD)
-     || !IsWildLevelAllowedByRepel(GetOWEEncounterLevel(OWEInfo.level))
-     || !IsAbilityAllowingEncounter(GetOWEEncounterLevel(OWEInfo.level))
-     || !CheckCanLoadOWE(OWEInfo.speciesId, OWEInfo.isFemale, OWEInfo.isShiny, x, y))
+    if (infoOWE.speciesId == SPECIES_NONE
+     || (WE_OWE_SPECIAL_ONLY && infoOWE.category >= OWE_CATEGORY_WILD)
+     || !IsWildLevelAllowedByRepel(GetOWEEncounterLevel(infoOWE.level))
+     || !IsAbilityAllowingEncounter(GetOWEEncounterLevel(infoOWE.level))
+     || !CheckCanLoadOWE(infoOWE.speciesId, infoOWE.isFemale, infoOWE.isShiny, x, y))
     {
         SetMinimumOWESpawnTimer();
         return;
@@ -271,15 +282,15 @@ void UpdateOverworldWildEncounter(void)
     // Spawn the Pokemon.
     
     struct ObjectEventTemplate objectEventTemplate = {
-        .localId = OWEInfo.localId,
-        .graphicsId = OWEInfo.graphicsId,
+        .localId = infoOWE.localId,
+        .graphicsId = infoOWE.graphicsId,
         .x = x - MAP_OFFSET,
         .y = y - MAP_OFFSET,
         .elevation = MapGridGetElevationAt(x, y),
-        .movementType = OWE_GetMovementTypeFromSpecies(OWEInfo.speciesId),
+        .movementType = OWE_GetMovementTypeFromSpecies(infoOWE.speciesId),
         .trainerType = TRAINER_TYPE_OW_WILD_ENCOUNTER,
     };
-    u32 objectEventId = GetObjectEventIdByLocalId(OWEInfo.localId);
+    u32 objectEventId = GetObjectEventIdByLocalId(infoOWE.localId);
     struct ObjectEvent *owe = &gObjectEvents[objectEventId];
     if (ShouldDespawnGeneratedForNewOWE(owe))
         RemoveObjectEvent(owe);
@@ -293,8 +304,8 @@ void UpdateOverworldWildEncounter(void)
 
     owe = &gObjectEvents[objectEventId];
     owe->disableCoveringGroundEffects = TRUE;
-    owe->sOverworldEncounterLevel = OWEInfo.level;
-    owe->sOverworldEncounterCategory = OWEInfo.category;
+    owe->sOverworldEncounterLevel = infoOWE.level;
+    owe->sOverworldEncounterCategory = infoOWE.category;
 
     ObjectEventTurn(owe, gStandardDirections[Random() & 3]);
     SetNewOWESpawnCountdown();
@@ -380,7 +391,7 @@ void StartWildBattleWithOWE(void)
     BattleSetup_StartWildBattle();
 }
 
-static bool32 CreateEnemyPartyOWE(struct OWEInfo *info, s32 x, s32 y)
+static bool32 CreateEnemyPartyOWE(struct InfoOWE *info, s32 x, s32 y)
 {
     const struct WildPokemonInfo *wildMonInfo;
     enum WildPokemonArea wildArea;
@@ -809,7 +820,7 @@ static bool32 TrySelectTileForOWE(s32* outX, s32* outY)
     return FALSE;
 }
 
-static void SetSpeciesInfoForOWE(struct OWEInfo *info, u32 x, u32 y)
+static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y)
 {
     u32 personality;
 
@@ -839,7 +850,7 @@ static void SetSpeciesInfoForOWE(struct OWEInfo *info, u32 x, u32 y)
     ZeroEnemyPartyMons();
 }
 
-static void GetGraphicsIdForOWE(struct OWEInfo *info, u32 x, u32 y)
+static void GetGraphicsIdForOWE(struct InfoOWE *info, u32 x, u32 y)
 {
     assertf(CheckValidOWESpecies(info->speciesId), "invalid generated overworld encounter\nspecies: %d\ncheck if valid wild mon header exists", info->speciesId);
     info->graphicsId = info->speciesId + OBJ_EVENT_MON;
@@ -1454,7 +1465,7 @@ static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction dire
         MoveCoords(direction, &x, &y);
         if (x == player->currentCoords.x && y == player->currentCoords.y)
             return TRUE;
-        
+
         collision = GetCollisionFlagsAtCoords(owe, x, y, direction);
         if (MapGridGetCollisionAt(x, y)
          || GetMapBorderIdAt(x, y) == CONNECTION_INVALID
@@ -1709,7 +1720,7 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
         return *template;
 
     struct ObjectEventTemplate templateOWE = *template;
-    struct OWEInfo info = {0};
+    struct InfoOWE info = {0};
     
     enum Species speciesTemplate = SanitizeSpeciesId(templateOWE.graphicsId & OBJ_EVENT_MON_SPECIES_MASK);
     bool32 isShinyTemplate = (templateOWE.graphicsId & OBJ_EVENT_MON_SHINY) ? TRUE : FALSE;
