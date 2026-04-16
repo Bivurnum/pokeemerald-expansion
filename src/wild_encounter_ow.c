@@ -356,14 +356,6 @@ void StartWildBattleWithOWE(void)
     u32 level = GetOWEEncounterLevel(owe->sOverworldEncounterLevel);
     u32 personality;
 
-    switch (gSpeciesInfo[speciesId].genderRatio)
-    {
-    case MON_MALE:
-    case MON_FEMALE:
-    case MON_GENDERLESS:
-        gender = gSpeciesInfo[speciesId].genderRatio;
-    }
-
     assertf(level >= MIN_LEVEL && level <= MAX_LEVEL, "overworld wild encounter does not have valid level.\nlocalId: %d", localId)
     {
         level = MIN_LEVEL;

@@ -1000,6 +1000,20 @@ static bool32 IsValidGender(u32 gender)
     }
 }
 
+static void CleanIncompatibleGenderSpecies(enum Species species, u8 *gender)
+{
+    switch (gSpeciesInfo[species].genderRatio)
+    {
+    case MON_MALE:
+    case MON_FEMALE:
+    case MON_GENDERLESS:
+        *gender = MON_GENDER_RANDOM;
+        return;
+    }
+    if (*gender == MON_GENDERLESS)
+        *gender = MON_GENDER_RANDOM;
+}
+
 u32 GetMonPersonality(enum Species species, u8 gender, u8 nature, u8 unownLetter)
 {
     u32 personality, actualLetter;
@@ -1019,14 +1033,14 @@ u32 GetMonPersonality(enum Species species, u8 gender, u8 nature, u8 unownLetter
         unownLetter = RANDOM_UNOWN_LETTER;
     }
 
-    //gender outside valid gender ratios for species is not asserted because it could be triggered by cute charm
+    CleanIncompatibleGenderSpecies(species, &gender);
     do
     {
         personality = Random32();
         actualLetter = GET_UNOWN_LETTER(personality);
     }
     while ((nature != GetNatureFromPersonality(personality) && nature != NATURE_RANDOM)
-            || (gender != GetGenderFromSpeciesAndPersonality(species, personality) && gender != MON_GENDER_RANDOM)
+            || (gender != MON_GENDER_RANDOM && gender != GetGenderFromSpeciesAndPersonality(species, personality))
             || ((actualLetter != unownLetter - 1) && unownLetter > 0));
     return personality;
 }
