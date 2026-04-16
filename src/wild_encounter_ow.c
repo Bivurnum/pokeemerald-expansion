@@ -267,7 +267,6 @@ void UpdateOverworldWildEncounter(void)
     infoOWE.localId = GetLocalIdByOWESpawnSlot(spawnSlot);
     infoOWE.category = OWE_CATEGORY_WILD;
     SetSpeciesInfoForOWE(&infoOWE, x, y);
-    infoOWE.graphicsId = GetGraphicsIdForOWE(&infoOWE);
 
     if (infoOWE.speciesId == SPECIES_NONE
      || (WE_OWE_SPECIAL_ONLY && infoOWE.category >= OWE_CATEGORY_WILD)
@@ -283,7 +282,7 @@ void UpdateOverworldWildEncounter(void)
     
     struct ObjectEventTemplate objectEventTemplate = {
         .localId = infoOWE.localId,
-        .graphicsId = infoOWE.graphicsId,
+        .graphicsId = GetGraphicsIdForOWE(&infoOWE),
         .x = x - MAP_OFFSET,
         .y = y - MAP_OFFSET,
         .elevation = MapGridGetElevationAt(x, y),
@@ -1772,13 +1771,7 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
     if (templateOWE.movementType == MOVEMENT_TYPE_NONE)
         templateOWE.movementType = OWE_GetMovementTypeFromSpecies(info.speciesId);
 
-    info.graphicsId = info.speciesId + OBJ_EVENT_MON;
-    if (info.isFemale)
-        info.graphicsId += OBJ_EVENT_MON_FEMALE;
-    if (info.isShiny)
-        info.graphicsId += OBJ_EVENT_MON_SHINY;
-
-    templateOWE.graphicsId = info.graphicsId;
+    templateOWE.graphicsId = GetGraphicsIdForOWE(&info);
     templateOWE.sOverworldEncounterLevel = info.level;
     
     return templateOWE;
