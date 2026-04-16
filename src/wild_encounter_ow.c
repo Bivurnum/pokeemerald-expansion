@@ -34,7 +34,7 @@
 
 
 #define sOverworldEncounterLevel        trainerRange_berryTreeId
-#define sAge                            playerCopyableMovement
+#define sOverworldEncounterAge          playerCopyableMovement
 #define sOverworldEncounterCategory     warpArrowSpriteId
 #define OWE_MAX_ROAMERS                 UINT8_MAX - 2
 
@@ -705,7 +705,7 @@ static u32 GetOldestActiveOWESlot(bool32 forceRemove)
         slotMon = &gObjectEvents[GetObjectEventIdByLocalId(GetLocalIdByOWESpawnSlot(i))];
         if (OW_SPECIES(slotMon) != SPECIES_NONE && (!HasOWENoDespawnFlag(slotMon) || forceRemove == TRUE))
         {
-            if (slotMon->sAge > oldest->sAge)
+            if (slotMon->sOverworldEncounterAge > oldest->sOverworldEncounterAge)
                 oldest = slotMon;
         }
     }
@@ -957,7 +957,7 @@ static void SortOWEAges(void)
         if (OW_SPECIES(slotMon) != SPECIES_NONE)
         {
             array[count].slot = i;
-            array[count].age = slotMon->sAge;
+            array[count].age = slotMon->sOverworldEncounterAge;
             count++;
         }
         if (count == numActive)
@@ -981,7 +981,7 @@ static void SortOWEAges(void)
     for (i = 0; i < numActive; i++)
     {
         slotMon = &gObjectEvents[GetObjectEventIdByLocalId(GetLocalIdByOWESpawnSlot(array[i].slot))];
-        slotMon->sAge = numActive - i;
+        slotMon->sOverworldEncounterAge = numActive - i;
     }
 }
 
@@ -1007,7 +1007,7 @@ void OnOverworldWildEncounterDespawn(struct ObjectEvent *owe)
         RoamerMove(owe->sOverworldEncounterCategory);
 
     owe->sOverworldEncounterLevel = 0;
-    owe->sAge = 0;
+    owe->sOverworldEncounterAge = 0;
     owe->sOverworldEncounterCategory = 0;
     
     DoOWESpawnDespawnAnim(owe, FALSE);
@@ -1817,5 +1817,5 @@ static bool32 CheckValidOWESpecies(enum Species speciesId)
 }
 
 #undef sOverworldEncounterLevel
-#undef sAge
+#undef sOverworldEncounterAge
 #undef sOverworldEncounterCategory
