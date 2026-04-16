@@ -1445,12 +1445,16 @@ static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction dire
     s16 y = owe->currentCoords.y;
     u32 i;
     enum Collision collision;
+    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
 
     // Checks only up to one tile away from the player.
     distance--;
     for (i = 0; i < distance; i++)
     {
         MoveCoords(direction, &x, &y);
+        if (x == player->currentCoords.x && y == player->currentCoords.y)
+            return TRUE;
+        
         collision = GetCollisionFlagsAtCoords(owe, x, y, direction);
         if (MapGridGetCollisionAt(x, y)
          || GetMapBorderIdAt(x, y) == CONNECTION_INVALID
