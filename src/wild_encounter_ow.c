@@ -63,7 +63,7 @@
 
 enum CategoryOWE
 {
-    // If Roamers are used, they will exist as values, implicitely, within this enum.
+    // If Roamers are used, they will exist as values, implicitly, within this enum.
     OWE_CATEGORY_MASS_OUTBREAK = ROAMER_COUNT,
     OWE_CATEGORY_WILD,
     OWE_CATEGORY_UNDEFINED
