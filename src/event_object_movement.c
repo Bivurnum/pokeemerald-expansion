@@ -10171,22 +10171,8 @@ void ObjectEventsTurnToEachOther(struct ObjectEvent *objectOne, struct ObjectEve
 
     if (objectTwo->invisible == FALSE)
     {
-        objectDirOne = DetermineObjectEventDirectionFromObject(objectOne, objectTwo);
-        objectDirTwo = objectDirOne;
-
-        //Flip direction.
-        switch (objectDirOne) 
-        {
-        case DIR_NORTH:
-        case DIR_SOUTH:
-        case DIR_WEST:
-        case DIR_EAST:
-            objectDirOne = GetOppositeDirection(objectDirOne);
-            break;
-        
-        default:
-            break;
-        }
+        objectDirTwo = DetermineObjectEventDirectionFromObject(objectOne, objectTwo);
+        objectDirOne = GetOppositeDirection(objectDirTwo);
 
         ObjectEventTurn(objectOne, objectDirOne);
         ObjectEventTurn(objectTwo, objectDirTwo);
