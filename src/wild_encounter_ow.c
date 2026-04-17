@@ -1479,6 +1479,7 @@ static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction dire
         return TRUE;
 
     distance--;
+    // Checks only up to one tile away from the player.
     for (u32 i = 0; i < distance; i++)
     {
         MoveCoords(direction, &x, &y);
