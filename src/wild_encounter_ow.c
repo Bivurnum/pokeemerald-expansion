@@ -1401,48 +1401,45 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
     s32 halfWidth = (viewWidth - 1) / 2;
     enum Direction direction = owe->facingDirection;
 
-    if (!IsOWELineOfSightClear(owe, direction))
-        return FALSE;
-
     switch (direction)
     {
     case DIR_NORTH:
-        if (player->currentCoords.y < owe->currentCoords.y
+        if (!(player->currentCoords.y < owe->currentCoords.y
          && owe->currentCoords.y - player->currentCoords.y <= viewDistance
          && player->currentCoords.x >= owe->currentCoords.x - halfWidth
-         && player->currentCoords.x <= owe->currentCoords.x + halfWidth)
-            return TRUE;
+         && player->currentCoords.x <= owe->currentCoords.x + halfWidth))
+            return FALSE;
         break;
 
     case DIR_SOUTH:
-        if (player->currentCoords.y > owe->currentCoords.y
+        if (!(player->currentCoords.y > owe->currentCoords.y
          && player->currentCoords.y - owe->currentCoords.y <= viewDistance
          && player->currentCoords.x >= owe->currentCoords.x - halfWidth
-         && player->currentCoords.x <= owe->currentCoords.x + halfWidth)
-            return TRUE;
+         && player->currentCoords.x <= owe->currentCoords.x + halfWidth))
+            return FALSE;
         break;
 
     case DIR_EAST:
-        if (player->currentCoords.x > owe->currentCoords.x
+        if (!(player->currentCoords.x > owe->currentCoords.x
          && player->currentCoords.x - owe->currentCoords.x <= viewDistance
          && player->currentCoords.y >= owe->currentCoords.y - halfWidth
-         && player->currentCoords.y <= owe->currentCoords.y + halfWidth)
-            return TRUE;
+         && player->currentCoords.y <= owe->currentCoords.y + halfWidth))
+            return FALSE;
         break;
 
     case DIR_WEST:
-        if (player->currentCoords.x < owe->currentCoords.x
+        if (!(player->currentCoords.x < owe->currentCoords.x
          && owe->currentCoords.x - player->currentCoords.x <= viewDistance
          && player->currentCoords.y >= owe->currentCoords.y - halfWidth
-         && player->currentCoords.y <= owe->currentCoords.y + halfWidth)
-            return TRUE;
+         && player->currentCoords.y <= owe->currentCoords.y + halfWidth))
+            return FALSE;
         break;
 
     default:
         return FALSE;
     }
 
-    return FALSE;
+    return IsOWELineOfSightClear(owe, direction);
 }
 
 static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction direction)
