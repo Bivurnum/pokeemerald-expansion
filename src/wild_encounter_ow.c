@@ -913,10 +913,8 @@ static bool32 CheckCanLoadOWE_Tiles(enum Species speciesId, bool32 isFemale, boo
         
         // The entire spritesheet is loaded when compressed, so if tiles exist, return early.
         if (IndexOfSpriteTileTag(tag) != 0xFF)
-        {
-            DebugPrintf("\n\nALREADY LOADED\nSpecies: %S", GetSpeciesName(speciesId));
             return TRUE;
-        }
+        
         frames = graphicsInfo->anims == sAnimTable_Following_Asym ? 8 : 6;
         frames++; // Add an extra frame to equate offset of TILE_SIZE_4BPP << sheetSpan
         tileCount *= frames;
@@ -924,12 +922,8 @@ static bool32 CheckCanLoadOWE_Tiles(enum Species speciesId, bool32 isFemale, boo
     
     tileCount += OWE_FIELD_EFFECT_TILE_NUM;
     if (!CanAllocSpriteTiles(tileCount))
-    {
-        DebugPrintf("\n\nNO SPAWN\nSpecies: %S\nSheet Tile Count: %d", GetSpeciesName(speciesId), tileCount);
         return FALSE;
-    }
-
-    DebugPrintf("\n\nSPAWN\nSpecies: %S\nSheet Tile Count: %d", GetSpeciesName(speciesId), tileCount);
+    
     return TRUE;
 }
 #undef OWE_FIELD_EFFECT_TILE_NUM
