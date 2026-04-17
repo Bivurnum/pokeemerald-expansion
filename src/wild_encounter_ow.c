@@ -1028,7 +1028,13 @@ bool32 IsOWEDespawnExempt(struct ObjectEvent *owe)
 
 bool32 DespawnOWEDueToNPCCollision(struct ObjectEvent *obstacle, struct ObjectEvent *activeObject)
 {
-    if (!IsOverworldWildEncounter(obstacle, OWE_GENERATED) || IsOverworldWildEncounter(activeObject, OWE_ANY) || activeObject->isPlayer)
+    if (activeObject->isPlayer)
+        return FALSE;
+
+    if (IsOverworldWildEncounter(activeObject, OWE_ANY))
+        return FALSE;
+    
+    if (!IsOverworldWildEncounter(obstacle, OWE_GENERATED))
         return FALSE;
 
     RemoveObjectEvent(obstacle);
