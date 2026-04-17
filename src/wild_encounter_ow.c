@@ -207,6 +207,51 @@ struct AgeSort
     u8 age:4;
 };
 
+const struct FieldEffectInfoOWE gOverworldWildEncounterFieldEffectInfo[] =
+{
+    [OWE_SPAWN_ANIM_GRASS] =
+    {
+        .xOffset = 0,
+        .yOffset = 8,
+        .visual = FLDEFFOBJ_JUMP_TALL_GRASS,
+    },
+
+    [OWE_SPAWN_ANIM_LONG_GRASS] =
+    {
+        .xOffset = 0,
+        .yOffset = 0,
+        .visual = FLDEFFOBJ_JUMP_LONG_GRASS,
+    },
+
+    [OWE_SPAWN_ANIM_WATER] =
+    {
+        .xOffset = 0,
+        .yOffset = 8,
+        .visual = FLDEFFOBJ_JUMP_BIG_SPLASH,
+    },
+
+    [OWE_SPAWN_ANIM_UNDERWATER] =
+    {
+        .xOffset = 0,
+        .yOffset = 0,
+        .visual = FLDEFFOBJ_BUBBLES,
+    },
+
+    [OWE_SPAWN_ANIM_CAVE] =
+    {
+        .xOffset = 0,
+        .yOffset = 12,
+        .visual = FLDEFFOBJ_GROUND_IMPACT_DUST,
+    },
+
+    [OWE_SPAWN_ANIM_SHINY] =
+    {
+        .xOffset = 0,
+        .yOffset = 0,
+        .visual = FLDEFFOBJ_SHINY_SPARKLE,
+    },
+};
+
 
 void UpdateOverworldWildEncounter(void)
 {
@@ -901,39 +946,44 @@ static bool32 CheckCanLoadOWE_Palette(enum Species speciesId, bool32 isFemale, b
 
     return TRUE;
 }
-#define OWE_FIELD_EFFECT_TILE_NUM 16 // Number of tiiles to add for field effect spawning
+
+static u32 GetNumberOfSpawnAnimTiles(s32 x, s32 y)
+{
+    u32 metatileBehavior = MapGridGetMetatileBehaviorAt(x, y);
+    enum SpawnDespawnTypeOWE spawnAnimType = GetOWESpawnDespawnAnimType(metatileBehavior);
+    u32 visual = gOverworldWildEncounterFieldEffectInfo[spawnAnimType].visual;
+
+    return gFieldEffectObjectTemplatePointers[visual]->images->size / TILE_SIZE_4BPP;
+}
+
 static bool32 CheckCanLoadOWE_Tiles(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y)
 {
-    u32 tag = speciesId + OBJ_EVENT_MON + (isShiny ? OBJ_EVENT_MON_SHINY : 0);
-    // const struct ObjectEventGraphicsInfo *graphicsInfo = SpeciesToGraphicsInfo(speciesId, isShiny, isFemale);
-    const struct ObjectEventGraphicsInfo *graphicsInfo = GetObjectEventGraphicsInfo(tag);
-    tag = LoadSheetGraphicsInfo(graphicsInfo, tag, NULL);
+    u32 graphicsId = GetGraphicsIdForMon(speciesId, isShiny, isFemale);
+    const struct ObjectEventGraphicsInfo *graphicsInfo = GetObjectEventGraphicsInfo(graphicsId);
     u32 tileCount = graphicsInfo->size / TILE_SIZE_4BPP;
     if (OW_GFX_COMPRESS)
     {
-        // If tiles are already existing return early, spritesheet is loaded when compressed
-        if (IndexOfSpriteTileTag(tag) != 0xFF)
-        {
-            DebugPrintf("\n\nALREADY LOADED\nSpecies: %S", GetSpeciesName(speciesId));
-            return TRUE;
-        }
+        u32 tag = graphicsInfo->tileTag;
+        u32 frames;
+        if (graphicsInfo->tileTag == TAG_NONE)
+            tag = COMP_OW_TILE_TAG_BASE + graphicsId;
         
-        u32 frames = graphicsInfo->anims == sAnimTable_Following_Asym ? 8 : 6;
+        // The entire spritesheet is loaded when compressed, so if tiles exist, return early.
+        if (IndexOfSpriteTileTag(tag) != 0xFF)
+            return TRUE;
+        
+        // Custom Pokémon Object Anims will need to be accounted for.
+        frames = graphicsInfo->anims == sAnimTable_Following_Asym ? 8 : 6;
+        frames++; // Add an extra frame to equate offset of TILE_SIZE_4BPP << sheetSpan
         tileCount *= frames;
     }
     
-    tileCount += OWE_FIELD_EFFECT_TILE_NUM;
+    tileCount += GetNumberOfSpawnAnimTiles(x, y);
     if (!CanAllocSpriteTiles(tileCount))
-    {
-        DebugPrintf("\n\nNO SPAWN\nSpecies: %S\nSheet Tile Count: %d", GetSpeciesName(speciesId), tileCount);
         return FALSE;
-    }
-
-    DebugPrintf("\n\nSPAWN\nSpecies: %S\nSheet Tile Count: %d", GetSpeciesName(speciesId), tileCount);
-    FreeSpriteTilesByTag(tag);
+    
     return TRUE;
 }
-#undef OWE_FIELD_EFFECT_TILE_NUM
 
 static void SortOWEAges(void)
 {
