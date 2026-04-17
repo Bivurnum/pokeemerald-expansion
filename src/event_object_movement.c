@@ -217,7 +217,6 @@ const struct ObjectEventGraphicsInfo *SpeciesToGraphicsInfo(enum Species species
 static bool8 NpcTakeStep(struct Sprite *);
 static void CopyObjectGraphicsInfoToSpriteTemplate_WithMovementType(u16 graphicsId, u16 movementType, struct SpriteTemplate *spriteTemplate, const struct SubspriteTable **subspriteTables);
 
-static u16 GetGraphicsIdForMon(enum Species species, bool32 shiny, bool32 female);
 static enum Species GetUnownSpecies(struct Pokemon *mon);
 
 static void StartSlowRunningAnim(struct ObjectEvent *objectEvent, struct Sprite *sprite, enum Direction direction);
@@ -2018,13 +2017,8 @@ static u32 LoadDynamicFollowerPaletteFromGraphicsId(u16 graphicsId, struct Sprit
     bool32 female = graphicsId & OBJ_EVENT_MON_FEMALE;
     u8 paletteNum = LoadDynamicFollowerPalette(species, shiny, female);
     if (template)
-    {
-        template->paletteTag = species + OBJ_EVENT_MON;
-        if (shiny)
-            template->paletteTag += OBJ_EVENT_MON_SHINY;
-        if (female)
-            template->paletteTag += OBJ_EVENT_MON_FEMALE;
-    }
+        template->paletteTag = GetGraphicsIdForMon(species, shiny, female);
+
     return paletteNum;
 }
 
@@ -11545,11 +11539,7 @@ void GetDaycareGraphics(struct ScriptContext *ctx)
         if (specGfx == SPECIES_NONE)
             break;
         // Assemble gfx ID like FollowerSetGraphics
-        specGfx = specGfx + OBJ_EVENT_MON;
-        if (shiny)
-            specGfx += OBJ_EVENT_MON_SHINY;
-        if (female)
-            specGfx += OBJ_EVENT_MON_FEMALE;
+        specGfx = GetGraphicsIdForMon(specGfx, shiny, female);
         VarSet(varGfx[i], (u16)specGfx);
         VarSet(varForm[i], 0);  //  This shouldn't be needed anymore, track down
     }
@@ -11720,7 +11710,7 @@ bool8 MovementAction_WalkSlowStairsRight_Step1(struct ObjectEvent *objectEvent, 
     return FALSE;
 }
 
-static u16 GetGraphicsIdForMon(enum Species species, bool32 shiny, bool32 female)
+u16 GetGraphicsIdForMon(enum Species species, bool32 shiny, bool32 female)
 {
     u16 graphicsId = species + OBJ_EVENT_MON;
     if (shiny)

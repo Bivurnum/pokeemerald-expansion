@@ -851,16 +851,7 @@ static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y)
 static u32 GetGraphicsIdForOWE(struct InfoOWE *info)
 {
     assertf(CheckValidOWESpecies(info->speciesId), "invalid generated overworld encounter\nspecies: %d\ncheck if valid wild mon header exists", info->speciesId);
-
-    u32 graphicsId = info->speciesId + OBJ_EVENT_MON;
-
-    if (info->isFemale)
-        graphicsId += OBJ_EVENT_MON_FEMALE;
-
-    if (info->isShiny)
-        graphicsId += OBJ_EVENT_MON_SHINY;
-
-    return graphicsId;
+    return GetGraphicsIdForMon(info->speciesId, info->isShiny, info->isFemale);
 }
 
 static bool32 CheckCanLoadOWE(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y)
