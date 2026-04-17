@@ -206,6 +206,51 @@ struct AgeSort
     u8 age:4;
 };
 
+const struct FieldEffectInfoOWE gOverworldWildEncounterFieldEffectInfo[] =
+{
+    [OWE_SPAWN_ANIM_GRASS] =
+    {
+        .xOffset = 0,
+        .yOffset = 8,
+        .visual = FLDEFFOBJ_JUMP_TALL_GRASS,
+    },
+
+    [OWE_SPAWN_ANIM_LONG_GRASS] =
+    {
+        .xOffset = 0,
+        .yOffset = 0,
+        .visual = FLDEFFOBJ_JUMP_LONG_GRASS,
+    },
+
+    [OWE_SPAWN_ANIM_WATER] =
+    {
+        .xOffset = 0,
+        .yOffset = 8,
+        .visual = FLDEFFOBJ_JUMP_BIG_SPLASH,
+    },
+
+    [OWE_SPAWN_ANIM_UNDERWATER] =
+    {
+        .xOffset = 0,
+        .yOffset = 0,
+        .visual = FLDEFFOBJ_BUBBLES,
+    },
+
+    [OWE_SPAWN_ANIM_CAVE] =
+    {
+        .xOffset = 0,
+        .yOffset = 12,
+        .visual = FLDEFFOBJ_GROUND_IMPACT_DUST,
+    },
+
+    [OWE_SPAWN_ANIM_SHINY] =
+    {
+        .xOffset = 0,
+        .yOffset = 0,
+        .visual = FLDEFFOBJ_SHINY_SPARKLE,
+    },
+};
+
 
 void UpdateOverworldWildEncounter(void)
 {
@@ -898,7 +943,15 @@ static bool32 CheckCanLoadOWE_Palette(enum Species speciesId, bool32 isFemale, b
     return TRUE;
 }
 
-#define OWE_FIELD_EFFECT_TILE_NUM 16 // Number of tiles to add for field effect spawning
+static u32 GetNumberOfSpawnAnimTiles(s32 x, s32 y)
+{
+    u32 metatileBehavior = MapGridGetMetatileBehaviorAt(x, y);
+    enum SpawnDespawnTypeOWE spawnAnimType = GetOWESpawnDespawnAnimType(metatileBehavior);
+    u32 visual = gOverworldWildEncounterFieldEffectInfo[spawnAnimType].visual;
+
+    return gFieldEffectObjectTemplatePointers[visual]->images->size / TILE_SIZE_4BPP;
+}
+
 static bool32 CheckCanLoadOWE_Tiles(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y)
 {
     u32 graphicsId = GetGraphicsIdForMon(speciesId, isShiny, isFemale);
@@ -921,13 +974,12 @@ static bool32 CheckCanLoadOWE_Tiles(enum Species speciesId, bool32 isFemale, boo
         tileCount *= frames;
     }
     
-    tileCount += OWE_FIELD_EFFECT_TILE_NUM;
+    tileCount += GetNumberOfSpawnAnimTiles(x, y);
     if (!CanAllocSpriteTiles(tileCount))
         return FALSE;
     
     return TRUE;
 }
-#undef OWE_FIELD_EFFECT_TILE_NUM
 
 static void SortOWEAges(void)
 {

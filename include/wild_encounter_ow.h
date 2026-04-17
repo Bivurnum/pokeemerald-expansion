@@ -56,6 +56,15 @@ enum __attribute__((packed)) OverworldWildEncounterBehaviors
     OWE_SPECIES_BEHAVIOR_COUNT
 };
 
+struct FieldEffectInfoOWE
+{
+    s16 xOffset;
+    s16 yOffset;
+    u32 visual;
+};
+
+extern const struct FieldEffectInfoOWE gOverworldWildEncounterFieldEffectInfo[];
+
 void UpdateOverworldWildEncounter(void);
 bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType);
 void StartWildBattleWithOWE(void);
