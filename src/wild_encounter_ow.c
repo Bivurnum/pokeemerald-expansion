@@ -72,11 +72,12 @@ enum CategoryOWE
 struct InfoOWE
 {
     enum Species speciesId;
-    bool32 isShiny;
-    bool32 isFemale;
-    u32 category;
-    u32 localId;
-    u32 level;
+    enum CategoryOWE category;
+    u8 localId;
+    u8 level;
+    bool8 isShiny;
+    bool8 isFemale;
+    bool8 noDespawn;
 };
 
 
@@ -124,7 +125,7 @@ static inline u32 GetOWEEncounterLevel(u32 level)
     return level & ~OWE_NO_DESPAWN_FLAG;
 }
 
-static inline void SetOWEEncounterLevel(u32 *level, u32 newLevel)
+static inline void SetOWEEncounterLevel(u8 *level, u32 newLevel)
 {
     *level = (*level & OWE_NO_DESPAWN_FLAG) | (newLevel & ~OWE_NO_DESPAWN_FLAG);
 }
@@ -134,7 +135,7 @@ static inline bool32 HasOWENoDespawnFlag(const struct ObjectEvent *owe)
     return owe->sOverworldEncounterLevel & OWE_NO_DESPAWN_FLAG;
 }
 
-static inline void SetOWENoDespawnFlag(u32 *level)
+static inline void SetOWENoDespawnFlag(u8 *level)
 {
     *level |= OWE_NO_DESPAWN_FLAG;
 }
@@ -269,8 +270,8 @@ void UpdateOverworldWildEncounter(void)
 
     if (infoOWE.speciesId == SPECIES_NONE
      || (WE_OWE_SPECIAL_ONLY && infoOWE.category >= OWE_CATEGORY_WILD)
-     || !IsWildLevelAllowedByRepel(GetOWEEncounterLevel(infoOWE.level))
-     || !IsAbilityAllowingEncounter(GetOWEEncounterLevel(infoOWE.level))
+     || !IsWildLevelAllowedByRepel(infoOWE.level)
+     || !IsAbilityAllowingEncounter(infoOWE.level)
      || !CheckCanLoadOWE(infoOWE.speciesId, infoOWE.isFemale, infoOWE.isShiny, x, y))
     {
         SetMinimumOWESpawnTimer();
@@ -304,6 +305,9 @@ void UpdateOverworldWildEncounter(void)
     owe->disableCoveringGroundEffects = TRUE;
     owe->sOverworldEncounterLevel = infoOWE.level;
     owe->sOverworldEncounterCategory = infoOWE.category;
+
+    if (infoOWE.noDespawn)
+        SetOWENoDespawnFlag(&owe->sOverworldEncounterLevel);
 
     ObjectEventTurn(owe, gStandardDirections[Random() & 3]);
     SetNewOWESpawnCountdown();
@@ -465,7 +469,7 @@ static bool32 CreateEnemyPartyOWE(struct InfoOWE *info, s32 x, s32 y)
         {
             CreateWildMon(gWildFeebas.species, ChooseWildMonLevel(&gWildFeebas, 0, WILD_AREA_FISHING));
             if (WE_OWE_PREVENT_FEEBAS_DESPAWN)
-                SetOWENoDespawnFlag(&info->level);
+                info->noDespawn = TRUE;
 
             return TRUE;
         }
@@ -843,7 +847,7 @@ static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y)
         info->isFemale = FALSE;
 
     if (WE_OWE_PREVENT_SHINY_DESPAWN && info->isShiny)
-        SetOWENoDespawnFlag(&info->level);
+        info->noDespawn = TRUE;
 
     ZeroEnemyPartyMons();
 }
