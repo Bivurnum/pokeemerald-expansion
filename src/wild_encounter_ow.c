@@ -897,24 +897,28 @@ static bool32 CheckCanLoadOWE_Palette(enum Species speciesId, bool32 isFemale, b
 
     return TRUE;
 }
-#define OWE_FIELD_EFFECT_TILE_NUM 16 // Number of tiiles to add for field effect spawning
+
+#define OWE_FIELD_EFFECT_TILE_NUM 16 // Number of tiles to add for field effect spawning
 static bool32 CheckCanLoadOWE_Tiles(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y)
 {
-    u32 tag = speciesId + OBJ_EVENT_MON + (isShiny ? OBJ_EVENT_MON_SHINY : 0);
-    // const struct ObjectEventGraphicsInfo *graphicsInfo = SpeciesToGraphicsInfo(speciesId, isShiny, isFemale);
-    const struct ObjectEventGraphicsInfo *graphicsInfo = GetObjectEventGraphicsInfo(tag);
-    tag = LoadSheetGraphicsInfo(graphicsInfo, tag, NULL);
+    u32 graphicsId = GetGraphicsIdForMon(speciesId, isShiny, isFemale);
+    const struct ObjectEventGraphicsInfo *graphicsInfo = GetObjectEventGraphicsInfo(graphicsId);
     u32 tileCount = graphicsInfo->size / TILE_SIZE_4BPP;
     if (OW_GFX_COMPRESS)
     {
-        // If tiles are already existing return early, spritesheet is loaded when compressed
+        u32 tag = graphicsInfo->tileTag;
+        u32 frames;
+        if (graphicsInfo->tileTag == TAG_NONE)
+            tag = COMP_OW_TILE_TAG_BASE + graphicsId;
+        
+        // The entire spritesheet is loaded when compressed, so if tiles exist, return early.
         if (IndexOfSpriteTileTag(tag) != 0xFF)
         {
             DebugPrintf("\n\nALREADY LOADED\nSpecies: %S", GetSpeciesName(speciesId));
             return TRUE;
         }
-        
-        u32 frames = graphicsInfo->anims == sAnimTable_Following_Asym ? 8 : 6;
+        frames = graphicsInfo->anims == sAnimTable_Following_Asym ? 8 : 6;
+        frames++; // Add an extra frame to equate offset of TILE_SIZE_4BPP << sheetSpan
         tileCount *= frames;
     }
     
@@ -926,7 +930,6 @@ static bool32 CheckCanLoadOWE_Tiles(enum Species speciesId, bool32 isFemale, boo
     }
 
     DebugPrintf("\n\nSPAWN\nSpecies: %S\nSheet Tile Count: %d", GetSpeciesName(speciesId), tileCount);
-    FreeSpriteTilesByTag(tag);
     return TRUE;
 }
 #undef OWE_FIELD_EFFECT_TILE_NUM
