@@ -63,7 +63,7 @@
 
 enum CategoryOWE
 {
-    // If Roamers are used, they will exist as values, implicitely, within this enum.
+    // If Roamers are used, they will exist as values, implicitly, within this enum.
     OWE_CATEGORY_MASS_OUTBREAK = ROAMER_COUNT,
     OWE_CATEGORY_WILD,
     OWE_CATEGORY_UNDEFINED
@@ -177,7 +177,7 @@ static u32 GetNextOWESpawnSlot(void);
 static u32 GetSpeciesByOWESpawnSlot(u32 spawnSlot);
 static bool32 TrySelectTileForOWE(s32* outX, s32* outY);
 static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y);
-static u32 GetGraphicsIdForOWE(struct InfoOWE *info);
+static u32 GetGraphicsIdForOWE(const struct InfoOWE *info);
 static bool32 CheckCanLoadOWE(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
 static bool32 CheckCanLoadOWE_Palette(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
 static bool32 CheckCanLoadOWE_Tiles(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
@@ -193,7 +193,7 @@ static bool32 OWE_ShouldPlayOWEFleeSound(struct ObjectEvent *owe);
 static bool32 CheckRestrictedOWEMovementAtCoords(struct ObjectEvent *owe, s32 xNew, s32 yNew, enum Direction newDirection, enum Direction collisionDirection);
 static bool32 CheckRestrictedOWEMovementMetatile(s32 xCurrent, s32 yCurrent, s32 xNew, s32 yNew);
 static bool32 CheckRestrictedOWEMovementMap(struct ObjectEvent *owe, s32 xNew, s32 yNew);
-static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction direction, u32 distance);
+static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction direction);
 static enum Direction CheckOWEPathToPlayerFromCollision(struct ObjectEvent *owe, enum Direction newDirection);
 static void Task_OWEApproachForBattle(u8 taskId);
 static bool32 CheckValidOWESpecies(enum Species speciesId);
@@ -848,19 +848,10 @@ static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y)
     ZeroEnemyPartyMons();
 }
 
-static u32 GetGraphicsIdForOWE(struct InfoOWE *info)
+static u32 GetGraphicsIdForOWE(const struct InfoOWE *info)
 {
     assertf(CheckValidOWESpecies(info->speciesId), "invalid generated overworld encounter\nspecies: %d\ncheck if valid wild mon header exists", info->speciesId);
-
-    u32 graphicsId = info->speciesId + OBJ_EVENT_MON;
-
-    if (info->isFemale)
-        graphicsId += OBJ_EVENT_MON_FEMALE;
-
-    if (info->isShiny)
-        graphicsId += OBJ_EVENT_MON_SHINY;
-
-    return graphicsId;
+    return GetGraphicsIdForMon(info->speciesId, info->isShiny, info->isFemale);
 }
 
 static bool32 CheckCanLoadOWE(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y)
@@ -1028,7 +1019,13 @@ bool32 IsOWEDespawnExempt(struct ObjectEvent *owe)
 
 bool32 DespawnOWEDueToNPCCollision(struct ObjectEvent *obstacle, struct ObjectEvent *activeObject)
 {
-    if (!IsOverworldWildEncounter(obstacle, OWE_GENERATED) || IsOverworldWildEncounter(activeObject, OWE_ANY) || activeObject->isPlayer)
+    if (activeObject->isPlayer)
+        return FALSE;
+
+    if (IsOverworldWildEncounter(activeObject, OWE_ANY))
+        return FALSE;
+    
+    if (!IsOverworldWildEncounter(obstacle, OWE_GENERATED))
         return FALSE;
 
     RemoveObjectEvent(obstacle);
@@ -1404,69 +1401,85 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
     s32 halfWidth = (viewWidth - 1) / 2;
     enum Direction direction = owe->facingDirection;
 
-    if (!IsOWELineOfSightClear(owe, direction, viewDistance))
-        return FALSE;
-
     switch (direction)
     {
     case DIR_NORTH:
-        if (player->currentCoords.y < owe->currentCoords.y
+        if (!(player->currentCoords.y < owe->currentCoords.y
          && owe->currentCoords.y - player->currentCoords.y <= viewDistance
          && player->currentCoords.x >= owe->currentCoords.x - halfWidth
-         && player->currentCoords.x <= owe->currentCoords.x + halfWidth)
-            return TRUE;
+         && player->currentCoords.x <= owe->currentCoords.x + halfWidth))
+            return FALSE;
         break;
 
     case DIR_SOUTH:
-        if (player->currentCoords.y > owe->currentCoords.y
+        if (!(player->currentCoords.y > owe->currentCoords.y
          && player->currentCoords.y - owe->currentCoords.y <= viewDistance
          && player->currentCoords.x >= owe->currentCoords.x - halfWidth
-         && player->currentCoords.x <= owe->currentCoords.x + halfWidth)
-            return TRUE;
+         && player->currentCoords.x <= owe->currentCoords.x + halfWidth))
+            return FALSE;
         break;
 
     case DIR_EAST:
-        if (player->currentCoords.x > owe->currentCoords.x
+        if (!(player->currentCoords.x > owe->currentCoords.x
          && player->currentCoords.x - owe->currentCoords.x <= viewDistance
          && player->currentCoords.y >= owe->currentCoords.y - halfWidth
-         && player->currentCoords.y <= owe->currentCoords.y + halfWidth)
-            return TRUE;
+         && player->currentCoords.y <= owe->currentCoords.y + halfWidth))
+            return FALSE;
         break;
 
     case DIR_WEST:
-        if (player->currentCoords.x < owe->currentCoords.x
+        if (!(player->currentCoords.x < owe->currentCoords.x
          && owe->currentCoords.x - player->currentCoords.x <= viewDistance
          && player->currentCoords.y >= owe->currentCoords.y - halfWidth
-         && player->currentCoords.y <= owe->currentCoords.y + halfWidth)
-            return TRUE;
+         && player->currentCoords.y <= owe->currentCoords.y + halfWidth))
+            return FALSE;
         break;
 
     default:
         return FALSE;
     }
 
-    return FALSE;
+    return IsOWELineOfSightClear(owe, direction);
 }
 
-static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction direction, u32 distance)
+static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction direction)
 {
-    if (distance == 0)
-        return FALSE;
-    
+    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
     s16 x = owe->currentCoords.x;
     s16 y = owe->currentCoords.y;
-    u32 i;
+    s32 distance;
     enum Collision collision;
-    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
 
-    // Checks only up to one tile away from the player.
+    switch (direction)
+    {
+        case DIR_NORTH:
+            distance = y - player->currentCoords.y;
+            break;
+        
+        case DIR_SOUTH:
+            distance = player->currentCoords.y - y;
+            break;
+        
+        case DIR_EAST:
+            distance = player->currentCoords.x - x;
+            break;
+
+        case DIR_WEST:
+            distance = x - player->currentCoords.x;
+            break;
+
+        default:
+            return FALSE;
+    }
+
+    if (distance <= 1)
+        return TRUE;
+
     distance--;
-    for (i = 0; i < distance; i++)
+    // Checks only up to one tile away from the player.
+    for (u32 i = 0; i < distance; i++)
     {
         MoveCoords(direction, &x, &y);
-        if (x == player->currentCoords.x && y == player->currentCoords.y)
-            return TRUE;
-
         collision = GetCollisionFlagsAtCoords(owe, x, y, direction);
         if (MapGridGetCollisionAt(x, y)
          || GetMapBorderIdAt(x, y) == CONNECTION_INVALID
