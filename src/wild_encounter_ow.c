@@ -177,7 +177,7 @@ static u32 GetNextOWESpawnSlot(void);
 static u32 GetSpeciesByOWESpawnSlot(u32 spawnSlot);
 static bool32 TrySelectTileForOWE(s32* outX, s32* outY);
 static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y);
-static u32 GetGraphicsIdForOWE(struct InfoOWE *info);
+static u32 GetGraphicsIdForOWE(const struct InfoOWE *info);
 static bool32 CheckCanLoadOWE(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
 static bool32 CheckCanLoadOWE_Palette(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
 static bool32 CheckCanLoadOWE_Tiles(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
@@ -848,7 +848,7 @@ static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y)
     ZeroEnemyPartyMons();
 }
 
-static u32 GetGraphicsIdForOWE(struct InfoOWE *info)
+static u32 GetGraphicsIdForOWE(const struct InfoOWE *info)
 {
     assertf(CheckValidOWESpecies(info->speciesId), "invalid generated overworld encounter\nspecies: %d\ncheck if valid wild mon header exists", info->speciesId);
     return GetGraphicsIdForMon(info->speciesId, info->isShiny, info->isFemale);
