@@ -193,7 +193,7 @@ static bool32 OWE_ShouldPlayOWEFleeSound(struct ObjectEvent *owe);
 static bool32 CheckRestrictedOWEMovementAtCoords(struct ObjectEvent *owe, s32 xNew, s32 yNew, enum Direction newDirection, enum Direction collisionDirection);
 static bool32 CheckRestrictedOWEMovementMetatile(s32 xCurrent, s32 yCurrent, s32 xNew, s32 yNew);
 static bool32 CheckRestrictedOWEMovementMap(struct ObjectEvent *owe, s32 xNew, s32 yNew);
-static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction direction, u32 distance);
+static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction direction);
 static enum Direction CheckOWEPathToPlayerFromCollision(struct ObjectEvent *owe, enum Direction newDirection);
 static void Task_OWEApproachForBattle(u8 taskId);
 static bool32 CheckValidOWESpecies(enum Species speciesId);
@@ -1401,7 +1401,7 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
     s32 halfWidth = (viewWidth - 1) / 2;
     enum Direction direction = owe->facingDirection;
 
-    if (!IsOWELineOfSightClear(owe, direction, viewDistance))
+    if (!IsOWELineOfSightClear(owe, direction))
         return FALSE;
 
     switch (direction)
@@ -1445,25 +1445,43 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
     return FALSE;
 }
 
-static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction direction, u32 distance)
+static bool32 IsOWELineOfSightClear(struct ObjectEvent *owe, enum Direction direction)
 {
-    if (distance == 0)
-        return FALSE;
-    
+    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
     s16 x = owe->currentCoords.x;
     s16 y = owe->currentCoords.y;
-    u32 i;
+    s32 distance;
     enum Collision collision;
-    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
 
-    // Checks only up to one tile away from the player.
+    switch (direction)
+    {
+        case DIR_NORTH:
+            distance = y - player->currentCoords.y;
+            break;
+        
+        case DIR_SOUTH:
+            distance = player->currentCoords.y - y;
+            break;
+        
+        case DIR_EAST:
+            distance = player->currentCoords.x - x;
+            break;
+
+        case DIR_WEST:
+            distance = x - player->currentCoords.x;
+            break;
+
+        default:
+            return FALSE;
+    }
+
+    if (distance <= 1)
+        return TRUE;
+
     distance--;
-    for (i = 0; i < distance; i++)
+    for (u32 i = 0; i < distance; i++)
     {
         MoveCoords(direction, &x, &y);
-        if (x == player->currentCoords.x && y == player->currentCoords.y)
-            return TRUE;
-
         collision = GetCollisionFlagsAtCoords(owe, x, y, direction);
         if (MapGridGetCollisionAt(x, y)
          || GetMapBorderIdAt(x, y) == CONNECTION_INVALID
