@@ -1683,7 +1683,7 @@ static bool8 GetAvailableObjectEventId(u16 localId, u8 mapNum, u8 mapGroup, u8 *
         if (gObjectEvents[i].localId == localId && gObjectEvents[i].mapNum == mapNum && gObjectEvents[i].mapGroup == mapGroup)
             return TRUE;
     }
-    if (i >= OBJECT_EVENTS_COUNT && IsLocalIdGeneratedOWE(localId))
+    if (i >= OBJECT_EVENTS_COUNT && !IS_LOCALID_GENERATED_OWE(localId))
         return TryAndDespawnOldestGeneratedOWE_Object(objectEventId);
     *objectEventId = i;
     for (; i < OBJECT_EVENTS_COUNT; i++)
