@@ -6992,7 +6992,10 @@ enum Direction GetOppositeDirection(enum Direction direction)
     }
 
     if (direction >= NELEMS(sOppositeDirections))
+    {
+        errorf("Invalid direction.");
         return DIR_NONE;
+    }
 
     return sOppositeDirections[direction];
 }
@@ -7005,7 +7008,10 @@ enum Direction GetNinetyDegreeDirection(enum Direction direction, bool32 clockwi
     }
 
     if (direction >= NELEMS(sOppositeDirections))
+    {
+        errorf("Invalid direction.");
         return DIR_NONE;
+    }
 
     return sRotate90Direction[direction][clockwise];
 }
