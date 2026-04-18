@@ -72,11 +72,12 @@ enum CategoryOWE
 struct InfoOWE
 {
     enum Species speciesId;
-    bool32 isShiny;
-    bool32 isFemale;
-    u32 category;
-    u32 localId;
-    u32 level;
+    enum CategoryOWE category;
+    u8 localId;
+    u8 level;
+    bool8 isShiny;
+    bool8 isFemale;
+    bool8 noDespawn;
 };
 
 
@@ -119,12 +120,7 @@ void ClearSavedOWEMovementState(struct ObjectEvent *owe)
     owe->sOverworldEncounterCategory &= ~OWE_SAVED_MOVEMENT_STATE_FLAG;
 }
 
-static inline u32 GetOWEEncounterLevel(u32 level)
-{
-    return level & ~OWE_NO_DESPAWN_FLAG;
-}
-
-static inline void SetOWEEncounterLevel(u32 *level, u32 newLevel)
+static inline void SetOWEEncounterLevel(u8 *level, u32 newLevel)
 {
     *level = (*level & OWE_NO_DESPAWN_FLAG) | (newLevel & ~OWE_NO_DESPAWN_FLAG);
 }
@@ -134,11 +130,6 @@ static inline bool32 HasOWENoDespawnFlag(const struct ObjectEvent *owe)
     return owe->sOverworldEncounterLevel & OWE_NO_DESPAWN_FLAG;
 }
 
-static inline void SetOWENoDespawnFlag(u32 *level)
-{
-    *level |= OWE_NO_DESPAWN_FLAG;
-}
-
 static inline bool32 ShouldSpawnWaterOWE(void)
 {
     return TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_UNDERWATER);
@@ -146,13 +137,7 @@ static inline bool32 ShouldSpawnWaterOWE(void)
 
 static inline bool32 IsObjectOWE(struct ObjectEvent *owe)
 {
-    if (!IS_OW_MON_OBJ(owe))
-        return FALSE;
-
-    if (owe->trainerType != TRAINER_TYPE_OW_WILD_ENCOUNTER)
-        return FALSE;
-
-    return TRUE;
+    return (owe->trainerType == TRAINER_TYPE_OW_WILD_ENCOUNTER);
 }
 
 static bool32 CreateEnemyPartyOWE(struct InfoOWE *info, s32 x, s32 y);
@@ -178,7 +163,7 @@ static void SetNewOWESpawnCountdown(void);
 static void DoOWESpawnDespawnAnim(struct ObjectEvent *owe, bool32 animSpawn);
 static enum SpawnDespawnTypeOWE GetOWESpawnDespawnAnimType(u32 metatileBehavior);
 static void PlayOWECry(struct ObjectEvent *owe);
-static struct ObjectEvent *GetOWEObjectEvent(void);
+static struct ObjectEvent *GetRandomOWEObjectEvent(void);
 static bool32 OWE_ShouldPlayOWEFleeSound(struct ObjectEvent *owe);
 static bool32 CheckRestrictedOWEMovementAtCoords(struct ObjectEvent *owe, s32 xNew, s32 yNew, enum Direction newDirection, enum Direction collisionDirection);
 static bool32 CheckRestrictedOWEMovementMetatile(s32 xCurrent, s32 yCurrent, s32 xNew, s32 yNew);
@@ -304,8 +289,8 @@ void UpdateOverworldWildEncounter(void)
 
     if (infoOWE.speciesId == SPECIES_NONE
      || (WE_OWE_SPECIAL_ONLY && infoOWE.category >= OWE_CATEGORY_WILD)
-     || !IsWildLevelAllowedByRepel(GetOWEEncounterLevel(infoOWE.level))
-     || !IsAbilityAllowingEncounter(GetOWEEncounterLevel(infoOWE.level))
+     || !IsWildLevelAllowedByRepel(infoOWE.level)
+     || !IsAbilityAllowingEncounter(infoOWE.level)
      || !CheckCanLoadOWE(infoOWE.speciesId, infoOWE.isFemale, infoOWE.isShiny, x, y))
     {
         SetMinimumOWESpawnTimer();
@@ -337,7 +322,7 @@ void UpdateOverworldWildEncounter(void)
 
     owe = &gObjectEvents[objectEventId];
     owe->disableCoveringGroundEffects = TRUE;
-    owe->sOverworldEncounterLevel = infoOWE.level;
+    owe->sOverworldEncounterLevel = infoOWE.noDespawn ? (infoOWE.level | OWE_NO_DESPAWN_FLAG) : infoOWE.level;
     owe->sOverworldEncounterCategory = infoOWE.category;
 
     ObjectEventTurn(owe, gStandardDirections[Random() & 3]);
@@ -395,7 +380,7 @@ void StartWildBattleWithOWE(void)
     enum Species speciesId = OW_SPECIES(owe);
     bool32 shiny = OW_SHINY(owe) ? TRUE : FALSE;
     u32 gender = OW_FEMALE(owe) ? MON_FEMALE : MON_MALE;
-    u32 level = GetOWEEncounterLevel(owe->sOverworldEncounterLevel);
+    u32 level = owe->sOverworldEncounterLevel & ~OWE_NO_DESPAWN_FLAG;
     u32 personality;
 
     assertf(level >= MIN_LEVEL && level <= MAX_LEVEL, "overworld wild encounter does not have valid level.\nlocalId: %d", localId)
@@ -498,7 +483,7 @@ static bool32 CreateEnemyPartyOWE(struct InfoOWE *info, s32 x, s32 y)
             CreateWildMon(gWildFeebas.species, ChooseWildMonLevel(&gWildFeebas, 0, WILD_AREA_FISHING));
             info->category = OWE_CATEGORY_FEEBAS;
             if (WE_OWE_PREVENT_FEEBAS_DESPAWN)
-                SetOWENoDespawnFlag(&info->level);
+                info->noDespawn = TRUE;
 
             return TRUE;
         }
@@ -863,7 +848,7 @@ static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y)
     }
  
     info->speciesId = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_SPECIES);
-    SetOWEEncounterLevel(&info->level, GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_LEVEL));
+    info->level = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_LEVEL);
     personality = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_PERSONALITY);
 
     if (info->speciesId == SPECIES_UNOWN)
@@ -876,7 +861,7 @@ static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y)
         info->isFemale = FALSE;
 
     if (WE_OWE_PREVENT_SHINY_DESPAWN && info->isShiny)
-        SetOWENoDespawnFlag(&info->level);
+        info->noDespawn = TRUE;
 
     ZeroEnemyPartyMons();
 }
@@ -1114,7 +1099,7 @@ void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
             if (HasOWENoDespawnFlag(owe))
                 continue;
 
-            if (IsWildLevelAllowedByRepel(GetOWEEncounterLevel(owe->sOverworldEncounterLevel)))
+            if (IsWildLevelAllowedByRepel(owe->sOverworldEncounterLevel & ~OWE_NO_DESPAWN_FLAG))
                 continue;
         }
 
@@ -1291,29 +1276,24 @@ static void PlayOWECry(struct ObjectEvent *owe)
     PlayCry_NormalNoDucking(speciesId, pan, volume, CRY_PRIORITY_AMBIENT);
 }
 
-static struct ObjectEvent *GetOWEObjectEvent(void)
+static struct ObjectEvent *GetRandomOWEObjectEvent(void)
 {
-    u32 numActive = GetNumberOfActiveOWEs(OWE_ANY);
-    u32 randomIndex;
     u32 counter = 0;
     struct ObjectEvent *owe;
+    u32 tmpArray[OBJECT_EVENTS_COUNT] = {0};
 
-    if (numActive)
-        randomIndex = Random() % numActive;
-    else
-        return NULL;
-    
     for (u32 i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         owe = &gObjectEvents[i];
         if (IsOverworldWildEncounter(owe, OWE_ANY))
         {
-            if (counter >= randomIndex)
-                return owe;
-            else
-                counter++;
+            tmpArray[counter] = i;
+            counter++;
         }
     }
+    if (counter > 0)
+        return &gObjectEvents[tmpArray[(Random() % counter)]];
+        
     return NULL;
 }
 
@@ -1708,7 +1688,7 @@ static void Task_OWEApproachForBattle(u8 taskId)
 
 void PlayAmbientOWECry(void)
 {
-    PlayOWECry(GetOWEObjectEvent());
+    PlayOWECry(GetRandomOWEObjectEvent());
 }
 
 u32 GetNumberOfActiveOWEs(enum TypeOWE oweType)
@@ -1746,8 +1726,8 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
         info.level = levelTemplate;
 
     assertf((CheckValidOWESpecies(info.speciesId)
-        && GetOWEEncounterLevel(info.level) >= MIN_LEVEL
-        && GetOWEEncounterLevel(info.level) <= MAX_LEVEL)
+        && info.level >= MIN_LEVEL
+        && info.level <= MAX_LEVEL)
         || gObjectEvents[GetObjectEventIdByLocalId(template->localId)].active,
         "invalid manual overworld encounter template\nspecies: %d\nlevel: %d\ntemplate x: %d\ntemplate y: %d\ncheck if valid wild mon header exists", info.speciesId, info.level, x, y)
     {
@@ -1759,7 +1739,7 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
             templateOWE.movementType = MOVEMENT_TYPE_NONE;
             return templateOWE;
         }
-        else if (!(GetOWEEncounterLevel(info.level) >= MIN_LEVEL && GetOWEEncounterLevel(info.level) <= MAX_LEVEL))
+        else if (!(info.level >= MIN_LEVEL && info.level <= MAX_LEVEL))
         {
             info.level = MIN_LEVEL;
         }

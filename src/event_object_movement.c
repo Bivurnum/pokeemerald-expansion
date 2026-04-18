@@ -6986,16 +6986,32 @@ dirn_to_anim(GetAcroEndWheelieMoveDirectionMovementAction, gAcroEndWheelieMoveDi
 
 enum Direction GetOppositeDirection(enum Direction direction)
 {
-    if (direction <= DIR_NONE || direction >= NELEMS(sOppositeDirections))
+    assertf(direction > DIR_NORTHEAST, "Invalid direction.")
+    {
         return DIR_NONE;
+    }
+
+    if (direction >= NELEMS(sOppositeDirections))
+    {
+        errorf("Invalid direction.");
+        return DIR_NONE;
+    }
 
     return sOppositeDirections[direction];
 }
 
 enum Direction GetNinetyDegreeDirection(enum Direction direction, bool32 clockwise)
 {
-    if (direction <= DIR_NONE || direction >= NELEMS(sRotate90Direction))
+    assertf(direction > DIR_NORTHEAST, "Invalid direction.")
+    {
         return DIR_NONE;
+    }
+
+    if (direction >= NELEMS(sRotate90Direction))
+    {
+        errorf("Invalid direction.");
+        return DIR_NONE;
+    }
 
     return sRotate90Direction[direction][clockwise];
 }
@@ -10171,22 +10187,8 @@ void ObjectEventsTurnToEachOther(struct ObjectEvent *objectOne, struct ObjectEve
 
     if (objectTwo->invisible == FALSE)
     {
-        objectDirOne = DetermineObjectEventDirectionFromObject(objectOne, objectTwo);
-        objectDirTwo = objectDirOne;
-
-        //Flip direction.
-        switch (objectDirOne) 
-        {
-        case DIR_NORTH:
-        case DIR_SOUTH:
-        case DIR_WEST:
-        case DIR_EAST:
-            objectDirOne = GetOppositeDirection(objectDirOne);
-            break;
-        
-        default:
-            break;
-        }
+        objectDirTwo = DetermineObjectEventDirectionFromObject(objectOne, objectTwo);
+        objectDirOne = GetOppositeDirection(objectDirTwo);
 
         ObjectEventTurn(objectOne, objectDirOne);
         ObjectEventTurn(objectTwo, objectDirTwo);
