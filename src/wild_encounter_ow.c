@@ -284,7 +284,7 @@ void UpdateOverworldWildEncounter(void)
     struct InfoOWE infoOWE = {0};
 
     infoOWE.localId = GetLocalIdByOWESpawnSlot(spawnSlot);
-    infoOWE.category = OWE_CATEGORY_WILD;
+    infoOWE.category = OWE_CATEGORY_UNDEFINED;
     SetSpeciesInfoForOWE(&infoOWE, x, y);
 
     if (infoOWE.speciesId == SPECIES_NONE
@@ -471,7 +471,7 @@ static bool32 CreateEnemyPartyOWE(struct InfoOWE *info, s32 x, s32 y)
     If none of these checks succeed, speciesId is set to SPECIES_NONE and FALSE is returned.
     */
 
-    if (info->category != OWE_CATEGORY_UNDEFINED)
+    if (info->category == OWE_CATEGORY_UNDEFINED)
     {
         if (TryStartRoamerEncounter() && !OWE_DoesOWERoamerExist())
         {
@@ -862,6 +862,9 @@ static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y)
 
     if (WE_OWE_PREVENT_SHINY_DESPAWN && info->isShiny)
         info->noDespawn = TRUE;
+
+    if (info->category == OWE_CATEGORY_UNDEFINED)
+        info->category = OWE_CATEGORY_WILD;
 
     ZeroEnemyPartyMons();
 }
@@ -1714,7 +1717,6 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
     enum Species speciesTemplate = SanitizeSpeciesId(templateOWE.graphicsId & OBJ_EVENT_MON_SPECIES_MASK);
     bool32 isShinyTemplate = (templateOWE.graphicsId & OBJ_EVENT_MON_SHINY) ? TRUE : FALSE;
     u32 levelTemplate = templateOWE.sOverworldEncounterLevel;
-    info.category = OWE_CATEGORY_UNDEFINED;
     u32 x = template->x;
     u32 y = template->y;
 
