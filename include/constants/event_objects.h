@@ -506,6 +506,9 @@ enum
 #define OBJ_EVENT_ID_FOLLOWER                   0xFE
 #define OBJ_EVENT_ID_NPC_FOLLOWER               0xFD
 
+#define IS_LOCALID_GENERATED_OWE(localId)       (localId <= LOCALID_OW_ENCOUNTER_END \
+                                                 && localId > (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX))
+
 // Aliases for old names. "object event id" normally refers to an index into gObjectEvents, which these are not.
 // Used for link player OWs in CreateLinkPlayerSprite
 #define OBJ_EVENT_ID_CAMERA LOCALID_CAMERA

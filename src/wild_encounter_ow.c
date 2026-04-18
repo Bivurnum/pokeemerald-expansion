@@ -100,7 +100,7 @@ static inline u32 GetSpawnSlotByOWELocalId(u32 localId)
     return LOCALID_OW_ENCOUNTER_END - localId;
 }
 
-static inline u32 GetOWERoamerIndex(const struct ObjectEvent *owe)
+static inline u32 GetOWECategory(const struct ObjectEvent *owe)
 {
     return owe->sOverworldEncounterCategory & ~OWE_SAVED_MOVEMENT_STATE_FLAG;
 }
@@ -284,7 +284,7 @@ void UpdateOverworldWildEncounter(void)
     struct InfoOWE infoOWE = {0};
 
     infoOWE.localId = GetLocalIdByOWESpawnSlot(spawnSlot);
-    infoOWE.category = OWE_CATEGORY_WILD;
+    infoOWE.category = OWE_CATEGORY_UNDEFINED;
     SetSpeciesInfoForOWE(&infoOWE, x, y);
 
     if (infoOWE.speciesId == SPECIES_NONE
@@ -341,10 +341,10 @@ bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType)
         return TRUE;
     
     case OWE_GENERATED:
-        return IsLocalIdGeneratedOWE(owe->localId);
+        return IS_LOCALID_GENERATED_OWE(owe->localId);
 
     case OWE_MANUAL:
-        return !IsLocalIdGeneratedOWE(owe->localId);
+        return !IS_LOCALID_GENERATED_OWE(owe->localId);
     }
 }
 
@@ -353,7 +353,7 @@ static enum TypeOWE GetOverworldWildEncounterType(struct ObjectEvent *owe)
     if (!IsObjectOWE(owe))
         return OWE_NONE;
 
-    if (IsLocalIdGeneratedOWE(owe->localId))
+    if (IS_LOCALID_GENERATED_OWE(owe->localId))
         return OWE_GENERATED;
 
     return OWE_MANUAL;
@@ -365,7 +365,7 @@ void StartWildBattleWithOWE(void)
     u32 objEventId = GetObjectEventIdByLocalId(localId);
     u32 headerId = GetCurrentMapWildMonHeaderId();
     struct ObjectEvent *owe = &gObjectEvents[objEventId];
-    enum CategoryOWE category = GetOWERoamerIndex(owe);
+    enum CategoryOWE category = GetOWECategory(owe);
 
     assertf(objEventId < OBJECT_EVENTS_COUNT && IsOverworldWildEncounter(owe, OWE_ANY), "cannot start overworld wild enocunter as the selected object is invalid.\nlocalId: %d", localId)
     {
@@ -471,7 +471,7 @@ static bool32 CreateEnemyPartyOWE(struct InfoOWE *info, s32 x, s32 y)
     If none of these checks succeed, speciesId is set to SPECIES_NONE and FALSE is returned.
     */
 
-    if (info->category != OWE_CATEGORY_UNDEFINED)
+    if (info->category == OWE_CATEGORY_UNDEFINED)
     {
         if (TryStartRoamerEncounter() && !OWE_DoesOWERoamerExist())
         {
@@ -507,7 +507,7 @@ static bool32 OWE_DoesOWERoamerExist(void)
     for (u32 i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         struct ObjectEvent *owe = &gObjectEvents[i];
-        if (IsOverworldWildEncounter(owe, OWE_ANY) && GetOWERoamerIndex(owe) == gEncounteredRoamerIndex)
+        if (IsOverworldWildEncounter(owe, OWE_ANY) && GetOWECategory(owe) == gEncounteredRoamerIndex)
             return TRUE;
     }
 
@@ -633,7 +633,7 @@ void TryTriggerOverworldWildEncounter(struct ObjectEvent *obstacle, struct Objec
         return;
 
     struct ObjectEvent *wildMon = playerIsCollider ? obstacle : collider;
-    enum CategoryOWE category = GetOWERoamerIndex(wildMon);
+    enum CategoryOWE category = GetOWECategory(wildMon);
     if (category < ROAMER_COUNT
      && !IsRoamerAt(category, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
     {
@@ -862,6 +862,9 @@ static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y)
 
     if (WE_OWE_PREVENT_SHINY_DESPAWN && info->isShiny)
         info->noDespawn = TRUE;
+
+    if (info->category == OWE_CATEGORY_UNDEFINED)
+        info->category = OWE_CATEGORY_WILD;
 
     ZeroEnemyPartyMons();
 }
@@ -1705,16 +1708,16 @@ u32 GetNumberOfActiveOWEs(enum TypeOWE oweType)
 const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct ObjectEventTemplate *template)
 {
     if (template->trainerType != TRAINER_TYPE_OW_WILD_ENCOUNTER
-     || IsLocalIdGeneratedOWE(template->localId))
+     || IS_LOCALID_GENERATED_OWE(template->localId))
         return *template;
 
     struct ObjectEventTemplate templateOWE = *template;
     struct InfoOWE info = {0};
+    info.category = OWE_CATEGORY_WILD;
     
     enum Species speciesTemplate = SanitizeSpeciesId(templateOWE.graphicsId & OBJ_EVENT_MON_SPECIES_MASK);
     bool32 isShinyTemplate = (templateOWE.graphicsId & OBJ_EVENT_MON_SHINY) ? TRUE : FALSE;
     u32 levelTemplate = templateOWE.sOverworldEncounterLevel;
-    info.category = OWE_CATEGORY_UNDEFINED;
     u32 x = template->x;
     u32 y = template->y;
 
