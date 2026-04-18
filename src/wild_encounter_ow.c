@@ -341,10 +341,10 @@ bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType)
         return TRUE;
     
     case OWE_GENERATED:
-        return IsLocalIdGeneratedOWE(owe->localId);
+        return IS_LOCALID_GENERATED_OWE(owe->localId);
 
     case OWE_MANUAL:
-        return !IsLocalIdGeneratedOWE(owe->localId);
+        return !IS_LOCALID_GENERATED_OWE(owe->localId);
     }
 }
 
@@ -353,7 +353,7 @@ static enum TypeOWE GetOverworldWildEncounterType(struct ObjectEvent *owe)
     if (!IsObjectOWE(owe))
         return OWE_NONE;
 
-    if (IsLocalIdGeneratedOWE(owe->localId))
+    if (IS_LOCALID_GENERATED_OWE(owe->localId))
         return OWE_GENERATED;
 
     return OWE_MANUAL;
@@ -1705,7 +1705,7 @@ u32 GetNumberOfActiveOWEs(enum TypeOWE oweType)
 const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct ObjectEventTemplate *template)
 {
     if (template->trainerType != TRAINER_TYPE_OW_WILD_ENCOUNTER
-     || IsLocalIdGeneratedOWE(template->localId))
+     || IS_LOCALID_GENERATED_OWE(template->localId))
         return *template;
 
     struct ObjectEventTemplate templateOWE = *template;
