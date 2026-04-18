@@ -1167,7 +1167,7 @@ void TryDespawnOWEsCrossingMapConnection(void)
     if (WE_OWE_DESPAWN_SOUND)
         PlaySE(SE_FLEE);
         
-    DespawnAllOverworldWildEncounters(OWE_ANY, 0);
+    DespawnAllOverworldWildEncounters(OWE_GENERATED, 0);
 }
 
 static u32 RemoveOldestGeneratedOWE(void)
