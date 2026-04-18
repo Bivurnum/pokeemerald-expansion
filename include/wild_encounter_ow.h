@@ -1,6 +1,9 @@
 #ifndef GUARD_WILD_ENCOUNTER_OW_H
 #define GUARD_WILD_ENCOUNTER_OW_H
 
+#include "constants/event_objects.h"
+
+#define OWE_SPAWNS_MAX                  4
 #define OWE_APPROACH_DISTANCE           2
 #define OWE_APPROACH_JUMP_TIMER_MIN     16
 #define OWE_APPROACH_JUMP_TIMER_MAX     64
@@ -78,7 +81,7 @@ bool32 IsOWEDespawnExempt(struct ObjectEvent *owe);
 bool32 DespawnOWEDueToNPCCollision(struct ObjectEvent *obstacle, struct ObjectEvent *activeObject);
 u32 DespawnOWEDueToTrainerSight(u32 collision, s32 x, s32 y);
 void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags);
-bool32 TryAndDespawnOldestGeneratedOWE_Object(u32 localId, u8 *objectEventId);
+bool32 TryAndDespawnOldestGeneratedOWE_Object(u8 *objectEventId);
 void TryAndDespawnOldestGeneratedOWE_Palette(void);
 void DespawnOWEOnBattleStart(void);
 void TryDespawnOWEsCrossingMapConnection(void);
@@ -97,6 +100,11 @@ void PlayAmbientOWECry(void);
 u32 GetNumberOfActiveOWEs(enum TypeOWE oweType);
 const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct ObjectEventTemplate *template);
 struct SpritePalette GetOWESpawnDespawnAnimFldEffPalette(enum SpawnDespawnTypeOWE spawnAnim);
+
+static inline bool32 IsLocalIdGeneratedOWE(u32 localId)
+{
+    return (localId <= LOCALID_OW_ENCOUNTER_END && localId > (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX));
+}
 
 extern const u8 InteractWithOverworldWildEncounter[];
 

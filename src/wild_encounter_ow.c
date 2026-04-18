@@ -42,7 +42,6 @@
 #define OWE_SAVED_MOVEMENT_STATE_FLAG   OWE_FLAG_BIT
 #define OWE_NO_DESPAWN_FLAG             OWE_FLAG_BIT
 
-#define OWE_SPAWNS_MAX                  4
 #define OWE_SPAWN_DISTANCE_LAND         1   // A spawn cannot happen within this many tiles of the player position.
 #define OWE_SPAWN_DISTANCE_WATER        3   // A spawn cannot happen within this many tiles of the player position (while surfing).
 #define OWE_SPAWN_WIDTH_TOTAL           15  // Width of the on-screen spawn area in tiles.
@@ -153,11 +152,6 @@ static inline bool32 IsObjectOWE(struct ObjectEvent *owe)
         return FALSE;
 
     return TRUE;
-}
-
-static inline bool32 IsLocalIdGeneratedOWE(u32 localId)
-{
-    return (localId <= LOCALID_OW_ENCOUNTER_END && localId > (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX));
 }
 
 static bool32 CreateEnemyPartyOWE(struct InfoOWE *info, s32 x, s32 y);
@@ -1124,12 +1118,9 @@ void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
     }
 }
 
-bool32 TryAndDespawnOldestGeneratedOWE_Object(u32 localId, u8 *objectEventId)
+bool32 TryAndDespawnOldestGeneratedOWE_Object(u8 *objectEventId)
 {
     if (!WE_OW_ENCOUNTERS)
-        return FALSE;
-
-    if (!(localId <= (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX + 1) || localId > LOCALID_OW_ENCOUNTER_END))
         return FALSE;
     
     *objectEventId = RemoveOldestGeneratedOWE();
