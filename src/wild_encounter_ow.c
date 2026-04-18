@@ -137,13 +137,7 @@ static inline bool32 ShouldSpawnWaterOWE(void)
 
 static inline bool32 IsObjectOWE(struct ObjectEvent *owe)
 {
-    if (!IS_OW_MON_OBJ(owe))
-        return FALSE;
-
-    if (owe->trainerType != TRAINER_TYPE_OW_WILD_ENCOUNTER)
-        return FALSE;
-
-    return TRUE;
+    return (owe->trainerType == TRAINER_TYPE_OW_WILD_ENCOUNTER);
 }
 
 static inline bool32 IsLocalIdGeneratedOWE(u32 localId)
@@ -655,7 +649,6 @@ void TryTriggerOverworldWilEncounter(struct ObjectEvent *obstacle, struct Object
     if (category < ROAMER_COUNT
      && !IsRoamerAt(category, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
     {
-        DebugPrintf("HERE");
         RemoveObjectEvent(wildMon);
         return;
     }
