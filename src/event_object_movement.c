@@ -6986,17 +6986,20 @@ dirn_to_anim(GetAcroEndWheelieMoveDirectionMovementAction, gAcroEndWheelieMoveDi
 
 enum Direction GetOppositeDirection(enum Direction direction)
 {
-    if (direction <= DIR_NONE || direction >= NELEMS(sOppositeDirections))
+    assertf(direction > DIR_NORTHEAST, "Invalid direction.")
+    {
         return DIR_NONE;
+    }
 
     return sOppositeDirections[direction];
 }
 
 enum Direction GetNinetyDegreeDirection(enum Direction direction, bool32 clockwise)
 {
-    if (direction <= DIR_NONE || direction >= NELEMS(sRotate90Direction))
+    assertf(direction > DIR_NORTHEAST, "Invalid direction.")
+    {
         return DIR_NONE;
-
+    }
     return sRotate90Direction[direction][clockwise];
 }
 
