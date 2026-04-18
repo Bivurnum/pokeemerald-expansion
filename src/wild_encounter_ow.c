@@ -120,11 +120,6 @@ void ClearSavedOWEMovementState(struct ObjectEvent *owe)
     owe->sOverworldEncounterCategory &= ~OWE_SAVED_MOVEMENT_STATE_FLAG;
 }
 
-static inline u32 GetOWEEncounterLevel(u32 level)
-{
-    return level & ~OWE_NO_DESPAWN_FLAG;
-}
-
 static inline void SetOWEEncounterLevel(u8 *level, u32 newLevel)
 {
     *level = (*level & OWE_NO_DESPAWN_FLAG) | (newLevel & ~OWE_NO_DESPAWN_FLAG);
@@ -133,11 +128,6 @@ static inline void SetOWEEncounterLevel(u8 *level, u32 newLevel)
 static inline bool32 HasOWENoDespawnFlag(const struct ObjectEvent *owe)
 {
     return owe->sOverworldEncounterLevel & OWE_NO_DESPAWN_FLAG;
-}
-
-static inline void SetOWENoDespawnFlag(u8 *level)
-{
-    *level |= OWE_NO_DESPAWN_FLAG;
 }
 
 static inline bool32 ShouldSpawnWaterOWE(void)
@@ -348,11 +338,8 @@ void UpdateOverworldWildEncounter(void)
 
     owe = &gObjectEvents[objectEventId];
     owe->disableCoveringGroundEffects = TRUE;
-    owe->sOverworldEncounterLevel = infoOWE.level;
+    owe->sOverworldEncounterLevel = infoOWE.noDespawn ? (infoOWE.level | OWE_NO_DESPAWN_FLAG) : infoOWE.level;
     owe->sOverworldEncounterCategory = infoOWE.category;
-
-    if (infoOWE.noDespawn)
-        SetOWENoDespawnFlag(&owe->sOverworldEncounterLevel);
 
     ObjectEventTurn(owe, gStandardDirections[Random() & 3]);
     SetNewOWESpawnCountdown();
@@ -412,7 +399,7 @@ void StartWildBattleWithOWE(void)
     enum Species speciesId = OW_SPECIES(owe);
     bool32 shiny = OW_SHINY(owe) ? TRUE : FALSE;
     u32 gender = OW_FEMALE(owe) ? MON_FEMALE : MON_MALE;
-    u32 level = GetOWEEncounterLevel(owe->sOverworldEncounterLevel);
+    u32 level = owe->sOverworldEncounterLevel & ~OWE_NO_DESPAWN_FLAG;
     u32 personality;
 
     assertf(level >= MIN_LEVEL && level <= MAX_LEVEL, "overworld wild encounter does not have valid level.\nlocalId: %d", localId)
@@ -668,6 +655,7 @@ void TryTriggerOverworldWilEncounter(struct ObjectEvent *obstacle, struct Object
     if (category < ROAMER_COUNT
      && !IsRoamerAt(category, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
     {
+        DebugPrintf("HERE");
         RemoveObjectEvent(wildMon);
         return;
     }
@@ -879,7 +867,7 @@ static void SetSpeciesInfoForOWE(struct InfoOWE *info, u32 x, u32 y)
     }
  
     info->speciesId = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_SPECIES);
-    SetOWEEncounterLevel(&info->level, GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_LEVEL));
+    info->level = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_LEVEL);
     personality = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_PERSONALITY);
 
     if (info->speciesId == SPECIES_UNOWN)
@@ -1127,7 +1115,7 @@ void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
             if (HasOWENoDespawnFlag(owe))
                 continue;
 
-            if (IsWildLevelAllowedByRepel(GetOWEEncounterLevel(owe->sOverworldEncounterLevel)))
+            if (IsWildLevelAllowedByRepel(owe->sOverworldEncounterLevel & ~OWE_NO_DESPAWN_FLAG))
                 continue;
         }
 
@@ -1800,8 +1788,8 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
         info.level = levelTemplate;
 
     assertf((CheckValidOWESpecies(info.speciesId)
-        && GetOWEEncounterLevel(info.level) >= MIN_LEVEL
-        && GetOWEEncounterLevel(info.level) <= MAX_LEVEL)
+        && info.level >= MIN_LEVEL
+        && info.level <= MAX_LEVEL)
         || gObjectEvents[GetObjectEventIdByLocalId(template->localId)].active,
         "invalid manual overworld encounter template\nspecies: %d\nlevel: %d\ntemplate x: %d\ntemplate y: %d\ncheck if valid wild mon header exists", info.speciesId, info.level, x, y)
     {
@@ -1813,7 +1801,7 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
             templateOWE.movementType = MOVEMENT_TYPE_NONE;
             return templateOWE;
         }
-        else if (!(GetOWEEncounterLevel(info.level) >= MIN_LEVEL && GetOWEEncounterLevel(info.level) <= MAX_LEVEL))
+        else if (!(info.level >= MIN_LEVEL && info.level <= MAX_LEVEL))
         {
             info.level = MIN_LEVEL;
         }
