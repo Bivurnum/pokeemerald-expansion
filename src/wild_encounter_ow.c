@@ -1713,6 +1713,7 @@ const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct Ob
 
     struct ObjectEventTemplate templateOWE = *template;
     struct InfoOWE info = {0};
+    info.category = OWE_CATEGORY_WILD;
     
     enum Species speciesTemplate = SanitizeSpeciesId(templateOWE.graphicsId & OBJ_EVENT_MON_SPECIES_MASK);
     bool32 isShinyTemplate = (templateOWE.graphicsId & OBJ_EVENT_MON_SHINY) ? TRUE : FALSE;
