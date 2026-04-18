@@ -1683,8 +1683,8 @@ static bool8 GetAvailableObjectEventId(u16 localId, u8 mapNum, u8 mapGroup, u8 *
         if (gObjectEvents[i].localId == localId && gObjectEvents[i].mapNum == mapNum && gObjectEvents[i].mapGroup == mapGroup)
             return TRUE;
     }
-    if (i >= OBJECT_EVENTS_COUNT)
-        return TryAndDespawnOldestGeneratedOWE_Object(localId, objectEventId);
+    if (i >= OBJECT_EVENTS_COUNT && IsLocalIdGeneratedOWE(localId))
+        return TryAndDespawnOldestGeneratedOWE_Object(objectEventId);
     *objectEventId = i;
     for (; i < OBJECT_EVENTS_COUNT; i++)
     {
@@ -6661,7 +6661,7 @@ u32 GetObjectObjectCollidesWith(struct ObjectEvent *objectEvent, s16 x, s16 y, b
                     if (DespawnOWEDueToNPCCollision(curObject, objectEvent))
                         continue;
 
-                    TryTriggerOverworldWilEncounter(objectEvent, curObject);
+                    TryTriggerOverworldWildEncounter(objectEvent, curObject);
                     return i;
                 }
             }
