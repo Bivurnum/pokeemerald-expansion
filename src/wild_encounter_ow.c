@@ -189,7 +189,7 @@ static void SetNewOWESpawnCountdown(void);
 static void DoOWESpawnDespawnAnim(struct ObjectEvent *owe, bool32 animSpawn);
 static enum SpawnDespawnTypeOWE GetOWESpawnDespawnAnimType(u32 metatileBehavior);
 static void PlayOWECry(struct ObjectEvent *owe);
-static struct ObjectEvent *GetOWEObjectEvent(void);
+static struct ObjectEvent *GetRandomOWEObjectEvent(void);
 static bool32 OWE_ShouldPlayOWEFleeSound(struct ObjectEvent *owe);
 static bool32 CheckRestrictedOWEMovementAtCoords(struct ObjectEvent *owe, s32 xNew, s32 yNew, enum Direction newDirection, enum Direction collisionDirection);
 static bool32 CheckRestrictedOWEMovementMetatile(s32 xCurrent, s32 yCurrent, s32 xNew, s32 yNew);
@@ -1307,29 +1307,24 @@ static void PlayOWECry(struct ObjectEvent *owe)
     PlayCry_NormalNoDucking(speciesId, pan, volume, CRY_PRIORITY_AMBIENT);
 }
 
-static struct ObjectEvent *GetOWEObjectEvent(void)
+static struct ObjectEvent *GetRandomOWEObjectEvent(void)
 {
-    u32 numActive = GetNumberOfActiveOWEs(OWE_ANY);
-    u32 randomIndex;
     u32 counter = 0;
     struct ObjectEvent *owe;
+    u32 tmpArray[OBJECT_EVENTS_COUNT] = {0};
 
-    if (numActive)
-        randomIndex = Random() % numActive;
-    else
-        return NULL;
-    
     for (u32 i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         owe = &gObjectEvents[i];
         if (IsOverworldWildEncounter(owe, OWE_ANY))
         {
-            if (counter >= randomIndex)
-                return owe;
-            else
-                counter++;
+            tmpArray[counter] = i;
+            counter++;
         }
     }
+    if (counter > 0)
+        return &gObjectEvents[tmpArray[(Random() % counter)]];
+        
     return NULL;
 }
 
@@ -1767,7 +1762,7 @@ static void Task_OWEApproachForBattle(u8 taskId)
 
 void PlayAmbientOWECry(void)
 {
-    PlayOWECry(GetOWEObjectEvent());
+    PlayOWECry(GetRandomOWEObjectEvent());
 }
 
 u32 GetNumberOfActiveOWEs(enum TypeOWE oweType)
