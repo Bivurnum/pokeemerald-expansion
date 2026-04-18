@@ -73,7 +73,7 @@ bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType);
 void StartWildBattleWithOWE(void);
 void SetInstantOWESpawnTimer(void);
 void SetMinimumOWESpawnTimer(void);
-void TryTriggerOverworldWilEncounter(struct ObjectEvent *obstacle, struct ObjectEvent *collider);
+void TryTriggerOverworldWildEncounter(struct ObjectEvent *obstacle, struct ObjectEvent *collider);
 const u8 *GetOverworlWildEncounterScript(u32 objectEventId);
 void OnOverworldWildEncounterSpawn(struct ObjectEvent *owe);
 void OnOverworldWildEncounterDespawn(struct ObjectEvent *owe);

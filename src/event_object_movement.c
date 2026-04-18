@@ -6661,7 +6661,7 @@ u32 GetObjectObjectCollidesWith(struct ObjectEvent *objectEvent, s16 x, s16 y, b
                     if (DespawnOWEDueToNPCCollision(curObject, objectEvent))
                         continue;
 
-                    TryTriggerOverworldWilEncounter(objectEvent, curObject);
+                    TryTriggerOverworldWildEncounter(objectEvent, curObject);
                     return i;
                 }
             }

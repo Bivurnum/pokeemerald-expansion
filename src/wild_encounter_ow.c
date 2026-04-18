@@ -621,7 +621,7 @@ void SetMinimumOWESpawnTimer(void)
         sOWESpawnCountdown = OWE_SPAWN_TIME_LURE;
 }
 
-void TryTriggerOverworldWilEncounter(struct ObjectEvent *obstacle, struct ObjectEvent *collider)
+void TryTriggerOverworldWildEncounter(struct ObjectEvent *obstacle, struct ObjectEvent *collider)
 {
     if (WE_OWE_REPEL_DEXNAV_COLLISION && (FlagGet(DN_FLAG_SEARCHING) || REPEL_STEP_COUNT))
         return;
