@@ -160,11 +160,6 @@ static inline bool32 IsLocalIdGeneratedOWE(u32 localId)
     return (localId <= LOCALID_OW_ENCOUNTER_END && localId > (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX));
 }
 
-static inline bool32 IsLocalIdManualOWE(u32 localId)
-{
-    return (localId > LOCALID_OW_ENCOUNTER_END || localId <= (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX));
-}
-
 static bool32 CreateEnemyPartyOWE(struct InfoOWE *info, s32 x, s32 y);
 static bool32 OWE_DoesOWERoamerExist(void);
 static bool32 StartWildBattleWithOWE_CheckRoamer(u32 category);
@@ -369,7 +364,7 @@ bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType)
         return IsLocalIdGeneratedOWE(owe->localId);
 
     case OWE_MANUAL:
-        return IsLocalIdManualOWE(owe->localId);
+        return !IsLocalIdGeneratedOWE(owe->localId);
     }
 }
 
@@ -381,10 +376,7 @@ static enum TypeOWE GetOverworldWildEncounterType(struct ObjectEvent *owe)
     if (IsLocalIdGeneratedOWE(owe->localId))
         return OWE_GENERATED;
 
-    if (IsLocalIdManualOWE(owe->localId))
-        return OWE_MANUAL;
-
-    return OWE_ANY;
+    return OWE_MANUAL;
 }
 
 void StartWildBattleWithOWE(void)
@@ -1779,8 +1771,8 @@ u32 GetNumberOfActiveOWEs(enum TypeOWE oweType)
 
 const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct ObjectEventTemplate *template)
 {
-    if (template->trainerType != TRAINER_TYPE_OW_WILD_ENCOUNTER || (template->localId <= LOCALID_OW_ENCOUNTER_END
-     && template->localId > (LOCALID_OW_ENCOUNTER_END - OWE_SPAWNS_MAX)))
+    if (template->trainerType != TRAINER_TYPE_OW_WILD_ENCOUNTER
+     || IsLocalIdGeneratedOWE(template->localId))
         return *template;
 
     struct ObjectEventTemplate templateOWE = *template;
