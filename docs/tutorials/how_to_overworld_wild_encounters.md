@@ -25,12 +25,14 @@ No matter how much of a Manual OWE is defined, it is considered a high priority 
 
 > When a manual OWE is removed, for whatever reason, it's flag is also set. Because of this, we recommend giving them temporary flags so they can be reset on leaving the map.
 
-### Special Spawns
-Special spawns can be one of three types, in decreasing priority: A Roamer, Feebas, or Mass Outbreak Encounter. Generated OWEs can have any of these, however, Manual OWEs can only have the Feebas Special Spawn. These work exactly as they would normally;
+### Special Spawns Categories
+Special spawns can be one of three types, in decreasing priority: A Roamer, Feebas, or Mass Outbreak Encounter. Generated OWEs can be in any of these categories, however, Manual OWEs cannot. These work exactly as they would normally;
 - If a Roamer is on the route and is able to spawn, then it may appear where a Generated OWE would.
 - If any OWE spawns on a tile where a Feebas special fishing spot is, it may appear is a Feebas (only if `WE_OWE_FEEBAS_SPOTS` is TRUE).
-- If a Generated OWE spawns on a route that has a mass outbreak occuring, it may spawn as an encounter from that mass outbreak.
-`OWE_MAX_ROAMERS` limits the max number of total roamers to 253 in order to fit the relevant info within the `ObjectEvent` struct.
+- If an OWE spawns on a route that has a mass outbreak occuring, it may spawn as an encounter from that mass outbreak.
+`OWE_MAX_ROAMERS` limits the max number of total roamers to 252 in order to fit the relevant info within the `ObjectEvent` struct.
+
+> `WE_OWE_SPECIAL_ONLY` can be used to restrict generated overworld wild encounters to only spawn, if they are within these special categories.
 
 ### Restricted Despawning
 There are three configs that can be used to restrict the despawning of Generated OWEs.

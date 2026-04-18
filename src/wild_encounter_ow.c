@@ -36,7 +36,7 @@
 #define sOverworldEncounterLevel        trainerRange_berryTreeId
 #define sOverworldEncounterAge          playerCopyableMovement
 #define sOverworldEncounterCategory     warpArrowSpriteId
-#define OWE_MAX_ROAMERS                 UINT8_MAX - 2
+#define OWE_MAX_ROAMERS                 UINT8_MAX - 3
 
 #define OWE_FLAG_BIT                    (1 << 7)
 #define OWE_SAVED_MOVEMENT_STATE_FLAG   OWE_FLAG_BIT
@@ -64,6 +64,7 @@ enum CategoryOWE
 {
     // If Roamers are used, they will exist as values, implicitly, within this enum.
     OWE_CATEGORY_MASS_OUTBREAK = ROAMER_COUNT,
+    OWE_CATEGORY_FEEBAS,
     OWE_CATEGORY_WILD,
     OWE_CATEGORY_UNDEFINED
 };
@@ -495,6 +496,7 @@ static bool32 CreateEnemyPartyOWE(struct InfoOWE *info, s32 x, s32 y)
         else if (WE_OWE_FEEBAS_SPOTS && MetatileBehavior_IsWaterWildEncounter(metatileBehavior) && CheckFeebasAtCoords(x, y))
         {
             CreateWildMon(gWildFeebas.species, ChooseWildMonLevel(&gWildFeebas, 0, WILD_AREA_FISHING));
+            info->category = OWE_CATEGORY_FEEBAS;
             if (WE_OWE_PREVENT_FEEBAS_DESPAWN)
                 SetOWENoDespawnFlag(&info->level);
 
@@ -1018,6 +1020,9 @@ void OnOverworldWildEncounterSpawn(struct ObjectEvent *owe)
     enum TypeOWE type = GetOverworldWildEncounterType(owe);
     if (type == OWE_NONE)
         return;
+
+    if (type == OWE_MANUAL)
+        owe->sOverworldEncounterCategory = OWE_CATEGORY_WILD;
     
     if (type == OWE_GENERATED)
         SortOWEAges();
