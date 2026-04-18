@@ -100,7 +100,7 @@ static inline u32 GetSpawnSlotByOWELocalId(u32 localId)
     return LOCALID_OW_ENCOUNTER_END - localId;
 }
 
-static inline u32 GetOWERoamerIndex(const struct ObjectEvent *owe)
+static inline u32 GetOWECategory(const struct ObjectEvent *owe)
 {
     return owe->sOverworldEncounterCategory & ~OWE_SAVED_MOVEMENT_STATE_FLAG;
 }
@@ -365,7 +365,7 @@ void StartWildBattleWithOWE(void)
     u32 objEventId = GetObjectEventIdByLocalId(localId);
     u32 headerId = GetCurrentMapWildMonHeaderId();
     struct ObjectEvent *owe = &gObjectEvents[objEventId];
-    enum CategoryOWE category = GetOWERoamerIndex(owe);
+    enum CategoryOWE category = GetOWECategory(owe);
 
     assertf(objEventId < OBJECT_EVENTS_COUNT && IsOverworldWildEncounter(owe, OWE_ANY), "cannot start overworld wild enocunter as the selected object is invalid.\nlocalId: %d", localId)
     {
@@ -507,7 +507,7 @@ static bool32 OWE_DoesOWERoamerExist(void)
     for (u32 i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         struct ObjectEvent *owe = &gObjectEvents[i];
-        if (IsOverworldWildEncounter(owe, OWE_ANY) && GetOWERoamerIndex(owe) == gEncounteredRoamerIndex)
+        if (IsOverworldWildEncounter(owe, OWE_ANY) && GetOWECategory(owe) == gEncounteredRoamerIndex)
             return TRUE;
     }
 
@@ -633,7 +633,7 @@ void TryTriggerOverworldWildEncounter(struct ObjectEvent *obstacle, struct Objec
         return;
 
     struct ObjectEvent *wildMon = playerIsCollider ? obstacle : collider;
-    enum CategoryOWE category = GetOWERoamerIndex(wildMon);
+    enum CategoryOWE category = GetOWECategory(wildMon);
     if (category < ROAMER_COUNT
      && !IsRoamerAt(category, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
     {
