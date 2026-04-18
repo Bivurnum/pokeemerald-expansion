@@ -6991,6 +6991,9 @@ enum Direction GetOppositeDirection(enum Direction direction)
         return DIR_NONE;
     }
 
+    if (direction >= NELEMS(sOppositeDirections))
+        return DIR_NONE;
+
     return sOppositeDirections[direction];
 }
 
@@ -7000,6 +7003,10 @@ enum Direction GetNinetyDegreeDirection(enum Direction direction, bool32 clockwi
     {
         return DIR_NONE;
     }
+
+    if (direction >= NELEMS(sOppositeDirections))
+        return DIR_NONE;
+
     return sRotate90Direction[direction][clockwise];
 }
 
