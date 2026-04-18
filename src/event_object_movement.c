@@ -7007,7 +7007,7 @@ enum Direction GetNinetyDegreeDirection(enum Direction direction, bool32 clockwi
         return DIR_NONE;
     }
 
-    if (direction >= NELEMS(sOppositeDirections))
+    if (direction >= NELEMS(sRotate90Direction))
     {
         errorf("Invalid direction.");
         return DIR_NONE;
