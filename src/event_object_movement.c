@@ -10147,6 +10147,8 @@ void ScriptFaceEachOther(struct ScriptContext *ctx)
     struct ObjectEvent *objectOne = &gObjectEvents[GetObjectEventIdByLocalId(localIdOne)];
     struct ObjectEvent *objectTwo = &gObjectEvents[GetObjectEventIdByLocalId(localIdTwo)];
     
+    Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+    
     ObjectEventsTurnToEachOther(objectOne, objectTwo);
 }
 

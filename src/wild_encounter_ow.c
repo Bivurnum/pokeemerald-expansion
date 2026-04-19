@@ -367,6 +367,8 @@ void StartWildBattleWithOWE(struct ScriptContext *ctx)
     struct ObjectEvent *owe = &gObjectEvents[objEventId];
     enum CategoryOWE category = GetOWECategory(owe);
 
+    Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+
     assertf(objEventId < OBJECT_EVENTS_COUNT && IsOverworldWildEncounter(owe, OWE_ANY), "cannot start overworld wild enocunter as the selected object is invalid.\nlocalId: %d", localId)
     {
         UnlockPlayerFieldControls();
@@ -412,6 +414,9 @@ void SetOverworldObjectSpecies(struct ScriptContext *ctx)
     u32 localId = VarGet(ScriptReadHalfword(ctx));
     struct ObjectEvent *object = &gObjectEvents[GetObjectEventIdByLocalId(localId)];
     enum Species speciesId = SPECIES_NONE;
+
+    Script_RequestEffects(SCREFF_V1);
+    Script_RequestWriteVar(varId);
 
     switch (object->graphicsId)
     {
@@ -1994,6 +1999,9 @@ void OWEApproachForBattle(struct ScriptContext *ctx)
     u32 localId = VarGet(ScriptReadHalfword(ctx));
     u32 objectEventId = GetObjectEventIdByLocalId(localId);
     struct ObjectEvent *owe = &gObjectEvents[objectEventId];
+
+    Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+    
     if (!WE_OWE_APPROACH_FOR_BATTLE || !IsOverworldWildEncounter(owe, OWE_ANY))
     {
         FreezeObjectEvent(owe);
