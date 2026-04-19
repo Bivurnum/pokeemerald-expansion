@@ -68,7 +68,6 @@ extern const struct FieldEffectInfoOWE gOverworldWildEncounterFieldEffectInfo[];
 
 void UpdateOverworldWildEncounter(void);
 bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType);
-void StartWildBattleWithOWE(void);
 void SetInstantOWESpawnTimer(void);
 void SetMinimumOWESpawnTimer(void);
 void TryTriggerOverworldWildEncounter(struct ObjectEvent *obstacle, struct ObjectEvent *collider);

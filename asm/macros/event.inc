@@ -2839,9 +2839,10 @@
 	.2byte \localIdTwo
 	.endm
 
-	@ Starts an Overworld Wild Encounter with a selected object, if possible.
-	.macro tryoverworldwildencounter
+	@ Starts an Overworld Wild Encounter with a specified (localId) object, if possible.
+	.macro tryoverworldwildencounter localId=VAR_LAST_TALKED
 	callnative StartWildBattleWithOWE
+	.2byte \localId
 	.endm
 
 	@ Start a scripted approach for an overworld wild encounter towards the player.

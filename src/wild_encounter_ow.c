@@ -359,9 +359,9 @@ static enum TypeOWE GetOverworldWildEncounterType(struct ObjectEvent *owe)
     return OWE_MANUAL;
 }
 
-void StartWildBattleWithOWE(void)
+void StartWildBattleWithOWE(struct ScriptContext *ctx)
 {
-    u32 localId = gSpecialVar_LastTalked;
+    u32 localId = VarGet(ScriptReadHalfword(ctx));
     u32 objEventId = GetObjectEventIdByLocalId(localId);
     u32 headerId = GetCurrentMapWildMonHeaderId();
     struct ObjectEvent *owe = &gObjectEvents[objEventId];
