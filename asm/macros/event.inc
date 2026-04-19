@@ -2839,6 +2839,13 @@
 	.2byte \localIdTwo
 	.endm
 
+	@ Saves the species of a specified (localId) object, or SPECIES_NONE if one is not found. 
+	.macro getoverworldwildencounterspecies var:req, localId=VAR_LAST_TALKED
+	callnative SetOverworldObjectSpecies
+	.2byte \var
+	.2byte \localId
+	.endm
+
 	@ Starts an Overworld Wild Encounter with a specified (localId) object, if possible.
 	.macro tryoverworldwildencounter localId=VAR_LAST_TALKED
 	callnative StartWildBattleWithOWE

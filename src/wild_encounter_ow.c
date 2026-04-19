@@ -406,6 +406,20 @@ void StartWildBattleWithOWE(struct ScriptContext *ctx)
     BattleSetup_StartWildBattle();
 }
 
+void SetOverworldObjectSpecies(struct ScriptContext *ctx)
+{
+    u32 varId = ScriptReadHalfword(ctx);
+    u32 localId = VarGet(ScriptReadHalfword(ctx));
+    struct ObjectEvent *object = &gObjectEvents[GetObjectEventIdByLocalId(localId)];
+    enum Species speciesId = SPECIES_NONE;
+
+    if (IS_OW_MON_OBJ(object))
+        speciesId = OW_SPECIES(object);
+
+    assertf(speciesId != SPECIES_NONE, "species was not found for specified object. localid: %d", localId);
+    VarSet(varId, speciesId);
+}
+
 static bool32 CreateEnemyPartyOWE(struct InfoOWE *info, s32 x, s32 y)
 {
     const struct WildPokemonInfo *wildMonInfo;
@@ -642,7 +656,6 @@ void TryTriggerOverworldWildEncounter(struct ObjectEvent *obstacle, struct Objec
     }
 
     gSpecialVar_LastTalked = wildMon->localId;
-    gSpecialVar_0x8005 = OW_SPECIES(wildMon);
     gSelectedObjectEvent = GetObjectEventIdByLocalId(wildMon->localId);
 
     // Stop the bobbing animation.
@@ -656,14 +669,9 @@ const u8 *GetOverworlWildEncounterScript(u32 objectEventId)
 {
     const u8 *script = GetObjectEventScriptPointerByObjectEventId(objectEventId);
     if (script)
-    {
         return script;
-    }
-    else
-    {
-        gSpecialVar_0x8005 = OW_SPECIES(&gObjectEvents[objectEventId]);
-        return InteractWithOverworldWildEncounter;
-    }
+    
+    return InteractWithOverworldWildEncounter;
 }
 
 static bool32 CheckCurrentWildMonHeaderForOWE(bool32 shouldSpawnWaterMons)
