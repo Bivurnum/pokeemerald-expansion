@@ -2845,9 +2845,10 @@
 	.2byte \localId
 	.endm
 
-	@ Start a scripted approach for an overworld wild encounter towards the player.
-	.macro overworldwildencounterapproach
+	@ Start a scripted approach for a specified (localId) overworld wild encounter towards the player.
+	.macro overworldwildencounterapproach localId=VAR_LAST_TALKED
 	callnative OWEApproachForBattle
+	.2byte \localId
 	.endm
 
 @ FRLG

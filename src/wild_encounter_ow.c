@@ -1602,9 +1602,10 @@ static enum Direction CheckOWEPathToPlayerFromCollision(struct ObjectEvent *owe,
 }
 
 #define tObjectId data[0]
-void OWEApproachForBattle(void)
+void OWEApproachForBattle(struct ScriptContext *ctx)
 {
-    u32 objectEventId = GetObjectEventIdByLocalId(gSpecialVar_LastTalked);
+    u32 localId = VarGet(ScriptReadHalfword(ctx));
+    u32 objectEventId = GetObjectEventIdByLocalId(localId);
     struct ObjectEvent *owe = &gObjectEvents[objectEventId];
     if (!WE_OWE_APPROACH_FOR_BATTLE || !IsOverworldWildEncounter(owe, OWE_ANY))
     {
