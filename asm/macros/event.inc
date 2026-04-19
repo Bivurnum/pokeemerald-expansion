@@ -2832,9 +2832,11 @@
 	.byte \status
 	.endm
 
-	@ Makes the player and selected object (if there is one) face one another.
-	.macro facetogether
+	@ Makes the player and specified (localId) object face one another.
+	.macro facetogether localIdOne=LOCALID_PLAYER, localIdTwo=VAR_LAST_TALKED
 	callnative ScriptFaceEachOther
+	.2byte \localIdOne
+	.2byte \localIdTwo
 	.endm
 
 	@ Starts an Overworld Wild Encounter with a selected object, if possible.
