@@ -43,6 +43,7 @@
 
 struct AmieData
 {
+    u8 pokeblockSpriteIds[NUM_DISPLAYED_PKBL];
     u8 pokeblockListStart;
     u8 partySlot:3;
     u8 controlsPaused:1;

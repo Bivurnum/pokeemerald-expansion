@@ -66,6 +66,7 @@ static void StartNormalAnim(void);
 static void StartHappyAnim(void);
 static void ResetAmieHand(void);
 static void AmieHandHandleInput(u8 taskId);
+static void DestroyPokeblockSprites(void);
 static void SpriteCB_Mon(struct Sprite *sprite);
 static void SpriteCB_MonBack(struct Sprite *sprite);
 static void SpriteCB_Heart(struct Sprite *sprite);
@@ -665,6 +666,7 @@ static void Task_AmieMain(u8 taskId)
         {
             PlaySE(SE_WIN_OPEN);
             HideBg(2);
+            DestroyPokeblockSprites();
             StartNormalAnim();
             ResetAmieHand();
             tState = AMIE_TASK_NORMAL;
@@ -964,10 +966,22 @@ static void CreatePokeblockSprites(void)
             .affineAnims = sAffineAnims_Pokeblock,
             .callback = SpriteCallbackDummy
         };
-        u32 spriteId = CreateSprite(&pkblkTemplate, sPokeblockPositionsX[count], 17, 2);
-        gSprites[spriteId].sPkblkNum = count;
+        gAmieData->pokeblockSpriteIds[count] = CreateSprite(&pkblkTemplate, sPokeblockPositionsX[count], 17, 2);
+        gSprites[gAmieData->pokeblockSpriteIds[count]].sPkblkNum = count;
 
         count++;
+    }
+}
+
+static void DestroyPokeblockSprites(void)
+{
+    for (u32 i = 0; i < NUM_DISPLAYED_PKBL; i++)
+    {
+        if (gAmieData->pokeblockSpriteIds[i] == 0)
+            return;
+
+        DestroySpriteAndFreeResources(&gSprites[gAmieData->pokeblockSpriteIds[i]]);
+        gAmieData->pokeblockSpriteIds[i] = 0;
     }
 }
 
