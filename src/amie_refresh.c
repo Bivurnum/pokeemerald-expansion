@@ -11,6 +11,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "party_menu.h"
+#include "pokeblock.h"
 #include "pokedex.h"
 #include "random.h"
 #include "scanline_effect.h"
@@ -30,16 +31,16 @@ static const u32 gAmieBG_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/amie_bg.
 static const u32 gAmieBG_Tilemap[] = INCBIN_U32("graphics/amie_refresh/amie/amie_bg.bin.smolTM");
 static const u16 gAmieBG_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/amie_bg.gbapal");
 
-static const u32 gPuffBarBG_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/puff_bar.4bpp.smol");
-static const u32 gPuffBarBG_Tilemap[] = INCBIN_U32("graphics/amie_refresh/amie/puff_bar.bin.smolTM");
-static const u16 gPuffBarBG_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/puff_bar.gbapal");
+static const u32 gPokeblockBarBG_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/pokeblock_bar.4bpp.smol");
+static const u32 gPokeblockBarBG_Tilemap[] = INCBIN_U32("graphics/amie_refresh/amie/pokeblock_bar.bin.smolTM");
+static const u16 gPokeblockBarBG_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/pokeblock_bar.gbapal");
 
 static const u16 gHand_Pal[] = INCBIN_U16("graphics/amie_refresh/hand.gbapal");
 static const u32 gHand_Gfx[] = INCBIN_U32("graphics/amie_refresh/hand.4bpp");
 static const u32 gSpeechBubble_Gfx[] = INCBIN_U32("graphics/amie_refresh/speech_bubble.4bpp");
 
-static const u16 gPuff_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/puff_icon.gbapal");
-static const u32 gPuff_Icon_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/puff_icon.4bpp");
+static const u16 gPokeblock_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/pokeblock_icon.gbapal");
+static const u32 gPokeblock_Icon_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/pokeblock_icon.4bpp");
 
 static const u16 gSwitch_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/switch.gbapal");
 static const u32 gSwitch_Icon_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/switch.4bpp");
@@ -49,6 +50,7 @@ static const u32 gHeart_Gfx[] = INCBIN_U32("graphics/amie_refresh/heart.4bpp");
 static const u32 gAngry_Gfx[] = INCBIN_U32("graphics/amie_refresh/angry.4bpp");
 static const u32 sSpriteTiles_Surprised[] = INCBIN_U32("graphics/amie_refresh/surprised.4bpp.smol");
 static const u32 sSpriteTiles_Music[] = INCBIN_U32("graphics/amie_refresh/music.4bpp.smol");
+static const u32 sSpriteTiles_Pokeblock[] = INCBIN_U32("graphics/amie_refresh/amie/pokeblock.4bpp.smol");
 
 static const u16 gParty_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/party_icon.gbapal");
 static const u32 sSpriteTiles_Party_Icon[] = INCBIN_U32("graphics/amie_refresh/party_icon.4bpp.smol");
@@ -84,6 +86,7 @@ static void SpriteCB_SpeechBubble(struct Sprite *sprite);
 #define sCurrAnim       data[2]
 #define sLastAnim       data[3]
 #define sHeartOffset    data[2]
+#define sPkblkNum       data[2]
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -161,7 +164,7 @@ static const union AnimCmd * const sAnims_SpeechBubble[] =
     sAnim_Normal,
 };
 
-static const union AnimCmd * const sAnims_Puff_Icon[] =
+static const union AnimCmd * const sAnims_Pokeblock_Icon[] =
 {
     sAnim_Normal,
 };
@@ -251,9 +254,22 @@ static const union AffineAnimCmd *const sAffineAnims_Angry[] =
     sAffineAnim_AngryPulse,
 };
 
-static const struct SpriteFrameImage sPicTable_Puff_Icon[] =
+static const union AffineAnimCmd sAffineAnim_PokeblockShake[] =
 {
-    amie_frame(gPuff_Icon_Gfx, 0, 4, 4),
+    AFFINEANIMCMD_FRAME(0, 0, 1, 5),
+    AFFINEANIMCMD_FRAME(0, 0, -1, 10),
+    AFFINEANIMCMD_FRAME(0, 0, 1, 5),
+    AFFINEANIMCMD_END
+};
+
+static const union AffineAnimCmd *const sAffineAnims_Pokeblock[] =
+{
+    sAffineAnim_PokeblockShake,
+};
+
+static const struct SpriteFrameImage sPicTable_Pokeblock_Icon[] =
+{
+    amie_frame(gPokeblock_Icon_Gfx, 0, 8, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_Switch_Icon[] =
@@ -271,26 +287,41 @@ static const struct SpriteFrameImage sPicTable_Angry[] =
     amie_frame(gAngry_Gfx, 0, 4, 4),
 };
 
-static const struct OamData sOam_32x32 =
+static const struct OamData sOam_32x32_1 =
 {
     .shape = SPRITE_SHAPE(32x32),
     .size = SPRITE_SIZE(32x32),
     .priority = 1,
 };
 
-static const struct OamData sOam_32x32Affine =
+static const struct OamData sOam_32x32_2 =
+{
+    .shape = SPRITE_SHAPE(32x32),
+    .size = SPRITE_SIZE(32x32),
+    .priority = 2,
+};
+
+static const struct OamData sOam_32x32Affine_1 =
 {
     .affineMode = ST_OAM_AFFINE_DOUBLE,
     .shape = SPRITE_SHAPE(32x32),
     .size = SPRITE_SIZE(32x32),
-    .priority = 0,
+    .priority = 1,
 };
 
-static const struct OamData sOam_64x32 =
+static const struct OamData sOam_32x32Affine_2 =
+{
+    .affineMode = ST_OAM_AFFINE_DOUBLE,
+    .shape = SPRITE_SHAPE(32x32),
+    .size = SPRITE_SIZE(32x32),
+    .priority = 2,
+};
+
+static const struct OamData sOam_64x32_2 =
 {
     .shape = SPRITE_SHAPE(64x32),
     .size = SPRITE_SIZE(64x32),
-    .priority = 0,
+    .priority = 2,
 };
 
 static const struct CompressedSpriteSheet sSpriteSheet_Surprised =
@@ -314,11 +345,18 @@ static const struct CompressedSpriteSheet sSpriteSheet_Party_Icon =
     .tag = TAG_PARTY_AMIE,
 };
 
+static const struct CompressedSpriteSheet sSpriteSheet_Pokeblock =
+{
+    .data = sSpriteTiles_Pokeblock,
+    .size = 512,
+    .tag = TAG_AMIE_POKEBLOCK,
+};
+
 static const struct SpriteTemplate sSpriteTemplate_Hand =
 {
     .tileTag = TAG_NONE,
     .paletteTag = TAG_HAND,
-    .oam = &sOam_32x32,
+    .oam = &sOam_32x32_1,
     .anims = sAnims_Hand,
     .images = sPicTable_Hand,
     .affineAnims = gDummySpriteAffineAnimTable,
@@ -329,20 +367,20 @@ static const struct SpriteTemplate sSpriteTemplate_SpeechBubble =
 {
     .tileTag = TAG_NONE,
     .paletteTag = TAG_HAND,
-    .oam = &sOam_32x32,
+    .oam = &sOam_32x32_1,
     .anims = sAnims_SpeechBubble,
     .images = sPicTable_SpeechBubble,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_SpeechBubble
 };
 
-static const struct SpriteTemplate sSpriteTemplate_Puff_Icon =
+static const struct SpriteTemplate sSpriteTemplate_Pokeblock_Icon =
 {
     .tileTag = TAG_NONE,
-    .paletteTag = TAG_PUFF_ICON,
-    .oam = &sOam_32x32,
-    .anims = sAnims_Puff_Icon,
-    .images = sPicTable_Puff_Icon,
+    .paletteTag = TAG_PKBL_ICON,
+    .oam = &sOam_64x32_2,
+    .anims = sAnims_Pokeblock_Icon,
+    .images = sPicTable_Pokeblock_Icon,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy
 };
@@ -351,7 +389,7 @@ static const struct SpriteTemplate sSpriteTemplate_Switch_Icon =
 {
     .tileTag = TAG_NONE,
     .paletteTag = TAG_SWITCH_ICON,
-    .oam = &sOam_32x32,
+    .oam = &sOam_32x32_2,
     .anims = sAnims_Switch_Icon,
     .images = sPicTable_Switch_Icon,
     .affineAnims = gDummySpriteAffineAnimTable,
@@ -362,7 +400,7 @@ static const struct SpriteTemplate sSpriteTemplate_Heart =
 {
     .tileTag = TAG_NONE,
     .paletteTag = TAG_EMOTE,
-    .oam = &sOam_32x32,
+    .oam = &sOam_32x32_1,
     .anims = sAnims_Heart,
     .images = sPicTable_Heart,
     .affineAnims = gDummySpriteAffineAnimTable,
@@ -373,7 +411,7 @@ static const struct SpriteTemplate sSpriteTemplate_Angry =
 {
     .tileTag = TAG_NONE,
     .paletteTag = TAG_EMOTE,
-    .oam = &sOam_32x32Affine,
+    .oam = &sOam_32x32Affine_1,
     .anims = sAnims_Angry,
     .images = sPicTable_Angry,
     .affineAnims = sAffineAnims_Angry,
@@ -384,7 +422,7 @@ static const struct SpriteTemplate sSpriteTemplate_Surprised =
 {
     .tileTag = TAG_SURPRISED,
     .paletteTag = TAG_HAND,
-    .oam = &sOam_32x32,
+    .oam = &sOam_32x32_1,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
@@ -395,7 +433,7 @@ static const struct SpriteTemplate sSpriteTemplate_Music =
 {
     .tileTag = TAG_MUSIC,
     .paletteTag = TAG_HAND,
-    .oam = &sOam_32x32,
+    .oam = &sOam_32x32_1,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
@@ -406,7 +444,7 @@ static const struct SpriteTemplate sSpriteTemplate_Party_Icon =
 {
     .tileTag = TAG_PARTY_AMIE,
     .paletteTag = TAG_PARTY_AMIE,
-    .oam = &sOam_64x32,
+    .oam = &sOam_64x32_2,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
@@ -420,8 +458,8 @@ static const struct SpritePalette sSpritePalettes_Amie[] =
         .tag = TAG_HAND
     },
     {
-        .data = gPuff_Icon_Pal,
-        .tag = TAG_PUFF_ICON
+        .data = gPokeblock_Icon_Pal,
+        .tag = TAG_PKBL_ICON
     },
     {
         .data = gSwitch_Icon_Pal,
@@ -499,19 +537,20 @@ void CB2_InitAmie(void)
         ScanlineEffect_Stop();
         ResetTasks();
         ResetSpriteData();
+        FreeAllSpritePalettes();
         gMain.state++;
         break;
     case 3:
         DecompressDataWithHeaderVram(gAmieBG_Gfx, (void *)(BG_CHAR_ADDR(1)));
         DecompressDataWithHeaderVram(gAmieBG_Tilemap, (u16*) BG_SCREEN_ADDR(6));
 
-        DecompressDataWithHeaderVram(gPuffBarBG_Gfx, (void *)(BG_CHAR_ADDR(0)));
-        DecompressDataWithHeaderVram(gPuffBarBG_Tilemap, (u16*) BG_SCREEN_ADDR(7));
+        DecompressDataWithHeaderVram(gPokeblockBarBG_Gfx, (void *)(BG_CHAR_ADDR(0)));
+        DecompressDataWithHeaderVram(gPokeblockBarBG_Tilemap, (u16*) BG_SCREEN_ADDR(7));
         gMain.state++;
         break;
     case 4:
         LoadPalette(gAmieBG_Pal, BG_PLTT_ID(0), 5 * PLTT_SIZE_4BPP);
-        LoadPalette(gPuffBarBG_Pal, BG_PLTT_ID(5), PLTT_SIZE_4BPP);
+        LoadPalette(gPokeblockBarBG_Pal, BG_PLTT_ID(5), PLTT_SIZE_4BPP);
         gMain.state++;
         break;
     case 5:
@@ -536,7 +575,7 @@ void CB2_InitAmie(void)
         SetAmieMonData(&species, &isShiny, &personality);
         
         // Create Pokémon sprite
-        gAmieData->monSpriteId = CreateMonPicSprite_Affine(species, isShiny, personality, MON_PIC_AFFINE_FRONT, 90, 65, 14, TAG_NONE);
+        gAmieData->monSpriteId = CreateMonPicSprite_Affine(species, isShiny, personality, MON_PIC_AFFINE_FRONT, 90, 65, 0, TAG_MON);
         gSprites[gAmieData->monSpriteId].affineAnims = sAffineAnims_Mon;
         gSprites[gAmieData->monSpriteId].anims = sAnims_Mon;
         gSprites[gAmieData->monSpriteId].oam.affineMode = ST_OAM_AFFINE_DOUBLE;
@@ -548,7 +587,7 @@ void CB2_InitAmie(void)
         if (Random() % 100 < AR_FACE_AWAY_CHANCE)
         {
             gSprites[gAmieData->monSpriteId].invisible = TRUE;
-            gAmieData->monBackSpriteId = CreateMonPicSprite_Affine(species, isShiny, personality, MON_PIC_AFFINE_BACK, 90, 85, 14, TAG_NONE);
+            gAmieData->monBackSpriteId = CreateMonPicSprite_Affine(species, isShiny, personality, MON_PIC_AFFINE_BACK, 90, 85, 0, TAG_MON);
             gSprites[gAmieData->monBackSpriteId].affineAnims = sAffineAnims_Mon;
             gSprites[gAmieData->monBackSpriteId].anims = sAnims_Mon;
             gSprites[gAmieData->monBackSpriteId].oam.affineMode = ST_OAM_AFFINE_DOUBLE;
@@ -576,7 +615,7 @@ void CB2_InitAmie(void)
 static void CreateAmieSprites(void)
 {
     gAmieData->handSpriteId = CreateSprite(&sSpriteTemplate_Hand, HAND_START_X, HAND_START_Y, 1);
-    gAmieData->puffIconSpriteId = CreateSprite(&sSpriteTemplate_Puff_Icon, 16, 16, 2);
+    gAmieData->pokeblockIconSpriteId = CreateSprite(&sSpriteTemplate_Pokeblock_Icon, 31, 16, 2);
 }
 
 static void Task_AmieFadeIn(u8 taskId)
@@ -653,7 +692,7 @@ static void Task_TurnMonAroundWaitFadeOut(u8 taskId)
     if (!gPaletteFade.active)
     {
         gSprites[gAmieData->monSpriteId].invisible = FALSE;
-        DestroySpriteAndFreeResources(&gSprites[gAmieData->monBackSpriteId]);
+        DestroySprite(&gSprites[gAmieData->monBackSpriteId]);
         gAmieData->monBackSpriteId = 0;
         DestroySpriteAndFreeResources(&gSprites[gAmieData->emoteBubbleSpriteId]);
         gAmieData->emoteBubbleSpriteId = 0;
@@ -691,7 +730,7 @@ static void Task_AmieEndFade(u8 taskId)
     }
 }
 
-static bool32 IsHandOnPuffIcon(void)
+static bool32 IsHandOnPokeblockIcon(void)
 {
     if (gSprites[gAmieData->handSpriteId].x < 45 && gSprites[gAmieData->handSpriteId].y < 38)
         return TRUE;
@@ -895,6 +934,48 @@ static void ResetAmieHand(void)
     StartSpriteAnim(&gSprites[gAmieData->handSpriteId], 0);
 }
 
+static const s16 sPokeblockPositionsX[NUM_DISPLAYED_PKBL] =
+{
+    50, 82, 114, 146, 178, 210
+};
+
+static void CreatePokeblockSprites(void)
+{
+    u32 color, palTag, count = 0;
+
+    LoadCompressedSpriteSheet(&sSpriteSheet_Pokeblock);
+
+    for (u32 i = gAmieData->pokeblockListStart; i < (gAmieData->pokeblockListStart + NUM_DISPLAYED_PKBL); i++)
+    {
+        color = gSaveBlock1Ptr->pokeblocks[i].color;
+
+        if (color == PBLOCK_CLR_NONE)
+            return;
+
+        palTag = TAG_PKBL_0 + count;
+        LoadSpritePaletteWithTag(gPokeblocksPals[color - 1], palTag);
+
+        struct SpriteTemplate pkblkTemplate = {
+            .tileTag = TAG_AMIE_POKEBLOCK,
+            .paletteTag = palTag,
+            .oam = &sOam_32x32Affine_1,
+            .anims = gDummySpriteAnimTable,
+            .images = NULL,
+            .affineAnims = sAffineAnims_Pokeblock,
+            .callback = SpriteCallbackDummy
+        };
+        u32 spriteId = CreateSprite(&pkblkTemplate, sPokeblockPositionsX[count], 17, 2);
+        gSprites[spriteId].sPkblkNum = count;
+
+        count++;
+    }
+}
+
+static void CreateAmiePokeblocks(void)
+{
+    CreatePokeblockSprites();
+}
+
 static void AmieHandHandleInput(u8 taskId)
 {
     if (JOY_NEW(EXIT_BUTTON)/* || (JOY_NEW(INTERACT_BUTTON) && IsHandOnExitIcon())*/)
@@ -908,10 +989,11 @@ static void AmieHandHandleInput(u8 taskId)
     switch (tState)
     {
     case AMIE_TASK_NORMAL:
-        if (JOY_NEW(PUFF_BUTTON) || (JOY_NEW(INTERACT_BUTTON) && IsHandOnPuffIcon()))
+        if (JOY_NEW(PUFF_BUTTON) || (JOY_NEW(INTERACT_BUTTON) && IsHandOnPokeblockIcon()))
         {
             PlaySE(SE_WIN_OPEN);
             ShowBg(2);
+            CreateAmiePokeblocks();
             gSprites[gAmieData->handSpriteId].invisible = TRUE;
             tState = AMIE_TASK_PUFF;
             return;

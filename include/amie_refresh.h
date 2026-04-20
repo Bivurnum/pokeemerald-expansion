@@ -10,16 +10,26 @@
 
 #define AMIE_MOVE_SPEED 1
 
-#define TAG_MON         0x1000
+#define TAG_MON         0x3000
 
 #define TAG_HAND        0x2000
-#define TAG_PUFF_ICON   0x2001
+#define TAG_PKBL_ICON   0x2001
 #define TAG_SWITCH_ICON 0x2002
 #define TAG_EMOTE       0x2003
 
-#define TAG_PARTY_AMIE    0x2032
-#define TAG_SURPRISED     0x2033
-#define TAG_MUSIC         0x2034
+#define TAG_PKBL_0      0x2120
+#define TAG_PKBL_1      0x2121
+#define TAG_PKBL_2      0x2122
+#define TAG_PKBL_3      0x2123
+#define TAG_PKBL_4      0x2124
+#define TAG_PKBL_5      0x2125
+
+#define NUM_DISPLAYED_PKBL  6
+
+#define TAG_PARTY_AMIE      0x2032
+#define TAG_SURPRISED       0x2033
+#define TAG_MUSIC           0x2034
+#define TAG_AMIE_POKEBLOCK  0x2035
 
 #define HAND_START_X    28
 #define HAND_START_Y    45
@@ -33,6 +43,7 @@
 
 struct AmieData
 {
+    u8 pokeblockListStart;
     u8 partySlot:3;
     u8 controlsPaused:1;
     u8 isSwitching:1;
@@ -41,7 +52,7 @@ struct AmieData
     u8 monSpriteId;
     u8 monBackSpriteId;
     u8 handSpriteId;
-    u8 puffIconSpriteId;
+    u8 pokeblockIconSpriteId;
     u8 emoteBubbleSpriteId;
     u8 emoteSpriteId;
 };

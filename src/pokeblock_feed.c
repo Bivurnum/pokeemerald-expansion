@@ -399,7 +399,7 @@ static const struct WindowTemplate sWindowTemplates[] =
 };
 
 // - 1 excludes PBLOCK_CLR_NONE
-static const u16 *const sPokeblocksPals[] =
+const u16 *const gPokeblocksPals[] =
 {
     [PBLOCK_CLR_RED - 1]       = gPokeblockRed_Pal,
     [PBLOCK_CLR_BLUE - 1]      = gPokeblockBlue_Pal,
@@ -723,7 +723,7 @@ static void HandleInitWindows(void)
 static void SetPokeblockSpritePal(u8 pokeblockCaseId)
 {
     u8 colorId = GetPokeblockData(&gSaveBlock1Ptr->pokeblocks[pokeblockCaseId], PBLOCK_COLOR);
-    sPokeblockSpritePal.data = sPokeblocksPals[colorId - 1];
+    sPokeblockSpritePal.data = gPokeblocksPals[colorId - 1];
     sPokeblockSpritePal.tag = TAG_POKEBLOCK;
 }
 
