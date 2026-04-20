@@ -120,11 +120,6 @@ void ClearSavedOWEMovementState(struct ObjectEvent *owe)
     owe->sOverworldEncounterCategory &= ~OWE_SAVED_MOVEMENT_STATE_FLAG;
 }
 
-static inline void SetOWEEncounterLevel(u8 *level, u32 newLevel)
-{
-    *level = (*level & OWE_NO_DESPAWN_FLAG) | (newLevel & ~OWE_NO_DESPAWN_FLAG);
-}
-
 static inline bool32 HasOWENoDespawnFlag(const struct ObjectEvent *owe)
 {
     return owe->sOverworldEncounterLevel & OWE_NO_DESPAWN_FLAG;
