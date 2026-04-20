@@ -10142,10 +10142,14 @@ bool8 AreElevationsCompatible(u8 a, u8 b)
 
 void ScriptFaceEachOther(struct ScriptContext *ctx)
 {
-    struct ObjectEvent *player, *npc;
-    player = &gObjectEvents[gPlayerAvatar.objectEventId];
-    npc = &gObjectEvents[GetObjectEventIdByLocalId(gSpecialVar_LastTalked)];
-    ObjectEventsTurnToEachOther(player, npc);
+    u32 localIdOne = VarGet(ScriptReadHalfword(ctx));
+    u32 localIdTwo = VarGet(ScriptReadHalfword(ctx));
+    struct ObjectEvent *objectOne = &gObjectEvents[GetObjectEventIdByLocalId(localIdOne)];
+    struct ObjectEvent *objectTwo = &gObjectEvents[GetObjectEventIdByLocalId(localIdTwo)];
+    
+    Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+    
+    ObjectEventsTurnToEachOther(objectOne, objectTwo);
 }
 
 enum Direction DetermineObjectEventDirectionFromObject(struct ObjectEvent *objectOne, struct ObjectEvent *objectTwo)

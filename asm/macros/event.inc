@@ -2832,19 +2832,30 @@
 	.byte \status
 	.endm
 
-	@ Makes the player and selected object (if there is one) face one another.
-	.macro facetogether
-	callnative ScriptFaceEachOther
+	@ Makes the player and specified (localId) object face one another.
+	.macro facetogether localIdOne=LOCALID_PLAYER, localIdTwo=VAR_LAST_TALKED
+	callnative ScriptFaceEachOther, requests_effects=1
+	.2byte \localIdOne
+	.2byte \localIdTwo
 	.endm
 
-	@ Starts an Overworld Wild Encounter with a selected object, if possible.
-	.macro tryoverworldwildencounter
-	callnative StartWildBattleWithOWE
+	@ Saves the species of a specified (localId) object, or SPECIES_NONE if one is not found. 
+	.macro getoverworldwildencounterspecies var:req, localId=VAR_LAST_TALKED
+	callnative SetOverworldObjectSpecies, requests_effects=1
+	.2byte \var
+	.2byte \localId
 	.endm
 
-	@ Start a scripted approach for an overworld wild encounter towards the player.
-	.macro overworldwildencounterapproach
-	callnative OWEApproachForBattle
+	@ Starts an Overworld Wild Encounter with a specified (localId) object, if possible.
+	.macro tryoverworldwildencounter localId=VAR_LAST_TALKED
+	callnative StartWildBattleWithOWE, requests_effects=1
+	.2byte \localId
+	.endm
+
+	@ Start a scripted approach for a specified (localId) overworld wild encounter towards the player.
+	.macro overworldwildencounterapproach localId=VAR_LAST_TALKED
+	callnative OWEApproachForBattle, requests_effects=1
+	.2byte \localId
 	.endm
 
 @ FRLG
