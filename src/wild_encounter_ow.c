@@ -1854,7 +1854,7 @@ static bool32 CanOWEReachPlayer(struct ObjectEvent *owe)
 {
     // In future, checks similar to trainer_see.c can be included.
     struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
-    return IsElevationMismatchAt(owe->currentElevation, player->currentCoords.x, player->currentCoords.y);
+    return !IsElevationMismatchAt(owe->currentElevation, player->currentCoords.x, player->currentCoords.y);
 }
 
 bool32 IsPlayerInsideOWEActiveDistance(struct ObjectEvent *owe)
