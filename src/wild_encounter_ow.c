@@ -137,7 +137,7 @@ static inline bool32 ShouldSpawnWaterOWE(void)
 
 static inline bool32 IsObjectOWE(struct ObjectEvent *owe)
 {
-    return (owe->trainerType == TRAINER_TYPE_OW_WILD_ENCOUNTER);
+    return (owe->active && owe->trainerType == TRAINER_TYPE_OW_WILD_ENCOUNTER);
 }
 
 static bool32 CreateEnemyPartyOWE(struct InfoOWE *info, s32 x, s32 y);
@@ -1364,7 +1364,7 @@ static void SortOWEAges(void)
     for (i = 0; i < OWE_SPAWNS_MAX; i++)
     {
         slotMon = &gObjectEvents[GetObjectEventIdByLocalId(GetLocalIdByOWESpawnSlot(i))];
-        if (OW_SPECIES(slotMon) != SPECIES_NONE)
+        if (slotMon->active && OW_SPECIES(slotMon) != SPECIES_NONE)
         {
             array[count].slot = i;
             array[count].age = slotMon->sOverworldEncounterAge;
