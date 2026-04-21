@@ -1812,7 +1812,7 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
     switch (direction)
     {
     case DIR_NORTH:
-        if (!(player->currentCoords.y < owe->currentCoords.y
+        if (!(player->currentCoords.y <= owe->currentCoords.y
          && owe->currentCoords.y - player->currentCoords.y <= viewDistance
          && player->currentCoords.x >= owe->currentCoords.x - halfWidth
          && player->currentCoords.x <= owe->currentCoords.x + halfWidth))
@@ -1820,7 +1820,7 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
         break;
 
     case DIR_SOUTH:
-        if (!(player->currentCoords.y > owe->currentCoords.y
+        if (!(player->currentCoords.y >= owe->currentCoords.y
          && player->currentCoords.y - owe->currentCoords.y <= viewDistance
          && player->currentCoords.x >= owe->currentCoords.x - halfWidth
          && player->currentCoords.x <= owe->currentCoords.x + halfWidth))
@@ -1828,7 +1828,7 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
         break;
 
     case DIR_EAST:
-        if (!(player->currentCoords.x > owe->currentCoords.x
+        if (!(player->currentCoords.x >= owe->currentCoords.x
          && player->currentCoords.x - owe->currentCoords.x <= viewDistance
          && player->currentCoords.y >= owe->currentCoords.y - halfWidth
          && player->currentCoords.y <= owe->currentCoords.y + halfWidth))
@@ -1836,7 +1836,7 @@ bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
         break;
 
     case DIR_WEST:
-        if (!(player->currentCoords.x < owe->currentCoords.x
+        if (!(player->currentCoords.x <= owe->currentCoords.x
          && owe->currentCoords.x - player->currentCoords.x <= viewDistance
          && player->currentCoords.y >= owe->currentCoords.y - halfWidth
          && player->currentCoords.y <= owe->currentCoords.y + halfWidth))
