@@ -30,6 +30,8 @@
 #define TAG_SURPRISED       0x2033
 #define TAG_MUSIC           0x2034
 #define TAG_AMIE_POKEBLOCK  0x2035
+#define TAG_SELECTOR        0x2036
+#define TAG_ARROW           0x2037
 
 #define HAND_START_X    28
 #define HAND_START_Y    45
@@ -48,7 +50,7 @@ struct AmieData
     u8 partySlot:3;
     u8 controlsPaused:1;
     u8 isSwitching:1;
-    u8 padding1:3;
+    u8 selectorPos:3;
     u8 taskId;
     u8 monSpriteId;
     u8 monBackSpriteId;
@@ -56,13 +58,16 @@ struct AmieData
     u8 pokeblockIconSpriteId;
     u8 emoteBubbleSpriteId;
     u8 emoteSpriteId;
+    u8 selectorSpriteId;
+    u8 arrowLeftSpriteId;
+    u8 arrowRightSpriteId;
 };
 
 enum AmieTaskStates
 {
     AMIE_TASK_NORMAL,
     AMIE_TASK_BACK,
-    AMIE_TASK_PUFF
+    AMIE_TASK_POKEBLOCK
 };
 
 enum AmiePetZoneTypes

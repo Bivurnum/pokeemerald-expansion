@@ -38,6 +38,7 @@ static const u16 gPokeblockBarBG_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/
 static const u16 gHand_Pal[] = INCBIN_U16("graphics/amie_refresh/hand.gbapal");
 static const u32 gHand_Gfx[] = INCBIN_U32("graphics/amie_refresh/hand.4bpp");
 static const u32 gSpeechBubble_Gfx[] = INCBIN_U32("graphics/amie_refresh/speech_bubble.4bpp");
+static const u32 sSpriteTiles_Selector[] = INCBIN_U32("graphics/amie_refresh/selector.4bpp.smol");
 
 static const u16 gPokeblock_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/pokeblock_icon.gbapal");
 static const u32 gPokeblock_Icon_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/pokeblock_icon.4bpp");
@@ -51,6 +52,9 @@ static const u32 gAngry_Gfx[] = INCBIN_U32("graphics/amie_refresh/angry.4bpp");
 static const u32 sSpriteTiles_Surprised[] = INCBIN_U32("graphics/amie_refresh/surprised.4bpp.smol");
 static const u32 sSpriteTiles_Music[] = INCBIN_U32("graphics/amie_refresh/music.4bpp.smol");
 static const u32 sSpriteTiles_Pokeblock[] = INCBIN_U32("graphics/amie_refresh/amie/pokeblock.4bpp.smol");
+
+static const u16 gArrow_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/arrow.gbapal");
+static const u32 sSpriteTiles_Arrow[] = INCBIN_U32("graphics/amie_refresh/amie/arrow.4bpp.smol");
 
 static const u16 gParty_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/party_icon.gbapal");
 static const u32 sSpriteTiles_Party_Icon[] = INCBIN_U32("graphics/amie_refresh/party_icon.4bpp.smol");
@@ -66,7 +70,9 @@ static void StartNormalAnim(void);
 static void StartHappyAnim(void);
 static void ResetAmieHand(void);
 static void AmieHandHandleInput(u8 taskId);
+static void DestroySelectorSprite(void);
 static void DestroyPokeblockSprites(void);
+static void ReloadPokeblockSprites(u8 taskId);
 static void SpriteCB_Mon(struct Sprite *sprite);
 static void SpriteCB_MonBack(struct Sprite *sprite);
 static void SpriteCB_Heart(struct Sprite *sprite);
@@ -187,6 +193,18 @@ static const union AnimCmd * const sAnims_Mon[] =
 {
     sAnim_Normal,
     sAnim_Mon_Happy,
+};
+
+static const union AnimCmd sAnim_ArrowFlipped[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 1, .hFlip = TRUE),
+    ANIMCMD_END
+};
+
+static const union AnimCmd * const sAnims_Arrow[] =
+{
+    sAnim_Normal,
+    sAnim_ArrowFlipped,
 };
 
 static const union AffineAnimCmd sAffineAnim_MonDoubleSize[] =
@@ -353,6 +371,20 @@ static const struct CompressedSpriteSheet sSpriteSheet_Pokeblock =
     .tag = TAG_AMIE_POKEBLOCK,
 };
 
+static const struct CompressedSpriteSheet sSpriteSheet_Selector =
+{
+    .data = sSpriteTiles_Selector,
+    .size = 512,
+    .tag = TAG_SELECTOR,
+};
+
+static const struct CompressedSpriteSheet sSpriteSheet_Arrow =
+{
+    .data = sSpriteTiles_Arrow,
+    .size = 512,
+    .tag = TAG_ARROW,
+};
+
 static const struct SpriteTemplate sSpriteTemplate_Hand =
 {
     .tileTag = TAG_NONE,
@@ -447,6 +479,28 @@ static const struct SpriteTemplate sSpriteTemplate_Party_Icon =
     .paletteTag = TAG_PARTY_AMIE,
     .oam = &sOam_64x32_2,
     .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Selector =
+{
+    .tileTag = TAG_SELECTOR,
+    .paletteTag = TAG_HAND,
+    .oam = &sOam_32x32_1,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Arrow =
+{
+    .tileTag = TAG_ARROW,
+    .paletteTag = TAG_ARROW,
+    .oam = &sOam_32x32_1,
+    .anims = sAnims_Arrow,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy
@@ -619,6 +673,11 @@ static void CreateAmieSprites(void)
     gAmieData->pokeblockIconSpriteId = CreateSprite(&sSpriteTemplate_Pokeblock_Icon, 31, 16, 2);
 }
 
+static const s16 sPokeblockPositionsX[NUM_DISPLAYED_PKBL] =
+{
+    50, 82, 114, 146, 178, 210
+};
+
 static void Task_AmieFadeIn(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -661,16 +720,54 @@ static void Task_AmieMain(u8 taskId)
     case AMIE_TASK_BACK:
         AmieHandHandleInput(taskId);
         break;
-    case AMIE_TASK_PUFF:
+    case AMIE_TASK_POKEBLOCK:
         if (JOY_NEW(B_BUTTON | L_BUTTON))
         {
             PlaySE(SE_WIN_OPEN);
             HideBg(2);
             DestroyPokeblockSprites();
+            DestroySelectorSprite();
             StartNormalAnim();
             ResetAmieHand();
             tState = AMIE_TASK_NORMAL;
             return;
+        }
+
+        if (JOY_NEW(DPAD_RIGHT))
+        {
+            // If not over max pokeblocks && next pokeblock exists.
+            if (((gAmieData->pokeblockListStart + gAmieData->selectorPos + 1) < POKEBLOCKS_COUNT) && gSaveBlock1Ptr->pokeblocks[gAmieData->pokeblockListStart + gAmieData->selectorPos + 1].color)
+            {
+                if (gAmieData->selectorPos < 5)
+                {
+                    PlaySE(SE_SELECT);
+                    gSprites[gAmieData->selectorSpriteId].x = sPokeblockPositionsX[gAmieData->selectorPos + 1];
+                    gAmieData->selectorPos++;
+                    StartSpriteAffineAnim(&gSprites[gAmieData->pokeblockSpriteIds[gAmieData->selectorPos]], 0);
+                }
+                else
+                {
+                    PlaySE(SE_SELECT);
+                    gAmieData->pokeblockListStart++;
+                    ReloadPokeblockSprites(taskId);
+                }
+            }
+        }
+        else if (JOY_NEW(DPAD_LEFT))
+        {
+            if (gAmieData->selectorPos > 0)
+            {
+                PlaySE(SE_SELECT);
+                gSprites[gAmieData->selectorSpriteId].x = sPokeblockPositionsX[gAmieData->selectorPos - 1];
+                gAmieData->selectorPos--;
+                StartSpriteAffineAnim(&gSprites[gAmieData->pokeblockSpriteIds[gAmieData->selectorPos]], 0);
+            }
+            else if (gAmieData->pokeblockListStart > 0)
+            {
+                PlaySE(SE_SELECT);
+                gAmieData->pokeblockListStart--;
+                ReloadPokeblockSprites(taskId);
+            }
         }
         break;
     }
@@ -936,11 +1033,6 @@ static void ResetAmieHand(void)
     StartSpriteAnim(&gSprites[gAmieData->handSpriteId], 0);
 }
 
-static const s16 sPokeblockPositionsX[NUM_DISPLAYED_PKBL] =
-{
-    50, 82, 114, 146, 178, 210
-};
-
 static void CreatePokeblockSprites(void)
 {
     u32 color, palTag, count = 0;
@@ -952,7 +1044,7 @@ static void CreatePokeblockSprites(void)
         color = gSaveBlock1Ptr->pokeblocks[i].color;
 
         if (color == PBLOCK_CLR_NONE)
-            return;
+            break;
 
         palTag = TAG_PKBL_0 + count;
         LoadSpritePaletteWithTag(gPokeblocksPals[color - 1], palTag);
@@ -971,6 +1063,34 @@ static void CreatePokeblockSprites(void)
 
         count++;
     }
+
+    LoadSpritePaletteWithTag(gArrow_Pal, TAG_ARROW);
+    LoadCompressedSpriteSheet(&sSpriteSheet_Arrow);
+
+    if (gAmieData->pokeblockListStart != 0)
+    {
+        gAmieData->arrowLeftSpriteId = CreateSprite(&sSpriteTemplate_Arrow, 39, 17, 2);
+        StartSpriteAnim(&gSprites[gAmieData->arrowLeftSpriteId], 1);
+    }
+
+    if (gSaveBlock1Ptr->pokeblocks[gAmieData->pokeblockListStart + 6].color)
+        gAmieData->arrowRightSpriteId = CreateSprite(&sSpriteTemplate_Arrow, 220, 17, 2);
+
+}
+
+static void CreateSelectorSprite(void)
+{
+    LoadCompressedSpriteSheet(&sSpriteSheet_Selector);
+    gAmieData->selectorSpriteId = CreateSprite(&sSpriteTemplate_Selector, sPokeblockPositionsX[0], 39, 2);
+    gAmieData->selectorPos = 0;
+}
+
+static void DestroySelectorSprite(void)
+{
+    FreeSpriteTiles(&gSprites[gAmieData->selectorSpriteId]);
+    FreeSpriteOamMatrix(&gSprites[gAmieData->selectorSpriteId]);
+    DestroySprite(&gSprites[gAmieData->selectorSpriteId]);
+    gAmieData->selectorSpriteId = 0;
 }
 
 static void DestroyPokeblockSprites(void)
@@ -978,16 +1098,50 @@ static void DestroyPokeblockSprites(void)
     for (u32 i = 0; i < NUM_DISPLAYED_PKBL; i++)
     {
         if (gAmieData->pokeblockSpriteIds[i] == 0)
-            return;
+            break;
 
+        FreeSpritePaletteByTag(TAG_PKBL_0 + i);
         DestroySpriteAndFreeResources(&gSprites[gAmieData->pokeblockSpriteIds[i]]);
         gAmieData->pokeblockSpriteIds[i] = 0;
     }
+
+    if (gAmieData->arrowLeftSpriteId)
+    {
+        DestroySpriteAndFreeResources(&gSprites[gAmieData->arrowLeftSpriteId]);
+        gAmieData->arrowLeftSpriteId = 0;
+    }
+
+    if (gAmieData->arrowRightSpriteId)
+    {
+        DestroySpriteAndFreeResources(&gSprites[gAmieData->arrowRightSpriteId]);
+        gAmieData->arrowRightSpriteId = 0;
+    }
+}
+
+static void Task_WaitReloadPokeblockSprites(u8 taskId)
+{
+    // Wait 3 frames so the sprites don't glitch out.
+    if (tCounter == 1)
+    {
+        CreatePokeblockSprites();
+        gTasks[taskId].func = Task_AmieMain;
+    }
+
+    tCounter++;
+}
+
+static void ReloadPokeblockSprites(u8 taskId)
+{
+    DestroyPokeblockSprites();
+    tCounter = 0;
+    gTasks[taskId].func = Task_WaitReloadPokeblockSprites;
 }
 
 static void CreateAmiePokeblocks(void)
 {
+    gAmieData->pokeblockListStart = 0;
     CreatePokeblockSprites();
+    CreateSelectorSprite();
 }
 
 static void AmieHandHandleInput(u8 taskId)
@@ -1009,7 +1163,7 @@ static void AmieHandHandleInput(u8 taskId)
             ShowBg(2);
             CreateAmiePokeblocks();
             gSprites[gAmieData->handSpriteId].invisible = TRUE;
-            tState = AMIE_TASK_PUFF;
+            tState = AMIE_TASK_POKEBLOCK;
             return;
         }
 
