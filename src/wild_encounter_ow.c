@@ -1944,7 +1944,7 @@ u32 GetApproachingOWEDistanceToPlayer(struct ObjectEvent *owe, bool32 *equalDist
         return absX;
 }
 
-u32 GetOWEWalkMovementActionInDirectionWithSpeed(enum Direction direction, u32 speed)
+u32 GetOWEWalkMovementActionInDirectionWithSpeed(enum Direction direction, enum SpeedOWE speed)
 {
     switch (speed)
     {
@@ -1954,9 +1954,10 @@ u32 GetOWEWalkMovementActionInDirectionWithSpeed(enum Direction direction, u32 s
         return GetWalkFastMovementAction(direction);
     case OWE_SPEED_FASTER:
         return GetWalkFasterMovementAction(direction);
+    case OWE_SPEED_NORMAL:
+    default:
+        return GetWalkNormalMovementAction(direction);
     }
-
-    return GetWalkNormalMovementAction(direction);
 }
 
 static enum Direction CheckOWEPathToPlayerFromCollision(struct ObjectEvent *owe, enum Direction newDirection)
