@@ -1541,9 +1541,6 @@ void DespawnOWEOnBattleStart(void)
 
 void TryDespawnOWEsCrossingMapConnection(void)
 {
-    if (gMain.callback2 != CB2_Overworld)
-        return;
-
     if (!WE_OWE_DESPAWN_ON_ENTER_TOWN)
         return;
 
