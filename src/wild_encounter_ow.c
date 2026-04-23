@@ -1434,7 +1434,6 @@ bool32 IsOWEDespawnExempt(struct ObjectEvent *owe)
     if (HasOWENoDespawnFlag(owe) && AreCoordsInsidePlayerMap(owe->currentCoords.x, owe->currentCoords.y))
         return TRUE;
 
-    owe->offScreen = TRUE;
     return FALSE;
 }
 

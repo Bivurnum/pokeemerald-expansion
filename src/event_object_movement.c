@@ -2967,8 +2967,10 @@ void RemoveObjectEventsOutsideView(void)
                 continue;
             if (objectEvent->localId == OBJ_EVENT_ID_NPC_FOLLOWER || objectEvent->localId == OBJ_EVENT_ID_FOLLOWER)
                 continue;
-            if (!IsOWEDespawnExempt(objectEvent))
-                RemoveObjectEventIfOutsideView(objectEvent);
+            if (IsOWEDespawnExempt(objectEvent))
+                continue;
+
+            RemoveObjectEventIfOutsideView(objectEvent);
         }
     }
 }
@@ -2987,6 +2989,9 @@ static void RemoveObjectEventIfOutsideView(struct ObjectEvent *objectEvent)
      && objectEvent->initialCoords.y >= top && objectEvent->initialCoords.y <= bottom)
         return;
 
+    // Overworld Wild Ecnounters need to be set as offscreen in order to determine whether
+    // their despawn animation should play.
+    objectEvent->offScreen = TRUE;
     RemoveObjectEvent(objectEvent);
 }
 
