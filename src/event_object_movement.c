@@ -3529,7 +3529,15 @@ void UpdateObjectEventCoordsForCameraUpdate(void)
         dy = gCamera.y;
         for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
         {
-            UpdateObjectEventCoords(&gObjectEvents[i], dx, dy);
+            if (gObjectEvents[i].active)
+            {
+                gObjectEvents[i].initialCoords.x -= dx;
+                gObjectEvents[i].initialCoords.y -= dy;
+                gObjectEvents[i].currentCoords.x -= dx;
+                gObjectEvents[i].currentCoords.y -= dy;
+                gObjectEvents[i].previousCoords.x -= dx;
+                gObjectEvents[i].previousCoords.y -= dy;
+            }
         }
     }
 }

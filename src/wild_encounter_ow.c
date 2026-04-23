@@ -1468,14 +1468,6 @@ u32 DespawnOWEDueToTrainerSight(u32 collision, s32 x, s32 y)
 
 void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
 {
-    s32 dx = 0, dy = 0;
-
-    if (gCamera.active)
-    {
-        dx = gCamera.x;
-        dy = gCamera.y;
-    }
-
     for (u32 i = 0; i < OBJECT_EVENTS_COUNT; ++i)
     {
         struct ObjectEvent *owe = &gObjectEvents[i];
@@ -1498,7 +1490,6 @@ void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
                 continue;
         }
 
-        UpdateObjectEventCoords(owe, dx, dy);
         RemoveObjectEvent(owe);
     }
 }

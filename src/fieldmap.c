@@ -808,7 +808,6 @@ bool8 CameraMove(int x, int y)
         gSaveBlock1Ptr->pos.x += x;
         gSaveBlock1Ptr->pos.y += y;
         MoveMapViewToBackup(direction);
-        TryDespawnOWEsCrossingMapConnection();
     }
 
     return gCamera.active;
