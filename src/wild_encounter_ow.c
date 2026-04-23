@@ -156,7 +156,8 @@ static void SortOWEAges(void);
 static u32 RemoveOldestGeneratedOWE(void);
 static bool32 ShouldDespawnGeneratedForNewOWE(struct ObjectEvent *owe);
 static void SetNewOWESpawnCountdown(void);
-static void DoOWESpawnDespawnAnim(struct ObjectEvent *owe, bool32 animSpawn);
+static void DoOWESpawnAnim(struct ObjectEvent *owe);
+static void DoOWEDespawnAnim(struct ObjectEvent *owe);
 static enum SpawnDespawnTypeOWE GetOWESpawnDespawnAnimType(u32 metatileBehavior);
 static void PlayOWECry(struct ObjectEvent *owe);
 static struct ObjectEvent *GetRandomOWEObjectEvent(void);
@@ -1407,7 +1408,7 @@ void OnOverworldWildEncounterSpawn(struct ObjectEvent *owe)
     if (type == OWE_GENERATED)
         SortOWEAges();
 
-    DoOWESpawnDespawnAnim(owe, TRUE);
+    DoOWESpawnAnim(owe);
 }
 
 void OnOverworldWildEncounterDespawn(struct ObjectEvent *owe)
@@ -1423,7 +1424,7 @@ void OnOverworldWildEncounterDespawn(struct ObjectEvent *owe)
     owe->sOverworldEncounterAge = 0;
     owe->sOverworldEncounterCategory = 0;
     
-    DoOWESpawnDespawnAnim(owe, FALSE);
+    DoOWEDespawnAnim(owe);
 }
 
 bool32 IsOWEDespawnExempt(struct ObjectEvent *owe)
@@ -1584,31 +1585,37 @@ static void SetNewOWESpawnCountdown(void)
         sOWESpawnCountdown = OWE_SPAWN_TIME_MINIMUM + (OWE_SPAWN_TIME_PER_ACTIVE * numActive);
 }
 
-static void DoOWESpawnDespawnAnim(struct ObjectEvent *owe, bool32 animSpawn)
+static void DoOWESpawnAnim(struct ObjectEvent *owe)
 {
-    if (gMain.callback2 != CB2_Overworld)
-        return;
-    
-    enum SpawnDespawnTypeOWE spawnAnimType;
     bool32 isShiny = OW_SHINY(owe) ? TRUE : FALSE;
+    enum SpawnDespawnTypeOWE spawnAnimType;
 
-    if (animSpawn)
-        PlayOWECry(owe);
-    
-    if (!animSpawn && OWE_ShouldPlayOWEFleeSound(owe))
-        PlaySE(SE_FLEE);
-
-    if (WE_OWE_SHINY_SPARKLE && isShiny && animSpawn)
+    if (WE_OWE_SHINY_SPARKLE && isShiny)
     {
         PlaySE(SE_SHINY);
         spawnAnimType = OWE_SPAWN_ANIM_SHINY;
     }
-    else 
+    else
     {
+        PlayOWECry(owe);
         u32 metatileBehavior = MapGridGetMetatileBehaviorAt(owe->currentCoords.x, owe->currentCoords.y);
         spawnAnimType = GetOWESpawnDespawnAnimType(metatileBehavior);
     }
+
     MovementAction_OverworldEncounterSpawn(spawnAnimType, owe);
+}
+
+static void DoOWEDespawnAnim(struct ObjectEvent *owe)
+{
+    // This check is added to prevent the despawn anim from occuring during a battle transition.
+    if (gMain.callback2 != CB2_Overworld)
+        return;
+
+    u32 metatileBehavior = MapGridGetMetatileBehaviorAt(owe->currentCoords.x, owe->currentCoords.y);
+    enum SpawnDespawnTypeOWE spawnAnimType = GetOWESpawnDespawnAnimType(metatileBehavior);
+    MovementAction_OverworldEncounterSpawn(spawnAnimType, owe);
+    if (OWE_ShouldPlayOWEFleeSound(owe))
+        PlaySE(SE_FLEE);
 }
 
 static enum SpawnDespawnTypeOWE GetOWESpawnDespawnAnimType(u32 metatileBehavior)
