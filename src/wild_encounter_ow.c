@@ -1534,7 +1534,7 @@ void DespawnOWEOnBattleStart(void)
     if (IsOverworldWildEncounter(owe, OWE_MANUAL))
         FlagSet(GetObjectEventFlagIdByLocalIdAndMap(owe->localId, owe->mapNum, owe->mapGroup));
 
-    RemoveObjectEvent(owe);
+    ClearObjectEvent(owe);
     SetNewOWESpawnCountdown();
     gSpecialVar_LastTalked = LOCALID_NONE;
 }
@@ -1607,10 +1607,6 @@ static void DoOWESpawnAnim(struct ObjectEvent *owe)
 
 static void DoOWEDespawnAnim(struct ObjectEvent *owe)
 {
-    // This check is added to prevent the despawn anim from occuring during a battle transition.
-    if (gMain.callback2 != CB2_Overworld)
-        return;
-
     u32 metatileBehavior = MapGridGetMetatileBehaviorAt(owe->currentCoords.x, owe->currentCoords.y);
     enum SpawnDespawnTypeOWE spawnAnimType = GetOWESpawnDespawnAnimType(metatileBehavior);
     MovementAction_OverworldEncounterSpawn(spawnAnimType, owe);

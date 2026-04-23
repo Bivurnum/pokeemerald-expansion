@@ -128,6 +128,7 @@ extern const struct SpritePalette gSpritePalette_GeneralFieldEffect1;
 
 extern const enum Direction gStandardDirections[];
 
+void ClearObjectEvent(struct ObjectEvent *objectEvent);
 void ResetObjectEvents(void);
 u8 GetMoveDirectionAnimNum(enum Direction direction);
 u8 GetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId);
