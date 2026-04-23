@@ -1372,7 +1372,7 @@ static const u8 sPlayerDirectionToCopyDirection[][4] = {
 
 #include "data/object_events/movement_action_func_tables.h"
 
-static void ClearObjectEvent(struct ObjectEvent *objectEvent)
+void ClearObjectEvent(struct ObjectEvent *objectEvent)
 {
     *objectEvent = (struct ObjectEvent){};
     objectEvent->localId = LOCALID_PLAYER;
@@ -2967,8 +2967,10 @@ void RemoveObjectEventsOutsideView(void)
                 continue;
             if (objectEvent->localId == OBJ_EVENT_ID_NPC_FOLLOWER || objectEvent->localId == OBJ_EVENT_ID_FOLLOWER)
                 continue;
-            if (!IsOWEDespawnExempt(objectEvent))
-                RemoveObjectEventIfOutsideView(objectEvent);
+            if (IsOWEDespawnExempt(objectEvent))
+                continue;
+
+            RemoveObjectEventIfOutsideView(objectEvent);
         }
     }
 }
@@ -2987,6 +2989,9 @@ static void RemoveObjectEventIfOutsideView(struct ObjectEvent *objectEvent)
      && objectEvent->initialCoords.y >= top && objectEvent->initialCoords.y <= bottom)
         return;
 
+    // Overworld Wild Ecnounters need to be set as offscreen in order to determine whether
+    // their despawn animation should play.
+    objectEvent->offScreen = TRUE;
     RemoveObjectEvent(objectEvent);
 }
 
@@ -3529,7 +3534,15 @@ void UpdateObjectEventCoordsForCameraUpdate(void)
         dy = gCamera.y;
         for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
         {
-            UpdateObjectEventCoords(&gObjectEvents[i], dx, dy);
+            if (gObjectEvents[i].active)
+            {
+                gObjectEvents[i].initialCoords.x -= dx;
+                gObjectEvents[i].initialCoords.y -= dy;
+                gObjectEvents[i].currentCoords.x -= dx;
+                gObjectEvents[i].currentCoords.y -= dy;
+                gObjectEvents[i].previousCoords.x -= dx;
+                gObjectEvents[i].previousCoords.y -= dy;
+            }
         }
     }
 }

@@ -130,7 +130,8 @@ static inline bool32 ShouldSpawnWaterOWE(void)
     return TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_UNDERWATER);
 }
 
-static inline bool32 IsObjectOWE(struct ObjectEvent *owe)
+// Helper function for IsOverworldWildEncounter and GetOverworldWildEncounterType
+static inline bool32 IsObjectActiveOWE(struct ObjectEvent *owe)
 {
     return (owe->active && owe->trainerType == TRAINER_TYPE_OW_WILD_ENCOUNTER);
 }
@@ -155,7 +156,8 @@ static void SortOWEAges(void);
 static u32 RemoveOldestGeneratedOWE(void);
 static bool32 ShouldDespawnGeneratedForNewOWE(struct ObjectEvent *owe);
 static void SetNewOWESpawnCountdown(void);
-static void DoOWESpawnDespawnAnim(struct ObjectEvent *owe, bool32 animSpawn);
+static void DoOWESpawnAnim(struct ObjectEvent *owe);
+static void DoOWEDespawnAnim(struct ObjectEvent *owe);
 static enum SpawnDespawnTypeOWE GetOWESpawnDespawnAnimType(u32 metatileBehavior);
 static void PlayOWECry(struct ObjectEvent *owe);
 static struct ObjectEvent *GetRandomOWEObjectEvent(void);
@@ -164,6 +166,7 @@ static bool32 CheckRestrictedOWEMovementAtCoords(struct ObjectEvent *owe, s32 xN
 static bool32 CheckRestrictedOWEMovementMetatile(s32 xCurrent, s32 yCurrent, s32 xNew, s32 yNew);
 static bool32 CheckRestrictedOWEMovementMap(struct ObjectEvent *owe, s32 xNew, s32 yNew);
 static bool32 CanOWEReachPlayer(struct ObjectEvent *owe);
+static bool32 IsOWENextToObject(struct ObjectEvent *owe, struct ObjectEvent *object);
 static enum Direction CheckOWEPathToPlayerFromCollision(struct ObjectEvent *owe, enum Direction newDirection);
 static void Task_OWEApproachForBattle(u8 taskId);
 static bool32 CheckValidOWESpecies(enum Species speciesId);
@@ -326,7 +329,7 @@ void UpdateOverworldWildEncounter(void)
 
 bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType)
 {
-    if (!IsObjectOWE(owe))
+    if (!IsObjectActiveOWE(owe))
         return FALSE;
 
     switch (oweType)
@@ -345,7 +348,7 @@ bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType)
 
 static enum TypeOWE GetOverworldWildEncounterType(struct ObjectEvent *owe)
 {
-    if (!IsObjectOWE(owe))
+    if (!IsObjectActiveOWE(owe))
         return OWE_NONE;
 
     if (IS_LOCALID_GENERATED_OWE(owe->localId))
@@ -1016,16 +1019,18 @@ void SetMinimumOWESpawnTimer(void)
 
 void TryTriggerOverworldWildEncounter(struct ObjectEvent *obstacle, struct ObjectEvent *collider)
 {
-    if (WE_OWE_REPEL_DEXNAV_COLLISION && (FlagGet(DN_FLAG_SEARCHING) || REPEL_STEP_COUNT))
+    if (WE_OWE_NO_REPEL_DEXNAV_COLLISION && (FlagGet(DN_FLAG_SEARCHING) || REPEL_STEP_COUNT))
         return;
 
-    bool32 playerIsCollider = (collider->isPlayer && IsOverworldWildEncounter(obstacle, OWE_ANY));
-    bool32 playerIsObstacle = (obstacle->isPlayer && IsOverworldWildEncounter(collider, OWE_ANY));
+    bool32 playerFollowerIsColliderOWE = ((collider->isPlayer || collider->localId == OBJ_EVENT_ID_FOLLOWER)
+                                          && IsOverworldWildEncounter(obstacle, OWE_ANY));
+    bool32 playerFollowerIsObstacleOWE = ((obstacle->isPlayer || obstacle->localId == OBJ_EVENT_ID_FOLLOWER)
+                                          && IsOverworldWildEncounter(collider, OWE_ANY));
 
-    if (!(playerIsCollider || playerIsObstacle))
+    if (!playerFollowerIsColliderOWE && !playerFollowerIsObstacleOWE)
         return;
 
-    struct ObjectEvent *wildMon = playerIsCollider ? obstacle : collider;
+    struct ObjectEvent *wildMon = playerFollowerIsColliderOWE ? obstacle : collider;
     enum CategoryOWE category = GetOWECategory(wildMon);
     if (category < ROAMER_COUNT
      && !IsRoamerAt(category, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
@@ -1359,7 +1364,8 @@ static void SortOWEAges(void)
     for (i = 0; i < OWE_SPAWNS_MAX; i++)
     {
         slotMon = &gObjectEvents[GetObjectEventIdByLocalId(GetLocalIdByOWESpawnSlot(i))];
-        if (slotMon->active && OW_SPECIES(slotMon) != SPECIES_NONE)
+        // OWE_ANY can be used here as localId is guarenteed to be in the OWE_GENERATED range by GetLocalIdByOWESpawnSlot.
+        if (IsOverworldWildEncounter(slotMon, OWE_ANY) && OW_SPECIES(slotMon) != SPECIES_NONE)
         {
             array[count].slot = i;
             array[count].age = slotMon->sOverworldEncounterAge;
@@ -1402,7 +1408,7 @@ void OnOverworldWildEncounterSpawn(struct ObjectEvent *owe)
     if (type == OWE_GENERATED)
         SortOWEAges();
 
-    DoOWESpawnDespawnAnim(owe, TRUE);
+    DoOWESpawnAnim(owe);
 }
 
 void OnOverworldWildEncounterDespawn(struct ObjectEvent *owe)
@@ -1418,7 +1424,7 @@ void OnOverworldWildEncounterDespawn(struct ObjectEvent *owe)
     owe->sOverworldEncounterAge = 0;
     owe->sOverworldEncounterCategory = 0;
     
-    DoOWESpawnDespawnAnim(owe, FALSE);
+    DoOWEDespawnAnim(owe);
 }
 
 bool32 IsOWEDespawnExempt(struct ObjectEvent *owe)
@@ -1429,7 +1435,6 @@ bool32 IsOWEDespawnExempt(struct ObjectEvent *owe)
     if (HasOWENoDespawnFlag(owe) && AreCoordsInsidePlayerMap(owe->currentCoords.x, owe->currentCoords.y))
         return TRUE;
 
-    owe->offScreen = TRUE;
     return FALSE;
 }
 
@@ -1463,14 +1468,6 @@ u32 DespawnOWEDueToTrainerSight(u32 collision, s32 x, s32 y)
 
 void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
 {
-    s32 dx = 0, dy = 0;
-
-    if (gCamera.active)
-    {
-        dx = gCamera.x;
-        dy = gCamera.y;
-    }
-
     for (u32 i = 0; i < OBJECT_EVENTS_COUNT; ++i)
     {
         struct ObjectEvent *owe = &gObjectEvents[i];
@@ -1493,7 +1490,6 @@ void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
                 continue;
         }
 
-        UpdateObjectEventCoords(owe, dx, dy);
         RemoveObjectEvent(owe);
     }
 }
@@ -1538,16 +1534,13 @@ void DespawnOWEOnBattleStart(void)
     if (IsOverworldWildEncounter(owe, OWE_MANUAL))
         FlagSet(GetObjectEventFlagIdByLocalIdAndMap(owe->localId, owe->mapNum, owe->mapGroup));
 
-    RemoveObjectEvent(owe);
+    ClearObjectEvent(owe);
     SetNewOWESpawnCountdown();
     gSpecialVar_LastTalked = LOCALID_NONE;
 }
 
 void TryDespawnOWEsCrossingMapConnection(void)
 {
-    if (gMain.callback2 != CB2_Overworld)
-        return;
-
     if (!WE_OWE_DESPAWN_ON_ENTER_TOWN)
         return;
 
@@ -1592,31 +1585,33 @@ static void SetNewOWESpawnCountdown(void)
         sOWESpawnCountdown = OWE_SPAWN_TIME_MINIMUM + (OWE_SPAWN_TIME_PER_ACTIVE * numActive);
 }
 
-static void DoOWESpawnDespawnAnim(struct ObjectEvent *owe, bool32 animSpawn)
+static void DoOWESpawnAnim(struct ObjectEvent *owe)
 {
-    if (gMain.callback2 != CB2_Overworld)
-        return;
-    
-    enum SpawnDespawnTypeOWE spawnAnimType;
     bool32 isShiny = OW_SHINY(owe) ? TRUE : FALSE;
+    enum SpawnDespawnTypeOWE spawnAnimType;
 
-    if (animSpawn)
-        PlayOWECry(owe);
-    
-    if (!animSpawn && OWE_ShouldPlayOWEFleeSound(owe))
-        PlaySE(SE_FLEE);
-
-    if (WE_OWE_SHINY_SPARKLE && isShiny && animSpawn)
+    if (WE_OWE_SHINY_SPARKLE && isShiny)
     {
         PlaySE(SE_SHINY);
         spawnAnimType = OWE_SPAWN_ANIM_SHINY;
     }
-    else 
+    else
     {
+        PlayOWECry(owe);
         u32 metatileBehavior = MapGridGetMetatileBehaviorAt(owe->currentCoords.x, owe->currentCoords.y);
         spawnAnimType = GetOWESpawnDespawnAnimType(metatileBehavior);
     }
+
     MovementAction_OverworldEncounterSpawn(spawnAnimType, owe);
+}
+
+static void DoOWEDespawnAnim(struct ObjectEvent *owe)
+{
+    u32 metatileBehavior = MapGridGetMetatileBehaviorAt(owe->currentCoords.x, owe->currentCoords.y);
+    enum SpawnDespawnTypeOWE spawnAnimType = GetOWESpawnDespawnAnimType(metatileBehavior);
+    MovementAction_OverworldEncounterSpawn(spawnAnimType, owe);
+    if (OWE_ShouldPlayOWEFleeSound(owe))
+        PlaySE(SE_FLEE);
 }
 
 static enum SpawnDespawnTypeOWE GetOWESpawnDespawnAnimType(u32 metatileBehavior)
@@ -1881,8 +1876,12 @@ bool32 IsPlayerInsideOWEActiveDistance(struct ObjectEvent *owe)
 bool32 IsOWENextToPlayer(struct ObjectEvent *owe)
 {
     struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
+    return IsOWENextToObject(owe, player);
+}
 
-    if ((owe->currentCoords.x != player->currentCoords.x && owe->currentCoords.y != player->currentCoords.y) || (owe->currentCoords.x < player->currentCoords.x - 1 || owe->currentCoords.x > player->currentCoords.x + 1 || owe->currentCoords.y < player->currentCoords.y - 1 || owe->currentCoords.y > player->currentCoords.y + 1))
+static bool32 IsOWENextToObject(struct ObjectEvent *owe, struct ObjectEvent *object)
+{
+    if ((owe->currentCoords.x != object->currentCoords.x && owe->currentCoords.y != object->currentCoords.y) || (owe->currentCoords.x < object->currentCoords.x - 1 || owe->currentCoords.x > object->currentCoords.x + 1 || owe->currentCoords.y < object->currentCoords.y - 1 || owe->currentCoords.y > object->currentCoords.y + 1))
         return FALSE;
 
     return TRUE;
@@ -1941,7 +1940,7 @@ u32 GetApproachingOWEDistanceToPlayer(struct ObjectEvent *owe, bool32 *equalDist
         return absX;
 }
 
-u32 GetOWEWalkMovementActionInDirectionWithSpeed(enum Direction direction, u32 speed)
+u32 GetOWEWalkMovementActionInDirectionWithSpeed(enum Direction direction, enum SpeedOWE speed)
 {
     switch (speed)
     {
@@ -1951,9 +1950,10 @@ u32 GetOWEWalkMovementActionInDirectionWithSpeed(enum Direction direction, u32 s
         return GetWalkFastMovementAction(direction);
     case OWE_SPEED_FASTER:
         return GetWalkFasterMovementAction(direction);
+    case OWE_SPEED_NORMAL:
+    default:
+        return GetWalkNormalMovementAction(direction);
     }
-
-    return GetWalkNormalMovementAction(direction);
 }
 
 static enum Direction CheckOWEPathToPlayerFromCollision(struct ObjectEvent *owe, enum Direction newDirection)
@@ -2022,9 +2022,21 @@ static void Task_OWEApproachForBattle(u8 taskId)
     if (ObjectEventClearHeldMovementIfFinished(OWE))
     {
         struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
-        if (IsOWENextToPlayer(OWE))
+        struct ObjectEvent *followerMon = GetFollowerObject();
+        bool32 oweNextToPlayer = IsOWENextToPlayer(OWE);
+        bool32 oweNextToFollowerMon = IsOWENextToObject(OWE, followerMon);
+
+        if (oweNextToPlayer || oweNextToFollowerMon)
         {
-            ObjectEventsTurnToEachOther(player, OWE);
+            if (oweNextToPlayer)
+            {
+                ObjectEventsTurnToEachOther(player, OWE);
+            }
+            else
+            {
+                ObjectEventTurn(player, DetermineObjectEventDirectionFromObject(followerMon, player));
+                ObjectEventsTurnToEachOther(followerMon, OWE);
+            }
             ScriptContext_Enable();
             DestroyTask(taskId);
             return;
@@ -2039,7 +2051,6 @@ static void Task_OWEApproachForBattle(u8 taskId)
         
         if (CheckRestrictedOWEMovement(OWE, OWE->movementDirection))
         {
-            struct ObjectEvent *followerMon = GetFollowerObject();
             u32 idFollowerNPC = GetFollowerNPCObjectId();
             struct ObjectEvent *followerNPC = &gObjectEvents[idFollowerNPC];
             s16 x = OWE->currentCoords.x;
