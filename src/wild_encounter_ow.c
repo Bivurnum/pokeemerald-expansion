@@ -164,6 +164,7 @@ static bool32 CheckRestrictedOWEMovementAtCoords(struct ObjectEvent *owe, s32 xN
 static bool32 CheckRestrictedOWEMovementMetatile(s32 xCurrent, s32 yCurrent, s32 xNew, s32 yNew);
 static bool32 CheckRestrictedOWEMovementMap(struct ObjectEvent *owe, s32 xNew, s32 yNew);
 static bool32 CanOWEReachPlayer(struct ObjectEvent *owe);
+static bool32 IsOWENextToObject(struct ObjectEvent *owe, struct ObjectEvent *object);
 static enum Direction CheckOWEPathToPlayerFromCollision(struct ObjectEvent *owe, enum Direction newDirection);
 static void Task_OWEApproachForBattle(u8 taskId);
 static bool32 CheckValidOWESpecies(enum Species speciesId);
@@ -1019,13 +1020,15 @@ void TryTriggerOverworldWildEncounter(struct ObjectEvent *obstacle, struct Objec
     if (WE_OWE_REPEL_DEXNAV_COLLISION && (FlagGet(DN_FLAG_SEARCHING) || REPEL_STEP_COUNT))
         return;
 
-    bool32 playerIsCollider = (collider->isPlayer && IsOverworldWildEncounter(obstacle, OWE_ANY));
-    bool32 playerIsObstacle = (obstacle->isPlayer && IsOverworldWildEncounter(collider, OWE_ANY));
+    bool32 playerFollowerIsColliderOWE = ((collider->isPlayer || collider->localId == OBJ_EVENT_ID_FOLLOWER)
+                                          && IsOverworldWildEncounter(obstacle, OWE_ANY));
+    bool32 playerFollowerIsObstacleOWE = ((obstacle->isPlayer || obstacle->localId == OBJ_EVENT_ID_FOLLOWER)
+                                          && IsOverworldWildEncounter(collider, OWE_ANY));
 
-    if (!(playerIsCollider || playerIsObstacle))
+    if (!playerFollowerIsColliderOWE && !playerFollowerIsObstacleOWE)
         return;
 
-    struct ObjectEvent *wildMon = playerIsCollider ? obstacle : collider;
+    struct ObjectEvent *wildMon = playerFollowerIsColliderOWE ? obstacle : collider;
     enum CategoryOWE category = GetOWECategory(wildMon);
     if (category < ROAMER_COUNT
      && !IsRoamerAt(category, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
@@ -1881,8 +1884,12 @@ bool32 IsPlayerInsideOWEActiveDistance(struct ObjectEvent *owe)
 bool32 IsOWENextToPlayer(struct ObjectEvent *owe)
 {
     struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
+    return IsOWENextToObject(owe, player);
+}
 
-    if ((owe->currentCoords.x != player->currentCoords.x && owe->currentCoords.y != player->currentCoords.y) || (owe->currentCoords.x < player->currentCoords.x - 1 || owe->currentCoords.x > player->currentCoords.x + 1 || owe->currentCoords.y < player->currentCoords.y - 1 || owe->currentCoords.y > player->currentCoords.y + 1))
+static bool32 IsOWENextToObject(struct ObjectEvent *owe, struct ObjectEvent *object)
+{
+    if ((owe->currentCoords.x != object->currentCoords.x && owe->currentCoords.y != object->currentCoords.y) || (owe->currentCoords.x < object->currentCoords.x - 1 || owe->currentCoords.x > object->currentCoords.x + 1 || owe->currentCoords.y < object->currentCoords.y - 1 || owe->currentCoords.y > object->currentCoords.y + 1))
         return FALSE;
 
     return TRUE;
@@ -2022,9 +2029,21 @@ static void Task_OWEApproachForBattle(u8 taskId)
     if (ObjectEventClearHeldMovementIfFinished(OWE))
     {
         struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
-        if (IsOWENextToPlayer(OWE))
+        struct ObjectEvent *followerMon = GetFollowerObject();
+        bool32 oweNextToPlayer = IsOWENextToPlayer(OWE);
+        bool32 oweNextToFollowerMon = IsOWENextToObject(OWE, followerMon);
+
+        if (oweNextToPlayer || oweNextToFollowerMon)
         {
-            ObjectEventsTurnToEachOther(player, OWE);
+            if (oweNextToPlayer)
+            {
+                ObjectEventsTurnToEachOther(player, OWE);
+            }
+            else
+            {
+                ObjectEventTurn(player, DetermineObjectEventDirectionFromObject(followerMon, player));
+                ObjectEventsTurnToEachOther(followerMon, OWE);
+            }
             ScriptContext_Enable();
             DestroyTask(taskId);
             return;
@@ -2039,7 +2058,6 @@ static void Task_OWEApproachForBattle(u8 taskId)
         
         if (CheckRestrictedOWEMovement(OWE, OWE->movementDirection))
         {
-            struct ObjectEvent *followerMon = GetFollowerObject();
             u32 idFollowerNPC = GetFollowerNPCObjectId();
             struct ObjectEvent *followerNPC = &gObjectEvents[idFollowerNPC];
             s16 x = OWE->currentCoords.x;
