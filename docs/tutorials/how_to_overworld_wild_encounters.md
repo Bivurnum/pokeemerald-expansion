@@ -52,6 +52,22 @@ Any collision between the player and the OWE will start an encounter. An encount
 
 If the `WE_OWE_APPROACH_FOR_BATTLE` config is `TRUE`, the OWE will take steps to be right next to the player before the battle begins. Otherwise, the objects will be frozen and the battle will start immediately.
 
+The default encounter script is `InteractWithOverworldWildEncounter`, but can be customised to effect all uses of it. For example, the following change will prevent the encountered species cry from playing before the battle starts.
+```diff
+InteractWithOverworldWildEncounter::
+    lock
+    overworldwildencounterapproach
+    applymovement VAR_LAST_TALKED, Common_Movement_ExclamationMark
+    facetogether
+    getoverworldwildencounterspecies VAR_0x8005
+-   playmoncry VAR_0x8005, CRY_MODE_DOUBLES
+-   waitmoncry
+    tryoverworldwildencounter
+    waitstate
+    end
+```
+
+
 ## Repel and Lure Behaviours
 Repels will prevent the spawning of generated OWEs that are a lower level than the player's lead Pokemon. Lower level generated OWEs that have already been spawned will be immediately despawned when a repel is used. Existing generated OWEs can also be despawned if the player switches a higher level Pokemon to the front of the party if a repel is already active.
 
