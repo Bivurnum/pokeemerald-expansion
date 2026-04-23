@@ -130,7 +130,8 @@ static inline bool32 ShouldSpawnWaterOWE(void)
     return TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_UNDERWATER);
 }
 
-static inline bool32 IsObjectOWE(struct ObjectEvent *owe)
+// Helper function for IsOverworldWildEncounter and GetOverworldWildEncounterType
+static inline bool32 IsObjectActiveOWE(struct ObjectEvent *owe)
 {
     return (owe->active && owe->trainerType == TRAINER_TYPE_OW_WILD_ENCOUNTER);
 }
@@ -327,7 +328,7 @@ void UpdateOverworldWildEncounter(void)
 
 bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType)
 {
-    if (!IsObjectOWE(owe))
+    if (!IsObjectActiveOWE(owe))
         return FALSE;
 
     switch (oweType)
@@ -346,7 +347,7 @@ bool32 IsOverworldWildEncounter(struct ObjectEvent *owe, enum TypeOWE oweType)
 
 static enum TypeOWE GetOverworldWildEncounterType(struct ObjectEvent *owe)
 {
-    if (!IsObjectOWE(owe))
+    if (!IsObjectActiveOWE(owe))
         return OWE_NONE;
 
     if (IS_LOCALID_GENERATED_OWE(owe->localId))
@@ -1362,7 +1363,8 @@ static void SortOWEAges(void)
     for (i = 0; i < OWE_SPAWNS_MAX; i++)
     {
         slotMon = &gObjectEvents[GetObjectEventIdByLocalId(GetLocalIdByOWESpawnSlot(i))];
-        if (slotMon->active && OW_SPECIES(slotMon) != SPECIES_NONE)
+        // OWE_ANY can be used here as localId is guarenteed to be in the OWE_GENERATED range by GetLocalIdByOWESpawnSlot.
+        if (IsOverworldWildEncounter(slotMon, OWE_ANY) && OW_SPECIES(slotMon) != SPECIES_NONE)
         {
             array[count].slot = i;
             array[count].age = slotMon->sOverworldEncounterAge;
