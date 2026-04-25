@@ -35,6 +35,13 @@ enum SpeedOWE
     OWE_SPEED_FASTER
 };
 
+enum ReturnToIdleOWE
+{
+    NEVER_RETURN,
+    PLAYER_OUTSIDE_ACTIVE_RANGE,
+    PLAYER_CANT_BE_SEEN
+};
+
 struct BehaviorOWE
 {
     u32 movementType:8;
@@ -44,6 +51,7 @@ struct BehaviorOWE
     u32 padding:12;
     enum SpeedOWE idleSpeed;
     enum SpeedOWE activeSpeed;
+    enum ReturnToIdleOWE returnToIdle;
 };
 
 enum __attribute__((packed)) OverworldWildEncounterBehaviors

@@ -14,6 +14,7 @@ const struct BehaviorOWE gOWESpeciesBehavior[OWE_SPECIES_BEHAVIOR_COUNT] =
         .activeDistance = 5,
         .idleSpeed = OWE_SPEED_NORMAL,
         .activeSpeed = OWE_SPEED_NORMAL,
+        .returnToIdle = PLAYER_OUTSIDE_ACTIVE_RANGE,
     },
 
     [OWE_CHASE_PLAYER_SLOW] =
@@ -24,6 +25,7 @@ const struct BehaviorOWE gOWESpeciesBehavior[OWE_SPECIES_BEHAVIOR_COUNT] =
         .activeDistance = 5,
         .idleSpeed = OWE_SPEED_SLOW,
         .activeSpeed = OWE_SPEED_SLOW,
+        .returnToIdle = PLAYER_OUTSIDE_ACTIVE_RANGE,
     },
 
     [OWE_FLEE_PLAYER_NORMAL] =
@@ -34,6 +36,7 @@ const struct BehaviorOWE gOWESpeciesBehavior[OWE_SPECIES_BEHAVIOR_COUNT] =
         .activeDistance = 5,
         .idleSpeed = OWE_SPEED_NORMAL,
         .activeSpeed = OWE_SPEED_NORMAL,
+        .returnToIdle = PLAYER_OUTSIDE_ACTIVE_RANGE,
     },
 
     [OWE_WATCH_PLAYER_NORMAL] =
@@ -43,6 +46,7 @@ const struct BehaviorOWE gOWESpeciesBehavior[OWE_SPECIES_BEHAVIOR_COUNT] =
         .viewWidth = 3,
         .activeDistance = 5,
         .idleSpeed = OWE_SPEED_NORMAL,
+        .returnToIdle = PLAYER_OUTSIDE_ACTIVE_RANGE,
     },
 
     [OWE_APPROACH_PLAYER_SLOW] =
@@ -53,6 +57,7 @@ const struct BehaviorOWE gOWESpeciesBehavior[OWE_SPECIES_BEHAVIOR_COUNT] =
         .activeDistance = 5,
         .idleSpeed = OWE_SPEED_NORMAL,
         .activeSpeed = OWE_SPEED_SLOW,
+        .returnToIdle = PLAYER_OUTSIDE_ACTIVE_RANGE,
     },
 
     [OWE_DESPAWN_ON_NOTICE] =
@@ -62,6 +67,7 @@ const struct BehaviorOWE gOWESpeciesBehavior[OWE_SPECIES_BEHAVIOR_COUNT] =
         .viewWidth = 3,
         .activeDistance = 5,
         .idleSpeed = OWE_SPEED_NORMAL,
+        .returnToIdle = PLAYER_OUTSIDE_ACTIVE_RANGE,
     }
 };
 

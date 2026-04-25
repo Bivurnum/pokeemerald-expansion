@@ -986,4 +986,11 @@ static inline enum SpeedOWE OWE_GetActiveSpeedFromSpecies(enum Species speciesId
     return gOWESpeciesBehavior[behavior].activeSpeed;
 }
 
+static inline enum ReturnToIdleOWE OWE_GetReturnToIdleFromSpecies(enum Species speciesId)
+{
+    speciesId = SanitizeSpeciesId(speciesId);
+    enum OverworldWildEncounterBehaviors behavior = gSpeciesInfo[speciesId].overworldEncounterBehavior;
+    return gOWESpeciesBehavior[behavior].returnToIdle;
+}
+
 #endif // GUARD_POKEMON_H

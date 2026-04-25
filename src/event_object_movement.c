@@ -12036,7 +12036,21 @@ bool8 MovementType_OverworldWildEncounter_Common_Step12(struct ObjectEvent *obje
     {
         objectEvent->singleMovementActive = FALSE;
         sprite->sTypeFuncId = 10;
-        if (!IsPlayerInsideOWEActiveDistance(objectEvent))
+        bool32 returnToIdle;
+        switch(OWE_GetReturnToIdleFromSpecies(OW_SPECIES(objectEvent)))
+        {
+        case NEVER_RETURN:
+            returnToIdle = FALSE;
+            break;
+        case PLAYER_CANT_BE_SEEN:
+            returnToIdle = !CanAwareOWESeePlayer(objectEvent);
+            break;
+        case PLAYER_OUTSIDE_ACTIVE_RANGE:
+        default:
+            returnToIdle = !IsPlayerInsideOWEActiveDistance(objectEvent);
+            break;
+        }
+        if (returnToIdle)
         {
             ClearSavedOWEMovementState(objectEvent);
             sprite->sTypeFuncId = 0;
