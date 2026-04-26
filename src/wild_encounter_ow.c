@@ -1866,11 +1866,17 @@ bool32 IsPlayerInsideOWEActiveDistance(struct ObjectEvent *owe)
     if (speciesId != SPECIES_NONE)
         distance = OWE_GetViewActiveDistanceFromSpecies(speciesId);
 
-    if (player->currentCoords.y <= owe->currentCoords.y + distance && player->currentCoords.y >= owe->currentCoords.y - distance
-     && player->currentCoords.x <= owe->currentCoords.x + distance && player->currentCoords.x >= owe->currentCoords.x - distance)
-        return TRUE;
+    s32 absX = abs(player->currentCoords.x - owe->currentCoords.x);
+    s32 absY = abs(player->currentCoords.y - owe->currentCoords.y);
 
-    return FALSE;
+    if (absX > distance || absY > distance)
+        return FALSE;
+
+    s32 diagonalDistance = (distance * 362) >> 8; // binary approximation of multiplying distance by sqrt(2)
+    if ((absX + absY) > diagonalDistance)
+        return FALSE;
+
+    return TRUE;
 }
 
 bool32 IsOWENextToPlayer(struct ObjectEvent *owe)
