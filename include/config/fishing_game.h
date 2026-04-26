@@ -20,6 +20,7 @@
 #define DEFAULT_TREASURE_SCORE_PAUSE        FALSE   // If TRUE, the minigame score will not decrease while the treasure is within the fishing bar.
                                                     // Overridden if a flag is assigned to FG_FLAG_TREASURE_SCORE_PAUSE.
 #define FG_FLAG_TREASURE_SCORE_PAUSE        0       // Replace 0 with an unused Flag to use it to toggle DEFAULT_TREASURE_SCORE_PAUSE.
+#define FG_FLAG_FIRST_TIME_TUTORIAL         0       // Replace 0 with an unused flag to display a short tutorial the first time the game is played.
 
 // Look at the Easily Changed Constants at the top of include/fishing_game.h to customize more specific minigame parameters.
 
