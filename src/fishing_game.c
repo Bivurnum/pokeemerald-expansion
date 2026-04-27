@@ -1169,12 +1169,12 @@ static void Task_FishingDoTutorial(u8 taskId)
 {
     RunTextPrinters();
 
-    if (!gPaletteFade.active && !IsTextPrinterActive(0))
+    if (!gPaletteFade.active && !IsTextPrinterActiveOnWindow(0))
     {
         switch (taskData.tTutorialState)
         {
         case 0:
-            if (!IsTextPrinterActive(0))
+            if (!IsTextPrinterActiveOnWindow(0))
             {
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
                 AddTextPrinterParameterized(0, FONT_NORMAL, gText_Tutorial2, 0, 1, 1, NULL);
@@ -1183,7 +1183,7 @@ static void Task_FishingDoTutorial(u8 taskId)
             }
             break;
         case 1:
-            if (!IsTextPrinterActive(0))
+            if (!IsTextPrinterActiveOnWindow(0))
             {
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
                 AddTextPrinterParameterized(0, FONT_NORMAL, gText_Tutorial3, 0, 1, 1, NULL);
@@ -1192,7 +1192,7 @@ static void Task_FishingDoTutorial(u8 taskId)
             }
             break;
         case 2:
-            if (!IsTextPrinterActive(0))
+            if (!IsTextPrinterActiveOnWindow(0))
             {
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
                 AddTextPrinterParameterized(0, FONT_NORMAL, gText_TutorialReady, 0, 1, 1, NULL);
@@ -1201,7 +1201,7 @@ static void Task_FishingDoTutorial(u8 taskId)
             }
             break;
         case 3:
-            if (!IsTextPrinterActive(0))
+            if (!IsTextPrinterActiveOnWindow(0))
             {
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
                 AddTextPrinterParameterized(0, FONT_NORMAL, gText_TutorialGo, 0, 1, 1, NULL);
@@ -1336,7 +1336,7 @@ static void Task_ReeledInFish(u8 taskId)
 
     if (taskData.tFrameCounter == 1)
     {
-        if (!IsTextPrinterActive(0))
+        if (!IsTextPrinterActiveOnWindow(0))
         {
             IncrementGameStat(GAME_STAT_FISHING_ENCOUNTERS);
             SetMainCallback2(CB2_FishingBattleTransition);
@@ -1360,7 +1360,7 @@ static void Task_FishGotAway(u8 taskId)
 
     if (taskData.tFrameCounter == 1)
     {
-        if (!IsTextPrinterActive(0)) // If a button was pressed.
+        if (!IsTextPrinterActiveOnWindow(0)) // If a button was pressed.
         {
             if (taskData.tGameStateBits & FG_SEPARATE_SCREEN)
                 BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK); // Fade the screen to black.
@@ -2233,7 +2233,7 @@ void Task_DoReturnToFieldFishTreasure(u8 taskId)
         case FISHTASK_FIELD_MOVE_ANIM:
             RunTextPrinters();
 
-            if (!IsTextPrinterActive(0))
+            if (!IsTextPrinterActiveOnWindow(0))
             {
                 taskData.tPlayerGFXId = gObjectEvents[gPlayerAvatar.objectEventId].graphicsId;
                 SetPlayerAvatarFieldMove();
@@ -2344,7 +2344,7 @@ void Task_DoReturnToFieldFishTreasure(u8 taskId)
         case FISHTASK_OBTAIN_ITEM:
             RunTextPrinters();
             
-            if (!IsTextPrinterActive(0) && (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON)))
+            if (!IsTextPrinterActiveOnWindow(0) && (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON)))
             {
                 if (RoomForItem)
                 {
@@ -2427,7 +2427,7 @@ void Task_DoReturnToFieldFishTreasure(u8 taskId)
             break;
         case FISHTASK_WAIT_FINAL_INPUT:
             RunTextPrinters();
-            if (!IsTextPrinterActive(0) && (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON)))
+            if (!IsTextPrinterActiveOnWindow(0) && (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON)))
             {
                 PlaySE(SE_SELECT);
                 TaskState = FISHTASK_END_TASK;
