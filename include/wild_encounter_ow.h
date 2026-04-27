@@ -48,10 +48,10 @@ struct BehaviorOWE
     u32 viewDistance:4;
     u32 viewWidth:4;
     u32 activeDistance:4;
-    u32 padding:12;
-    enum SpeedOWE idleSpeed;
-    enum SpeedOWE activeSpeed;
-    enum ReturnToIdleOWE returnToIdle;
+    enum SpeedOWE idleSpeed:2;
+    enum SpeedOWE activeSpeed:2;
+    enum ReturnToIdleOWE returnToIdle:2;
+    u32 padding:6;
 };
 
 enum __attribute__((packed)) OverworldWildEncounterBehaviors
