@@ -1639,7 +1639,7 @@ u32 LoadSpritePalette(const struct SpritePalette *palette)
 
     if (index == 0xFF)
     {
-        TryAndDespawnOldestGeneratedOWE_Palette();
+        TryAndDespawnOldestGeneratedOWE_ToFreePalette();
         index = IndexOfSpritePaletteTag(TAG_NONE);
         
         if (index == 0xFF)

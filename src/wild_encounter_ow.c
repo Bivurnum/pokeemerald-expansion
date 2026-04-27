@@ -1494,7 +1494,7 @@ void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
     }
 }
 
-bool32 TryAndDespawnOldestGeneratedOWE_Object(u8 *objectEventId)
+bool32 TryAndDespawnOldestGeneratedOWE_ToFreeObject(u8 *objectEventId)
 {
     if (!WE_OW_ENCOUNTERS)
         return FALSE;
@@ -1506,7 +1506,7 @@ bool32 TryAndDespawnOldestGeneratedOWE_Object(u8 *objectEventId)
     return FALSE;
 }
 
-void TryAndDespawnOldestGeneratedOWE_Palette(void)
+void TryAndDespawnOldestGeneratedOWE_ToFreePalette(void)
 {
     // Should have similar naming convention for these despawn functions based on Num Object Events, Pals & Tiles
     if (WE_OW_ENCOUNTERS && CountFreePaletteSlots() < 2)
