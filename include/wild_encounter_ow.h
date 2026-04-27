@@ -92,7 +92,7 @@ bool32 IsOWENextToPlayer(struct ObjectEvent *owe);
 enum Direction DirectionOfOWEToPlayerFromCollision(struct ObjectEvent *owe);
 u32 GetApproachingOWEDistanceToPlayer(struct ObjectEvent *owe, bool32 *equalDistances);
 u32 GetOWEWalkMovementActionInDirectionWithSpeed(enum Direction direction, enum SpeedOWE speed);
-void PlayAmbientOWECry(void);
+bool32 TryPlayAmbientCryOWE(void);
 u32 GetNumberOfActiveOWEs(enum TypeOWE oweType);
 const struct ObjectEventTemplate TryGetObjectEventTemplateForOWE(const struct ObjectEventTemplate *template);
 struct SpritePalette GetOWESpawnDespawnAnimFldEffPalette(enum SpawnDespawnTypeOWE spawnAnim);

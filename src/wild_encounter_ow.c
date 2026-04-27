@@ -2091,9 +2091,14 @@ static void Task_OWEApproachForBattle(u8 taskId)
 }
 #undef tObjectId
 
-void PlayAmbientOWECry(void)
+bool32 TryPlayAmbientCryOWE(void)
 {
-    PlayOWECry(GetRandomOWEObjectEvent());
+    struct ObjectEvent *owe = GetRandomOWEObjectEvent();
+    if (owe == NULL)
+        return FALSE;
+    
+    PlayOWECry(owe);
+    return TRUE;
 }
 
 u32 GetNumberOfActiveOWEs(enum TypeOWE oweType)
