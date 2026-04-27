@@ -1789,7 +1789,7 @@ static bool32 CheckRestrictedOWEMovementMap(struct ObjectEvent *owe, s32 xNew, s
 
 bool32 CanAwareOWESeePlayer(struct ObjectEvent *owe)
 {
-    if (!IsOverworldWildEncounter(owe, OWE_ANY) || owe->movementType == MOVEMENT_TYPE_WANDER_AROUND_OWE)
+    if (owe->movementType == MOVEMENT_TYPE_WANDER_AROUND_OWE)
         return FALSE;
 
     if (gPlayerAvatar.runningState == MOVING
@@ -1854,11 +1854,6 @@ static bool32 CanOWEReachPlayer(struct ObjectEvent *owe)
 
 bool32 IsPlayerInsideOWEActiveDistance(struct ObjectEvent *owe)
 {
-    assertf(IsOverworldWildEncounter(owe, OWE_ANY))
-    {
-        return FALSE;
-    }
-    
     struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
     u32 distance = OWE_DEFAULT_CHASE_RANGE;
     enum Species speciesId = OW_SPECIES(owe);
