@@ -10167,25 +10167,20 @@ void ScriptFaceEachOther(struct ScriptContext *ctx)
 
 enum Direction DetermineObjectEventDirectionFromObject(struct ObjectEvent *objectOne, struct ObjectEvent *objectTwo)
 {
-    s32 dx = objectOne->currentCoords.x - objectTwo->currentCoords.x;
-    s32 dy = objectOne->currentCoords.y - objectTwo->currentCoords.y;
+    s32 delta_x = objectTwo->currentCoords.x - objectOne->currentCoords.x;
+    s32 delta_y = objectTwo->currentCoords.y - objectOne->currentCoords.y;
 
-    if (dx == 0 && dy == 0)
-        return DIR_NORTH;
-
-    s32 absX = abs(dx);
-    s32 absY = abs(dy);
-
-    if (absX >= absY && dx < 0)
-        return DIR_WEST;
-    else if (absX >= absY && dx > 0)
+    if (delta_x < 0)
         return DIR_EAST;
-    else if (absY >= absX && dy < 0)
-        return DIR_NORTH;
-    else if (absY >= absX && dy > 0)
-        return DIR_SOUTH;
+    else if (delta_x > 0)
+        return DIR_WEST;
 
-    return DIR_NONE;
+    if (delta_y < 0)
+        return DIR_SOUTH;
+    else if (delta_y > 0)
+        return DIR_NORTH;
+
+    return DIR_NORTH;
 }
 
 void ObjectEventsTurnToEachOther(struct ObjectEvent *objectOne, struct ObjectEvent *objectTwo)
