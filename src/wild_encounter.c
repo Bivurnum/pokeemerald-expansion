@@ -4,6 +4,7 @@
 #include "battle_pyramid.h"
 #include "event_data.h"
 #include "fieldmap.h"
+#include "fishing_game.h"
 #include "fishing.h"
 #include "follower_npc.h"
 #include "random.h"
@@ -23,6 +24,7 @@
 #include "battle_debug.h"
 #include "battle_pike.h"
 #include "battle_pyramid.h"
+#include "config/fishing_game.h"
 #include "constants/abilities.h"
 #include "constants/game_stat.h"
 #include "constants/item.h"
@@ -948,10 +950,13 @@ void FishingWildEncounter(u8 rod)
         timeOfDay = GetTimeOfDayForEncounters(headerId, WILD_AREA_FISHING);
         species = GenerateFishingWildMon(gWildMonHeaders[headerId].encounterTypes[timeOfDay].fishingMonsInfo, rod);
     }
-
-    IncrementGameStat(GAME_STAT_FISHING_ENCOUNTERS);
+    
     SetPokemonAnglerSpecies(species);
-    BattleSetup_StartWildBattle();
+    if (!FG_FISH_MINIGAME_ENABLED)
+    {
+        IncrementGameStat(GAME_STAT_FISHING_ENCOUNTERS);
+        BattleSetup_StartWildBattle();
+    }
 }
 
 u16 GetLocalWildMon(bool8 *isWaterMon)
