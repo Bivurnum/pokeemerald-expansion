@@ -827,44 +827,38 @@ void CreateMonWithIVs(struct Pokemon *mon, enum Species species, u8 level, u32 p
 
 bool32 ComputePlayerShinyOdds(u32 personality, u32 value)
 {
-    bool32 isShiny;
     if (P_FLAG_FORCE_NO_SHINY != 0 && FlagGet(P_FLAG_FORCE_NO_SHINY))
-    {
-        isShiny = FALSE;
-    }
-    else if (P_FLAG_FORCE_SHINY != 0 && FlagGet(P_FLAG_FORCE_SHINY))
-    {
-        isShiny = TRUE;
-    }
-    else if (P_ONLY_OBTAINABLE_SHINIES && (CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE || (B_FLAG_NO_CATCHING != 0 && FlagGet(B_FLAG_NO_CATCHING))))
-    {
-        isShiny = FALSE;
-    }
-    else if (P_NO_SHINIES_WITHOUT_POKEBALLS && !HasAtLeastOnePokeBall())
-    {
-        isShiny = FALSE;
-    }
-    else
-    {
-        u32 totalRerolls = 0;
-        if (CheckBagHasItem(ITEM_SHINY_CHARM, 1))
-            totalRerolls += I_SHINY_CHARM_ADDITIONAL_ROLLS;
-        if (LURE_STEP_COUNT != 0)
-            totalRerolls += 1;
-        totalRerolls += CalculateChainFishingShinyRolls();
-        if (gDexNavSpecies)
-            totalRerolls += CalculateDexNavShinyRolls();
+        return FALSE;
+    
+    if (P_FLAG_FORCE_SHINY != 0 && FlagGet(P_FLAG_FORCE_SHINY))
+        return FALSE;
+    
+    if (P_ONLY_OBTAINABLE_SHINIES && (CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE || (B_FLAG_NO_CATCHING != 0 && FlagGet(B_FLAG_NO_CATCHING))))
+        return FALSE;
+    
+    if (P_NO_SHINIES_WITHOUT_POKEBALLS && !HasAtLeastOnePokeBall())
+        return FALSE;
 
-        u32 shinyPersonality = personality;
-        while (GET_SHINY_VALUE(value, shinyPersonality) >= SHINY_ODDS && totalRerolls > 0)
-        {
-            shinyPersonality = Random32();
-            totalRerolls--;
-        }
+    u32 totalRerolls = 0;
+    
+    if (CheckBagHasItem(ITEM_SHINY_CHARM, 1))
+        totalRerolls += I_SHINY_CHARM_ADDITIONAL_ROLLS;
 
-        isShiny = GET_SHINY_VALUE(value, shinyPersonality) < SHINY_ODDS;
+    if (LURE_STEP_COUNT != 0)
+        totalRerolls += 1;
+
+    totalRerolls += CalculateChainFishingShinyRolls();
+
+    if (gDexNavSpecies)
+        totalRerolls += CalculateDexNavShinyRolls();
+
+    while (GET_SHINY_VALUE(value, personality) >= SHINY_ODDS && totalRerolls > 0)
+    {
+        personality = Random32();
+        totalRerolls--;
     }
-    return isShiny;
+
+    return GET_SHINY_VALUE(value, personality) < SHINY_ODDS;
 }
 
 void SetBoxMonIVs(struct BoxPokemon *mon, u8 fixedIV)
