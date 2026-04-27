@@ -93,6 +93,7 @@ The behaviors themselves are defined in `src/data/pokemon/wild_encounter_overwor
 - `activeDistance` is the max distance away from the mon that the player can be before the mon loses track of them and goes back to wandering.
 - `idleSpeed` is the speed at which the mon will take a step while wandering (player is not noticed). This must be one of the values in `enum SpeedOWE`.
 - `activeSpeed` is the speed at which the mon will take a step while active (player has been noticed). This must be one of the values in `enum SpeedOWE`.
+- `returnToIdle` is the condition under which the mon (while active) will go back to idly wandering. The three possible parameters are `PLAYER_OUTSIDE_ACTIVE_RANGE`, `PLAYER_CANT_BE_SEEN`, and `NEVER_RETURN`.
 
 If any of these parameters are not defined, they will be automatically assigned the value of `0`.
 
