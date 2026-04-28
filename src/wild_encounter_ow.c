@@ -1453,19 +1453,6 @@ bool32 DespawnOWEDueToNPCCollision(struct ObjectEvent *obstacle, struct ObjectEv
     return TRUE;
 }
 
-u32 DespawnOWEDueToTrainerSight(u32 collision, s32 x, s32 y)
-{
-    if (!(collision & (1 << (COLLISION_OBJECT_EVENT - 1))))
-        return collision;
-
-    struct ObjectEvent *owe = &gObjectEvents[GetObjectEventIdByXY(x, y)];
-    if (!IsOverworldWildEncounter(owe, OWE_GENERATED))
-        return collision;
-
-    RemoveObjectEvent(owe);
-    return collision & (1 << (COLLISION_OBJECT_EVENT - 1));
-}
-
 void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
 {
     for (u32 i = 0; i < OBJECT_EVENTS_COUNT; ++i)
