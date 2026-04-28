@@ -153,7 +153,6 @@ static bool32 CheckCanLoadOWE(enum Species speciesId, bool32 isFemale, bool32 is
 static bool32 CheckCanLoadOWE_Palette(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
 static bool32 CheckCanLoadOWE_Tiles(enum Species speciesId, bool32 isFemale, bool32 isShiny, s32 x, s32 y);
 static void SortOWEAges(void);
-static u32 RemoveOldestGeneratedOWE(void);
 static bool32 ShouldDespawnGeneratedForNewOWE(struct ObjectEvent *owe);
 static void SetNewOWESpawnCountdown(void);
 static void DoOWESpawnAnim(struct ObjectEvent *owe);
@@ -1485,25 +1484,6 @@ bool32 TryAndDespawnOldestGeneratedOWE_ToFreeObject(u8 *objectEventId)
     return FALSE;
 }
 
-void TryAndDespawnOldestGeneratedOWE_ToFreePalette(void)
-{
-    // Should have similar naming convention for these despawn functions based on Num Object Events, Pals & Tiles
-    if (WE_OW_ENCOUNTERS && CountFreePaletteSlots() < 2)
-    {
-        u32 count = GetNumberOfActiveOWEs(OWE_GENERATED);
-
-        if (count > 0)
-        {
-            for (; count > 0; count--)
-            {
-                RemoveOldestGeneratedOWE();
-                if (CountFreePaletteSlots() >= 2)
-                    break;
-            }
-        }
-    }
-}
-
 void DespawnOWEOnBattleStart(void)
 {
     struct ObjectEvent *owe = &gObjectEvents[GetObjectEventIdByLocalId(gSpecialVar_LastTalked)];
@@ -1532,7 +1512,7 @@ void TryDespawnOWEsCrossingMapConnection(void)
     DespawnAllOverworldWildEncounters(OWE_GENERATED, 0);
 }
 
-static u32 RemoveOldestGeneratedOWE(void)
+u32 RemoveOldestGeneratedOWE(void)
 {
     u32 oldestSlot = GetOldestActiveOWESlot(TRUE);
 

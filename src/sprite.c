@@ -1642,8 +1642,15 @@ u32 LoadSpritePalette(const struct SpritePalette *palette)
     {
         if (gMain.callback2 == CB2_Overworld)
         {
-            TryAndDespawnOldestGeneratedOWE_ToFreePalette();
-            index = IndexOfSpritePaletteTag(TAG_NONE);
+            u32 count = GetNumberOfActiveOWEs(OWE_GENERATED);
+
+            for (; count > 0; count--)
+            {
+                RemoveOldestGeneratedOWE();
+                index = IndexOfSpritePaletteTag(TAG_NONE);
+                if (index != 0xFF)
+                    break;
+            }
         }
         
         if (index == 0xFF)
