@@ -1396,33 +1396,18 @@ void Overworld_FadeOutMapMusic(void)
     FadeOutMapMusic(4);
 }
 
-static bool32 ShouldPlayAmbientCryVanillaOWE(void)
+static bool32 ShouldPlayVanillaAmbientCry(void)
 {
-    bool32 owePlayed = FALSE;
-
-    if (GetNumberOfActiveOWEs(OWE_ANY))
-    {
-        switch (OW_AMBIENT_CRIES)
-        {
-        case OW_AMBIENT_CRIES_OWE_ONLY:
-        case OW_AMBIENT_CRIES_OWE_PRIORITY:
-            PlayAmbientOWECry();
-            owePlayed = TRUE;
-            break;
-
-        default:
-            break;
-        }
-    }
-
     switch (OW_AMBIENT_CRIES)
     {
     case OW_AMBIENT_CRIES_VANILLA:
         return TRUE;
-
     case OW_AMBIENT_CRIES_OWE_PRIORITY:
-        return !owePlayed;
-
+        return !TryPlayAmbientCryOWE();
+    case OW_AMBIENT_CRIES_OWE_ONLY:
+        TryPlayAmbientCryOWE();
+        return FALSE;
+    case OW_AMBIENT_CRIES_NONE:
     default:
         return FALSE;
     }
@@ -1430,7 +1415,7 @@ static bool32 ShouldPlayAmbientCryVanillaOWE(void)
 
 static void PlayAmbientCry(void)
 {
-    if (!ShouldPlayAmbientCryVanillaOWE())
+    if (!ShouldPlayVanillaAmbientCry())
         return;
     
     s16 x, y;

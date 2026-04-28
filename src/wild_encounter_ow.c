@@ -1190,16 +1190,8 @@ static bool32 TrySelectTileForOWE(s32* outX, s32* outY)
 
     elevation = MapGridGetElevationAt(x, y);
 
-    if (gMapHeader.mapLayoutId != LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR)
-    {
-        if (!AreCoordsInsidePlayerMap(x, y))
-            return FALSE;
-    }
-    else
-    {
-        if (x < 0 || x >= 32 || y < 0 || y >= 32)
-            return FALSE;
-    }
+    if (!AreCoordsInsidePlayerMap(x, y))
+        return FALSE;
 
     // These elevations cause weird interactions, so spawns are prevented.
     if (elevation == ELEVATION_TRANSITION || elevation == ELEVATION_MULTI_LEVEL)
@@ -1481,7 +1473,7 @@ void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
     }
 }
 
-bool32 TryAndDespawnOldestGeneratedOWE_Object(u8 *objectEventId)
+bool32 TryAndDespawnOldestGeneratedOWE_ToFreeObject(u8 *objectEventId)
 {
     if (!WE_OW_ENCOUNTERS)
         return FALSE;
@@ -1493,7 +1485,7 @@ bool32 TryAndDespawnOldestGeneratedOWE_Object(u8 *objectEventId)
     return FALSE;
 }
 
-void TryAndDespawnOldestGeneratedOWE_Palette(void)
+void TryAndDespawnOldestGeneratedOWE_ToFreePalette(void)
 {
     // Should have similar naming convention for these despawn functions based on Num Object Events, Pals & Tiles
     if (WE_OW_ENCOUNTERS && CountFreePaletteSlots() < 2)
@@ -2079,9 +2071,14 @@ static void Task_OWEApproachForBattle(u8 taskId)
 }
 #undef tObjectId
 
-void PlayAmbientOWECry(void)
+bool32 TryPlayAmbientCryOWE(void)
 {
-    PlayOWECry(GetRandomOWEObjectEvent());
+    struct ObjectEvent *owe = GetRandomOWEObjectEvent();
+    if (owe == NULL)
+        return FALSE;
+    
+    PlayOWECry(owe);
+    return TRUE;
 }
 
 u32 GetNumberOfActiveOWEs(enum TypeOWE oweType)
