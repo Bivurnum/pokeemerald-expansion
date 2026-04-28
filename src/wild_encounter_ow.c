@@ -1190,16 +1190,8 @@ static bool32 TrySelectTileForOWE(s32* outX, s32* outY)
 
     elevation = MapGridGetElevationAt(x, y);
 
-    if (gMapHeader.mapLayoutId != LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR)
-    {
-        if (!AreCoordsInsidePlayerMap(x, y))
-            return FALSE;
-    }
-    else
-    {
-        if (x < 0 || x >= 32 || y < 0 || y >= 32)
-            return FALSE;
-    }
+    if (!AreCoordsInsidePlayerMap(x, y))
+        return FALSE;
 
     // These elevations cause weird interactions, so spawns are prevented.
     if (elevation == ELEVATION_TRANSITION || elevation == ELEVATION_MULTI_LEVEL)
