@@ -1,7 +1,9 @@
 #include "global.h"
 #include "main.h"
+#include "event_data.h"
 #include "event_object_movement.h"
 #include "fieldmap.h"
+#include "field_effect.h"
 #include "field_effect_helpers.h"
 #include "field_player_avatar.h"
 #include "fishing.h"
@@ -22,6 +24,7 @@
 #include "config/fishing.h"
 #include "config/fishing_game.h"
 #include "constants/abilities.h"
+#include "constants/field_effects.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
 
@@ -202,10 +205,22 @@ static bool32 Fishing_WaitBeforeDots(struct Task *task)
 {
     AlignFishingAnimationFrames();
 
-    // Wait one second
-    task->tFrameCounter++;
-    if (task->tFrameCounter >= 60)
+    if (gSprites[gPlayerAvatar.spriteId].animEnded)
+    {
+        struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
+        s16 x = player->currentCoords.x;
+        s16 y = player->currentCoords.y;
+
+        for (u32 i = 0; i < 2; i++)
+            MoveCoords(player->facingDirection, &x, &y);
+
+        gFieldEffectArguments[0] = x;
+        gFieldEffectArguments[1] = y;
+        gFieldEffectArguments[2] = 3; // Elevation.
+        gFieldEffectArguments[3] = 1; // Priority.
+        FieldEffectStart(FLDEFF_JUMP_BIG_SPLASH);
         task->tStep = FISHING_INIT_DOTS;
+    }
     return FALSE;
 }
 
@@ -526,8 +541,6 @@ static bool32 Fishing_GotAway(struct Task *task)
         AddTextPrinterParameterized2(0, FONT_NORMAL, sText_ItGotAway, 1, 0, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
     }
     StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetFishingNoCatchDirectionAnimNum(GetPlayerFacingDirection()));
-    FillWindowPixelBuffer(0, PIXEL_FILL(1));
-    AddTextPrinterParameterized2(0, FONT_NORMAL, sText_ItGotAway, 1, 0, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
     task->tStep = FISHING_NO_MON;
     return TRUE;
 }

@@ -15,6 +15,7 @@
 #include "event_object_movement.h"
 #include "field_camera.h"
 #include "field_control_avatar.h"
+#include "field_effect.h"
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
 #include "field_weather.h"
@@ -48,6 +49,8 @@
 #include "wild_encounter.h"
 #include "window.h"
 #include "constants/abilities.h"
+#include "constants/event_objects.h"
+#include "constants/field_effects.h"
 #include "constants/items.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
@@ -1306,8 +1309,9 @@ static void Task_HandleConfirmQuitInput(u8 taskId)
 static void Task_ReeledInFish(u8 taskId)
 {
     RunTextPrinters();
-    if (taskData.tFrameCounter == 0)
+    switch (taskData.tFrameCounter)
     {
+    case 0:
         if (gSprites[taskData.tScoreMeterSpriteId].sPerfectCatch == TRUE) // If it was a perfect catch.
         {
             u8 spriteId;
@@ -1332,16 +1336,70 @@ static void Task_ReeledInFish(u8 taskId)
         StringExpandPlaceholders(gStringVar4, gText_ReeledInAPokemon);
         AddTextPrinterParameterized2(0, FONT_NORMAL, gStringVar4, 1, 0, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY); // Congratulations text.
         taskData.tFrameCounter++;
-    }
-
-    if (taskData.tFrameCounter == 1)
-    {
+        break;
+    case 1:
         if (!IsTextPrinterActiveOnWindow(0))
         {
-            IncrementGameStat(GAME_STAT_FISHING_ENCOUNTERS);
-            SetMainCallback2(CB2_FishingBattleTransition);
+            struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
+            s16 x = player->currentCoords.x;
+            s16 y = player->currentCoords.y;
+
+            for (u32 i = 0; i < 2; i++)
+                MoveCoords(player->facingDirection, &x, &y);
+
+            gFieldEffectArguments[0] = x;
+            gFieldEffectArguments[1] = y;
+            gFieldEffectArguments[2] = 3; // Elevation.
+            gFieldEffectArguments[3] = 1; // Priority.
+            FieldEffectStart(FLDEFF_JUMP_BIG_SPLASH);
+
+            ClearDialogWindowAndFrame(0, TRUE);
+            CopyToBgTilemapBuffer(0, gFishingGameOWBGEnd_Tilemap, 0, 0);
+            CopyBgTilemapBufferToVram(0);
+            taskData.tGameStateBits |= FG_GAME_ENDED;
+            StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetFishingNoCatchDirectionAnimNum(GetPlayerFacingDirection()));
             taskData.tFrameCounter++;
         }
+        break;
+    case 2:
+        AlignFishingAnimationFrames();
+        if (gSprites[gPlayerAvatar.spriteId].animEnded)
+        {
+            struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+            s16 x = playerObjEvent->currentCoords.x;
+            s16 y = playerObjEvent->currentCoords.y;
+
+            for (u32 i = 0; i < 2; i++)
+                MoveCoords(playerObjEvent->movementDirection, &x, &y);
+
+            ObjectEventSetGraphicsId(playerObjEvent, taskData.tPlayerGFXId);
+            ObjectEventTurn(playerObjEvent, playerObjEvent->movementDirection);
+            gSprites[gPlayerAvatar.spriteId].x2 = 0;
+            gSprites[gPlayerAvatar.spriteId].y2 = 0;
+
+            struct ObjectEventTemplate template =
+            {
+                .localId = OBJ_EVENT_ID_FOLLOWER,
+                .graphicsId = GetGraphicsIdForMon(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), GetMonData(&gEnemyParty[0], MON_DATA_IS_SHINY), FALSE),
+                .flagId = 0,
+                .x = x,
+                .y = y,
+                .elevation = 3,
+                .movementType = MOVEMENT_TYPE_WALK_IN_PLACE_DOWN,
+            };
+            u32 objId = TrySpawnObjectEventTemplate(&template, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
+            MoveObjectEventToMapCoords(&gObjectEvents[objId], x, y);
+            ObjectEventTurn(&gObjectEvents[objId], GetOppositeDirection(playerObjEvent->movementDirection));
+            taskData.tFrameCounter++;
+        }
+        break;
+    case 3:
+        switch(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES))
+        {
+        case SPECIES_MAGIKARP:
+            
+        }
+        break;
     }
 }
 

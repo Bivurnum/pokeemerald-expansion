@@ -5,7 +5,9 @@
 #include "daycare.h"
 #include "debug.h"
 #include "dexnav.h"
+#include "event_data.h"
 #include "faraway_island.h"
+#include "fishing.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "event_scripts.h"
@@ -633,22 +635,9 @@ static const u8 *GetInteractedMetatileScript(struct MapPosition *position, u8 me
 
 static const u8 *GetInteractedWaterScript(struct MapPosition *unused1, u8 metatileBehavior, enum Direction direction)
 {
-    if (MetatileBehavior_IsFastWater(metatileBehavior) == TRUE && !TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
-        return EventScript_CurrentTooFast;
-    if (IsFieldMoveUnlocked(FIELD_MOVE_SURF) && PartyHasMonWithSurf() == TRUE && IsPlayerFacingSurfableFishableWater() == TRUE
-     && CheckFollowerNPCFlag(FOLLOWER_NPC_FLAG_CAN_SURF)
-     )
-        return EventScript_UseSurf;
+    if (IsPlayerFacingSurfableFishableWater() == TRUE)
+        StartFishing(VarGet(VAR_FISHING_ROD));
 
-    if (MetatileBehavior_IsWaterfall(metatileBehavior) == TRUE
-     && CheckFollowerNPCFlag(FOLLOWER_NPC_FLAG_CAN_WATERFALL)
-     )
-    {
-        if (IsFieldMoveUnlocked(FIELD_MOVE_WATERFALL) && IsPlayerSurfingNorth() == TRUE)
-            return EventScript_UseWaterfall;
-        else
-            return EventScript_CannotUseWaterfall;
-    }
     return NULL;
 }
 
