@@ -1858,7 +1858,7 @@ enum Direction DirectionOfOWEToPlayerFromCollision(struct ObjectEvent *owe)
         if (player->currentCoords.x < owe->currentCoords.x)
             return DIR_WEST;
         else if (player->currentCoords.x == owe->currentCoords.x)
-            return CheckOWEPathToPlayerFromCollision(owe, (Random() % 2) == 0 ? DIR_EAST : DIR_WEST);
+            return CheckOWEPathToPlayerFromCollision(owe, (Random() & 1)  ? DIR_EAST : DIR_WEST);
         else
             return DIR_EAST;
     case DIR_EAST:
@@ -1866,7 +1866,7 @@ enum Direction DirectionOfOWEToPlayerFromCollision(struct ObjectEvent *owe)
         if (player->currentCoords.y < owe->currentCoords.y)
             return DIR_NORTH;
         else if (player->currentCoords.y == owe->currentCoords.y)
-            return CheckOWEPathToPlayerFromCollision(owe, (Random() % 2) == 0 ? DIR_NORTH : DIR_SOUTH);
+            return CheckOWEPathToPlayerFromCollision(owe, (Random() & 1)  ? DIR_NORTH : DIR_SOUTH);
         else
             return DIR_SOUTH;
     }
