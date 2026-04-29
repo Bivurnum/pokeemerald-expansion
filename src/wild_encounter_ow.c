@@ -89,6 +89,10 @@ struct InfoOWE
 #error "OW_POKEMON_OBJECT_EVENTS needs to be TRUE in order for WE_OW_ENCOUNTERS to work."
 #endif
 
+#if OWE_SPAWN_DISTANCE_LAND >= OWE_SPAWN_WIDTH_RADIUS || OWE_SPAWN_DISTANCE_WATER >= OWE_SPAWN_WIDTH_RADIUS
+#error "OWE_SPAWN_DISTANCE_LAND and OWE_SPAWN_DISTANCE_WATER must both be less than OWE_SPAWN_WIDTH_RADIUS."
+#endif
+
 
 static inline u32 GetLocalIdByOWESpawnSlot(u32 spawnSlot)
 {
