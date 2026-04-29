@@ -12155,7 +12155,7 @@ bool8 MovementType_OverworldWildEncounter_ApproachPlayer_Step8(struct ObjectEven
 {
     enum Direction direction = DetermineObjectEventDirectionFromObject(&gObjectEvents[gPlayerAvatar.objectEventId], objectEvent);
     SetObjectEventDirection(objectEvent, direction);
-    sJumpTimer = (Random() % (OWE_APPROACH_JUMP_TIMER_MAX - OWE_APPROACH_JUMP_TIMER_MIN)) + OWE_APPROACH_JUMP_TIMER_MIN;
+    sJumpTimer = RandomUniform(RNG_NONE, OWE_APPROACH_JUMP_TIMER_MIN, OWE_APPROACH_JUMP_TIMER_MAX);
     sprite->sTypeFuncId = 10;
     if (!IsOWENextToPlayer(objectEvent))
     {
@@ -12199,7 +12199,7 @@ bool8 MovementType_OverworldWildEncounter_ApproachPlayer_Step11(struct ObjectEve
     {
         if (sJumpTimer <= 0)
         {
-            sJumpTimer = (Random() % (OWE_APPROACH_JUMP_TIMER_MAX - OWE_APPROACH_JUMP_TIMER_MIN)) + OWE_APPROACH_JUMP_TIMER_MIN;
+            sJumpTimer = RandomUniform(RNG_NONE, OWE_APPROACH_JUMP_TIMER_MIN, OWE_APPROACH_JUMP_TIMER_MAX);
             movementActionId = GetJumpInPlaceMovementAction(objectEvent->facingDirection);
             PlaySE(SE_LEDGE);
         }
@@ -12232,7 +12232,7 @@ bool8 MovementType_OverworldWildEncounter_ApproachPlayer_Step11(struct ObjectEve
                 movementActionId = GetWalkInPlaceNormalMovementAction(objectEvent->facingDirection);
         }
 
-        sJumpTimer = (Random() % (OWE_APPROACH_JUMP_TIMER_MAX - OWE_APPROACH_JUMP_TIMER_MIN)) + OWE_APPROACH_JUMP_TIMER_MIN;
+        sJumpTimer = RandomUniform(RNG_NONE, OWE_APPROACH_JUMP_TIMER_MIN, OWE_APPROACH_JUMP_TIMER_MAX);
     }
 
     ObjectEventSetSingleMovement(objectEvent, sprite, movementActionId);

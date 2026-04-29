@@ -1666,7 +1666,7 @@ void RestoreSavedOWEBehaviorState(struct ObjectEvent *owe, struct Sprite *sprite
     {
         sprite->sTypeFuncId = OWE_RESTORED_MOVEMENT_FUNC_ID;
         if (owe->movementType == MOVEMENT_TYPE_APPROACH_PLAYER_OWE)
-            sJumpTimer = (Random() % (OWE_APPROACH_JUMP_TIMER_MAX - OWE_APPROACH_JUMP_TIMER_MIN)) + OWE_APPROACH_JUMP_TIMER_MIN;
+            sJumpTimer = RandomUniform(RNG_NONE, OWE_APPROACH_JUMP_TIMER_MIN, OWE_APPROACH_JUMP_TIMER_MAX);
     }
 }
 #undef sTypeFuncId
