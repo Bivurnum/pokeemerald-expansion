@@ -1091,7 +1091,7 @@ bool32 AreCoordsInsideMap(u8 mapGroup, u8 mapNum, s16 x, s16 y)
     x -= MAP_OFFSET;
     y -= MAP_OFFSET;
 
-    if (gMapHeader.mapLayoutId != LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR)
+    if (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR)
     {
         width *= PYRAMID_FLOOR_SQUARES_WIDE;
         height *= PYRAMID_FLOOR_SQUARES_HIGH;
