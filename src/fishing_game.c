@@ -94,6 +94,8 @@ static bool32 TreasureIsInsideBar(u8 taskId);
 static void CB2_FishingBattleTransition(void);
 static void CB2_FishingBattleStart(void);
 
+static void Task_AfterCaught(u8 taskId);
+
 static const u16 gFishingGameBG_Pal[] = INCBIN_U16("graphics/fishing_game/fishing_bg_tiles.gbapal");
 static const u32 gFishingGameBG_Tilemap[] = INCBIN_U32("graphics/fishing_game/fishing_bg_tiles.bin.lz");
 static const u32 gScoreBG_Tilemap[] = INCBIN_U32("graphics/fishing_game/score_bg_tilemap.bin.lz");
@@ -111,6 +113,78 @@ static const u16 gFishingGameOWBG_Pal[] = INCBIN_U16("graphics/fishing_game/fish
 static const u32 gFishingGameOWBG_Tilemap[] = INCBIN_U32("graphics/fishing_game/fishing_bg_ow_tiles.bin.lz");
 static const u32 gFishingGameOWBGEnd_Tilemap[] = INCBIN_U32("graphics/fishing_game/fishing_bg_ow_end.bin.lz");
 static const u32 gScoreMeterOWBehind_Gfx[] = INCBIN_U32("graphics/fishing_game/score_meter_ow_behind.4bpp.lz");
+
+static const u32 gMugshotFrame_Gfx[] = INCBIN_U32("graphics/treasure_trove/mugshot_frame.4bpp.lz");
+static const u16 sMugshotFrame_Pal[] = INCBIN_U16("graphics/treasure_trove/mugshot_frame.gbapal");
+
+static const u32 gMagikarpMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/magikarp_mug.4bpp.lz");
+static const u16 sMagikarpMug_Pal[] = INCBIN_U16("graphics/treasure_trove/magikarp_mug.gbapal");
+
+static const u32 gKrabbyMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/krabby_mug.4bpp.lz");
+static const u16 sKrabbyMug_Pal[] = INCBIN_U16("graphics/treasure_trove/krabby_mug.gbapal");
+
+static const u32 gGyaradosMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/gyarados_mug.4bpp.lz");
+static const u16 sGyaradosMug_Pal[] = INCBIN_U16("graphics/treasure_trove/gyarados_mug.gbapal");
+
+static const u32 gOctilleryMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/octillery_mug.4bpp.lz");
+static const u16 sOctilleryMug_Pal[] = INCBIN_U16("graphics/treasure_trove/octillery_mug.gbapal");
+
+static const u32 gWooperMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/wooper_mug.4bpp.lz");
+static const u16 sWooperMug_Pal[] = INCBIN_U16("graphics/treasure_trove/wooper_mug.gbapal");
+
+static const u32 gShellderMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/shellder_mug.4bpp.lz");
+static const u16 sShellderMug_Pal[] = INCBIN_U16("graphics/treasure_trove/shellder_mug.gbapal");
+
+static const u32 gStaryuMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/staryu_mug.4bpp.lz");
+static const u16 sStaryuMug_Pal[] = INCBIN_U16("graphics/treasure_trove/staryu_mug.gbapal");
+
+static const u32 gDondozoMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/dondozo_mug.4bpp.lz");
+static const u16 sDondozoMug_Pal[] = INCBIN_U16("graphics/treasure_trove/dondozo_mug.gbapal");
+
+static const u32 gCramorantMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/cramorant_mug.4bpp.lz");
+static const u16 sCramorantMug_Pal[] = INCBIN_U16("graphics/treasure_trove/cramorant_mug.gbapal");
+
+static const u32 gKyogreMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/kyogre_mug.4bpp.lz");
+static const u16 sKyogreMug_Pal[] = INCBIN_U16("graphics/treasure_trove/kyogre_mug.gbapal");
+
+static const u32 gLumineonMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/lumineon_mug.4bpp.lz");
+static const u16 sLumineonMug_Pal[] = INCBIN_U16("graphics/treasure_trove/lumineon_mug.gbapal");
+
+static const u32 gDragonairMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/dragonair_mug.4bpp.lz");
+static const u16 sDragonairMug_Pal[] = INCBIN_U16("graphics/treasure_trove/dragonair_mug.gbapal");
+
+static const u32 gBarboachMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/barboach_mug.4bpp.lz");
+static const u16 sBarboachMug_Pal[] = INCBIN_U16("graphics/treasure_trove/barboach_mug.gbapal");
+
+static const u32 gCarvanhaMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/carvanha_mug.4bpp.lz");
+static const u16 sCarvanhaMug_Pal[] = INCBIN_U16("graphics/treasure_trove/carvanha_mug.gbapal");
+
+static const u32 gFinizenMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/finizen_mug.4bpp.lz");
+static const u16 sFinizenMug_Pal[] = INCBIN_U16("graphics/treasure_trove/finizen_mug.gbapal");
+
+static const u32 gArrokudaMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/arrokuda_mug.4bpp.lz");
+static const u16 sArrokudaMug_Pal[] = INCBIN_U16("graphics/treasure_trove/arrokuda_mug.gbapal");
+
+static const u32 gBruxishMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/bruxish_mug.4bpp.lz");
+static const u16 sBruxishMug_Pal[] = INCBIN_U16("graphics/treasure_trove/bruxish_mug.gbapal");
+
+static const u32 gSkrelpMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/skrelp_mug.4bpp.lz");
+static const u16 sSkrelpMug_Pal[] = INCBIN_U16("graphics/treasure_trove/skrelp_mug.gbapal");
+
+static const u32 gWailmerMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/wailmer_mug.4bpp.lz");
+static const u16 sWailmerMug_Pal[] = INCBIN_U16("graphics/treasure_trove/wailmer_mug.gbapal");
+
+static const u32 gAzumarillMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/azumarill_mug.4bpp.lz");
+static const u16 sAzumarillMug_Pal[] = INCBIN_U16("graphics/treasure_trove/azumarill_mug.gbapal");
+
+static const u32 gTentacruelMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/tentacruel_mug.4bpp.lz");
+static const u16 sTentacruelMug_Pal[] = INCBIN_U16("graphics/treasure_trove/tentacruel_mug.gbapal");
+
+static const u32 gLuvdiscMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/luvdisc_mug.4bpp.lz");
+static const u16 sLuvdiscMug_Pal[] = INCBIN_U16("graphics/treasure_trove/luvdisc_mug.gbapal");
+
+static const u32 gMurkrowMug_Gfx[] = INCBIN_U32("graphics/treasure_trove/murkrow_mug.4bpp.lz");
+static const u16 sMurkrowMug_Pal[] = INCBIN_U16("graphics/treasure_trove/murkrow_mug.gbapal");
 
 static const u8 gText_Tutorial[] = _("Hold {A_BUTTON} to make the bar go right.\nRelease {A_BUTTON} to make the bar go left.\p");
 static const u8 gText_Tutorial2[] = _("Try to keep the POKéMON inside the bar\nuntil the score fills up.\p");
@@ -530,6 +604,23 @@ static const struct OamData sOam_Item =
     .affineParam = 0,
 };
 
+static const struct OamData sOam_Mugshot =
+{
+    .y = DISPLAY_HEIGHT,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(64x64),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(64x64),
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
 static const struct CompressedSpriteSheet sSpriteSheets_FishingGame[] =
 {
     [FISHING_BAR] = {
@@ -566,6 +657,234 @@ static const struct CompressedSpriteSheet sSpriteSheets_FishingGame[] =
         .data = gScoreMeterOWBehind_Gfx,
         .size = 1024,
         .tag = TAG_SCORE_BACKING
+    },
+};
+
+static const struct CompressedSpriteSheet sSpriteSheet_MugshotFrame =
+{
+    .data = gMugshotFrame_Gfx,
+    .size = 2048,
+    .tag = TAG_MUGSHOT_FRAME
+};
+
+static const struct CompressedSpriteSheet sSpriteSheets_Mugshots[] =
+{
+    [SPECIES_KRABBY] = {
+        .data = gKrabbyMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_MAGIKARP] = {
+        .data = gMagikarpMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_GYARADOS] = {
+        .data = gGyaradosMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_OCTILLERY] = {
+        .data = gOctilleryMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_WOOPER] = {
+        .data = gWooperMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_SHELLDER] = {
+        .data = gShellderMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_STARYU] = {
+        .data = gStaryuMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_DONDOZO] = {
+        .data = gDondozoMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_CRAMORANT] = {
+        .data = gCramorantMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_KYOGRE] = {
+        .data = gKyogreMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_LUMINEON] = {
+        .data = gLumineonMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_DRAGONAIR] = {
+        .data = gDragonairMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_BARBOACH] = {
+        .data = gBarboachMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_CARVANHA] = {
+        .data = gCarvanhaMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_FINIZEN] = {
+        .data = gFinizenMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_ARROKUDA] = {
+        .data = gArrokudaMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_BRUXISH] = {
+        .data = gBruxishMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_SKRELP] = {
+        .data = gSkrelpMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_WAILMER] = {
+        .data = gWailmerMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_AZUMARILL] = {
+        .data = gAzumarillMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_TENTACRUEL] = {
+        .data = gTentacruelMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_LUVDISC] = {
+        .data = gLuvdiscMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_MURKROW] = {
+        .data = gMurkrowMug_Gfx,
+        .size = 2048,
+        .tag = TAG_MUGSHOT
+    },
+};
+
+static const struct SpritePalette sSpritePalette_MugshotFrame =
+{
+    .data = sMugshotFrame_Pal,
+    .tag = TAG_MUGSHOT_FRAME
+};
+
+static const struct SpritePalette sSpritePalettes_Mugshots[] =
+{
+    [SPECIES_KRABBY] = {
+        .data = sKrabbyMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_MAGIKARP] = {
+        .data = sMagikarpMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_GYARADOS] = {
+        .data = sGyaradosMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_OCTILLERY] = {
+        .data = sOctilleryMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_WOOPER] = {
+        .data = sWooperMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_SHELLDER] = {
+        .data = sShellderMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_STARYU] = {
+        .data = sStaryuMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_DONDOZO] = {
+        .data = sDondozoMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_CRAMORANT] = {
+        .data = sCramorantMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_KYOGRE] = {
+        .data = sKyogreMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_LUMINEON] = {
+        .data = sLumineonMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_DRAGONAIR] = {
+        .data = sDragonairMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_BARBOACH] = {
+        .data = sBarboachMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_CARVANHA] = {
+        .data = sCarvanhaMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_FINIZEN] = {
+        .data = sFinizenMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_ARROKUDA] = {
+        .data = sArrokudaMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_BRUXISH] = {
+        .data = sBruxishMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_SKRELP] = {
+        .data = sSkrelpMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_WAILMER] = {
+        .data = sWailmerMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_AZUMARILL] = {
+        .data = sAzumarillMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_TENTACRUEL] = {
+        .data = sTentacruelMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_LUVDISC] = {
+        .data = sLuvdiscMug_Pal,
+        .tag = TAG_MUGSHOT
+    },
+    [SPECIES_MURKROW] = {
+        .data = sMurkrowMug_Pal,
+        .tag = TAG_MUGSHOT
     },
 };
 
@@ -674,6 +993,28 @@ static const struct SpriteTemplate sSpriteTemplate_Item =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sAffineAnims_Item,
+    .callback = SpriteCallbackDummy
+};
+
+static const struct SpriteTemplate sSpriteTemplate_MugshotFrame =
+{
+    .tileTag = TAG_MUGSHOT_FRAME,
+    .paletteTag = TAG_MUGSHOT_FRAME,
+    .oam = &sOam_Mugshot,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Mugshot =
+{
+    .tileTag = TAG_MUGSHOT,
+    .paletteTag = TAG_MUGSHOT,
+    .oam = &sOam_Mugshot,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy
 };
 
@@ -1394,11 +1735,10 @@ static void Task_ReeledInFish(u8 taskId)
         }
         break;
     case 3:
-        switch(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES))
-        {
-        case SPECIES_MAGIKARP:
-            
-        }
+        PlayCry_Normal(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 0);
+        taskData.data[1] = 0;
+        taskData.data[3] = 0;
+        taskData.func = Task_AfterCaught;
         break;
     }
 }
@@ -2232,7 +2572,7 @@ static bool32 TreasureIsInsideBar(u8 taskId)
     return FALSE;
 }
 
-static void CB2_FishingBattleTransition(void)
+static void UNUSED CB2_FishingBattleTransition(void)
 {
     FreeMonIconPalettes();
     gBattleTypeFlags = 0;
@@ -2498,5 +2838,38 @@ void Task_DoReturnToFieldFishTreasure(u8 taskId)
             DestroyTask(taskId);
             ScriptUnfreezeObjectEvents();
             break;
+    }
+}
+
+#define TaskFrameCounter        data[2]
+#define TaskMugSpriteId         data[3]
+#define TaskMugFrameSpriteId    data[4]
+
+/*
+static void (*const sFishAfterCaught[])(u8) = {
+    [SPECIES_MAGIKARP] =    Task_AfterCaught,
+};
+*/
+
+static void Task_AfterCaught(u8 taskId)
+{
+    switch (TaskState)
+    {
+    case 0:
+        if (taskData.TaskFrameCounter >= 60)
+            TaskState++;
+
+        taskData.TaskFrameCounter++;
+        break;
+    case 1:
+        LoadMessageBoxAndFrameGfx(0, TRUE);
+        LoadCompressedSpriteSheet(&sSpriteSheet_MugshotFrame);
+        LoadSpritePalette(&sSpritePalette_MugshotFrame);
+        taskData.TaskMugFrameSpriteId = CreateSprite(&sSpriteTemplate_MugshotFrame, 35, 102, 0);
+        LoadCompressedSpriteSheet(&sSpriteSheets_Mugshots[GetMonData(&gEnemyParty[0], MON_DATA_SPECIES)]);
+        LoadSpritePalette(&sSpritePalettes_Mugshots[GetMonData(&gEnemyParty[0], MON_DATA_SPECIES)]);
+        taskData.TaskMugSpriteId = CreateSprite(&sSpriteTemplate_Mugshot, 35, 102, 1);
+        TaskState++;
+        break;
     }
 }
