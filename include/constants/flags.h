@@ -51,27 +51,27 @@
 
 #else
 
-#define FLAG_UNUSED_0x020    0x20 // Unused Flag
-#define FLAG_UNUSED_0x021    0x21 // Unused Flag
-#define FLAG_UNUSED_0x022    0x22 // Unused Flag
-#define FLAG_UNUSED_0x023    0x23 // Unused Flag
-#define FLAG_UNUSED_0x024    0x24 // Unused Flag
-#define FLAG_UNUSED_0x025    0x25 // Unused Flag
-#define FLAG_UNUSED_0x026    0x26 // Unused Flag
-#define FLAG_UNUSED_0x027    0x27 // Unused Flag
-#define FLAG_UNUSED_0x028    0x28 // Unused Flag
-#define FLAG_UNUSED_0x029    0x29 // Unused Flag
-#define FLAG_UNUSED_0x02A    0x2A // Unused Flag
-#define FLAG_UNUSED_0x02B    0x2B // Unused Flag
-#define FLAG_UNUSED_0x02C    0x2C // Unused Flag
-#define FLAG_UNUSED_0x02D    0x2D // Unused Flag
-#define FLAG_UNUSED_0x02E    0x2E // Unused Flag
-#define FLAG_UNUSED_0x02F    0x2F // Unused Flag
-#define FLAG_UNUSED_0x030    0x30 // Unused Flag
-#define FLAG_UNUSED_0x031    0x31 // Unused Flag
-#define FLAG_UNUSED_0x032    0x32 // Unused Flag
-#define FLAG_UNUSED_0x033    0x33 // Unused Flag
-#define FLAG_UNUSED_0x034    0x34 // Unused Flag
+#define FLAG_MAGIKARP_FIRST     0x20
+#define FLAG_KRABBY_FIRST       0x21
+#define FLAG_ARROKUDA_FIRST     0x22
+#define FLAG_GYARADOS_FIRST     0x23
+#define FLAG_OCTILLERY_FIRST    0x24
+#define FLAG_SKRELP_FIRST       0x25
+#define FLAG_BRUXISH_FIRST      0x26
+#define FLAG_TENTACRUEL_FIRST   0x27
+#define FLAG_WAILMER_FIRST      0x28
+#define FLAG_WOOPER_FIRST       0x29
+#define FLAG_BARBOACH_FISRT     0x2A
+#define FLAG_CARVANHA_FIRST     0x2B
+#define FLAG_AZUMARILL_FIRST    0x2C
+#define FLAG_LUVDISC_FIRST      0x2D
+#define FLAG_FINIZEN_FIRST      0x2E
+#define FLAG_CRAMORANT_FIRST    0x2F
+#define FLAG_DONDOZO_FIRST      0x30
+#define FLAG_STARYU_FIRST       0x31
+#define FLAG_SHELLDER_FIRST     0x32
+#define FLAG_LUMINEON_FIRST     0x33
+#define FLAG_DRAGONAIR_FIRST    0x34
 #define FLAG_UNUSED_0x035    0x35 // Unused Flag
 #define FLAG_UNUSED_0x036    0x36 // Unused Flag
 #define FLAG_UNUSED_0x037    0x37 // Unused Flag

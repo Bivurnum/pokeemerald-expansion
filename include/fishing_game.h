@@ -202,9 +202,6 @@ enum {
 #define TAG_SCORE_BACKING       0x1006
 #define TAG_ITEM                0x1009
 
-#define TAG_MUGSHOT             0x100A
-#define TAG_MUGSHOT_FRAME       0x100B
-
 // Game state bit flags
 #define FG_SEPARATE_SCREEN      (1 << 0)
 #define FG_PAUSED               (1 << 1)
