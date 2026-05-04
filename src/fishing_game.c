@@ -2399,7 +2399,7 @@ void Task_DoReturnToFieldFishTreasure(u8 taskId)
             }
             break;
         case FISHTASK_CREATE_TREASURE_SPRITE:
-            if (taskData.tFrameCounter == 16)
+            if (taskData.tFrameCounter == 24)
             {
                 LoadSpritePalettes(sSpritePalettes_FishingGame);
                 if (IndexOfSpritePaletteTag(TAG_FISHING_BAR) == 0xFF)
