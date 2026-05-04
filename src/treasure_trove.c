@@ -450,6 +450,7 @@ static const u8 gText_LumineonAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS
 static const u8 gText_DragonairAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
 
 static const u8 gText_GotPieceOfTreasure[] = _("You got a piece of treasure!");
+static const u8 gText_EmptyString[] = _("");
 
 static const u8 *const sTreasureText[][4] =
 {
@@ -615,7 +616,7 @@ void Task_AfterCaught(u8 taskId)
         if (!IsTextPrinterActiveOnWindow(0))
         {
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_EmptyString2, 0, 1, 0, NULL);
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_EmptyString, 0, 1, 0, NULL);
             RunTextPrinters();
             HideMugshot(taskId);
             HideBg(0);
@@ -645,7 +646,7 @@ void Task_AfterCaught(u8 taskId)
         {
             PlaySE(SE_SELECT);
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            AddTextPrinterParameterized(0, FONT_NORMAL, gText_EmptyString2, 0, 1, 0, NULL);
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_EmptyString, 0, 1, 0, NULL);
             RunTextPrinters();
             HideBg(0);
             taskData.tCounter = 0;
