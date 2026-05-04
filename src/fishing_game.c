@@ -128,9 +128,9 @@ static const u8 gText_HelpfulTextLower2[] = _("Aw!\nYou almost had it.");
 static const u8 gText_FishingWantToQuit[] = _("Do you want to let this one go?");
 static const u8 gText_ReeledInAPokemon[] = _("{PLAYER} reeled in a POKéMON!{PAUSE_UNTIL_PRESS}");
 static const u8 gText_PokemonGotAway[] = _("Oh, no!\nThe POKéMON got away…{PAUSE_UNTIL_PRESS}");
-static const u8 gText_ReeledInTreasure[] = _("{PLAYER} reeled in a TREASURE!");
-static const u8 gText_FoundATreasureItem[] = _("{PLAYER} found one\n{STR_VAR_2}!");
-static const u8 gText_PutTreasureInPocket[] = _("{PLAYER} put away the {STR_VAR_2}\nin the {STR_VAR_3} POCKET.");
+static const u8 gText_ReeledInTreasure[] = _("You reeled in an item!");
+static const u8 gText_FoundATreasureItem[] = _("You found one\n{STR_VAR_2}!");
+static const u8 gText_PutTreasureInPocket[] = _("You put away the {STR_VAR_2}\nin the inventory.");
 static const u8 gText_NoRoomForTreasure[] = _("Too bad!\nThe BAG is full…");
 
 static const u16 gBarColors[] =
@@ -900,7 +900,7 @@ static void CreateMinigameSprites(u8 taskId)
     if (!(taskData.tGameStateBits & FG_SEPARATE_SCREEN))
         spriteData.oam.priority--;
     spriteData.sBarDirection = FISH_DIR_RIGHT;
-    spriteData.sBarWidth = OLD_ROD_BAR_WIDTH;
+    spriteData.sBarWidth = OLD_ROD_BAR_WIDTH + VarGet(VAR_FISHING_BAR_WIDTH_BONUS);
     taskData.tBarLeftSpriteId = spriteId;
     taskData.tAbility = GetMonAbility(&gPlayerParty[0]);
     SetAbilityEffectData(taskData.tAbility, spriteId);
@@ -918,7 +918,7 @@ static void CreateMinigameSprites(u8 taskId)
             break;
         }
     }
-    spriteData.sBarWidth = ApplyAbilityEffect(spriteData.sBarWidth, FG_EFFECT_BAR_SIZE, taskId);
+    //spriteData.sBarWidth = ApplyAbilityEffect(spriteData.sBarWidth, FG_EFFECT_BAR_SIZE, taskId);
     if (spriteData.sBarWidth > FISHING_BAR_WIDTH_MAX)
         spriteData.sBarWidth = FISHING_BAR_WIDTH_MAX;
     else if (spriteData.sBarWidth < FISHING_BAR_WIDTH_MIN)
@@ -1031,6 +1031,10 @@ static void CreateMinigameSprites(u8 taskId)
     {
         CreateTreasureSprite(taskId);
     }
+    else
+    {
+        gSpecialVar_ItemId = ITEM_NONE;
+    }
 }
 
 static void CreateTreasureSprite(u8 taskId)
@@ -1088,46 +1092,140 @@ static void SetAbilityEffectData(u16 ability, u8 spriteId)
     }
 }
 
+struct MonTreasures
+{
+    u16 rodItem;
+    u16 material1;
+    u16 material2;
+};
+
+static const struct MonTreasures sMonTreasures[] =
+{
+    [TT_MAGIKARP] = {
+        .rodItem = ITEM_GOOD_WOOD,
+        .material1 = ITEM_STARDUST,
+        .material2 = ITEM_STARDUST
+    },
+    [TT_KRABBY] = {
+        .rodItem = ITEM_GOOD_WOOD,
+        .material1 = ITEM_STARDUST,
+        .material2 = ITEM_SHELL
+    },
+    [TT_ARROKUDA] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_SHELL,
+        .material2 = ITEM_STARDUST
+    },
+    [TT_GYARADOS] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_HEART_SCALE,
+        .material2 = ITEM_STARDUST
+    },
+    [TT_OCTILLERY] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_HEART_SCALE,
+        .material2 = ITEM_SHELL
+    },
+    [TT_SKRELP] = {
+        .rodItem = ITEM_GOOD_WOOD,
+        .material1 = ITEM_STARDUST,
+        .material2 = ITEM_SHELL
+    },
+    [TT_BRUXISH] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_PEARL,
+        .material2 = ITEM_STARDUST
+    },
+    [TT_TENTACRUEL] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_HEART_SCALE,
+        .material2 = ITEM_PEARL
+    },
+    [TT_WAILMER] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_HEART_SCALE,
+        .material2 = ITEM_STARDUST
+    },
+    [TT_WOOPER] = {
+        .rodItem = ITEM_GOOD_WOOD,
+        .material1 = ITEM_SHELL,
+        .material2 = ITEM_PEARL
+    },
+    [TT_BARBOACH] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_PEARL,
+        .material2 = ITEM_SHELL
+    },
+    [TT_CARVANHA] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_HEART_SCALE,
+        .material2 = ITEM_HEART_SCALE
+    },
+    [TT_AZUMARILL] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_PEARL,
+        .material2 = ITEM_HEART_SCALE
+    },
+    [TT_LUVDISC] = {
+        .rodItem = ITEM_GOOD_WOOD,
+        .material1 = ITEM_HEART_SCALE,
+        .material2 = ITEM_PRETTY_FEATHER
+    },
+    [TT_FINIZEN] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_HEART_SCALE,
+        .material2 = ITEM_PRETTY_FEATHER
+    },
+    [TT_CRAMORANT] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_PRETTY_FEATHER,
+        .material2 = ITEM_PRETTY_FEATHER
+    },
+    [TT_DONDOZO] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_SHELL,
+        .material2 = ITEM_PRETTY_FEATHER
+    },
+    [TT_STARYU] = {
+        .rodItem = ITEM_GOOD_WOOD,
+        .material1 = ITEM_PEARL,
+        .material2 = ITEM_STARDUST
+    },
+    [TT_SHELLDER] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_SHELL,
+        .material2 = ITEM_STARDUST
+    },
+    [TT_LUMINEON] = {
+        .rodItem = ITEM_SUPER_STRING,
+        .material1 = ITEM_SHELL,
+        .material2 = ITEM_SHELL
+    },
+    [TT_DRAGONAIR] = {
+        .rodItem = ITEM_GOOD_WOOD,
+        .material1 = ITEM_PEARL,
+        .material2 = ITEM_PRETTY_FEATHER
+    },
+};
+
 static void SetFishingTreasureItem(u8 rod)
 {
-    u8 offset = 0;
-    u8 arrayCount = (u8)ARRAY_COUNT(sTreasureItems);
-    u8 random = Random() % TREASURE_ITEM_POOL_SIZE;
-    u8 item;
+    u32 item;
+    u32 species = GetTreasureSpeciesFromSpecies();
 
-    if (FG_VAR_ITEM_RARITY != 0)
+    if (VarGet(VAR_FISHING_ROD) < 2 && Random() & 1)
     {
-        offset = VarGet(FG_VAR_ITEM_RARITY);
-
-        if (offset >= arrayCount)
-        {
-            gSpecialVar_ItemId = ITEM_TINY_MUSHROOM;
-            return;
-        }
+        item = sMonTreasures[species].rodItem;
     }
     else
     {
-        switch (rod)
-        {
-            case GOOD_ROD:
-                offset = (arrayCount / 2) - (TREASURE_ITEM_POOL_SIZE / 2);
-                break;
-            case SUPER_ROD:
-                offset = arrayCount - TREASURE_ITEM_POOL_SIZE;
-                break;
-        }
+        if ((Random() % 100) < 65)
+            item = sMonTreasures[species].material1;
+        else
+            item = sMonTreasures[species].material2;
     }
 
-    if (random > (TREASURE_ITEM_POOL_SIZE / 2) && ((Random() % 100) + 1) < (TREASURE_ITEM_COMMON_WEIGHT + 1))
-        random -= (TREASURE_ITEM_POOL_SIZE / 2);
-
-    if ((random + offset) >= arrayCount)
-    {
-        random = Random() % (arrayCount - offset - 2);
-    }
-
-    item = random + offset;
-    gSpecialVar_ItemId = sTreasureItems[item];
+    gSpecialVar_ItemId = item;
 }
 
 static void SetFishingSpeciesBehavior(u8 spriteId, u16 species)
@@ -1313,24 +1411,24 @@ static void Task_ReeledInFish(u8 taskId)
     switch (taskData.tFrameCounter)
     {
     case 0:
-        if (gSprites[taskData.tScoreMeterSpriteId].sPerfectCatch == TRUE) // If it was a perfect catch.
-        {
-            u8 spriteId;
-
-            PlaySE(SE_RG_POKE_JUMP_SUCCESS);
-            LoadCompressedSpriteSheet(&sSpriteSheets_FishingGame[PERFECT]);
-            if (taskData.tGameStateBits & FG_SEPARATE_SCREEN)
-                spriteId = CreateSprite(&sSpriteTemplate_Perfect, PERFECT_X, SEPARATE_SCREEN_MODIFIER, 0);
-            else
-                spriteId = CreateSprite(&sSpriteTemplate_Perfect, PERFECT_X, PERFECT_Y, 0);
-            if (FG_PERFECT_CHAIN_INCREASE == TRUE)
-                UpdateChainFishingStreak();
-            spriteData.sTaskId = taskId;
-        }
-        else // If it wasn't a perfect catch.
-        {
+        //if (gSprites[taskData.tScoreMeterSpriteId].sPerfectCatch == TRUE) // If it was a perfect catch.
+        //{
+        //    u8 spriteId;
+        //
+        //    PlaySE(SE_RG_POKE_JUMP_SUCCESS);
+        //    LoadCompressedSpriteSheet(&sSpriteSheets_FishingGame[PERFECT]);
+        //    if (taskData.tGameStateBits & FG_SEPARATE_SCREEN)
+        //        spriteId = CreateSprite(&sSpriteTemplate_Perfect, PERFECT_X, SEPARATE_SCREEN_MODIFIER, 0);
+        //    else
+        //        spriteId = CreateSprite(&sSpriteTemplate_Perfect, PERFECT_X, PERFECT_Y, 0);
+        //    if (FG_PERFECT_CHAIN_INCREASE == TRUE)
+        //        UpdateChainFishingStreak();
+        //    spriteData.sTaskId = taskId;
+        //}
+        //else // If it wasn't a perfect catch.
+        //{
             PlaySE(SE_PIN);
-        }
+        //}
 
         FlagSet(FG_FLAG_FIRST_TIME_TUTORIAL);
         FillWindowPixelBuffer(0, PIXEL_FILL(1));
@@ -2132,13 +2230,12 @@ static void SpriteCB_Treasure(struct Sprite *sprite)
         case TREASURE_SPAWNED:
             if (sprite->sTreasureScore >= TREASURE_TIME_GOAL) // If the treasure score goal has been achieved.
             {
-                if (sprite->sTreasureCounter == 0)
-                    gFieldCallback2 = FieldCB_ReturnToFieldFishTreasure;
                 gSprites[gTasks[sprite->sTaskId].tScoreMeterSpriteId].sTreasurePause = FALSE;
                 sprite->sTreasureCounter++;
 
                 if (sprite->sTreasureCounter >= 2)
                 {
+                    FlagSet(FLAG_GOT_ITEM_BOX);
                     PlaySE(SE_SUCCESS);
                     StartSpriteAnim(sprite, ANIM_TREASURE_CLOSED);
                     StartSpriteAffineAnim(sprite, ANIM_TREASURE_SHRINK_FAST);
@@ -2352,14 +2449,15 @@ void Task_DoReturnToFieldFishTreasure(u8 taskId)
         case FISHTASK_CREATE_ITEM_SPRITE:
             if (TreasureSprite.animEnded || TreasureSpriteId == MAX_SPRITES)
             {
-                if (!AddBagItem(gSpecialVar_ItemId, 1))
-                {
-                    RoomForItem = FALSE;
-                }
-                else
-                {
-                    PlayFanfare(FANFARE_OBTAIN_ITEM);
-                }
+                u32 species = GetTreasureSpeciesFromSpecies();
+
+                PlayFanfare(FANFARE_OBTAIN_ITEM);
+                //if (gSpecialVar_ItemId == sMonTreasures[species].item)
+
+
+
+
+                //VarSet(sMonTreasures[species].treasureVar, )
                 spriteId = AddCustomItemIconSprite(&sSpriteTemplate_Item, TAG_ITEM, TAG_ITEM, gSpecialVar_ItemId);
                 spriteData.sTaskId = taskId;
                 ItemSpriteId = spriteId;
@@ -2493,8 +2591,11 @@ void Task_DoReturnToFieldFishTreasure(u8 taskId)
             break;
         case FISHTASK_END_TASK:
             EraseFieldMessageBox(TRUE);
+            FlagClear(FLAG_GOT_ITEM_BOX);
             ResetPlayerAvatar(taskData.tPlayerGFXId);
+            gPlayerAvatar.preventStep = FALSE;
             UnlockPlayerFieldControls();
+            UnfreezeObjectEvents();
             DestroyTask(taskId);
             ScriptUnfreezeObjectEvents();
             break;

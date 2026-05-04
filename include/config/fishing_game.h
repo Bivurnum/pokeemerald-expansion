@@ -9,7 +9,7 @@
 #define FG_OBSCURE_UNDISCOVERED_MONS        TRUE    // If TRUE, the Pokemon icon will be obscured if that species has not been seen in the Pokedex.
 #define FG_VAGUE_FISH_FOR_OBSCURED          FALSE   // If TRUE, uses a vague fish shape instead of a blacked out Pokemon icon when obscured.
 #define FG_OBSCURE_ALL_FISH                 FALSE   // If TRUE, the Pokemon icon will always be obscured.
-#define FG_BAR_WIDTH_FROM_ROD_TYPE          TRUE    // If TRUE, sets the fishing bar width based on the type of rod used.
+#define FG_BAR_WIDTH_FROM_ROD_TYPE          FALSE    // If TRUE, sets the fishing bar width based on the type of rod used.
 #define FG_PERFECT_CHAIN_INCREASE           FALSE   // If TRUE, getting a "Perfect" in the minigame increases the chain fishing streak by an additional point.
 #define FG_VAR_TREASURE_CHANCE              0       // Replace 0 with an unused Var to use it to change the percent chance a random treasure will spawn via scripts.
 #define FG_VAR_ITEM_RARITY                  0       // Replace 0 with an unused Var to use it to change the rarity of the treasure item pool via scripts.

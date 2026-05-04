@@ -603,7 +603,7 @@ MtEmber_Exterior_EventScript_ItemUltraBall::
 	end
 
 MtEmber_Exterior_EventScript_ItemFireStone::
-	finditem ITEM_FIRE_STONE
+	finditem ITEM_MAGIKARP_SCALE
 	end
 
 MtEmber_Exterior_EventScript_ItemDireHit::

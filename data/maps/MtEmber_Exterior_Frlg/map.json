@@ -378,7 +378,7 @@
       "x": 18,
       "y": 17,
       "elevation": 0,
-      "item": "ITEM_FIRE_STONE",
+      "item": "ITEM_MAGIKARP_SCALE",
       "flag": "FLAG_HIDDEN_ITEM_MT_EMBER_EXTERIOR_FIRE_STONE",
       "quantity": 1,
       "underfoot": false

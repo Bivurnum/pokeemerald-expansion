@@ -282,7 +282,7 @@ enum __attribute__((packed)) Item
     ITEM_RETRO_MAIL = 210,
 
     // Evolution Items
-    ITEM_FIRE_STONE = 211,
+    ITEM_MAGIKARP_SCALE = 211,
     ITEM_WATER_STONE = 212,
     ITEM_THUNDER_STONE = 213,
     ITEM_THUNDERSTONE = ITEM_THUNDER_STONE, // Pre-Gen VI name
@@ -530,7 +530,7 @@ enum __attribute__((packed)) Item
 
     // Type-boosting Held Items
     ITEM_SILK_SCARF = 425,
-    ITEM_CHARCOAL = 426,
+    ITEM_GOOD_WOOD = 426,
     ITEM_MYSTIC_WATER = 427,
     ITEM_MAGNET = 428,
     ITEM_MIRACLE_SEED = 429,
@@ -596,7 +596,7 @@ enum __attribute__((packed)) Item
     ITEM_LUCKY_EGG = 470,
     ITEM_SCOPE_LENS = 471,
     ITEM_LEFTOVERS = 472,
-    ITEM_SHELL_BELL = 473,
+    ITEM_SHELL = 473,
     ITEM_WIDE_LENS = 474,
     ITEM_MUSCLE_BAND = 475,
     ITEM_WISE_GLASSES = 476,
@@ -623,7 +623,7 @@ enum __attribute__((packed)) Item
     ITEM_AIR_BALLOON = 497,
     ITEM_RED_CARD = 498,
     ITEM_RING_TARGET = 499,
-    ITEM_BINDING_BAND = 500,
+    ITEM_SUPER_STRING = 500,
     ITEM_EJECT_BUTTON = 501,
     ITEM_WEAKNESS_POLICY = 502,
     ITEM_ASSAULT_VEST = 503,

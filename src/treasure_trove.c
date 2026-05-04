@@ -1,13 +1,26 @@
 #include "global.h"
 #include "treasure_trove.h"
+#include "bg.h"
 #include "decompress.h"
 #include "event_data.h"
+#include "event_object_lock.h"
+#include "event_object_movement.h"
+#include "field_effect.h"
 #include "fishing_game.h"
+#include "item_menu.h"
 #include "main.h"
 #include "menu.h"
+#include "palette.h"
+#include "script.h"
+#include "sound.h"
+#include "string_util.h"
+#include "strings.h"
 #include "task.h"
 #include "text.h"
 #include "text_window.h"
+#include "constants/event_objects.h"
+#include "constants/field_effects.h"
+#include "constants/songs.h"
 
 static const u32 gMugshotFrame_Gfx[] = INCBIN_U32("graphics/treasure_trove/mugshot_frame.4bpp.lz");
 static const u16 sMugshotFrame_Pal[] = INCBIN_U16("graphics/treasure_trove/mugshot_frame.gbapal");
@@ -348,29 +361,119 @@ static const struct SpriteTemplate sSpriteTemplate_Mugshot =
     .callback = SpriteCallbackDummy
 };
 
-/*
-static void (*const sFishAfterCaught[])(u8) = {
-    [SPECIES_MAGIKARP] =    Task_AfterCaught,
-};
+static const u8 gText_MagikarpFirst[] = _("Karp!\nWhat do you want?\pA piece of treasure?\nI did find something shiny earlier.\pHere.\nYou can have it.{PAUSE_UNTIL_PRESS}");
+static const u8 gText_KrabbyFirst[] = _("Alright!\nYou're really asking for a pinching!\pGet ready for-\pOh!\nYou're just looking for lost loot?\pI think I've got a piece right here.{PAUSE_UNTIL_PRESS}");
+static const u8 gText_ArrokudaFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_GyaradosFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_OctilleryFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_SkrelpFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_BruxishFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_TentacruelFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_WailmerFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_WooperFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_BarboachFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_CarvanhaFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_AzumarillFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_LuvdiscFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_FinizenFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_CramorantFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_DondozoFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_StaryuFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_ShellderFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_LumineonFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_DragonairFirst[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
 
-static const u8 *const sPyramidFloorNames[FRONTIER_STAGES_PER_CHALLENGE + 1] =
+static const u8 gText_MagikarpCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_KrabbyCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_ArrokudaCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_GyaradosCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_OctilleryCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_SkrelpCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_BruxishCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_TentacruelCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_WailmerCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_WooperCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_BarboachCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_CarvanhaCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_AzumarillCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_LuvdiscCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_FinizenCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_CramorantCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_DondozoCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_StaryuCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_ShellderCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_LumineonCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_DragonairCaughtAgain[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+
+static const u8 gText_MagikarpCaughtAgainNoTreasure[] = _("Karp!\pWe Magikarp don't have any more of\nthose shiny things.\pIt is very fun to be caught, though.\nSee you next time!{PAUSE_UNTIL_PRESS}");
+static const u8 gText_KrabbyCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_ArrokudaCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_GyaradosCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_OctilleryCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_SkrelpCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_BruxishCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_TentacruelCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_WailmerCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_WooperCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_BarboachCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_CarvanhaCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_AzumarillCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_LuvdiscCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_FinizenCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_CramorantCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_DondozoCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_StaryuCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_ShellderCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_LumineonCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_DragonairCaughtAgainNoTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+
+static const u8 gText_MagikarpAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_KrabbyAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_ArrokudaAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_GyaradosAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_OctilleryAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_SkrelpAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_BruxishAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_TentacruelAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_WailmerAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_WooperAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_BarboachAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_CarvanhaAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_AzumarillAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_LuvdiscAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_FinizenAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_CramorantAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_DondozoAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_StaryuAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_ShellderAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_LumineonAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+static const u8 gText_DragonairAfterTreasure[] = _("PLACEHOLDER{PAUSE_UNTIL_PRESS}");
+
+static const u8 gText_GotPieceOfTreasure[] = _("You got a piece of treasure!");
+
+static const u8 *const sTreasureText[][4] =
 {
-    gText_Floor1,
-    gText_Floor2,
-    gText_Floor3,
-    gText_Floor4,
-    gText_Floor5,
-    gText_Floor6,
-    gText_Floor7,
-    gText_Peak
-};
-*/
-
-static const u8 gText_MagikarpFirst[] = _("Karp!\nWhat do you want?\pA piece of treasure?\nI did find something shiny earlier.\pHere.\nYou can have it.");
-
-static const u8 *const sFirstCaughtText1[] =
-{
-
+    [TT_MAGIKARP]   = {gText_MagikarpFirst,   gText_MagikarpCaughtAgain,   gText_MagikarpAfterTreasure,   gText_MagikarpCaughtAgainNoTreasure  },
+    [TT_KRABBY]     = {gText_KrabbyFirst,     gText_KrabbyCaughtAgain,     gText_KrabbyAfterTreasure,     gText_KrabbyCaughtAgainNoTreasure    },
+    [TT_ARROKUDA]   = {gText_ArrokudaFirst,   gText_ArrokudaCaughtAgain,   gText_ArrokudaAfterTreasure,   gText_ArrokudaCaughtAgainNoTreasure  },
+    [TT_GYARADOS]   = {gText_GyaradosFirst,   gText_GyaradosCaughtAgain,   gText_GyaradosAfterTreasure,   gText_GyaradosCaughtAgainNoTreasure  },
+    [TT_OCTILLERY]  = {gText_OctilleryFirst,  gText_OctilleryCaughtAgain,  gText_OctilleryAfterTreasure,  gText_OctilleryCaughtAgainNoTreasure },
+    [TT_SKRELP]     = {gText_SkrelpFirst,     gText_SkrelpCaughtAgain,     gText_SkrelpAfterTreasure,     gText_SkrelpCaughtAgainNoTreasure    },
+    [TT_BRUXISH]    = {gText_BruxishFirst,    gText_BruxishCaughtAgain,    gText_BruxishAfterTreasure,    gText_BruxishCaughtAgainNoTreasure   },
+    [TT_TENTACRUEL] = {gText_TentacruelFirst, gText_TentacruelCaughtAgain, gText_TentacruelAfterTreasure, gText_TentacruelCaughtAgainNoTreasure},
+    [TT_WAILMER]    = {gText_WailmerFirst,    gText_WailmerCaughtAgain,    gText_WailmerAfterTreasure,    gText_WailmerCaughtAgainNoTreasure   },
+    [TT_WOOPER]     = {gText_WooperFirst,     gText_WooperCaughtAgain,     gText_WooperAfterTreasure,     gText_WooperCaughtAgainNoTreasure    },
+    [TT_BARBOACH]   = {gText_BarboachFirst,   gText_BarboachCaughtAgain,   gText_BarboachAfterTreasure,   gText_BarboachCaughtAgainNoTreasure  },
+    [TT_CARVANHA]   = {gText_CarvanhaFirst,   gText_CarvanhaCaughtAgain,   gText_CarvanhaAfterTreasure,   gText_CarvanhaCaughtAgainNoTreasure  },
+    [TT_AZUMARILL]  = {gText_AzumarillFirst,  gText_AzumarillCaughtAgain,  gText_AzumarillAfterTreasure,  gText_AzumarillCaughtAgainNoTreasure },
+    [TT_LUVDISC]    = {gText_LuvdiscFirst,    gText_LuvdiscCaughtAgain,    gText_LuvdiscAfterTreasure,    gText_LuvdiscCaughtAgainNoTreasure   },
+    [TT_FINIZEN]    = {gText_FinizenFirst,    gText_FinizenCaughtAgain,    gText_FinizenAfterTreasure,    gText_FinizenCaughtAgainNoTreasure   },
+    [TT_CRAMORANT]  = {gText_CramorantFirst,  gText_CramorantCaughtAgain,  gText_CramorantAfterTreasure,  gText_CramorantCaughtAgainNoTreasure },
+    [TT_DONDOZO]    = {gText_DondozoFirst,    gText_DondozoCaughtAgain,    gText_DondozoAfterTreasure,    gText_DondozoCaughtAgainNoTreasure   },
+    [TT_STARYU]     = {gText_StaryuFirst,     gText_StaryuCaughtAgain,     gText_StaryuAfterTreasure,     gText_StaryuCaughtAgainNoTreasure    },
+    [TT_SHELLDER]   = {gText_ShellderFirst,   gText_ShellderCaughtAgain,   gText_ShellderAfterTreasure,   gText_ShellderCaughtAgainNoTreasure  },
+    [TT_LUMINEON]   = {gText_LumineonFirst,   gText_LumineonCaughtAgain,   gText_LumineonAfterTreasure,   gText_LumineonCaughtAgainNoTreasure  },
+    [TT_DRAGONAIR]  = {gText_DragonairFirst,  gText_DragonairCaughtAgain,  gText_DragonairAfterTreasure,  gText_DragonairCaughtAgainNoTreasure }
 };
 
 static const u8 sSpeciesToTreasureEnum[] =
@@ -400,25 +503,81 @@ static const u8 sSpeciesToTreasureEnum[] =
     [SPECIES_KYOGRE]     = TT_KYOGRE,
 };
 
+u32 GetTreasureSpeciesFromSpecies(void)
+{
+    return sSpeciesToTreasureEnum[GetMonData(&gEnemyParty[0], MON_DATA_SPECIES)];
+}
+
 #define taskData            gTasks[taskId]
 #define tState              data[0]
 #define tCounter            data[1]
 #define tMugFrameId         data[2]
 #define tMugshotId          data[3]
 #define tSpecies            data[4]
-#define TaskSpecies             data[5]
+#define tObjId              data[5]
+
+static void HideMugshot(u8 taskId)
+{
+    gSprites[taskData.tMugFrameId].invisible = TRUE;
+    gSprites[taskData.tMugshotId].invisible = TRUE;
+}
+
+static void ShowMugshot(u8 taskId)
+{
+    gSprites[taskData.tMugFrameId].invisible = FALSE;
+    gSprites[taskData.tMugshotId].invisible = FALSE;
+}
+
+enum AfterCaughtTaskStates
+{
+    STATE_WAIT_START,
+    STATE_CREATE_MUGSHOT_DIALOGUE_BOX,
+    STATE_FIRST_DIALOGUE,
+    STATE_CLEAR_DIALOGUE_1,
+    STATE_GOT_TREASURE,
+    STATE_CLEAR_DIALOGUE_2,
+    STATE_DIALOGUE_AFTER_TREASURE,
+    STATE_MON_START_LEAVE,
+    STATE_MON_LEAVE_SPLASH,
+    STATE_FINISH
+};
+
+static const u8 sSpeciesTreasureCounts[] =
+{
+    [TT_MAGIKARP]   = 50,
+    [TT_KRABBY]     = 30,
+    [TT_ARROKUDA]   = 20,
+    [TT_GYARADOS]   = 10,
+    [TT_OCTILLERY]  = 10,
+    [TT_SKRELP]     = 30,
+    [TT_BRUXISH]    = 20,
+    [TT_TENTACRUEL] = 10,
+    [TT_WAILMER]    = 10,
+    [TT_WOOPER]     = 30,
+    [TT_BARBOACH]   = 20,
+    [TT_CARVANHA]   = 10,
+    [TT_AZUMARILL]  = 10,
+    [TT_LUVDISC]    = 30,
+    [TT_FINIZEN]    = 20,
+    [TT_CRAMORANT]  = 10,
+    [TT_DONDOZO]    = 10,
+    [TT_STARYU]     = 30,
+    [TT_SHELLDER]   = 20,
+    [TT_LUMINEON]   = 10,
+    [TT_DRAGONAIR]  = 10,
+};
 
 void Task_AfterCaught(u8 taskId)
 {
     switch (taskData.tState)
     {
-    case 0:
+    case STATE_WAIT_START:
         if (taskData.tCounter >= 60)
-            taskData.tState++;
+            taskData.tState = STATE_CREATE_MUGSHOT_DIALOGUE_BOX;
 
         taskData.tCounter++;
         break;
-    case 1:
+    case STATE_CREATE_MUGSHOT_DIALOGUE_BOX:
         taskData.tSpecies = sSpeciesToTreasureEnum[GetMonData(&gEnemyParty[0], MON_DATA_SPECIES)];
         LoadMessageBoxAndFrameGfx(0, TRUE);
         LoadCompressedSpriteSheet(&sSpriteSheet_MugshotFrame);
@@ -427,17 +586,137 @@ void Task_AfterCaught(u8 taskId)
         LoadCompressedSpriteSheet(&sSpriteSheets_Mugshots[taskData.tSpecies]);
         LoadSpritePalette(&sSpritePalettes_Mugshots[taskData.tSpecies]);
         taskData.tMugshotId = CreateSprite(&sSpriteTemplate_Mugshot, 35, 102, 1);
-        taskData.tState++;
+        taskData.tState = STATE_FIRST_DIALOGUE;
         break;
-    case 2:
+    case STATE_FIRST_DIALOGUE:
         if (FlagGet(FLAG_MAGIKARP_FIRST + taskData.tSpecies))
         {
-
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            if (gSaveBlock3Ptr->trove.speciesTreasureCounts[taskData.tSpecies] < sSpeciesTreasureCounts[taskData.tSpecies])
+            {
+                AddTextPrinterParameterized(0, FONT_NORMAL, sTreasureText[taskData.tSpecies][1], 0, 1, 1, NULL);
+                taskData.tState = STATE_CLEAR_DIALOGUE_1;
+            }
+            else
+            {
+                AddTextPrinterParameterized(0, FONT_NORMAL, sTreasureText[taskData.tSpecies][3], 0, 1, 1, NULL);
+                taskData.tState = STATE_MON_START_LEAVE;
+            }
         }
         else
         {
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            AddTextPrinterParameterized(0, FONT_NORMAL, sTreasureText[taskData.tSpecies][0], 0, 1, 1, NULL);
             FlagSet(FLAG_MAGIKARP_FIRST + taskData.tSpecies);
+            taskData.tState = STATE_CLEAR_DIALOGUE_1;
         }
+        break;
+    case STATE_CLEAR_DIALOGUE_1:
+        if (!IsTextPrinterActiveOnWindow(0))
+        {
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_EmptyString2, 0, 1, 0, NULL);
+            RunTextPrinters();
+            HideMugshot(taskId);
+            HideBg(0);
+            taskData.tCounter = 0;
+            taskData.tState = STATE_GOT_TREASURE;
+            return;
+        }
+
+        RunTextPrinters();
+        break;
+    case STATE_GOT_TREASURE:
+        if (taskData.tCounter == 30)
+        {
+            ShowBg(0);
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_GotPieceOfTreasure, 0, 1, 1, NULL);
+            PlayFanfare(MUS_OBTAIN_ITEM);
+            gSaveBlock3Ptr->trove.speciesTreasureCounts[taskData.tSpecies]++;
+            taskData.tState = STATE_CLEAR_DIALOGUE_2;
+            return;
+        }
+
+        taskData.tCounter++;
+        break;
+    case STATE_CLEAR_DIALOGUE_2:
+        if (IsFanfareTaskInactive() && JOY_NEW(A_BUTTON | B_BUTTON))
+        {
+            PlaySE(SE_SELECT);
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            AddTextPrinterParameterized(0, FONT_NORMAL, gText_EmptyString2, 0, 1, 0, NULL);
+            RunTextPrinters();
+            HideBg(0);
+            taskData.tCounter = 0;
+            taskData.tState = STATE_DIALOGUE_AFTER_TREASURE;
+            return;
+        }
+
+        RunTextPrinters();
+        break;
+    case STATE_DIALOGUE_AFTER_TREASURE:
+        if (taskData.tCounter == 30)
+        {
+            FillWindowPixelBuffer(0, PIXEL_FILL(1));
+            ShowBg(0);
+            ShowMugshot(taskId);
+            AddTextPrinterParameterized(0, FONT_NORMAL, sTreasureText[taskData.tSpecies][2], 0, 1, 1, NULL);
+            taskData.tState = STATE_MON_START_LEAVE;
+            return;
+        }
+
+        taskData.tCounter++;
+        break;
+    case STATE_MON_START_LEAVE:
+        if (!IsTextPrinterActiveOnWindow(0))
+        {
+            struct ObjectEvent *obj = &gObjectEvents[GetObjectEventIdByLocalId(OBJ_EVENT_ID_FOLLOWER)];
+
+            EraseFieldMessageBox(TRUE);
+            DestroySpriteAndFreeResources(&gSprites[taskData.tMugFrameId]);
+            DestroySpriteAndFreeResources(&gSprites[taskData.tMugshotId]);
+            ObjectEventSetHeldMovement(obj, GetJumpInPlaceMovementAction(obj->facingDirection));
+            taskData.tState = STATE_MON_LEAVE_SPLASH;
+        }
+
+        RunTextPrinters();
+        break;
+    case STATE_MON_LEAVE_SPLASH:
+        struct ObjectEvent *obj = &gObjectEvents[GetObjectEventIdByLocalId(OBJ_EVENT_ID_FOLLOWER)];
+
+        if (ObjectEventClearHeldMovementIfFinished(obj))
+        {
+            PlaySE(SE_M_DIVE);
+            gFieldEffectArguments[0] = obj->currentCoords.x;
+            gFieldEffectArguments[1] = obj->currentCoords.y;
+            gFieldEffectArguments[2] = 3; // Elevation.
+            gFieldEffectArguments[3] = 1; // Priority.
+            FieldEffectStart(FLDEFF_JUMP_BIG_SPLASH);
+            RemoveObjectEvent(obj);
+            taskData.tCounter = 0;
+            taskData.tState = STATE_FINISH;
+        }
+        break;
+    case STATE_FINISH:
+        if (taskData.tCounter == 30)
+        {
+            if (!FlagGet(FLAG_GOT_ITEM_BOX))
+            {
+                gPlayerAvatar.preventStep = FALSE;
+                UnlockPlayerFieldControls();
+                UnfreezeObjectEvents();
+                DestroyTask(taskId);
+            }
+            else
+            {
+                taskData.data[1] = 0; 
+                taskData.func = Task_DoReturnToFieldFishTreasure;
+            }
+            return;
+        }
+
+        taskData.tCounter++;
         break;
     }
 }

@@ -72,7 +72,7 @@
 #define FLAG_SHELLDER_FIRST     0x32
 #define FLAG_LUMINEON_FIRST     0x33
 #define FLAG_DRAGONAIR_FIRST    0x34
-#define FLAG_UNUSED_0x035    0x35 // Unused Flag
+#define FLAG_GOT_ITEM_BOX       0x35
 #define FLAG_UNUSED_0x036    0x36 // Unused Flag
 #define FLAG_UNUSED_0x037    0x37 // Unused Flag
 #define FLAG_UNUSED_0x038    0x38 // Unused Flag

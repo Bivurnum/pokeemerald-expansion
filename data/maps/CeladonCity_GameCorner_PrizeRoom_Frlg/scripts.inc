@@ -362,7 +362,7 @@ CeladonCity_GameCorner_PrizeRoom_EventScript_MiracleSeed::
 	end
 
 CeladonCity_GameCorner_PrizeRoom_EventScript_Charcoal::
-	setvar VAR_TEMP_1, ITEM_CHARCOAL
+	setvar VAR_TEMP_1, ITEM_GOOD_WOOD
 	setvar VAR_TEMP_2, 1000
 	goto CeladonCity_GameCorner_PrizeRoom_EventScript_ConfirmPrizeItem
 	end

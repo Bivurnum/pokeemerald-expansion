@@ -218,7 +218,7 @@ static bool32 Fishing_WaitBeforeDots(struct Task *task)
         gFieldEffectArguments[1] = y;
         gFieldEffectArguments[2] = 3; // Elevation.
         gFieldEffectArguments[3] = 1; // Priority.
-        FieldEffectStart(FLDEFF_JUMP_BIG_SPLASH);
+        FieldEffectStart(FLDEFF_JUMP_SMALL_SPLASH);
         task->tStep = FISHING_INIT_DOTS;
     }
     return FALSE;

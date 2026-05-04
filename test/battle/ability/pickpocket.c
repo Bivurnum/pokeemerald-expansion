@@ -276,8 +276,8 @@ SINGLE_BATTLE_TEST("Pickpocket steals Life Orb after it activates")
 SINGLE_BATTLE_TEST("Pickpocket steals Shell Bell after it heals the user")
 {
     GIVEN {
-        ASSUME(gItemsInfo[ITEM_SHELL_BELL].holdEffect == HOLD_EFFECT_SHELL_BELL);
-        PLAYER(SPECIES_WOBBUFFET) { Item(ITEM_SHELL_BELL); MaxHP(100); HP(66); }
+        ASSUME(gItemsInfo[ITEM_SHELL].holdEffect == HOLD_EFFECT_SHELL_BELL);
+        PLAYER(SPECIES_WOBBUFFET) { Item(ITEM_SHELL); MaxHP(100); HP(66); }
         OPPONENT(SPECIES_SNEASEL) { Ability(ABILITY_PICKPOCKET); }
     } WHEN {
         TURN { MOVE(player, MOVE_SCRATCH); }
@@ -288,7 +288,7 @@ SINGLE_BATTLE_TEST("Pickpocket steals Shell Bell after it heals the user")
         ABILITY_POPUP(opponent, ABILITY_PICKPOCKET);
         MESSAGE("The opposing Sneasel stole Wobbuffet's Shell Bell!");
     } THEN {
-        EXPECT(opponent->item == ITEM_SHELL_BELL);
+        EXPECT(opponent->item == ITEM_SHELL);
         EXPECT(player->item == ITEM_NONE);
     }
 }

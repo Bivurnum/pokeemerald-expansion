@@ -4103,9 +4103,9 @@ const struct ItemInfo gItemsInfo[] =
 
 // Evolution Items
 
-    [ITEM_FIRE_STONE] =
+    [ITEM_MAGIKARP_SCALE] =
     {
-        .name = ITEM_NAME("Fire Stone"),
+        .name = ITEM_NAME("Magikarp Scale"),
         .price = (I_PRICE >= GEN_7) ? 3000 : 2100,
         .description = sEvolutionStoneDesc,
         .pocket = POCKET_ITEMS,
@@ -8879,9 +8879,9 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_SilkScarf,
     },
 
-    [ITEM_CHARCOAL] =
+    [ITEM_GOOD_WOOD] =
     {
-        .name = ITEM_NAME("Charcoal"),
+        .name = ITEM_NAME("Good Wood"),
     #if I_PRICE >= GEN_9
         .price = 3000,
     #elif I_PRICE >= GEN_7
@@ -9958,9 +9958,9 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_Leftovers,
     },
 
-    [ITEM_SHELL_BELL] =
+    [ITEM_SHELL] =
     {
-        .name = ITEM_NAME("Shell Bell"),
+        .name = ITEM_NAME("Shell"),
     #if I_PRICE >= GEN_9
         .price = 20000,
     #elif I_PRICE >= GEN_7
@@ -10620,7 +10620,7 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_RingTarget,
     },
 
-    [ITEM_BINDING_BAND] =
+    [ITEM_SUPER_STRING] =
     {
         .name = ITEM_NAME("Binding Band"),
     #if I_PRICE >= GEN_9

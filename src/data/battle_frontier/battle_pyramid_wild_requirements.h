@@ -119,7 +119,7 @@ static const u16 sPowerfulNormalMoves[] = {
     MOVE_DOUBLE_EDGE,
 };
 
-static const u16 sEvoItems[] = {ITEM_FIRE_STONE, ITEM_WATER_STONE, ITEM_THUNDER_STONE};
+static const u16 sEvoItems[] = {ITEM_MAGIKARP_SCALE, ITEM_WATER_STONE, ITEM_THUNDER_STONE};
 
 static const struct BattlePyramidRequirement sBattlePyramidRequirementsByRound[] = {
     [0] = /* pokemon with moves that paraylze */
