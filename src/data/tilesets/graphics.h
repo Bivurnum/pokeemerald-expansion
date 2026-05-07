@@ -3048,3 +3048,22 @@ const u16 ALIGNED(4) gTilesetPalettes_General_Frlg[][16] =
 const u32 gTilesetTiles_General_Frlg[] = INCBIN_U32("data/tilesets/primary/general_frlg/tiles.4bpp.smol");
 
 #endif // IS_FRLG
+
+const u16 gTilesetPalettes_TreasureIsland[][16] =
+{
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/00.gbapal"),
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/01.gbapal"),
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/02.gbapal"),
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/03.gbapal"),
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/04.gbapal"),
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/05.gbapal"),
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/06.gbapal"),
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/07.gbapal"),
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/08.gbapal"),
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/09.gbapal"),
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/10.gbapal"),
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/11.gbapal"),
+    INCBIN_U16("data/tilesets/primary/treasure_island/palettes/12.gbapal"),
+};
+
+const u32 gTilesetTiles_TreasureIsland[] = INCBIN_U32("data/tilesets/primary/treasure_island/tiles.4bpp.lz");

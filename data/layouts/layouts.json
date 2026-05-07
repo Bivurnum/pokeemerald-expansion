@@ -9323,6 +9323,16 @@
       "border_height": 2,
       "border_width": 2,
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EAST_BEACH",
+      "name": "EastBeach_Layout",
+      "width": 20,
+      "height": 23,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/EastBeach/border.bin",
+      "blockdata_filepath": "data/layouts/EastBeach/map.bin"
     }
   ]
 }
