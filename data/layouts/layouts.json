@@ -9328,11 +9328,21 @@
       "id": "LAYOUT_EAST_BEACH",
       "name": "EastBeach_Layout",
       "width": 20,
-      "height": 23,
+      "height": 28,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/EastBeach/border.bin",
       "blockdata_filepath": "data/layouts/EastBeach/map.bin"
+    },
+    {
+      "id": "LAYOUT_FOREST",
+      "name": "Forest_Layout",
+      "width": 22,
+      "height": 21,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/Forest/border.bin",
+      "blockdata_filepath": "data/layouts/Forest/map.bin"
     }
   ]
 }

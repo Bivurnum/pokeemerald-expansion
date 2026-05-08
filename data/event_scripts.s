@@ -1739,3 +1739,5 @@ EventScript_PalletTown_PlayersHouse_2F_TurnOnPC::
 	.include "data/scripts/apricorn_tree.inc"
 
 	.include "data/maps/EastBeach/scripts.inc"
+
+	.include "data/maps/Forest/scripts.inc"
