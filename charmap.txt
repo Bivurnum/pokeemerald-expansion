@@ -471,6 +471,21 @@ NAME_MOM = 01
 NAME_PLAYER = 02
 NAME_COUNT = 03
 
+CREATE_MUGSHOT = FC 1D
+DESTROY_MUGSHOT = FC 1F
+
+@ these are basically what include/constants/field_mugshots.h have
+@ but without the x_COUNT and x_NONE ones for strings
+
+@ mugshot stuff begins
+
+MUGSHOT_TEST = 01
+
+EMOTE_NORMAL = 00
+EMOTE_ALT = 01
+
+@ mugshot stuff ends
+
 @ fonts
 
 FONT_SMALL = FC 06 00
