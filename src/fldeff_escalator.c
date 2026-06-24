@@ -58,51 +58,49 @@ static const s16 sEscalatorMetatiles_2F_2[ESCALATOR_STAGES] = {
 
 static const s16 sEscalatorMetatilesFrlg_BottomNextRail[ESCALATOR_STAGES] = 
 {
-    METATILE_PokemonCenterFrlg_Escalator_BottomNextRail_Transition2, 
-    METATILE_PokemonCenterFrlg_Escalator_BottomNextRail_Transition1, 
-    METATILE_PokemonCenterFrlg_Escalator_BottomNextRail_Normal
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame2,
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame1,
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame0
 };
 
 static const s16 sEscalatorMetatilesFrlg_BottomRail[ESCALATOR_STAGES] = 
 {
-    METATILE_PokemonCenterFrlg_Escalator_BottomRail_Transition2, 
-    METATILE_PokemonCenterFrlg_Escalator_BottomRail_Transition1, 
-    METATILE_PokemonCenterFrlg_Escalator_BottomRail_Normal
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame2,
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame1,
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame0
 };
 
 static const s16 sEscalatorMetatilesFrlg_BottomNext[ESCALATOR_STAGES] = 
 {
-    METATILE_PokemonCenterFrlg_Escalator_BottomNext_Transition2, 
-    METATILE_PokemonCenterFrlg_Escalator_BottomNext_Transition1, 
-    METATILE_PokemonCenterFrlg_Escalator_BottomNext_Normal
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame2,
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame1,
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame0
 };
 
 static const s16 sEscalatorMetatilesFrlg_Bottom[ESCALATOR_STAGES] = 
 {
-    METATILE_PokemonCenterFrlg_Escalator_Bottom_Transition2, 
-    METATILE_PokemonCenterFrlg_Escalator_Bottom_Transition1, 
-    METATILE_PokemonCenterFrlg_Escalator_Bottom_Normal
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame2,
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame1,
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame0
 };
 
 static const s16 sEscalatorMetatilesFrlg_TopNext[ESCALATOR_STAGES] = 
 {
-    METATILE_PokemonCenterFrlg_Escalator_TopNext_Normal, 
-    METATILE_PokemonCenterFrlg_Escalator_TopNext_Transition1, 
-    METATILE_PokemonCenterFrlg_Escalator_TopNext_Transition2
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame2,
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame1,
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame0
 };
 
 static const s16 sEscalatorMetatilesFrlg_Top[ESCALATOR_STAGES] = 
 {
-    METATILE_PokemonCenterFrlg_Escalator_Top_Normal, 
-    METATILE_PokemonCenterFrlg_Escalator_Top_Transition1, 
-    METATILE_PokemonCenterFrlg_Escalator_Top_Transition2
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame2,
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame1,
+    METATILE_PokemonCenter_Escalator1F_Tile0_Frame0
 };
 
 static const s16 sEscalatorMetatilesFrlg_TopNextRail[ESCALATOR_STAGES] = 
 {
-    METATILE_PokemonCenterFrlg_Escalator_TopNextRail_Normal, 
-    METATILE_PokemonCenterFrlg_Escalator_TopNextRail_Transition1, 
-    METATILE_PokemonCenterFrlg_Escalator_TopNextRail_Transition2
+
 };
 
 #define tState            data[0]
