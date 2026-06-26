@@ -1,5 +1,7 @@
 {
   "group_order": [
+    "gMapGroup_JurassicPark_Test",
+    "gMapGroup_JurassicPark_Beach",
     "gMapGroup_TownsAndRoutes",
     "gMapGroup_IndoorLittleroot",
     "gMapGroup_IndoorOldale",
@@ -72,10 +74,15 @@
     "gMapGroup_IndoorSixIsland_Frlg",
     "gMapGroup_IndoorThreeIslandRoute_Frlg",
     "gMapGroup_IndoorFiveIslandRoute_Frlg",
-    "gMapGroup_IndoorTwoIslandRoute_Frlg",
     "gMapGroup_IndoorSixIslandRoute_Frlg",
     "gMapGroup_IndoorSevenIslandRoute_Frlg",
-    "gMapGroup_JurassicPark_Test"
+    "gMapGroup_IndoorTwoIslandRoute_Frlg"
+  ],
+  "gMapGroup_JurassicPark_Test": [
+    "Forest_Test"
+  ],
+  "gMapGroup_JurassicPark_Beach": [
+    "JurassicPark_Beach_Docks"
   ],
   "gMapGroup_TownsAndRoutes": [
     "PetalburgCity",
@@ -1152,9 +1159,6 @@
   "gMapGroup_IndoorFiveIslandRoute_Frlg": [
     "FiveIsland_ResortGorgeous_House_Frlg"
   ],
-  "gMapGroup_IndoorTwoIslandRoute_Frlg": [
-    "TwoIsland_CapeBrink_House_Frlg"
-  ],
   "gMapGroup_IndoorSixIslandRoute_Frlg": [
     "SixIsland_WaterPath_House1_Frlg",
     "SixIsland_WaterPath_House2_Frlg"
@@ -1162,7 +1166,7 @@
   "gMapGroup_IndoorSevenIslandRoute_Frlg": [
     "SevenIsland_SevaultCanyon_House_Frlg"
   ],
-  "gMapGroup_JurassicPark_Test": [
-    "Forest_Test"
+  "gMapGroup_IndoorTwoIslandRoute_Frlg": [
+    "TwoIsland_CapeBrink_House_Frlg"
   ]
 }

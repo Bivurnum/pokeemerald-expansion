@@ -10217,6 +10217,18 @@
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/Forest_Test/border.bin",
       "blockdata_filepath": "data/layouts/Forest_Test/map.bin"
+    },
+    {
+      "id": "LAYOUT_JURASSIC_PARK_BEACH_DOCKS",
+      "name": "JurassicPark_Beach_Docks_Layout",
+      "width": 45,
+      "height": 40,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Forest_Primary",
+      "secondary_tileset": "gTileset_Beach_Secondary",
+      "border_filepath": "data/layouts/JurassicPark_Beach_Docks/border.bin",
+      "blockdata_filepath": "data/layouts/JurassicPark_Beach_Docks/map.bin"
     }
   ]
 }

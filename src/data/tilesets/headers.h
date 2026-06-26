@@ -1552,3 +1552,15 @@ const struct Tileset gTileset_Forest_Primary =
     .metatileAttributes = gMetatileAttributes_Forest_Primary,
     .callback = NULL,
 };
+
+
+const struct Tileset gTileset_Beach_Secondary =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_Beach_Secondary,
+    .palettes = gTilesetPalettes_Beach_Secondary,
+    .metatiles = gMetatiles_Beach_Secondary,
+    .metatileAttributes = gMetatileAttributes_Beach_Secondary,
+    .callback = NULL,
+};
