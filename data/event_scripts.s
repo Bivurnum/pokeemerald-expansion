@@ -1740,3 +1740,5 @@ EventScript_PalletTown_PlayersHouse_2F_TurnOnPC::
 	.include "data/scripts/wild_encounter.inc"
 
 	.include "data/maps/Forest_Test/scripts.inc"
+
+	.include "data/maps/JurassicPark_Beach_Docks/scripts.inc"
