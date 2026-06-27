@@ -1564,3 +1564,14 @@ const struct Tileset gTileset_Beach_Secondary =
     .metatileAttributes = gMetatileAttributes_Beach_Secondary,
     .callback = NULL,
 };
+
+const struct Tileset gTileset_Visitor_Centre_Secondary =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_Visitor_Centre_Secondary,
+    .palettes = gTilesetPalettes_Visitor_Centre_Secondary,
+    .metatiles = gMetatiles_Visitor_Centre_Secondary,
+    .metatileAttributes = gMetatileAttributes_Visitor_Centre_Secondary,
+    .callback = NULL,
+};
