@@ -10233,8 +10233,8 @@
     {
       "id": "LAYOUT_JURASSIC_PARK_ROAD_TO_VISITOR_CENTRE",
       "name": "JurassicPark_Road_To_Visitor_Centre_Layout",
-      "width": 66,
-      "height": 68,
+      "width": 58,
+      "height": 58,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_Forest_Primary",

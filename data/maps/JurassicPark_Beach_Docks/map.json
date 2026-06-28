@@ -2,7 +2,7 @@
   "id": "MAP_JURASSIC_PARK_BEACH_DOCKS",
   "name": "JurassicPark_Beach_Docks",
   "layout": "LAYOUT_JURASSIC_PARK_BEACH_DOCKS",
-  "music": "MUS_DUMMY",
+  "music": "MUS_FOREST_FIELD",
   "region_map_section": "MAPSEC_ABANDONED_SHIP",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -10,12 +10,12 @@
   "allow_cycling": false,
   "allow_escaping": false,
   "allow_running": false,
-  "show_map_name": true,
+  "show_map_name": false,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
     {
       "map": "MAP_JURASSIC_PARK_ROAD_TO_VISITOR_CENTRE",
-      "offset": -20,
+      "offset": -12,
       "direction": "up"
     }
   ],
