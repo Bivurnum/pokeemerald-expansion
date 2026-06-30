@@ -1,8 +1,8 @@
 {
-  "id": "MAP_JURASSIC_PARK_ROAD_TO_VISITOR_CENTRE",
-  "name": "JurassicPark_Road_To_Visitor_Centre",
-  "layout": "LAYOUT_JURASSIC_PARK_ROAD_TO_VISITOR_CENTRE",
-  "music": "MUS_FOREST_FIELD",
+  "id": "MAP_JURASSIC_PARK_DINO_ENCLOSURE",
+  "name": "JurassicPark_Dino_Enclosure",
+  "layout": "LAYOUT_JURASSIC_PARK_DINO_ENCLOSURE",
+  "music": "MUS_DUMMY",
   "region_map_section": "MAPSEC_ABANDONED_SHIP",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -10,25 +10,20 @@
   "allow_cycling": false,
   "allow_escaping": false,
   "allow_running": false,
-  "show_map_name": false,
+  "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
     {
-      "map": "MAP_JURASSIC_PARK_BEACH_DOCKS",
-      "offset": 12,
-      "direction": "down"
-    },
-    {
-      "map": "MAP_JURASSIC_PARK_DINO_ENCLOSURE",
-      "offset": 3,
-      "direction": "right"
+      "map": "MAP_JURASSIC_PARK_ROAD_TO_VISITOR_CENTRE",
+      "offset": -3,
+      "direction": "left"
     }
   ],
   "object_events": [
     {
-      "graphics_id": "OBJ_EVENT_GFX_SPECIES(RAGING_BOLT)",
-      "x": 34,
-      "y": 35,
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(TYRANTRUM)",
+      "x": 11,
+      "y": 15,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 0,
@@ -39,9 +34,9 @@
       "flag": "0"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_SPECIES(RAGING_BOLT)",
-      "x": 27,
-      "y": 47,
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(TYRUNT)",
+      "x": 20,
+      "y": 25,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 0,
@@ -52,9 +47,9 @@
       "flag": "0"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_SPECIES(RAGING_BOLT)",
-      "x": 51,
-      "y": 43,
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(TYRUNT)",
+      "x": 25,
+      "y": 14,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 0,
@@ -65,7 +60,15 @@
       "flag": "0"
     }
   ],
-  "warp_events": [],
+  "warp_events": [
+    {
+      "x": 24,
+      "y": 21,
+      "elevation": 0,
+      "dest_map": "MAP_JURASSIC_PARK_DINO_ENCLOSURE",
+      "dest_warp_id": "0"
+    }
+  ],
   "coord_events": [],
   "bg_events": []
 }

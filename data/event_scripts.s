@@ -1744,3 +1744,5 @@ EventScript_PalletTown_PlayersHouse_2F_TurnOnPC::
 	.include "data/maps/JurassicPark_Beach_Docks/scripts.inc"
 
 	.include "data/maps/JurassicPark_Road_To_Visitor_Centre/scripts.inc"
+
+	.include "data/maps/JurassicPark_Dino_Enclosure/scripts.inc"

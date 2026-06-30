@@ -10241,6 +10241,18 @@
       "secondary_tileset": "gTileset_Visitor_Centre_Secondary",
       "border_filepath": "data/layouts/JurassicPark_Road_To_Visitor_Centre/border.bin",
       "blockdata_filepath": "data/layouts/JurassicPark_Road_To_Visitor_Centre/map.bin"
+    },
+    {
+      "id": "LAYOUT_JURASSIC_PARK_DINO_ENCLOSURE",
+      "name": "JurassicPark_Dino_Enclosure_Layout",
+      "width": 40,
+      "height": 37,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Forest_Primary",
+      "secondary_tileset": "gTileset_Dino_Enclosure_Secondary",
+      "border_filepath": "data/layouts/JurassicPark_Dino_Enclosure/border.bin",
+      "blockdata_filepath": "data/layouts/JurassicPark_Dino_Enclosure/map.bin"
     }
   ]
 }

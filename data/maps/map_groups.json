@@ -86,7 +86,8 @@
     "JurassicPark_Beach_Docks"
   ],
   "gMapGroup_JurassicPark_Forest": [
-    "JurassicPark_Road_To_Visitor_Centre"
+    "JurassicPark_Road_To_Visitor_Centre",
+    "JurassicPark_Dino_Enclosure"
   ],
   "gMapGroup_TownsAndRoutes": [
     "PetalburgCity",

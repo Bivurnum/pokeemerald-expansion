@@ -1575,3 +1575,14 @@ const struct Tileset gTileset_Visitor_Centre_Secondary =
     .metatileAttributes = gMetatileAttributes_Visitor_Centre_Secondary,
     .callback = NULL,
 };
+
+const struct Tileset gTileset_Dino_Enclosure_Secondary =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_Dino_Enclosure_Secondary,
+    .palettes = gTilesetPalettes_Dino_Enclosure_Secondary,
+    .metatiles = gMetatiles_Dino_Enclosure_Secondary,
+    .metatileAttributes = gMetatileAttributes_Dino_Enclosure_Secondary,
+    .callback = NULL,
+};
