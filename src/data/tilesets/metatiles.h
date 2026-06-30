@@ -415,3 +415,8 @@ const u16 gMetatileAttributes_Forest_Primary[] = INCBIN_U16("data/tilesets/prima
 const u16 gMetatiles_Beach_Secondary[] = INCBIN_U16("data/tilesets/secondary/beach_secondary/metatiles.bin");
 const u16 gMetatileAttributes_Beach_Secondary[] = INCBIN_U16("data/tilesets/secondary/beach_secondary/metatile_attributes.bin");
 
+const u16 gMetatiles_Visitor_Centre_Secondary[] = INCBIN_U16("data/tilesets/secondary/visitor_centre_secondary/metatiles.bin");
+const u16 gMetatileAttributes_Visitor_Centre_Secondary[] = INCBIN_U16("data/tilesets/secondary/visitor_centre_secondary/metatile_attributes.bin");
+
+const u16 gMetatiles_Dino_Enclosure_Secondary[] = INCBIN_U16("data/tilesets/secondary/dino_enclosure_secondary/metatiles.bin");
+const u16 gMetatileAttributes_Dino_Enclosure_Secondary[] = INCBIN_U16("data/tilesets/secondary/dino_enclosure_secondary/metatile_attributes.bin");

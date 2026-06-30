@@ -2,6 +2,7 @@
   "group_order": [
     "gMapGroup_JurassicPark_Test",
     "gMapGroup_JurassicPark_Beach",
+    "gMapGroup_JurassicPark_Forest",
     "gMapGroup_TownsAndRoutes",
     "gMapGroup_IndoorLittleroot",
     "gMapGroup_IndoorOldale",
@@ -83,6 +84,10 @@
   ],
   "gMapGroup_JurassicPark_Beach": [
     "JurassicPark_Beach_Docks"
+  ],
+  "gMapGroup_JurassicPark_Forest": [
+    "JurassicPark_Road_To_Visitor_Centre",
+    "JurassicPark_Dino_Enclosure"
   ],
   "gMapGroup_TownsAndRoutes": [
     "PetalburgCity",
