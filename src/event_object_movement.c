@@ -6895,6 +6895,17 @@ u8 ObjectEventGetHeldMovementActionId(struct ObjectEvent *objectEvent)
     return MOVEMENT_ACTION_NONE;
 }
 
+static const s32 sBigPokemonVertOffset[NUM_SPECIES][CARDINAL_DIRECTION_COUNT] =
+{
+    [SPECIES_TYRANTRUM] =
+    {
+        [DIR_NORTH] = 4,
+        [DIR_SOUTH] = 1,
+        [DIR_EAST] = 1,
+        [DIR_WEST] = 1,
+    },
+};
+
 void UpdateObjectEventCurrentMovement(struct ObjectEvent *objectEvent, struct Sprite *sprite, bool8 (*callback)(struct ObjectEvent *, struct Sprite *))
 {
     DoGroundEffects_OnSpawn(objectEvent, sprite);
@@ -6910,6 +6921,12 @@ void UpdateObjectEventCurrentMovement(struct ObjectEvent *objectEvent, struct Sp
     UpdateObjectEventSpriteAnimPause(objectEvent, sprite);
     UpdateObjectEventVisibility(objectEvent, sprite);
     ObjectEventUpdateSubpriority(objectEvent, sprite);
+
+    if (IS_OW_MON_OBJ(objectEvent))
+    {
+        enum Species speciesId = OW_SPECIES(objectEvent);
+        sprite->y2 = sBigPokemonVertOffset[speciesId][objectEvent->facingDirection];
+    }
 }
 
 #define dirn_to_anim(name, table)\

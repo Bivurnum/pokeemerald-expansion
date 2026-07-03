@@ -1332,18 +1332,30 @@ void StartHealthboxSlideIn(enum BattlerId battler)
 {
     struct Sprite *healthboxSprite = &gSprites[gHealthboxSpriteIds[battler]];
 
-    healthboxSprite->sSpeedX = 5;
-    healthboxSprite->sSpeedY = 0;
-    healthboxSprite->x2 = 0x73;
-    healthboxSprite->y2 = 0;
     healthboxSprite->callback = SpriteCB_HealthboxSlideIn;
-    if (!IsOnPlayerSide(battler))
+
+    switch (GetBattlerPosition(battler))
     {
-        healthboxSprite->sSpeedX = -healthboxSprite->sSpeedX;
-        healthboxSprite->sSpeedY = -healthboxSprite->sSpeedY;
-        healthboxSprite->x2 = -healthboxSprite->x2;
-        healthboxSprite->y2 = -healthboxSprite->y2;
+    case B_POSITION_PLAYER_LEFT:
+        healthboxSprite->x2 = -120;
+        healthboxSprite->y2 = 0;
+        healthboxSprite->sSpeedX = -3;
+        healthboxSprite->sSpeedY = 0;
+        break;
+    case B_POSITION_PLAYER_RIGHT:
+        healthboxSprite->x2 = 120;
+        healthboxSprite->y2 = 0;
+        healthboxSprite->sSpeedX = 3;
+        healthboxSprite->sSpeedY = 0;
+        break;
+    default: // opponents
+        healthboxSprite->x2 = 0;
+        healthboxSprite->y2 = -72;
+        healthboxSprite->sSpeedX = 0;
+        healthboxSprite->sSpeedY = -3;
+        break;
     }
+
     gSprites[healthboxSprite->data[5]].callback(&gSprites[healthboxSprite->data[5]]);
     if (GetBattlerPosition(battler) == B_POSITION_PLAYER_RIGHT && !gTestRunnerHeadless)
         healthboxSprite->callback = SpriteCB_HealthboxSlideInDelayed;

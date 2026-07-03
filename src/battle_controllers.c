@@ -2366,7 +2366,10 @@ void BtlController_HandleLoadMonSprite(enum BattlerId battler)
                                                y,
                                                GetBattlerSpriteSubpriority(battler));
 
-    gSprites[gBattlerSpriteIds[battler]].x2 = -DISPLAY_WIDTH;
+    if (gBattleStruct->eventState.battleIntro <= BATTLE_INTRO_STATE_INTRO_TEXT && GetBattlerSide(battler) == B_SIDE_PLAYER)
+        gSprites[gBattlerSpriteIds[battler]].x2 = DISPLAY_WIDTH;
+    else
+        gSprites[gBattlerSpriteIds[battler]].x2 = -DISPLAY_WIDTH;
     gSprites[gBattlerSpriteIds[battler]].data[0] = battler;
     gSprites[gBattlerSpriteIds[battler]].data[2] = species;
     gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = battler;
@@ -2763,6 +2766,24 @@ void BtlController_HandleHitAnimation(enum BattlerId battler)
         gDoingBattleAnim = TRUE;
         gSprites[gBattlerSpriteIds[battler]].data[1] = 0;
         DoHitAnimHealthboxEffect(battler);
+        // if (!IsOnPlayerSide(battler))
+        // {
+        //     struct Sprite *sprite = &gSprites[gBattlerSpriteIds[battler]];
+        //     sprite->affineAnims = gAffineAnims_BattleSpriteOpponentSide;
+        //     if (GetBattlerPosition(gBattlerAttacker) == B_POSITION_PLAYER_RIGHT)
+        //         StartSpriteAffineAnim(sprite, BATTLER_AFFINE_FLIPPED);
+        //     else
+        //         StartSpriteAffineAnim(sprite, BATTLER_AFFINE_NORMAL);
+        // }
+        // else
+        // {
+        //     struct Sprite *sprite = &gSprites[gBattlerSpriteIds[gBattlerAttacker]];
+        //     sprite->affineAnims = gAffineAnims_BattleSpriteOpponentSide;
+        //     if (GetBattlerPosition(battler) == B_POSITION_PLAYER_RIGHT)
+        //         StartSpriteAffineAnim(sprite, BATTLER_AFFINE_FLIPPED);
+        //     else
+        //         StartSpriteAffineAnim(sprite, BATTLER_AFFINE_NORMAL);
+        // }
         gBattlerControllerFuncs[battler] = Controller_HitAnimation;
     }
 }
