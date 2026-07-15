@@ -1,0 +1,31 @@
+{
+  "id": "MAP_JURASSIC_PARK_ROAD_TO_BRIDGE",
+  "name": "Jurassic_Park_Road_To_Bridge",
+  "layout": "LAYOUT_JURASSIC_PARK_ROAD_TO_BRIDGE",
+  "music": "MUS_FOREST_FIELD",
+  "region_map_section": "MAPSEC_ABANDONED_SHIP",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_NONE",
+  "allow_cycling": false,
+  "allow_escaping": false,
+  "allow_running": false,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": [
+    {
+      "map": "MAP_JURASSIC_PARK_DINO_ENCLOSURE",
+      "offset": 2,
+      "direction": "left"
+    },
+    {
+      "map": "MAP_JURASSIC_PARK_BRIDGE_AND_LAB",
+      "offset": 0,
+      "direction": "right"
+    }
+  ],
+  "object_events": [],
+  "warp_events": [],
+  "coord_events": [],
+  "bg_events": []
+}

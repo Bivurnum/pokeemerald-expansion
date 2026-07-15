@@ -831,12 +831,12 @@ static const s16 sBattlerHealthboxCoords[BATTLE_COORDS_COUNT][MAX_BATTLERS_COUNT
     [BATTLE_COORDS_SINGLES] =
     {
         [B_POSITION_PLAYER_LEFT]   = { 158, 88 },
-        [B_POSITION_OPPONENT_LEFT] = { 44,  30 },
+        [B_POSITION_OPPONENT_LEFT] = { 106, 16 },
     },
     [BATTLE_COORDS_DOUBLES] =
     {
-        [B_POSITION_PLAYER_LEFT]    = { 159, 76 },
-        [B_POSITION_PLAYER_RIGHT]   = { 171, 101 },
+        [B_POSITION_PLAYER_LEFT]    = {  24, 42 },
+        [B_POSITION_PLAYER_RIGHT]   = { 170, 42 },
         [B_POSITION_OPPONENT_LEFT]  = { 44,  19 },
         [B_POSITION_OPPONENT_RIGHT] = { 32,  44 },
     },

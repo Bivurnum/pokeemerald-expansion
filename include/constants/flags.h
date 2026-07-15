@@ -51,8 +51,8 @@
 
 #else
 
-#define FLAG_UNUSED_0x020    0x20 // Unused Flag
-#define FLAG_UNUSED_0x021    0x21 // Unused Flag
+#define FLAG_FORCE_DOUBLE_WILD    0x20
+#define FLAG_FORCE_2_VS_1_WILD    0x21 // Forces a 2vs1 double wild battle
 #define FLAG_UNUSED_0x022    0x22 // Unused Flag
 #define FLAG_UNUSED_0x023    0x23 // Unused Flag
 #define FLAG_UNUSED_0x024    0x24 // Unused Flag

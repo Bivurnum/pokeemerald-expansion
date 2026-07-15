@@ -35,6 +35,7 @@
 #include "constants/trainers.h"
 #include "test/battle.h"
 
+static void PlayerPartnerHandleLoadMonSprite(enum BattlerId battler);
 static void PlayerPartnerHandleDrawTrainerPic(enum BattlerId battler);
 static void PlayerPartnerHandleTrainerSlide(enum BattlerId battler);
 static void PlayerPartnerHandleTrainerSlideBack(enum BattlerId battler);
@@ -53,7 +54,7 @@ static void (*const sPlayerPartnerBufferCommands[CONTROLLER_CMDS_COUNT])(enum Ba
     [CONTROLLER_GETRAWMONDATA]            = BtlController_Empty,
     [CONTROLLER_SETMONDATA]               = BtlController_HandleSetMonData,
     [CONTROLLER_SETRAWMONDATA]            = BtlController_HandleSetRawMonData,
-    [CONTROLLER_LOADMONSPRITE]            = BtlController_HandleLoadMonSprite,
+    [CONTROLLER_LOADMONSPRITE]            = PlayerPartnerHandleLoadMonSprite,
     [CONTROLLER_SWITCHINANIM]             = BtlController_HandleSwitchInAnim,
     [CONTROLLER_RETURNMONTOBALL]          = BtlController_HandleReturnMonToBall,
     [CONTROLLER_DRAWTRAINERPIC]           = PlayerPartnerHandleDrawTrainerPic,
@@ -207,6 +208,13 @@ static enum TrainerPicID PlayerPartnerGetTrainerBackPicId(enum DifficultyLevel d
         trainerPicId = GetPlayerTrainerPic(gSaveBlock2Ptr->playerGender, GAME_VERSION);
 
     return trainerPicId;
+}
+
+static void PlayerPartnerHandleLoadMonSprite(enum BattlerId battler)
+{
+    BtlController_HandleLoadMonSprite(battler);
+    if (gBattleStruct->eventState.battleIntro <= BATTLE_INTRO_STATE_INTRO_TEXT)
+        gBattlerControllerFuncs[battler] = TryShinyAnimAfterMonAnim;
 }
 
 // some explanation here

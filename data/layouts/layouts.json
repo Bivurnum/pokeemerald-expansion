@@ -10229,6 +10229,90 @@
       "secondary_tileset": "gTileset_Beach_Secondary",
       "border_filepath": "data/layouts/JurassicPark_Beach_Docks/border.bin",
       "blockdata_filepath": "data/layouts/JurassicPark_Beach_Docks/map.bin"
+    },
+    {
+      "id": "LAYOUT_JURASSIC_PARK_ROAD_TO_VISITOR_CENTRE",
+      "name": "JurassicPark_Road_To_Visitor_Centre_Layout",
+      "width": 58,
+      "height": 58,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Forest_Primary",
+      "secondary_tileset": "gTileset_Visitor_Centre_Secondary",
+      "border_filepath": "data/layouts/JurassicPark_Road_To_Visitor_Centre/border.bin",
+      "blockdata_filepath": "data/layouts/JurassicPark_Road_To_Visitor_Centre/map.bin"
+    },
+    {
+      "id": "LAYOUT_JURASSIC_PARK_DINO_ENCLOSURE",
+      "name": "JurassicPark_Dino_Enclosure_Layout",
+      "width": 40,
+      "height": 45,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Forest_Primary",
+      "secondary_tileset": "gTileset_Dino_Enclosure_Secondary",
+      "border_filepath": "data/layouts/JurassicPark_Dino_Enclosure/border.bin",
+      "blockdata_filepath": "data/layouts/JurassicPark_Dino_Enclosure/map.bin"
+    },
+    {
+      "id": "LAYOUT_JURASSIC_PARK_ROAD_TO_BRIDGE",
+      "name": "Jurassic_Park_Road_To_Bridge_Layout",
+      "width": 35,
+      "height": 35,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Forest_Primary",
+      "secondary_tileset": "gTileset_Visitor_Centre_Secondary",
+      "border_filepath": "data/layouts/Jurassic_Park_Road_To_Bridge/border.bin",
+      "blockdata_filepath": "data/layouts/Jurassic_Park_Road_To_Bridge/map.bin"
+    },
+    {
+      "id": "LAYOUT_JURASSIC_PARK_BRIDGE_AND_LAB",
+      "name": "JurassicPark_Bridge_And_Lab_Layout",
+      "width": 60,
+      "height": 33,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Forest_Primary",
+      "secondary_tileset": "gTileset_Secret_Lab_Secondary",
+      "border_filepath": "data/layouts/JurassicPark_Bridge_And_Lab/border.bin",
+      "blockdata_filepath": "data/layouts/JurassicPark_Bridge_And_Lab/map.bin"
+    },
+    {
+      "id": "LAYOUT_JURASSIC_PARK_MARSHLANDS_MAIN",
+      "name": "JurassicPark_Marshlands_Main_Layout",
+      "width": 63,
+      "height": 80,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Marshlands_Primary",
+      "secondary_tileset": "gTileset_Marshlands_Secondary",
+      "border_filepath": "data/layouts/JurassicPark_Marshlands_Main/border.bin",
+      "blockdata_filepath": "data/layouts/JurassicPark_Marshlands_Main/map.bin"
+    },
+    {
+      "id": "LAYOUT_JURASSIC_PARK_MARSHLANDS_MAZE_TEST",
+      "name": "JurassicPark_Marshlands_Maze_Test_Layout",
+      "width": 46,
+      "height": 44,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Marshlands_Primary",
+      "secondary_tileset": "gTileset_Marshlands_Secondary",
+      "border_filepath": "data/layouts/JurassicPark_Marshlands_Maze_Test/border.bin",
+      "blockdata_filepath": "data/layouts/JurassicPark_Marshlands_Maze_Test/map.bin"
+    },
+    {
+      "id": "LAYOUT_JURASSIC_PARK_DESERT_MAIN",
+      "name": "JurassicPark_Desert_Main_Layout",
+      "width": 69,
+      "height": 87,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Desert_Primary",
+      "secondary_tileset": "gTileset_Desert_Secondary",
+      "border_filepath": "data/layouts/JurassicPark_Desert_Main/border.bin",
+      "blockdata_filepath": "data/layouts/JurassicPark_Desert_Main/map.bin"
     }
   ]
 }

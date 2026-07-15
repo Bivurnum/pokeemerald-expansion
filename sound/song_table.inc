@@ -617,6 +617,10 @@ gSongTable::
 	song ph_nurse_held, MUSIC_PLAYER_SE2, 2
 	song ph_nurse_solo, MUSIC_PLAYER_SE2, 2
 	song mus_vs_dino, MUSIC_PLAYER_BGM, 0
+	song mus_forest_field, MUSIC_PLAYER_BGM, 0
+	song mus_forgotten_swamp, MUSIC_PLAYER_BGM, 0
+	song mus_ancient_desert, MUSIC_PLAYER_BGM, 0
+	song mus_lost_mountains, MUSIC_PLAYER_BGM, 0
 
 	.align 2
 dummy_song_header:

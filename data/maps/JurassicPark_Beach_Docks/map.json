@@ -2,7 +2,7 @@
   "id": "MAP_JURASSIC_PARK_BEACH_DOCKS",
   "name": "JurassicPark_Beach_Docks",
   "layout": "LAYOUT_JURASSIC_PARK_BEACH_DOCKS",
-  "music": "MUS_DUMMY",
+  "music": "MUS_FOREST_FIELD",
   "region_map_section": "MAPSEC_ABANDONED_SHIP",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -10,11 +10,50 @@
   "allow_cycling": false,
   "allow_escaping": false,
   "allow_running": false,
-  "show_map_name": true,
+  "show_map_name": false,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": null,
+  "connections": [
+    {
+      "map": "MAP_JURASSIC_PARK_ROAD_TO_VISITOR_CENTRE",
+      "offset": -12,
+      "direction": "up"
+    }
+  ],
   "object_events": [],
   "warp_events": [],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 16,
+      "y": 19,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "General_EventScript_Cutout"
+    },
+    {
+      "type": "sign",
+      "x": 15,
+      "y": 19,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "General_EventScript_Cutout"
+    },
+    {
+      "type": "sign",
+      "x": 17,
+      "y": 19,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "General_EventScript_Cutout"
+    },
+    {
+      "type": "sign",
+      "x": 18,
+      "y": 19,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "General_EventScript_Cutout"
+    }
+  ]
 }

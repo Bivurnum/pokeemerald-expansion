@@ -415,3 +415,23 @@ const u16 gMetatileAttributes_Forest_Primary[] = INCBIN_U16("data/tilesets/prima
 const u16 gMetatiles_Beach_Secondary[] = INCBIN_U16("data/tilesets/secondary/beach_secondary/metatiles.bin");
 const u16 gMetatileAttributes_Beach_Secondary[] = INCBIN_U16("data/tilesets/secondary/beach_secondary/metatile_attributes.bin");
 
+const u16 gMetatiles_Visitor_Centre_Secondary[] = INCBIN_U16("data/tilesets/secondary/visitor_centre_secondary/metatiles.bin");
+const u16 gMetatileAttributes_Visitor_Centre_Secondary[] = INCBIN_U16("data/tilesets/secondary/visitor_centre_secondary/metatile_attributes.bin");
+
+const u16 gMetatiles_Dino_Enclosure_Secondary[] = INCBIN_U16("data/tilesets/secondary/dino_enclosure_secondary/metatiles.bin");
+const u16 gMetatileAttributes_Dino_Enclosure_Secondary[] = INCBIN_U16("data/tilesets/secondary/dino_enclosure_secondary/metatile_attributes.bin");
+
+const u16 gMetatiles_Secret_Lab_Secondary[] = INCBIN_U16("data/tilesets/secondary/secret_lab_secondary/metatiles.bin");
+const u16 gMetatileAttributes_Secret_Lab_Secondary[] = INCBIN_U16("data/tilesets/secondary/secret_lab_secondary/metatile_attributes.bin");
+
+const u16 gMetatiles_Marshlands_Primary[] = INCBIN_U16("data/tilesets/primary/marshlands_primary/metatiles.bin");
+const u16 gMetatileAttributes_Marshlands_Primary[] = INCBIN_U16("data/tilesets/primary/marshlands_primary/metatile_attributes.bin");
+
+const u16 gMetatiles_Marshlands_Secondary[] = INCBIN_U16("data/tilesets/secondary/marshlands_secondary/metatiles.bin");
+const u16 gMetatileAttributes_Marshlands_Secondary[] = INCBIN_U16("data/tilesets/secondary/marshlands_secondary/metatile_attributes.bin");
+
+const u16 gMetatiles_Desert_Primary[] = INCBIN_U16("data/tilesets/primary/desert_primary/metatiles.bin");
+const u16 gMetatileAttributes_Desert_Primary[] = INCBIN_U16("data/tilesets/primary/desert_primary/metatile_attributes.bin");
+
+const u16 gMetatiles_Desert_Secondary[] = INCBIN_U16("data/tilesets/secondary/desert_secondary/metatiles.bin");
+const u16 gMetatileAttributes_Desert_Secondary[] = INCBIN_U16("data/tilesets/secondary/desert_secondary/metatile_attributes.bin");

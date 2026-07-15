@@ -4900,7 +4900,7 @@ static const struct SpriteFrameImage sPicTable_Tyrunt[] = {
     overworld_ascending_frames(gObjectEventPic_Tyrunt, 4, 4),
 };
 static const struct SpriteFrameImage sPicTable_Tyrantrum[] = {
-    overworld_ascending_frames(gObjectEventPic_Tyrantrum, 4, 4),
+    overworld_ascending_frames(gObjectEventPic_Tyrantrum, 8, 8),
 };
 #endif //P_FAMILY_TYRUNT
 

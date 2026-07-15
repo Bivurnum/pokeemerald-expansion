@@ -1,1 +1,23 @@
 mapscripts JurassicPark_Beach_Docks_MapScripts {}
+
+script General_EventScript_Cutout
+{
+    lock
+    if(flag(FLAG_TEMP_1))
+    {
+        msgbox(
+            "Yep, still cardboard.$"
+        )
+    }
+    else
+    {
+        msgbox(
+            "As you approach the hut,\n"
+            "you start to notice…\p"
+            "That this is just a cardboard cutout.$"
+        )
+        setflag(FLAG_TEMP_1)
+    }
+    release
+    end
+}

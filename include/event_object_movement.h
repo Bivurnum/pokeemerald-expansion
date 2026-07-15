@@ -118,6 +118,8 @@ extern const struct SubspriteTable sOamTables_32x32[];
 extern const struct SubspriteTable sOamTables_64x64[];
 extern const union AnimCmd *const sAnimTable_Following[];
 extern const union AnimCmd *const sAnimTable_Following_Asym[];
+extern const union AnimCmd *const sAnimTable_Following_4F[];
+extern const union AnimCmd *const sAnimTable_Following_Asym_4F[];
 extern const struct SpriteTemplate *const gFieldEffectObjectTemplatePointers[];
 extern const u8 gReflectionEffectPaletteMap[];
 
