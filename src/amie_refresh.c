@@ -51,7 +51,7 @@ static const u32 gHeart_Gfx[] = INCBIN_U32("graphics/amie_refresh/heart.4bpp");
 static const u32 gAngry_Gfx[] = INCBIN_U32("graphics/amie_refresh/angry.4bpp");
 static const u32 sSpriteTiles_Surprised[] = INCBIN_U32("graphics/amie_refresh/surprised.4bpp.smol");
 static const u32 sSpriteTiles_Music[] = INCBIN_U32("graphics/amie_refresh/music.4bpp.smol");
-static const u32 sSpriteTiles_Pokeblock[] = INCBIN_U32("graphics/amie_refresh/amie/pokeblock.4bpp.smol");
+static const u32 gPokeblock_Gfx[] = INCBIN_U32("graphics/amie_refresh/amie/pokeblock.4bpp");
 
 static const u16 gArrow_Pal[] = INCBIN_U16("graphics/amie_refresh/amie/arrow.gbapal");
 static const u32 sSpriteTiles_Arrow[] = INCBIN_U32("graphics/amie_refresh/amie/arrow.4bpp.smol");
@@ -68,10 +68,13 @@ static void Task_TurnMonAroundWaitFadeIn(u8 taskId);
 static void CreateMusicEmote(void);
 static void StartNormalAnim(void);
 static void StartHappyAnim(void);
+static void StartBiteAnim(void);
 static void ResetAmieHand(void);
 static void AmieHandHandleInput(u8 taskId);
+static void AmieFeedHandleInput(u8 taskId);
+static bool32 IsPokeblockinFeedingZone(void);
 static void DestroySelectorSprite(void);
-static void DestroyPokeblockSprites(void);
+static void DestroyPokeblockSprites(u8 taskId);
 static void ReloadPokeblockSprites(u8 taskId);
 static void SpriteCB_Mon(struct Sprite *sprite);
 static void SpriteCB_MonBack(struct Sprite *sprite);
@@ -250,9 +253,35 @@ static const union AnimCmd * const sAnims_Heart[] =
     sAnim_Normal,
 };
 
+static const struct SpriteFrameImage sPicTable_Pokeblock[] =
+{
+    amie_frame(gPokeblock_Gfx, 0, 4, 4),
+    amie_frame(gPokeblock_Gfx, 1, 4, 4),
+    amie_frame(gPokeblock_Gfx, 2, 4, 4),
+};
+
+static const union AnimCmd sAnim_PokeblockOneBite[] =
+{
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 16),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sAnim_PokeblockTwoBites[] =
+{
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 16),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_Angry[] =
 {
     sAnim_Normal,
+};
+
+static const union AnimCmd * const sAnims_Pokeblock[] =
+{
+    sAnim_Normal,
+    sAnim_PokeblockOneBite,
+    sAnim_PokeblockTwoBites,
 };
 
 static const union AffineAnimCmd sAffineAnim_AngryPulse[] =
@@ -362,13 +391,6 @@ static const struct CompressedSpriteSheet sSpriteSheet_Party_Icon =
     .data = sSpriteTiles_Party_Icon,
     .size = 1024,
     .tag = TAG_PARTY_AMIE,
-};
-
-static const struct CompressedSpriteSheet sSpriteSheet_Pokeblock =
-{
-    .data = sSpriteTiles_Pokeblock,
-    .size = 512,
-    .tag = TAG_AMIE_POKEBLOCK,
 };
 
 static const struct CompressedSpriteSheet sSpriteSheet_Selector =
@@ -568,6 +590,7 @@ void CB2_InitAmie(void)
         gMain.state++;
         break;
     case 1:
+        // Reset and init BGs
         DmaClearLarge16(3, (void *)(VRAM), VRAM_SIZE, 0x1000);
         DmaClear32(3, OAM, OAM_SIZE);
         DmaClear16(3, PLTT, PLTT_SIZE);
@@ -588,6 +611,7 @@ void CB2_InitAmie(void)
         gMain.state++;
         break;
     case 2:
+        // Reset some stuff
         ResetPaletteFade();
         ScanlineEffect_Stop();
         ResetTasks();
@@ -596,6 +620,7 @@ void CB2_InitAmie(void)
         gMain.state++;
         break;
     case 3:
+        // Load BG tiles and tilemaps
         DecompressDataWithHeaderVram(gAmieBG_Gfx, (void *)(BG_CHAR_ADDR(1)));
         DecompressDataWithHeaderVram(gAmieBG_Tilemap, (u16*) BG_SCREEN_ADDR(6));
 
@@ -604,11 +629,13 @@ void CB2_InitAmie(void)
         gMain.state++;
         break;
     case 4:
+        // Load BG palettes
         LoadPalette(gAmieBG_Pal, BG_PLTT_ID(0), 5 * PLTT_SIZE_4BPP);
         LoadPalette(gPokeblockBarBG_Pal, BG_PLTT_ID(5), PLTT_SIZE_4BPP);
         gMain.state++;
         break;
     case 5:
+        // Allocate data for Amie
         gAmieData = AllocZeroed(sizeof(struct AmieData));
         if (gAmieData == NULL)
         {
@@ -620,11 +647,13 @@ void CB2_InitAmie(void)
         gMain.state++;
         break;
     case 6:
+        // Load sprite palettes and create Amie sprites
         LoadSpritePalettes(sSpritePalettes_Amie);
         CreateAmieSprites();
         gMain.state++;
         break;
     case 7:
+        // Set mon data and create mon sprite
         u32 species = 0, isShiny = 0, personality = 0;
 
         SetAmieMonData(&species, &isShiny, &personality);
@@ -654,6 +683,7 @@ void CB2_InitAmie(void)
         gMain.state++;
         break;
     case 8:
+        // Start fade in
         u32 taskId;
 
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
@@ -680,9 +710,12 @@ static const s16 sPokeblockPositionsX[NUM_DISPLAYED_PKBL] =
 
 static void Task_AmieFadeIn(u8 taskId)
 {
+    //Wait for screen to finish fading in
     if (!gPaletteFade.active)
         gTasks[taskId].func = Task_AmieMain;
 }
+
+#define CURRENT_PKBLK   (gAmieData->pokeblockListStart + gAmieData->selectorPos + 1)
 
 static void Task_AmieMain(u8 taskId)
 {
@@ -725,7 +758,7 @@ static void Task_AmieMain(u8 taskId)
         {
             PlaySE(SE_WIN_OPEN);
             HideBg(2);
-            DestroyPokeblockSprites();
+            DestroyPokeblockSprites(taskId);
             DestroySelectorSprite();
             StartNormalAnim();
             ResetAmieHand();
@@ -733,10 +766,20 @@ static void Task_AmieMain(u8 taskId)
             return;
         }
 
+        if (JOY_NEW(A_BUTTON) && gSaveBlock1Ptr->pokeblocks[0].color)
+        {
+            tState = AMIE_TASK_FEED;
+            PlaySE(SE_SELECT);
+            HideBg(2);
+            DestroyPokeblockSprites(taskId);
+            DestroySelectorSprite();
+            return;
+        }
+
         if (JOY_NEW(DPAD_RIGHT))
         {
             // If not over max pokeblocks && next pokeblock exists.
-            if (((gAmieData->pokeblockListStart + gAmieData->selectorPos + 1) < POKEBLOCKS_COUNT) && gSaveBlock1Ptr->pokeblocks[gAmieData->pokeblockListStart + gAmieData->selectorPos + 1].color)
+            if ((CURRENT_PKBLK < POKEBLOCKS_COUNT) && gSaveBlock1Ptr->pokeblocks[CURRENT_PKBLK].color)
             {
                 if (gAmieData->selectorPos < 5)
                 {
@@ -769,6 +812,9 @@ static void Task_AmieMain(u8 taskId)
                 ReloadPokeblockSprites(taskId);
             }
         }
+        break;
+    case AMIE_TASK_FEED:
+        AmieFeedHandleInput(taskId);
         break;
     }
 }
@@ -885,7 +931,7 @@ static u8 GetCurrentPettingArea(void)
 
     for (i = 0; i < NUM_AMIE_PET_AREAS; i++)
     {
-        if (i == 0 && AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].type == PET_TYPE_NONE)
+        if (i == 0 && AmieRefreshPetZones[gSpeciesInfo[species].AmieZone][i].type == PET_TYPE_NONE)
         {
             u32 size;
 
@@ -900,10 +946,10 @@ static u8 GetCurrentPettingArea(void)
                 if (hand->y > (gSprites[gAmieData->monSpriteId].y - 32 + HAND_OFFSET + (64 - GET_MON_COORDS_HEIGHT(size))) && hand->y < (gSprites[gAmieData->monSpriteId].y + 96 - (64 - GET_MON_COORDS_HEIGHT(size))))
                     return PET_TYPE_GOOD;
         }
-        else if (hand->x > AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].leftX && hand->x < AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].rightX)
+        else if (hand->x > AmieRefreshPetZones[gSpeciesInfo[species].AmieZone][i].leftX && hand->x < AmieRefreshPetZones[gSpeciesInfo[species].AmieZone][i].rightX)
         {
-            if (hand->y > AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].topY && hand->y < AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].bottomY)
-                return AmieRefreshPetZones[gSpeciesInfo[species].amiePetZone][i].type;
+            if (hand->y > AmieRefreshPetZones[gSpeciesInfo[species].AmieZone][i].topY && hand->y < AmieRefreshPetZones[gSpeciesInfo[species].AmieZone][i].bottomY)
+                return AmieRefreshPetZones[gSpeciesInfo[species].AmieZone][i].type;
         }
     }
 
@@ -995,7 +1041,7 @@ static void CreateMusicEmote(void)
 
 static void StartNormalAnim(void)
 {
-    gSprites[gAmieData->monSpriteId].sCurrAnim = 0;
+    gSprites[gAmieData->monSpriteId].sCurrAnim = AMIE_STATE_NORMAL;
     gSprites[gAmieData->monSpriteId].sCounter = 0;
     StartSpriteAnim(&gSprites[gAmieData->monSpriteId], 0);
     StartSpriteAffineAnim(&gSprites[gAmieData->monSpriteId], 0);
@@ -1003,7 +1049,7 @@ static void StartNormalAnim(void)
 
 static void StartHappyAnim(void)
 {
-    gSprites[gAmieData->monSpriteId].sCurrAnim = 1;
+    gSprites[gAmieData->monSpriteId].sCurrAnim = AMIE_STATE_HAPPY;
     gSprites[gAmieData->monSpriteId].sCounter = 0;
     StartSpriteAnim(&gSprites[gAmieData->monSpriteId], 1);
     StartSpriteAffineAnim(&gSprites[gAmieData->monSpriteId], 1);
@@ -1012,8 +1058,16 @@ static void StartHappyAnim(void)
 
 static void StartAngryAnim(void)
 {
-    gSprites[gAmieData->monSpriteId].sCurrAnim = 2;
+    gSprites[gAmieData->monSpriteId].sCurrAnim = AMIE_STATE_ANGRY;
     gSprites[gAmieData->monSpriteId].sCounter = 0;
+}
+
+static void StartBiteAnim(void)
+{
+    gSprites[gAmieData->monSpriteId].sCurrAnim = AMIE_STATE_BITE;
+    gSprites[gAmieData->monSpriteId].sCounter = 0;
+    StartSpriteAnim(&gSprites[gAmieData->monSpriteId], 0);
+    StartSpriteAffineAnim(&gSprites[gAmieData->monSpriteId], 0);
 }
 
 static void StopPetting(u8 taskId)
@@ -1037,8 +1091,6 @@ static void CreatePokeblockSprites(void)
 {
     u32 color, palTag, count = 0;
 
-    LoadCompressedSpriteSheet(&sSpriteSheet_Pokeblock);
-
     for (u32 i = gAmieData->pokeblockListStart; i < (gAmieData->pokeblockListStart + NUM_DISPLAYED_PKBL); i++)
     {
         color = gSaveBlock1Ptr->pokeblocks[i].color;
@@ -1050,11 +1102,11 @@ static void CreatePokeblockSprites(void)
         LoadSpritePaletteWithTag(gPokeblocksPals[color - 1], palTag);
 
         struct SpriteTemplate pkblkTemplate = {
-            .tileTag = TAG_AMIE_POKEBLOCK,
+            .tileTag = TAG_NONE,
             .paletteTag = palTag,
             .oam = &sOam_32x32Affine_1,
-            .anims = gDummySpriteAnimTable,
-            .images = NULL,
+            .anims = sAnims_Pokeblock,
+            .images = sPicTable_Pokeblock,
             .affineAnims = sAffineAnims_Pokeblock,
             .callback = SpriteCallbackDummy
         };
@@ -1093,12 +1145,15 @@ static void DestroySelectorSprite(void)
     gAmieData->selectorSpriteId = 0;
 }
 
-static void DestroyPokeblockSprites(void)
+static void DestroyPokeblockSprites(u8 taskId)
 {
     for (u32 i = 0; i < NUM_DISPLAYED_PKBL; i++)
     {
         if (gAmieData->pokeblockSpriteIds[i] == 0)
             break;
+
+        if (tState == AMIE_TASK_FEED && i == gAmieData->selectorPos)
+            continue;
 
         FreeSpritePaletteByTag(TAG_PKBL_0 + i);
         DestroySpriteAndFreeResources(&gSprites[gAmieData->pokeblockSpriteIds[i]]);
@@ -1132,7 +1187,7 @@ static void Task_WaitReloadPokeblockSprites(u8 taskId)
 
 static void ReloadPokeblockSprites(u8 taskId)
 {
-    DestroyPokeblockSprites();
+    DestroyPokeblockSprites(taskId);
     tCounter = 0;
     gTasks[taskId].func = Task_WaitReloadPokeblockSprites;
 }
@@ -1157,7 +1212,7 @@ static void AmieHandHandleInput(u8 taskId)
     switch (tState)
     {
     case AMIE_TASK_NORMAL:
-        if (JOY_NEW(PUFF_BUTTON) || (JOY_NEW(INTERACT_BUTTON) && IsHandOnPokeblockIcon()))
+        if (JOY_NEW(PKBLK_BUTTON) || (JOY_NEW(INTERACT_BUTTON) && IsHandOnPokeblockIcon()))
         {
             PlaySE(SE_WIN_OPEN);
             ShowBg(2);
@@ -1195,7 +1250,6 @@ static void AmieHandHandleInput(u8 taskId)
                         if (tPetScore >= AMIE_PET_SCORE_TARGET)
                         {
                             CreateHeartSprites(3);
-                        
                             StartHappyAnim();
                             PlayCry_ByMode(GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES), 0, CRY_MODE_GROWL_2);
                             gSprites[gAmieData->handSpriteId].invisible = TRUE;
@@ -1311,6 +1365,80 @@ static void AmieHandHandleInput(u8 taskId)
     MoveSpriteFromInput(&gSprites[gAmieData->handSpriteId]);
 }
 
+static void AmieFeedHandleInput(u8 taskId)
+{
+    if (JOY_NEW(EXIT_BUTTON))
+    {
+        tState = AMIE_TASK_NORMAL;
+        ResetAmieHand();
+        FreeSpritePaletteByTag(TAG_PKBL_0 + gAmieData->selectorPos);
+        DestroySpriteAndFreeResources(&gSprites[gAmieData->pokeblockSpriteIds[gAmieData->selectorPos]]);
+        gAmieData->pokeblockSpriteIds[gAmieData->selectorPos] = 0;
+        StartNormalAnim();
+        return;
+    }
+
+    if (IsPokeblockinFeedingZone())
+    {
+        if (!gAmieData->isBiting)
+        {
+            StartBiteAnim();
+            gAmieData->isBiting = TRUE;
+        }
+        else if (gAmieData->isBiteFinished)
+        {
+            u32 animNum = gSprites[gAmieData->pokeblockSpriteIds[gAmieData->selectorPos]].animNum;
+
+            gAmieData->isBiteFinished = FALSE;
+            if (animNum < 2)
+            {
+                StartSpriteAnim(&gSprites[gAmieData->pokeblockSpriteIds[gAmieData->selectorPos]], animNum + 1);
+            }
+            else
+            {
+                FreeSpritePaletteByTag(TAG_PKBL_0 + gAmieData->selectorPos);
+                DestroySpriteAndFreeResources(&gSprites[gAmieData->pokeblockSpriteIds[gAmieData->selectorPos]]);
+                CreateHeartSprites(3);
+                StartHappyAnim();
+                PlayCry_ByMode(GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES), 0, CRY_MODE_GROWL_2);
+                tState = AMIE_TASK_NORMAL;
+                ResetAmieHand();
+                gSprites[gAmieData->handSpriteId].invisible = TRUE;
+                // TODO: Consume pokeblock
+                return;
+            }
+        }
+    }
+    else
+    {
+        StartNormalAnim();
+        gAmieData->isBiting = FALSE;
+    }
+
+    MoveSpriteFromInput(&gSprites[gAmieData->pokeblockSpriteIds[gAmieData->selectorPos]]);
+}
+
+static bool32 IsPokeblockinFeedingZone(void)
+{
+    u32 species = GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES);
+    struct Sprite *pokeblock = &gSprites[gAmieData->pokeblockSpriteIds[gAmieData->selectorPos]];
+
+    u32 size;
+
+    #if P_GENDER_DIFFERENCES
+    if (gSpeciesInfo[species].frontPicFemale != NULL && GetGenderFromSpeciesAndPersonality(species, GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_PERSONALITY)) == MON_FEMALE)
+        size = gSpeciesInfo[species].frontPicSizeFemale;
+    else
+    #endif
+    size = gSpeciesInfo[species].frontPicSize;
+
+    if (pokeblock->x > (gSprites[gAmieData->monSpriteId].x - 64 + HAND_OFFSET + (64 - GET_MON_COORDS_WIDTH(size))) && pokeblock->x < (gSprites[gAmieData->monSpriteId].x + 96 - 48 - (64 - GET_MON_COORDS_WIDTH(size))))
+        if (pokeblock->y > (gSprites[gAmieData->monSpriteId].y + HAND_OFFSET + (64 - GET_MON_COORDS_HEIGHT(size))) && pokeblock->y < (gSprites[gAmieData->monSpriteId].y + 96 - (64 - GET_MON_COORDS_HEIGHT(size))))
+            return TRUE;
+    
+    return FALSE;
+}
+
 static void SpriteCB_Mon(struct Sprite *sprite)
 {
     switch (sprite->sCurrAnim)
@@ -1351,6 +1479,27 @@ static void SpriteCB_Mon(struct Sprite *sprite)
 
         sprite->sCounter++;
         break;
+    case AMIE_STATE_BITE:
+        if (sprite->sCounter == 0 || sprite->sCounter == 8 || sprite->sCounter == 16)
+            sprite->y2++;
+
+        if (sprite->sCounter == 16)
+        {
+            gAmieData->isBiteFinished = TRUE;
+            PlaySE(SE_M_BITE);
+        }
+
+        if (sprite->sCounter == 32 || sprite->sCounter == 48 || sprite->sCounter == 64)
+            sprite->y2--;
+
+        if (sprite->sCounter == 64)
+        {
+            gAmieData->isBiting = FALSE;
+            return;
+        }
+
+        sprite->sCounter++;
+        break;
     }
 }
 
@@ -1363,7 +1512,7 @@ static void SpriteCB_Heart(struct Sprite *sprite)
 {
     sprite->sCounter++;
     sprite->x2 = Sin2(0 - sprite->sCounter * 3) / 512;
-    if (sprite->sCounter % 2 == 0)
+    if (sprite->sCounter % 4 == 0)
         sprite->y -= 1;
 
     if (sprite->y < -16)

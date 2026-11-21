@@ -6,7 +6,7 @@
 
 #define INTERACT_BUTTON A_BUTTON
 #define EXIT_BUTTON     B_BUTTON
-#define PUFF_BUTTON     L_BUTTON
+#define PKBLK_BUTTON     L_BUTTON
 
 #define AMIE_MOVE_SPEED 1
 
@@ -61,13 +61,17 @@ struct AmieData
     u8 selectorSpriteId;
     u8 arrowLeftSpriteId;
     u8 arrowRightSpriteId;
+    u8 isBiting:1;
+    u8 isBiteFinished:1;
+    u8 padding1:6;
 };
 
 enum AmieTaskStates
 {
     AMIE_TASK_NORMAL,
     AMIE_TASK_BACK,
-    AMIE_TASK_POKEBLOCK
+    AMIE_TASK_POKEBLOCK,
+    AMIE_TASK_FEED
 };
 
 enum AmiePetZoneTypes
@@ -88,10 +92,11 @@ enum AmieMonAnimStates
 {
     AMIE_STATE_NORMAL,
     AMIE_STATE_HAPPY,
-    AMIE_STATE_ANGRY
+    AMIE_STATE_ANGRY,
+    AMIE_STATE_BITE
 };
 
-struct AmiePetZone
+struct AmieZone
 {
     enum AmiePetZoneTypes type;
     s16 leftX;
@@ -102,7 +107,7 @@ struct AmiePetZone
 
 extern EWRAM_DATA struct AmieData *gAmieData;
 
-extern const struct AmiePetZone AmieRefreshPetZones[][5];
+extern const struct AmieZone AmieRefreshPetZones[][5];
 
 void LoadAmiePartyMenuSprite(void);
 void CB2_InitAmie(void);
