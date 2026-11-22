@@ -994,7 +994,7 @@ static void GetMonConditions(struct Pokemon *mon, u8 *data)
         data[i] = GetMonData(mon, sConditionToMonData[i]);
 }
 
-static void AddPokeblockToConditions(struct Pokeblock *pokeblock, struct Pokemon *mon)
+void AddPokeblockToConditions(struct Pokeblock *pokeblock, struct Pokemon *mon)
 {
     u16 i;
     s16 stat;

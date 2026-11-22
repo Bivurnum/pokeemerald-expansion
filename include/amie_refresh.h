@@ -29,7 +29,7 @@
 #define TAG_PARTY_AMIE      0x2032
 #define TAG_SURPRISED       0x2033
 #define TAG_MUSIC           0x2034
-#define TAG_AMIE_POKEBLOCK  0x2035
+
 #define TAG_SELECTOR        0x2036
 #define TAG_ARROW           0x2037
 

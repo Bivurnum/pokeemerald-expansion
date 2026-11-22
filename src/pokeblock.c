@@ -817,7 +817,7 @@ static void DrawPokeblockMenuHighlight(u16 cursorPos, u16 tileNum)
     ScheduleBgCopyTilemapToVram(2);
 }
 
-static void CompactPokeblockSlots(void)
+void CompactPokeblockSlots(void)
 {
     u16 i, j;
 

@@ -839,9 +839,9 @@ static void Task_TurnMonAroundWaitFadeOut(u8 taskId)
         gSprites[gAmieData->monSpriteId].invisible = FALSE;
         DestroySprite(&gSprites[gAmieData->monBackSpriteId]);
         gAmieData->monBackSpriteId = 0;
-        DestroySpriteAndFreeResources(&gSprites[gAmieData->emoteBubbleSpriteId]);
+        DestroySprite(&gSprites[gAmieData->emoteBubbleSpriteId]);
         gAmieData->emoteBubbleSpriteId = 0;
-        DestroySpriteAndFreeResources(&gSprites[gAmieData->emoteSpriteId]);
+        DestroySprite(&gSprites[gAmieData->emoteSpriteId]);
         gAmieData->emoteSpriteId = 0;
         BeginNormalPaletteFade(PALETTES_ALL, 1, 16, 0, RGB_WHITE);
         gTasks[taskId].func = Task_TurnMonAroundWaitFadeIn;
@@ -1396,15 +1396,21 @@ static void AmieFeedHandleInput(u8 taskId)
             }
             else
             {
+                struct Pokemon *mon = &gPlayerParty[gAmieData->partySlot];
+                struct Pokeblock *block = &gSaveBlock1Ptr->pokeblocks[gAmieData->selectorPos + gAmieData->pokeblockListStart];
+
                 FreeSpritePaletteByTag(TAG_PKBL_0 + gAmieData->selectorPos);
                 DestroySpriteAndFreeResources(&gSprites[gAmieData->pokeblockSpriteIds[gAmieData->selectorPos]]);
                 CreateHeartSprites(3);
+                gSprites[gAmieData->monSpriteId].y2 = 0;
                 StartHappyAnim();
                 PlayCry_ByMode(GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES), 0, CRY_MODE_GROWL_2);
                 tState = AMIE_TASK_NORMAL;
                 ResetAmieHand();
                 gSprites[gAmieData->handSpriteId].invisible = TRUE;
-                // TODO: Consume pokeblock
+                AddPokeblockToConditions(block, mon);
+                TryClearPokeblock(gAmieData->selectorPos + gAmieData->pokeblockListStart);
+                CompactPokeblockSlots();
                 return;
             }
         }
@@ -1480,16 +1486,16 @@ static void SpriteCB_Mon(struct Sprite *sprite)
         sprite->sCounter++;
         break;
     case AMIE_STATE_BITE:
-        if (sprite->sCounter == 0 || sprite->sCounter == 8 || sprite->sCounter == 16)
+        if (sprite->sCounter <= 4)
             sprite->y2++;
 
-        if (sprite->sCounter == 16)
+        if (sprite->sCounter == 8)
         {
             gAmieData->isBiteFinished = TRUE;
             PlaySE(SE_M_BITE);
         }
 
-        if (sprite->sCounter == 32 || sprite->sCounter == 48 || sprite->sCounter == 64)
+        if (sprite->sCounter == 16 || sprite->sCounter == 20 || sprite->sCounter == 24 || sprite->sCounter == 28 || sprite->sCounter == 32)
             sprite->y2--;
 
         if (sprite->sCounter == 64)

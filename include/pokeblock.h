@@ -73,5 +73,7 @@ s16 PokeblockGetGain(u8 nature, const struct Pokeblock *pokeblock);
 void PokeblockCopyName(const struct Pokeblock *pokeblock, u8 *dest);
 bool8 CopyMonFavoritePokeblockName(u8 nature, u8 *dest);
 u8 GetPokeblocksFlavor(const struct Pokeblock *pokeblock);
+void AddPokeblockToConditions(struct Pokeblock *pokeblock, struct Pokemon *mon);
+void CompactPokeblockSlots(void);
 
 #endif // GUARD_POKEBLOCK_H
