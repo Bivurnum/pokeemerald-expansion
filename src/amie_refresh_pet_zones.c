@@ -10,12 +10,3 @@ const struct AmieZone AmieRefreshPetZones[PET_ZONE_COUNT][NUM_AMIE_PET_AREAS] =
         },
     }
 };
-
-const struct AmieZone AmieRefreshFeedZones[PET_ZONE_COUNT][NUM_AMIE_PET_AREAS] =
-{
-    {
-        {
-            .type = PET_TYPE_NONE,
-        },
-    }
-};

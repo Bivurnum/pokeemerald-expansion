@@ -1110,7 +1110,7 @@ static void CreatePokeblockSprites(void)
             .affineAnims = sAffineAnims_Pokeblock,
             .callback = SpriteCallbackDummy
         };
-        gAmieData->pokeblockSpriteIds[count] = CreateSprite(&pkblkTemplate, sPokeblockPositionsX[count], 17, 2);
+        gAmieData->pokeblockSpriteIds[count] = CreateSprite(&pkblkTemplate, sPokeblockPositionsX[count], 15, 2);
         gSprites[gAmieData->pokeblockSpriteIds[count]].sPkblkNum = count;
 
         count++;
@@ -1126,14 +1126,14 @@ static void CreatePokeblockSprites(void)
     }
 
     if (gSaveBlock1Ptr->pokeblocks[gAmieData->pokeblockListStart + 6].color)
-        gAmieData->arrowRightSpriteId = CreateSprite(&sSpriteTemplate_Arrow, 220, 17, 2);
+        gAmieData->arrowRightSpriteId = CreateSprite(&sSpriteTemplate_Arrow, 221, 17, 2);
 
 }
 
 static void CreateSelectorSprite(void)
 {
     LoadCompressedSpriteSheet(&sSpriteSheet_Selector);
-    gAmieData->selectorSpriteId = CreateSprite(&sSpriteTemplate_Selector, sPokeblockPositionsX[0], 39, 2);
+    gAmieData->selectorSpriteId = CreateSprite(&sSpriteTemplate_Selector, sPokeblockPositionsX[0], 40, 2);
     gAmieData->selectorPos = 0;
 }
 
