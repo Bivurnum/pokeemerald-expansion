@@ -62,6 +62,9 @@ static const u32 sSpriteTiles_Party_Icon[] = INCBIN_U32("graphics/amie_refresh/p
 static const u16 gHandBurned_Pal[] = INCBIN_U16("graphics/amie_refresh/hand_burned.gbapal");
 static const u32 gHandBurned_Gfx[] = INCBIN_U32("graphics/amie_refresh/hand_burned.4bpp");
 
+static const u16 gHandGoop_Pal[] = INCBIN_U16("graphics/amie_refresh/hand_goop.gbapal");
+static const u32 gHandGoop_Gfx[] = INCBIN_U32("graphics/amie_refresh/hand_goop.4bpp");
+
 static void CreateAmieSprites(void);
 static void Task_AmieFadeIn(u8 taskId);
 static void Task_AmieMain(u8 taskId);
@@ -80,11 +83,12 @@ static void DestroySelectorSprite(void);
 static void DestroyPokeblockSprites(u8 taskId);
 static void ReloadPokeblockSprites(u8 taskId);
 static void SpriteCB_Mon(struct Sprite *sprite);
-static void SpriteCB_MonBack(struct Sprite *sprite);
+static void SpriteCB_Hand(struct Sprite *sprite);
 static void SpriteCB_Heart(struct Sprite *sprite);
 static void SpriteCB_Angry(struct Sprite *sprite);
 static void SpriteCB_SpeechBubble(struct Sprite *sprite);
 static void SpriteCB_HandBurned(struct Sprite *sprite);
+static void SpriteCB_HandGoop(struct Sprite *sprite);
 
 // Task Data
 #define tState      gTasks[taskId].data[0]
@@ -188,6 +192,18 @@ static const union AnimCmd * const sAnims_HandBurned[] =
     sAnim_HandBurn,
 };
 
+static const union AnimCmd sAnim_HandGoop[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 32),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 32),
+    ANIMCMD_JUMP(0)
+};
+
+static const union AnimCmd * const sAnims_HandGoop[] =
+{
+    sAnim_HandGoop,
+};
+
 static const union AnimCmd * const sAnims_SpeechBubble[] =
 {
     sAnim_Normal,
@@ -277,6 +293,12 @@ static const struct SpriteFrameImage sPicTable_HandBurned[] =
     amie_frame(gHandBurned_Gfx, 2, 8, 8),
     amie_frame(gHandBurned_Gfx, 3, 8, 8),
     amie_frame(gHandBurned_Gfx, 4, 8, 8),
+};
+
+static const struct SpriteFrameImage sPicTable_HandGoop[] =
+{
+    amie_frame(gHandGoop_Gfx, 0, 4, 4),
+    amie_frame(gHandGoop_Gfx, 1, 4, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_SpeechBubble[] =
@@ -458,7 +480,7 @@ static const struct SpriteTemplate sSpriteTemplate_Hand =
     .anims = sAnims_Hand,
     .images = sPicTable_Hand,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
+    .callback = SpriteCB_Hand
 };
 
 static const struct SpriteTemplate sSpriteTemplate_HandBurned =
@@ -470,6 +492,17 @@ static const struct SpriteTemplate sSpriteTemplate_HandBurned =
     .images = sPicTable_HandBurned,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_HandBurned
+};
+
+static const struct SpriteTemplate sSpriteTemplate_HandGoop =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_HAND_GOOP,
+    .oam = &sOam_32x32_1,
+    .anims = sAnims_HandGoop,
+    .images = sPicTable_HandGoop,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_HandGoop
 };
 
 static const struct SpriteTemplate sSpriteTemplate_SpeechBubble =
@@ -731,7 +764,7 @@ void CB2_InitAmie(void)
             gSprites[gAmieData->monBackSpriteId].oam.affineMode = ST_OAM_AFFINE_DOUBLE;
             gSprites[gAmieData->monBackSpriteId].oam.priority = 1;
             gSprites[gAmieData->monBackSpriteId].subpriority = 3;
-            gSprites[gAmieData->monBackSpriteId].callback = SpriteCB_MonBack;
+            gSprites[gAmieData->monBackSpriteId].callback = SpriteCallbackDummy;
             StartSpriteAffineAnim(&gSprites[gAmieData->monBackSpriteId], 0);
         }
         gMain.state++;
@@ -797,7 +830,7 @@ static void Task_AmieMain(u8 taskId)
             }
             return;
         }
-        else if (gSprites[gAmieData->handSpriteId].invisible)
+        else if (gSprites[gAmieData->handSpriteId].invisible && tPetZone != PET_TYPE_GOOP)
         {
             return;
         }
@@ -937,8 +970,11 @@ static bool32 IsHandOnPokeblockIcon(void)
     return FALSE;
 }
 
-static void MoveSpriteFromInput(struct Sprite *sprite)
+static void MoveSpriteFromInput(struct Sprite *sprite, u8 taskId)
 {
+    if (sprite == &gSprites[gAmieData->handSpriteId] && tPetZone == PET_TYPE_GOOP && sprite->sCounter % 3 != 0)
+        return;
+
     if (JOY_HELD(DPAD_DOWN))
     {
         if (sprite == &gSprites[gAmieData->handSpriteId] && sprite->animNum != 1)
@@ -1098,6 +1134,16 @@ static void CreateBurnedHandSprite(void)
     gAmieData->injuredHandSpriteId = CreateSprite(&sSpriteTemplate_HandBurned, gSprites[gAmieData->handSpriteId].x - 16, gSprites[gAmieData->handSpriteId].y - 16, 0);
 }
 
+static void TryStartGoopHand(void)
+{
+    if (gAmieData->goopHandSpriteId == 0)
+    {
+        LoadSpritePaletteWithTag(gHandGoop_Pal, TAG_HAND_GOOP);
+        gAmieData->goopHandSpriteId = CreateSprite(&sSpriteTemplate_HandGoop, gSprites[gAmieData->handSpriteId].x, gSprites[gAmieData->handSpriteId].y, 0);
+        gSprites[gAmieData->handSpriteId].invisible = TRUE;
+    }
+}
+
 static void StartNormalAnim(void)
 {
     gSprites[gAmieData->monSpriteId].sCurrAnim = AMIE_STATE_NORMAL;
@@ -1131,10 +1177,23 @@ static void StartBiteAnim(void)
     StartSpriteAffineAnim(&gSprites[gAmieData->monSpriteId], 0);
 }
 
+static void TryStopGoopHand(void)
+{
+    if (gAmieData->goopHandSpriteId)
+    {
+        DestroySpriteAndFreeResources(&gSprites[gAmieData->goopHandSpriteId]);
+        gAmieData->goopHandSpriteId = 0;
+        gSprites[gAmieData->goopHandSpriteId].invisible = FALSE;
+    }
+}
+
 static void StopPetting(u8 taskId)
 {
     if (tPetZone != PET_TYPE_NONE)
     {
+        if (tPetZone == PET_TYPE_GOOP)
+            TryStopGoopHand();
+
         tPetZone = PET_TYPE_NONE;
         StartNormalAnim();
     }
@@ -1311,18 +1370,21 @@ static void AmieHandHandleInput(u8 taskId)
                     if (JOY_HELD(DPAD_ANY))
                     {
                         tPetZone = petZone;
+                        if (petZone == PET_TYPE_GOOP)
+                            TryStartGoopHand();
                     }
                     StartSpriteAnim(&gSprites[gAmieData->handSpriteId], 1);
                 }
                 else
                 {
-                    if (tPetZone == PET_TYPE_GOOD)
+                    if (tPetZone == PET_TYPE_GOOD || tPetZone == PET_TYPE_GOOP)
                     {
                         if (tPetScore >= AMIE_PET_SCORE_TARGET)
                         {
                             CreateHeartSprites(3);
                             StartHappyAnim();
                             PlayCry_ByMode(GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES), 0, CRY_MODE_GROWL_2);
+                            TryStopGoopHand();
                             gSprites[gAmieData->handSpriteId].invisible = TRUE;
                             tPetScore = 0;
                             tCounter = 0;
@@ -1398,7 +1460,6 @@ static void AmieHandHandleInput(u8 taskId)
         }
         else
         {
-            tPetZone = PET_TYPE_NONE;
             StopPetting(taskId);
             StartSpriteAnim(&gSprites[gAmieData->handSpriteId], 0);
         }
@@ -1433,7 +1494,7 @@ static void AmieHandHandleInput(u8 taskId)
         break;
     }
 
-    MoveSpriteFromInput(&gSprites[gAmieData->handSpriteId]);
+    MoveSpriteFromInput(&gSprites[gAmieData->handSpriteId], taskId);
 }
 
 static void AmieFeedHandleInput(u8 taskId)
@@ -1492,7 +1553,7 @@ static void AmieFeedHandleInput(u8 taskId)
         gAmieData->isBiting = FALSE;
     }
 
-    MoveSpriteFromInput(&gSprites[gAmieData->pokeblockSpriteIds[gAmieData->selectorPos]]);
+    MoveSpriteFromInput(&gSprites[gAmieData->pokeblockSpriteIds[gAmieData->selectorPos]], taskId);
 }
 
 static bool32 IsPokeblockinFeedingZone(void)
@@ -1580,9 +1641,9 @@ static void SpriteCB_Mon(struct Sprite *sprite)
     }
 }
 
-static void SpriteCB_MonBack(struct Sprite *sprite)
+static void SpriteCB_Hand(struct Sprite *sprite)
 {
-
+    sprite->sCounter++;
 }
 
 static void SpriteCB_Heart(struct Sprite *sprite)
@@ -1618,4 +1679,10 @@ static void SpriteCB_HandBurned(struct Sprite *sprite)
         DestroySpriteAndFreeResources(sprite);
         ResetAmieHand();
     }
+}
+
+static void SpriteCB_HandGoop(struct Sprite *sprite)
+{
+    sprite->x = gSprites[gAmieData->handSpriteId].x;
+    sprite->y = gSprites[gAmieData->handSpriteId].y;
 }

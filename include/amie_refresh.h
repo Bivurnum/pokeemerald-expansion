@@ -17,6 +17,7 @@
 #define TAG_SWITCH_ICON 0x2002
 #define TAG_EMOTE       0x2003
 #define TAG_HAND_BURNED 0x2004
+#define TAG_HAND_GOOP   0x2005
 
 #define TAG_PKBL_0      0x2120
 #define TAG_PKBL_1      0x2121
@@ -63,6 +64,7 @@ struct AmieData
     u8 arrowLeftSpriteId;
     u8 arrowRightSpriteId;
     u8 injuredHandSpriteId;
+    u8 goopHandSpriteId;
     u8 isBiting:1;
     u8 isBiteFinished:1;
     u8 padding1:6;
@@ -81,7 +83,8 @@ enum AmiePetZoneTypes
     PET_TYPE_NONE,
     PET_TYPE_BAD, 
     PET_TYPE_GOOD,
-    PET_TYPE_BURN
+    PET_TYPE_BURN,
+    PET_TYPE_GOOP
 };
 
 enum AmiePetZones
