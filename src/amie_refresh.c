@@ -59,6 +59,9 @@ static const u32 sSpriteTiles_Arrow[] = INCBIN_U32("graphics/amie_refresh/amie/a
 static const u16 gParty_Icon_Pal[] = INCBIN_U16("graphics/amie_refresh/party_icon.gbapal");
 static const u32 sSpriteTiles_Party_Icon[] = INCBIN_U32("graphics/amie_refresh/party_icon.4bpp.smol");
 
+static const u16 gHandBurned_Pal[] = INCBIN_U16("graphics/amie_refresh/hand_burned.gbapal");
+static const u32 gHandBurned_Gfx[] = INCBIN_U32("graphics/amie_refresh/hand_burned.4bpp");
+
 static void CreateAmieSprites(void);
 static void Task_AmieFadeIn(u8 taskId);
 static void Task_AmieMain(u8 taskId);
@@ -81,6 +84,7 @@ static void SpriteCB_MonBack(struct Sprite *sprite);
 static void SpriteCB_Heart(struct Sprite *sprite);
 static void SpriteCB_Angry(struct Sprite *sprite);
 static void SpriteCB_SpeechBubble(struct Sprite *sprite);
+static void SpriteCB_HandBurned(struct Sprite *sprite);
 
 // Task Data
 #define tState      gTasks[taskId].data[0]
@@ -169,6 +173,21 @@ static const union AnimCmd * const sAnims_Hand[] =
     sAnim_HandTap,
 };
 
+static const union AnimCmd sAnim_HandBurn[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 20),
+    ANIMCMD_FRAME(.imageValue = 1, .duration = 12),
+    ANIMCMD_FRAME(.imageValue = 2, .duration = 12),
+    ANIMCMD_FRAME(.imageValue = 3, .duration = 12),
+    ANIMCMD_FRAME(.imageValue = 4, .duration = 8),
+    ANIMCMD_END
+};
+
+static const union AnimCmd * const sAnims_HandBurned[] =
+{
+    sAnim_HandBurn,
+};
+
 static const union AnimCmd * const sAnims_SpeechBubble[] =
 {
     sAnim_Normal,
@@ -192,10 +211,18 @@ static const union AnimCmd sAnim_Mon_Happy[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sAnim_Mon_Angry[] =
+{
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 60),
+    ANIMCMD_FRAME(.imageValue = 0, .duration = 4),
+    ANIMCMD_END
+};
+
 static const union AnimCmd * const sAnims_Mon[] =
 {
     sAnim_Normal,
     sAnim_Mon_Happy,
+    sAnim_Mon_Angry,
 };
 
 static const union AnimCmd sAnim_ArrowFlipped[] =
@@ -241,6 +268,15 @@ static const struct SpriteFrameImage sPicTable_Hand[] =
     amie_frame(gHand_Gfx, 0, 4, 4),
     amie_frame(gHand_Gfx, 1, 4, 4),
     amie_frame(gHand_Gfx, 2, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_HandBurned[] =
+{
+    amie_frame(gHandBurned_Gfx, 0, 8, 8),
+    amie_frame(gHandBurned_Gfx, 1, 8, 8),
+    amie_frame(gHandBurned_Gfx, 2, 8, 8),
+    amie_frame(gHandBurned_Gfx, 3, 8, 8),
+    amie_frame(gHandBurned_Gfx, 4, 8, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_SpeechBubble[] =
@@ -372,6 +408,13 @@ static const struct OamData sOam_64x32_2 =
     .priority = 2,
 };
 
+static const struct OamData sOam_64x64_1 =
+{
+    .shape = SPRITE_SHAPE(64x64),
+    .size = SPRITE_SIZE(64x64),
+    .priority = 1,
+};
+
 static const struct CompressedSpriteSheet sSpriteSheet_Surprised =
 {
     .data = sSpriteTiles_Surprised,
@@ -416,6 +459,17 @@ static const struct SpriteTemplate sSpriteTemplate_Hand =
     .images = sPicTable_Hand,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy
+};
+
+static const struct SpriteTemplate sSpriteTemplate_HandBurned =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_HAND_BURNED,
+    .oam = &sOam_64x64_1,
+    .anims = sAnims_HandBurned,
+    .images = sPicTable_HandBurned,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_HandBurned
 };
 
 static const struct SpriteTemplate sSpriteTemplate_SpeechBubble =
@@ -984,7 +1038,6 @@ static void CreateHeartSprites(u32 num)
 static void CreateAngrySprite(void)
 {
     u32 size;
-    u32 spriteId;
     u32 species = GetMonData(&gPlayerParty[gAmieData->partySlot], MON_DATA_SPECIES);
 
     #if P_GENDER_DIFFERENCES
@@ -994,9 +1047,9 @@ static void CreateAngrySprite(void)
     #endif
             size = gSpeciesInfo[species].frontPicSize;
     
-    spriteId = CreateSprite(&sSpriteTemplate_Angry, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
+    gAmieData->emoteSpriteId = CreateSprite(&sSpriteTemplate_Angry, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 0);
     gSprites[gAmieData->emoteSpriteId].oam.priority = 0;
-    StartSpriteAffineAnim(&gSprites[spriteId], 0);
+    StartSpriteAffineAnim(&gSprites[gAmieData->emoteSpriteId], 0);
     gAmieData->emoteBubbleSpriteId = CreateSprite(&sSpriteTemplate_SpeechBubble, 55 + (64 - GET_MON_COORDS_WIDTH(size)), 50 + (64 - GET_MON_COORDS_HEIGHT(size)), 1);
     gSprites[gAmieData->emoteBubbleSpriteId].oam.priority = 0;
 }
@@ -1039,6 +1092,12 @@ static void CreateMusicEmote(void)
     gSprites[gAmieData->emoteBubbleSpriteId].oam.priority = 0;
 }
 
+static void CreateBurnedHandSprite(void)
+{
+    LoadSpritePaletteWithTag(gHandBurned_Pal, TAG_HAND_BURNED);
+    gAmieData->injuredHandSpriteId = CreateSprite(&sSpriteTemplate_HandBurned, gSprites[gAmieData->handSpriteId].x - 16, gSprites[gAmieData->handSpriteId].y - 16, 0);
+}
+
 static void StartNormalAnim(void)
 {
     gSprites[gAmieData->monSpriteId].sCurrAnim = AMIE_STATE_NORMAL;
@@ -1060,6 +1119,8 @@ static void StartAngryAnim(void)
 {
     gSprites[gAmieData->monSpriteId].sCurrAnim = AMIE_STATE_ANGRY;
     gSprites[gAmieData->monSpriteId].sCounter = 0;
+    StartSpriteAnim(&gSprites[gAmieData->monSpriteId], 2);
+    gAmieData->controlsPaused = TRUE;
 }
 
 static void StartBiteAnim(void)
@@ -1234,6 +1295,16 @@ static void AmieHandHandleInput(u8 taskId)
 
             if (petZone)
             {
+                if (petZone == PET_TYPE_BURN)
+                {
+                    CreateBurnedHandSprite();
+                    PlaySE(SE_M_EMBER);
+                    gSprites[gAmieData->handSpriteId].invisible = TRUE;
+                    tPetScore = 0;
+                    tCounter = 0;
+                    return;
+                }
+
                 if (tPetZone != petZone)
                 {
                     tCounter = 0;
@@ -1531,4 +1602,20 @@ static void SpriteCB_Angry(struct Sprite *sprite)
 
 static void SpriteCB_SpeechBubble(struct Sprite *sprite)
 {
+}
+
+static void SpriteCB_HandBurned(struct Sprite *sprite)
+{
+    sprite->sCounter++;
+
+    if (sprite->sCounter == 1 || sprite->sCounter == 7 || sprite->sCounter == 9)
+        sprite->x2 += 2;
+    if (sprite->sCounter == 3 || sprite->sCounter == 5 || sprite->sCounter == 11)
+        sprite->x2 -= 2;
+
+    if (sprite->sCounter > 64)
+    {
+        DestroySpriteAndFreeResources(sprite);
+        ResetAmieHand();
+    }
 }
